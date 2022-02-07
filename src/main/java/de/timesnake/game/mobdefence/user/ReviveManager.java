@@ -1,5 +1,6 @@
 package de.timesnake.game.mobdefence.user;
 
+import com.destroystokyo.paper.profile.ProfileProperty;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.server.TimeTask;
 import de.timesnake.basic.bukkit.util.user.ExInventory;
@@ -7,13 +8,13 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.entities.entity.bukkit.ExArmorStand;
 import de.timesnake.basic.entities.entity.bukkit.ExPlayer;
 import de.timesnake.basic.entities.entity.extension.EntityExtension;
-import de.timesnake.library.reflection.wrapper.ExEntityPose;
 import de.timesnake.basic.packets.util.packet.*;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.basic.util.chat.ChatColor;
+import de.timesnake.library.reflection.wrapper.ExEntityPose;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -58,7 +59,10 @@ public class ReviveManager {
         this.deathLocationsByUser.put(user, location);
 
         ExPlayer deadBody = new ExPlayer(user.getExWorld().getBukkitWorld(), user.getName());
-        deadBody.setTextures(user.getPlayer().getPlayerProfile().getProperties());
+
+        ProfileProperty textures = user.getPlayer().getPlayerProfile().getProperties().stream().filter((p) -> p.getName().equals("textures")).findFirst().get();
+
+        deadBody.setTextures(textures.getValue(), textures.getSignature());
 
         Location loc = user.getLocation();
         deadBody.setPositionRotation(loc.getX(), loc.getY() + 0.2, loc.getZ(), 120, 0);
