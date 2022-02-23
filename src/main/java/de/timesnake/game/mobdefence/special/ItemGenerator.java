@@ -32,7 +32,7 @@ public class ItemGenerator {
                     if (user instanceof MobDefUser && ((MobDefUser) user).isAlive()) {
                         if (((MobDefUser) user).getKit().equals(this.kit)) {
                             for (int i = 0; i < this.item.getAmount(); i++) {
-                                if (user.containsAtLeast(this.item, this.maxItems, true)) {
+                                if (user.containsAtLeast(this.item, this.maxItems, true) >= 0) {
                                     break;
                                 }
 
