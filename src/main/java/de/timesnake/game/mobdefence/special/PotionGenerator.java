@@ -40,7 +40,7 @@ public class PotionGenerator implements Listener {
     }
 
     private void fillItem(MobDefUser user, ExItemStack item, int max) {
-        if (user.containsAtLeast(item, max, true)) {
+        if (user.containsAtLeast(item, max, true) >= 0) {
             return;
         }
 
