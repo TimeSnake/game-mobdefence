@@ -24,7 +24,7 @@ public class MobGroup {
 
         List<MobTypeGroup> mobTypeGroups;
 
-        if (random.nextInt(16) == 0) {
+        if (true) {
             mobTypeGroups = List.of(new MobTypeGroup(MobDefMob.Type.RANGED, amount));
         } else if (random.nextInt(16) == 0) {
             mobTypeGroups = List.of(new MobTypeGroup(MobDefMob.Type.MELEE, amount));

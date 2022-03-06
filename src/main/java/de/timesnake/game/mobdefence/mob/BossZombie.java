@@ -5,14 +5,12 @@ import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.entities.entity.bukkit.ExZombie;
 import de.timesnake.basic.entities.entity.extension.EntityExtension;
 import de.timesnake.basic.entities.entity.extension.ExEntityInsentient;
-import de.timesnake.basic.entities.pathfinder.goals.*;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalHurtByTarget;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalNearestAttackableTarget;
+import de.timesnake.basic.entities.pathfinder.*;
 import de.timesnake.basic.entities.wrapper.EntityClass;
-import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import net.minecraft.world.entity.EntityInsentient;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -38,7 +36,7 @@ public class BossZombie extends MobDefMob<ExZombie> {
         ExPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.8, false, BlockCheck.BREAKABLE_MATERIALS);
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalZombieAttack(1));
-        this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 0.8, breakBlock, BREAK_LEVEL));
+        this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1.3, breakBlock, BREAK_LEVEL));
 
         this.entity.addPathfinderGoal(2, breakBlock);
         this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.8));
@@ -56,7 +54,7 @@ public class BossZombie extends MobDefMob<ExZombie> {
             this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass, true, true, 16D));
         }
 
-        this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityZombie, 4, 5 * 20) {
+        this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityZombie, 6, 2 * 20) {
             @Override
             public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<? extends ExEntityInsentient> entity) {
                 List<ExZombie> zombies = new ArrayList<>();
@@ -86,11 +84,11 @@ public class BossZombie extends MobDefMob<ExZombie> {
         this.entity.getBukkitAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
         this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(5);
         this.entity.getBukkitAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(5);
-        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(Math.sqrt(this.currentWave) * 4);
+        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(Math.sqrt(this.currentWave) * 6);
         this.entity.getBukkitAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS).setBaseValue(0.2);
 
-        this.entity.setMaxHealth(this.currentWave * 70);
-        this.entity.setHealth(this.currentWave * 70);
+        this.entity.setMaxHealth(this.currentWave * 100);
+        this.entity.setHealth(this.currentWave * 100);
 
         super.spawn();
     }
