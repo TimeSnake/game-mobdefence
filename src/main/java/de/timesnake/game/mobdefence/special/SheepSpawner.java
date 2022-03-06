@@ -4,7 +4,7 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.entities.entity.bukkit.ExSheep;
 import de.timesnake.basic.entities.entity.extension.EntityExtension;
-import de.timesnake.basic.entities.pathfinder.goals.*;
+import de.timesnake.basic.entities.pathfinder.*;
 import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.kit.*;
 import org.bukkit.Material;

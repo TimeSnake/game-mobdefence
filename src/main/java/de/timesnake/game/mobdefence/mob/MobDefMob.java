@@ -5,7 +5,7 @@ import de.timesnake.basic.entities.EntityManager;
 import de.timesnake.basic.entities.entity.extension.EntityExtension;
 import de.timesnake.basic.entities.entity.extension.ExEntityInsentient;
 import de.timesnake.basic.entities.pathfinder.ExPathfinderGoal;
-import de.timesnake.basic.entities.pathfinder.goals.ExPathfinderGoalBreakBlock;
+import de.timesnake.basic.entities.pathfinder.ExPathfinderGoalBreakBlock;
 import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.mob.map.ExHeightPathfinder;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;

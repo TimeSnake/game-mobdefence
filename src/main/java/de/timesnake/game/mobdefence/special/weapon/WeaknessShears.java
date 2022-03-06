@@ -48,9 +48,9 @@ public class WeaknessShears extends SpecialWeapon implements Listener {
 
         User user = e.getUser();
 
-        ExItemStack shears = new ExItemStack(user.getInventory().getItemInMainHand());
+        ExItemStack shears = ExItemStack.getItem(user.getInventory().getItemInMainHand(), false);
 
-        if (!shears.equals(LEVEL_ITEM.getItem())) {
+        if (shears == null || !shears.equals(LEVEL_ITEM.getItem())) {
             return;
         }
 

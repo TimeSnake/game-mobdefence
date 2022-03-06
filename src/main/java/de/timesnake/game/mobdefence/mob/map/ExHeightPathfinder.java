@@ -2,9 +2,9 @@ package de.timesnake.game.mobdefence.mob.map;
 
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.entities.pathfinder.ExPathfinderGoal;
-import de.timesnake.basic.entities.pathfinder.goals.ExPathfinderGoalUpdatedLocation;
-import de.timesnake.basic.entities.pathfinder.goals.LocationTargetable;
-import de.timesnake.basic.entities.pathfinder.goals.PathfinderGoalUpdatedLocation;
+import de.timesnake.basic.entities.pathfinder.ExPathfinderGoalUpdatedLocation;
+import de.timesnake.basic.entities.pathfinder.LocationTargetable;
+import de.timesnake.basic.entities.pathfinder.PathfinderGoalUpdatedLocation;
 import org.bukkit.Location;
 
 public class ExHeightPathfinder extends ExPathfinderGoalUpdatedLocation {

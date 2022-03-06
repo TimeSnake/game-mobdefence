@@ -410,6 +410,10 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
         return userManager;
     }
 
+    public boolean isDelayRunning() {
+        return delayIsRunning;
+    }
+
     public Collection<MobDefUser> getAliveUsers() {
         Collection<MobDefUser> users = new ArrayList<>();
         for (User user : Server.getUsers((user) -> user.getStatus().equals(Status.User.IN_GAME) || user.getStatus().equals(Status.User.PRE_GAME))) {

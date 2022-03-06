@@ -2,7 +2,7 @@ package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.entities.entity.bukkit.ExVillager;
-import de.timesnake.basic.entities.pathfinder.goals.ExPathfinderGoalLocation;
+import de.timesnake.basic.entities.pathfinder.ExPathfinderGoalLocation;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
@@ -62,7 +62,7 @@ public class MobManager implements Listener {
     private void checkRespawn() {
         int alive = MobDefServer.getMap().getWorld().getEntitiesByClasses(MobDefMob.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0])).size();
 
-        if (alive <= MobDefServer.getPlayerAmount() * Math.sqrt(MobDefServer.getPlayerAmount()) * Math.sqrt(MobDefServer.getWaveNumber())) {
+        if (alive <= 3 * MobDefServer.getPlayerAmount() * Math.sqrt(MobDefServer.getWaveNumber())) {
             boolean allSpawned = true;
             for (MobGroup mobGroup : this.mobGroups) {
                 if (!mobGroup.isSpawned()) {
@@ -72,7 +72,7 @@ public class MobManager implements Listener {
                 }
             }
 
-            if (allSpawned && alive == 0 && MobDefServer.isGameRunning()) {
+            if (allSpawned && alive == 0 && MobDefServer.isGameRunning() && !MobDefServer.isDelayRunning()) {
                 Server.broadcastSound(Sound.ENTITY_PLAYER_LEVELUP, 2);
                 MobDefServer.initNextWave();
             }
@@ -137,7 +137,7 @@ public class MobManager implements Listener {
         int totalMobAmount = (int) (SPAWN_AMOUNT_MULTIPLIER * Math.sqrt(wave) * SPAWN_AMOUNT_INCREASE * players * this.nextLimitedGaussian(0.2));
         int mobAmount = totalMobAmount;
 
-        int totalTime = (int) (Math.sqrt(totalMobAmount) * SPAWN_TIME_MULTIPLIER);
+        int totalTime = (int) (Math.log(totalMobAmount) * SPAWN_TIME_MULTIPLIER);
 
         int minGroupSize = (int) (MIN_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE + playerSqrt * GROUP_SIZE_PLAYER_MULTIPLIER);
         int maxGroupSize = ((int) (MAX_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE + playerSqrt * GROUP_SIZE_PLAYER_MULTIPLIER));

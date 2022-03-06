@@ -5,14 +5,12 @@ import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.entities.entity.bukkit.ExStray;
 import de.timesnake.basic.entities.entity.extension.EntityExtension;
 import de.timesnake.basic.entities.entity.extension.ExEntityInsentient;
-import de.timesnake.basic.entities.pathfinder.goals.*;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalHurtByTarget;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalNearestAttackableTarget;
+import de.timesnake.basic.entities.pathfinder.*;
 import de.timesnake.basic.entities.wrapper.EntityClass;
-import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import net.minecraft.world.entity.EntityInsentient;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -85,15 +83,19 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
                         stray.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass));
                     }
 
-                    if (BossSkeletonStray.this.currentWave > 12) {
-                        stray.setMaxHealth(80);
-                        stray.setHealth(80);
-                    } else if (BossSkeletonStray.this.currentWave > 8) {
+                    stray.setMaxNoDamageTicks(1);
+
+                    if (BossSkeletonStray.this.currentWave > 16) {
+                        stray.setMaxHealth(BossSkeletonStray.this.currentWave * 5);
+                    } else if (BossSkeletonStray.this.currentWave > 12) {
                         stray.setMaxHealth(60);
                         stray.setHealth(60);
+                    } else if (BossSkeletonStray.this.currentWave > 6) {
+                        stray.setMaxHealth(40);
+                        stray.setHealth(40);
                     }
 
-                    stray.setMaxNoDamageTicks(1);
+                    stray.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2 + BossSkeletonStray.this.currentWave / 5. * MobManager.MOB_DAMAGE_MULTIPLIER);
 
                     stray.setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.BOW));
 

@@ -2,9 +2,7 @@ package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.entities.entity.bukkit.ExCaveSpider;
-import de.timesnake.basic.entities.pathfinder.goals.*;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalHurtByTarget;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalNearestAttackableTarget;
+import de.timesnake.basic.entities.pathfinder.*;
 import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;

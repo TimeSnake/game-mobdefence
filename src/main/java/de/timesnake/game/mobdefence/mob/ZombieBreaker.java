@@ -2,14 +2,12 @@ package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.entities.entity.bukkit.ExZombie;
-import de.timesnake.basic.entities.pathfinder.goals.*;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalHurtByTarget;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalNearestAttackableTarget;
+import de.timesnake.basic.entities.pathfinder.*;
 import de.timesnake.basic.entities.wrapper.EntityClass;
-import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.ExplosionManager;
+import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import net.minecraft.world.entity.EntityInsentient;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -30,7 +28,7 @@ public class ZombieBreaker extends ArmorMob<ExZombie> {
 
         ExPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.7, true, ExplosionManager.EXPLODEABLE);
 
-        double speed = this.currentWave > 6 ? 1.2 : 1.1;
+        double speed = this.currentWave > 6 ? 1.3 : 1.2;
 
         this.entity.addPathfinderGoal(1, breakBlock);
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), speed, breakBlock, 5));

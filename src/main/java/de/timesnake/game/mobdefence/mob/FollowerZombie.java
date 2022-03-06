@@ -1,26 +1,28 @@
 package de.timesnake.game.mobdefence.mob;
 
+import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.entities.entity.bukkit.ExEndermite;
 import de.timesnake.basic.entities.entity.bukkit.ExSilverfish;
 import de.timesnake.basic.entities.entity.bukkit.ExZombie;
 import de.timesnake.basic.entities.entity.extension.EntityExtension;
 import de.timesnake.basic.entities.entity.extension.ExEntityInsentient;
-import de.timesnake.basic.entities.pathfinder.goals.*;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalHurtByTarget;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalNearestAttackableTarget;
+import de.timesnake.basic.entities.pathfinder.*;
 import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import net.minecraft.world.entity.EntityInsentient;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.enchantments.Enchantment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FollowerZombie extends MobDefMob<ExZombie> {
+public class FollowerZombie extends ArmorMob<ExZombie> {
 
     public FollowerZombie(ExLocation spawn, int currentWave) {
         super(Type.MELEE, HeightMapManager.MapType.NORMAL, 6, spawn, currentWave);
@@ -56,7 +58,7 @@ public class FollowerZombie extends MobDefMob<ExZombie> {
         int random = this.random.nextInt(2);
 
         if (random == 0) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntitySilverfish, 4, 10 * 20) {
+            this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntitySilverfish, 6, 3 * 20) {
                 @Override
                 public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<? extends ExEntityInsentient> entity) {
                     World world = MobDefServer.getMap().getWorld().getBukkitWorld();
@@ -92,7 +94,7 @@ public class FollowerZombie extends MobDefMob<ExZombie> {
 
             this.subEntities = this.getSilverFishs();
         } else if (random == 1) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityEndermite, 4, 10 * 20) {
+            this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityEndermite, 6, 3 * 20) {
                 @Override
                 public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<? extends ExEntityInsentient> entity) {
                     World world = MobDefServer.getMap().getWorld().getBukkitWorld();
@@ -141,8 +143,13 @@ public class FollowerZombie extends MobDefMob<ExZombie> {
 
         this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobManager.MOB_DAMAGE_MULTIPLIER);
 
-
         super.spawn();
+    }
+
+    @Override
+    public void equipArmor() {
+        super.equipArmor();
+        this.entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET, List.of(Enchantment.PROTECTION_ENVIRONMENTAL), List.of(5)));
     }
 
     private List<EntityExtension<?>> getSilverFishs() {

@@ -75,4 +75,8 @@ public class MobDefServer extends LoungeBridgeServer {
     public static BaseShops getBaseShops() {
         return server.getBaseShops();
     }
+
+    public static boolean isDelayRunning() {
+        return server.isDelayRunning();
+    }
 }

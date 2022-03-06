@@ -2,9 +2,7 @@ package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.entities.entity.bukkit.ExCreeper;
-import de.timesnake.basic.entities.pathfinder.goals.*;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalHurtByTarget;
-import de.timesnake.basic.entities.pathfinder.target.ExPathfinderGoalNearestAttackableTarget;
+import de.timesnake.basic.entities.pathfinder.*;
 import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
@@ -23,7 +21,7 @@ public class Creeper extends MobDefMob<ExCreeper> {
 
         this.entity = new ExCreeper(world, false);
 
-        ExPathfinderGoalCustomSwell swell = new ExPathfinderGoalCustomSwell(4, 7);
+        ExPathfinderGoalLocationSwell swell = new ExPathfinderGoalLocationSwell(4, 7);
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalFloat());
         this.entity.addPathfinderGoal(2, swell);
@@ -36,8 +34,8 @@ public class Creeper extends MobDefMob<ExCreeper> {
             this.entity.addPathfinderGoal(2, getCorePathfinder(HeightMapManager.MapType.WALL_FINDER, 1.2, swell, 5));
         }
 
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalCustomSwell(4, 7));
-        this.entity.addPathfinderGoal(4, new ExPathfinderGoalMeleeAttack(1.0D));
+        this.entity.addPathfinderGoal(3, new ExPathfinderGoalSwell(3, 5));
+        this.entity.addPathfinderGoal(4, new ExPathfinderGoalMeleeAttack(1.1D));
         this.entity.addPathfinderGoal(6, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
         this.entity.addPathfinderGoal(6, new ExPathfinderGoalRandomLookaround());
 
