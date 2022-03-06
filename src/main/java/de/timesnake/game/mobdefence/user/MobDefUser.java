@@ -72,7 +72,7 @@ public class MobDefUser extends GameUser {
             Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0), GameMobDefence.getPlugin());
             this.setPvpMode(true, 6);
         } else if (this.kit.equals(MobDefKit.KNIGHT)) {
-            this.setPvpMode(true, 6);
+            this.setPvpMode(true);
         } else {
             this.setPvpMode(false);
         }
