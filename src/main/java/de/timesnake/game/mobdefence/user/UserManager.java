@@ -16,7 +16,7 @@ import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.*;
 import de.timesnake.game.mobdefence.special.trap.TrapManager;
-import de.timesnake.game.mobdefence.special.weapon.*;
+import de.timesnake.game.mobdefence.special.weapon.Speer;
 import de.timesnake.library.basic.util.Status;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
 import org.bukkit.Location;
@@ -27,6 +27,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -34,7 +35,6 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,14 +50,13 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
     private static final double BLOCK_VILLAGER_DISTANCE = 3;
 
-    private final Collection<SpecialWeapon> specialWeapons = new ArrayList<>();
     private final Collection<ItemGenerator> itemGenerators = new ArrayList<>();
 
     private final CoreRegeneration coreRegeneration;
     private final ResistanceAura resistanceAura;
 
     private final PotionGenerator potionGenerator;
-    private final Iceball iceballGenerator;
+
 
     private final ReviveManager reviveManager;
 
@@ -68,30 +67,8 @@ public class UserManager implements Listener, UserInventoryInteractListener {
     private final TrapManager trapManager;
 
     public UserManager() {
-        this.specialWeapons.add(new BoomerangAxe());
-        this.specialWeapons.add(new FireStaff());
-        this.specialWeapons.add(new SplashBow());
-        this.specialWeapons.add(new Wand());
-        this.specialWeapons.add(new IronGolem());
-        this.specialWeapons.add(new FireHoe());
-        this.specialWeapons.add(new SpeedBow());
-        this.specialWeapons.add(new MultiCrossBow());
-        this.specialWeapons.add(new WaterBottle());
-        this.specialWeapons.add(new Sword());
-        this.specialWeapons.add(new Snowman());
-        this.specialWeapons.add(new PoisonArrow());
-        this.specialWeapons.add(new SheepSpawner());
-        this.specialWeapons.add(new DogSpawner());
-        this.specialWeapons.add(new WeaknessShears());
-        this.specialWeapons.add(new LumberAxe());
-        this.specialWeapons.add(new SwingSword());
-        this.specialWeapons.add(new ShockWaveShovel());
 
-        this.iceballGenerator = new Iceball();
-
-        this.specialWeapons.add(this.iceballGenerator);
-
-        this.itemGenerators.add(new ItemGenerator(MobDefKit.ARCHER, 1, new ItemStack(Material.ARROW, 3), 16));
+        this.itemGenerators.add(new ItemGenerator(MobDefKit.ARCHER, 1, Speer.SPEER.getItem().cloneWithId().asQuantity(3), 8));
 
         this.coreRegeneration = new CoreRegeneration();
         this.resistanceAura = new ResistanceAura();
@@ -340,6 +317,14 @@ public class UserManager implements Listener, UserInventoryInteractListener {
     public void onBlockForm(EntityBlockFormEvent e) {
         if (e.getBlock().getType().equals(Material.SNOW)) {
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent e) {
+        if (e.getBlockPlaced().getType().equals(Material.SNOW)) {
+            e.setCancelled(true);
+            e.setBuild(false);
         }
     }
 

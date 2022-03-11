@@ -5,6 +5,7 @@ import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServer;
 import de.timesnake.game.mobdefence.kit.BaseShops;
 import de.timesnake.game.mobdefence.map.MobDefMap;
 import de.timesnake.game.mobdefence.mob.MobManager;
+import de.timesnake.game.mobdefence.special.weapon.WeaponManager;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
 import org.bukkit.boss.BossBar;
@@ -70,6 +71,10 @@ public class MobDefServer extends LoungeBridgeServer {
 
     public static UserManager getMobDefUserManager() {
         return server.getMobDefUserManager();
+    }
+
+    public static WeaponManager getWeaponManager() {
+        return server.getWeaponManager();
     }
 
     public static BaseShops getBaseShops() {

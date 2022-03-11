@@ -31,7 +31,7 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
 
     public static final List<EntityClass<? extends EntityInsentient>> FIRST_DEFENDER_CLASSES = List.of(EntityClass.EntitySheep);
 
-    public static final List<EntityClass<? extends EntityInsentient>> SECOND_DEFENDER_CLASSES = List.of(EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf);
+    public static final List<EntityClass<? extends EntityInsentient>> SECOND_DEFENDER_CLASSES = List.of(EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf, EntityClass.EntitySnowman);
 
     public enum Type {
         MELEE, BREAKER, RANGED, OTHER, BOSS
@@ -50,68 +50,43 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
         Random random = new Random();
         int r;
         MobDefMob<?> mob = null;
+
         switch (type) {
-            case MELEE:
+            case MELEE -> {
                 r = random.nextInt(10);
-                switch (r) {
-                    case 3:
-                    case 4:
-                        mob = new Vindicator(spawn, wave);
-                        break;
-                    case 5:
-                        mob = new FollowerZombie(spawn, wave);
-                        break;
-                    case 6:
-                        mob = new CaveSpider(spawn, wave);
-                        break;
-                    default:
-                        mob = new Zombie(spawn, wave);
-                }
-                break;
-            case RANGED:
+                mob = switch (r) {
+                    case 3, 4 -> new Vindicator(spawn, wave);
+                    case 5 -> new FollowerZombie(spawn, wave);
+                    case 6 -> new CaveSpider(spawn, wave);
+                    default -> new Zombie(spawn, wave);
+                };
+            }
+            case RANGED -> {
                 r = random.nextInt(10);
-                switch (r) {
-                    case 0:
-                    case 1:
-                    case 2:
-                        mob = new Pillager(spawn, wave);
-                        break;
-                    case 9:
-                        mob = new FollowerSkeleton(spawn, wave);
-                        break;
-                    default:
-                        mob = new Skeleton(spawn, wave);
-                }
-                break;
-            case BREAKER:
+                mob = switch (r) {
+                    case 0, 1, 2 -> new Pillager(spawn, wave);
+                    case 9 -> new FollowerSkeleton(spawn, wave);
+                    default -> new Skeleton(spawn, wave);
+                };
+            }
+            case BREAKER -> {
                 r = random.nextInt(3);
-                switch (r) {
-                    case 0:
-                    case 1:
-                        mob = new ZombieBreaker(spawn, wave);
-                        break;
-                    case 2:
-                        mob = new Creeper(spawn, wave);
-                        break;
-                }
-                break;
-            case OTHER:
+                mob = switch (r) {
+                    case 0, 1 -> new ZombieBreaker(spawn, wave);
+                    case 2 -> new Creeper(spawn, wave);
+                    default -> mob;
+                };
+            }
+            case OTHER -> {
                 r = random.nextInt(4);
-                switch (r) {
-                    case 0:
-                        mob = new BabyZombie(spawn, wave);
-                        break;
-                    case 1:
-                        mob = new Witch(spawn, wave);
-                        break;
-                    case 2:
-                        mob = new Evoker(spawn, wave);
-                        break;
-                    case 3:
-                        mob = new CaveSpider(spawn, wave);
-                        break;
-                }
-                break;
+                mob = switch (r) {
+                    case 0 -> new BabyZombie(spawn, wave);
+                    case 1 -> new Witch(spawn, wave);
+                    case 2 -> new Evoker(spawn, wave);
+                    case 3 -> new CaveSpider(spawn, wave);
+                    default -> mob;
+                };
+            }
         }
 
         if (mob != null && mob.getWave() <= wave) {
@@ -164,14 +139,14 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
 
     public void spawn() {
         this.entity.setPersistent(true);
-        this.entity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY(), this.spawn.getZ(), this.spawn.getYaw(), this.spawn.getPitch());
+        this.entity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(), this.spawn.getYaw(), this.spawn.getPitch());
         EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), this.entity);
 
         this.entity.getExtension().setMaxNoDamageTicks(1);
 
         for (EntityExtension<?> subEntity : this.subEntities) {
             subEntity.getExtension().setPersistent(true);
-            subEntity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY(), this.spawn.getZ(), this.spawn.getYaw(), this.spawn.getPitch());
+            subEntity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(), this.spawn.getYaw(), this.spawn.getPitch());
             EntityManager.spawnExEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), subEntity);
         }
 

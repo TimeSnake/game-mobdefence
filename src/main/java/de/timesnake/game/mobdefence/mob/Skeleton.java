@@ -57,50 +57,43 @@ public class Skeleton extends ArmorMob<ExSkeleton> {
 
         if (this.currentWave < 3) {
             switch (this.random.nextInt(8)) {
-                case 0:
-                case 1:
+                case 0, 1 -> {
                     entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW, List.of(Enchantment.ARROW_DAMAGE), List.of(2)));
                     entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET));
                     this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 30.0F));
-                    break;
-                default:
+                }
+                default -> {
                     entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.BOW));
                     this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.1, 15.0F));
-
+                }
             }
         } else if (this.currentWave < 11) {
             switch (this.random.nextInt(this.currentWave < 7 ? 15 : 10)) {
-                case 0:
-                case 1:
-                case 2:
-                case 5:
+                case 0, 1, 2, 5 -> {
                     entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW, List.of(Enchantment.ARROW_DAMAGE), List.of(4)));
                     entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET));
-                    this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 30.0F));
-                    break;
-                case 3:
+                    this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
+                }
+                case 3 -> {
                     entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW, List.of(Enchantment.ARROW_FIRE), List.of(1)));
-                    this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.1, 15.0F));
-                    break;
-                default:
+                    this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.1, 10, 15.0F));
+                }
+                default -> {
                     entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW, List.of(Enchantment.ARROW_DAMAGE), List.of(2)));
-                    this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.1, 15.0F));
-                    break;
-
+                    this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.1, 10, 15.0F));
+                }
             }
         } else {
             switch (this.random.nextInt(8)) {
-                case 0:
-                case 1:
+                case 0, 1 -> {
                     entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW, List.of(Enchantment.ARROW_FIRE), List.of(1)));
-                    this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.1, 15.0F));
-                    break;
-                default:
+                    this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.1, 10, 15.0F));
+                }
+                default -> {
                     entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW, List.of(Enchantment.ARROW_DAMAGE), List.of(this.currentWave / 4)));
                     entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET));
-                    this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 30.0F));
-                    break;
-
+                    this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
+                }
             }
         }
 

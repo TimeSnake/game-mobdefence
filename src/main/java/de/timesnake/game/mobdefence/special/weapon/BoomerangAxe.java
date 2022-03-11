@@ -2,12 +2,11 @@ package de.timesnake.game.mobdefence.special.weapon;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
-import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractListener;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
+import de.timesnake.game.mobdefence.user.MobDefUser;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -17,11 +16,13 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class BoomerangAxe extends SpecialWeapon implements UserInventoryInteractListener {
+public class BoomerangAxe extends CooldownWeapon implements UserInventoryInteractListener {
 
     public static final double SPEED = 1;
     public static final double MAX_DISTANCE = 8;
@@ -37,29 +38,13 @@ public class BoomerangAxe extends SpecialWeapon implements UserInventoryInteract
 
     private final Map<ArmorStand, BukkitTask> tasks = new HashMap<>();
 
-    private final Set<User> cooldownUsers = new HashSet<>();
-
     public BoomerangAxe() {
         super(BOOMERANG_AXE.getItem());
         Server.getInventoryEventManager().addInteractListener(this, BOOMERANG_AXE.getItem());
     }
 
     @Override
-    public void onUserInventoryInteract(UserInventoryInteractEvent event) {
-        event.setCancelled(true);
-
-        User user = event.getUser();
-
-        if (this.cooldownUsers.contains(user)) {
-            return;
-        }
-
-        this.cooldownUsers.add(user);
-
-        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user), 20, GameMobDefence.getPlugin());
-
-        ExItemStack item = event.getClickedItem();
-
+    public void onInteract(ExItemStack item, MobDefUser user) {
         double speed = Double.parseDouble(SPEED_LEVELS.getValueFromLore(item.getLore()));
         double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(item.getLore()));
 
@@ -67,7 +52,7 @@ public class BoomerangAxe extends SpecialWeapon implements UserInventoryInteract
 
         ArmorStand stand = user.getExWorld().spawn(startLoc, ArmorStand.class);
 
-        final Vector startVec = user.getLocation().getDirection().normalize().multiply(speed);
+        final org.bukkit.util.Vector startVec = user.getLocation().getDirection().normalize().multiply(speed);
 
         Vector vec = startVec.clone();
 
@@ -117,6 +102,11 @@ public class BoomerangAxe extends SpecialWeapon implements UserInventoryInteract
             stand.setRotation(rotation.get(), 0);
 
         }, 0, 1, GameMobDefence.getPlugin()));
+    }
+
+    @Override
+    public int getCooldown(ExItemStack item) {
+        return 20;
     }
 
     private void dropBoomerang(ArmorStand stand) {

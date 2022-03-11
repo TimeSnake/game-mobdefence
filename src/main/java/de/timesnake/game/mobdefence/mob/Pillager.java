@@ -30,7 +30,7 @@ public class Pillager extends MobDefMob<ExPillager> {
         this.entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.CROSSBOW));
 
         this.entity.addPathfinderGoal(0, new ExPathfinderGoalFloat());
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalCrossbowAttack(1.0, 10.0F));
+        this.entity.addPathfinderGoal(3, new ExPathfinderGoalCrossbowAttack(1.0, 15.0F));
         this.entity.addPathfinderGoal(4, getCorePathfinder(this.getMapType(), 0.7, breakBlock, BREAK_LEVEL));
         this.entity.addPathfinderGoal(4, breakBlock);
         this.entity.addPathfinderGoal(8, new ExPathfinderGoalRandomStroll(0.6));

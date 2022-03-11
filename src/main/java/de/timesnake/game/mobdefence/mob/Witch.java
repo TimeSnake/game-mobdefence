@@ -57,5 +57,7 @@ public class Witch extends MobDefMob<ExWitch> {
             this.entity.setMaxHealth(60);
             this.entity.setHealth(60);
         }
+
+
     }
 }

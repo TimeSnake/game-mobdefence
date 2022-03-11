@@ -87,15 +87,15 @@ public class MobDefKit extends Kit {
     private static final ItemShop KNIGHT_ARMOR = new ItemShop("§6Armor", 14, ARMOR, List.of(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS, MELEE_ARMOR_BOOTS), List.of(IRON_SKIN));
 
 
-    public static final MobDefKit KNIGHT = new MobDefKit(1, "Knight", Material.IRON_SWORD, List.of("§fWeapons: §7Sword, Axe", "§fArmor: §7Strong", "§7Resistance aura"), List.of(Sword.WOODEN_SWORD, new ExItemStack(Material.SHIELD, true).setSlot(EquipmentSlot.OFF_HAND), MELEE_BASE_ARMOR_HELMET.setSlot(EquipmentSlot.HEAD), MELEE_BASE_ARMOR_CHESTPLATE.setSlot(EquipmentSlot.CHEST), MELEE_BASE_ARMOR_LEGGINGS.setSlot(EquipmentSlot.LEGS), MELEE_BASE_ARMOR_BOOTS.setSlot(EquipmentSlot.FEET), ItemTrade.BEEF, MobTracker.TRACKER), List.of(KNIGHT_LEVEL_WEAPONS, KNIGHT_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP, BaseShops.TEAM_SHOP));
+    public static final MobDefKit KNIGHT = new MobDefKit(1, "Knight", Material.IRON_SWORD, List.of("§fWeapons: §7Sword, Axe", "§fArmor: §7Strong", "", "§7Resistance aura"), List.of(Sword.WOODEN_SWORD, new ExItemStack(Material.SHIELD, true).setSlot(EquipmentSlot.OFF_HAND), MELEE_BASE_ARMOR_HELMET.setSlot(EquipmentSlot.HEAD), MELEE_BASE_ARMOR_CHESTPLATE.setSlot(EquipmentSlot.CHEST), MELEE_BASE_ARMOR_LEGGINGS.setSlot(EquipmentSlot.LEGS), MELEE_BASE_ARMOR_BOOTS.setSlot(EquipmentSlot.FEET), ItemTrade.BEEF, MobTracker.TRACKER), List.of(KNIGHT_LEVEL_WEAPONS, KNIGHT_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP, BaseShops.TEAM_SHOP));
 
     // archer
 
-    public static final ItemShop ARCHER_WEAPONS = new ItemShop("Weapons", 12, WEAPONS, List.of(SpeedBow.BOW, SplashBow.BOW, MultiCrossBow.CROSSBOW), List.of(PoisonArrow.TRADE));
+    public static final ItemShop ARCHER_WEAPONS = new ItemShop("Weapons", 12, WEAPONS, List.of(Speer.SPEER, SplashBow.BOW, RocketCrossBow.CROSSBOW), List.of(PoisonArrow.TRADE));
 
     public static final ItemShop ARCHER_ARMOR = new ItemShop("Armor", 14, ARMOR, List.of(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS, RANGED_ARMOR_BOOTS), List.of());
 
-    public static final MobDefKit ARCHER = new MobDefKit(2, "Archer", Material.BOW, List.of("§fWeapons: §7Bows, Crossbow", "§7Armor: §7Weak"), List.of(SpeedBow.BOW.getItem(), ItemTrade.BEEF, MobTracker.TRACKER), List.of(ARCHER_WEAPONS, ARCHER_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP, BaseShops.TEAM_SHOP));
+    public static final MobDefKit ARCHER = new MobDefKit(2, "Archer", Material.BOW, List.of("§fWeapons: §7Speers, Bows, Crossbow", "§7Armor: §7Weak"), List.of(Speer.SPEER.getItem(), ItemTrade.BEEF, MobTracker.TRACKER), List.of(ARCHER_WEAPONS, ARCHER_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP, BaseShops.TEAM_SHOP));
 
     // alchemist
 

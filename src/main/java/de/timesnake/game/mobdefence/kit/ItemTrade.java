@@ -56,7 +56,7 @@ public class ItemTrade extends ShopTrade {
 
     public static final ItemTrade INSTANT_HEAL = new IncreasingItemTrade(38, new ShopPrice(6, ShopCurrency.BRONZE), 1, 32, List.of(new ExItemStack(Material.SPLASH_POTION, PotionType.INSTANT_HEAL, false, true).setDisplayName("§6Instant Heal")), new ExItemStack(Material.SPLASH_POTION, PotionType.INSTANT_HEAL, false, true).setDisplayName("§6Instant Heal"));
 
-    public static final ItemTrade IRON_GOLEM = new ItemTrade(false, new ShopPrice(12, ShopCurrency.SILVER), List.of(IronGolem.ITEM), IronGolem.ITEM);
+    public static final ItemTrade IRON_GOLEM = new IncreasingItemTrade(37, new ShopPrice(12, ShopCurrency.SILVER), 2, 4, List.of(IronGolem.ITEM), IronGolem.ITEM);
     public static final ShopTrade REGEN = new ShopTrade(true, new ShopPrice(4, ShopCurrency.EMERALD), CoreRegeneration.ITEM) {
         @Override
         public ShopTrade clone() {

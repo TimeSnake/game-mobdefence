@@ -3,28 +3,22 @@ package de.timesnake.game.mobdefence.special.weapon;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractEvent;
-import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractListener;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.game.mobdefence.special.weapon.bullet.BulletManager;
+import de.timesnake.game.mobdefence.special.weapon.bullet.PiercingBullet;
+import de.timesnake.game.mobdefence.special.weapon.bullet.TargetFinder;
+import de.timesnake.game.mobdefence.user.MobDefUser;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.ShulkerBullet;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class Wand extends SpecialWeapon implements UserInventoryInteractListener, Listener {
+public class Wand extends CooldownWeapon {
 
-    private static final String BULLET_NAME = "wand_bullet";
-    private static final String PIERCING_NAME = "piercing";
     private static final double FIRE_RATE = 2; // per second
     private static final double DAMAGE = 1.5;
     private static final double SPEED = 2;
@@ -46,35 +40,17 @@ public class Wand extends SpecialWeapon implements UserInventoryInteractListener
 
     public static final LevelItem WAND = new LevelItem("Wand", new ExItemStack(Material.STICK, "§3Wand").enchant().setLore("", SPEED_LEVELS.getBaseLevelLore(SPEED), DAMAGE_LEVELS.getBaseLevelLore(DAMAGE), FIRE_RATE_LEVELS.getBaseLevelLore(FIRE_RATE)), new ExItemStack(Material.STICK).enchant(), List.of(SPEED_LEVELS, DAMAGE_LEVELS, FIRE_RATE_LEVELS, PIERCING_LEVELS, MULTISHOT_LEVELS));
 
-    private final Set<User> cooldownUsers = new HashSet<>();
-
     public Wand() {
         super(WAND.getItem());
-        Server.registerListener(this, GameMobDefence.getPlugin());
-        Server.getInventoryEventManager().addInteractListener(this, WAND.getItem());
     }
 
 
     @Override
-    public void onUserInventoryInteract(UserInventoryInteractEvent event) {
-        User user = event.getUser();
-
-        if (this.cooldownUsers.contains(user)) {
-            event.setCancelled(true);
-            return;
-        }
-
-        ExItemStack wand = user.getExItem(WAND.getItem().getId());
-
-        if (wand == null) {
-            return;
-        }
-
+    public void onInteract(ExItemStack wand, MobDefUser user) {
         List<String> lore = wand.getLore();
 
         double speed = Double.parseDouble(SPEED_LEVELS.getValueFromLore(lore));
         double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(lore));
-        double fireRate = Double.parseDouble(FIRE_RATE_LEVELS.getValueFromLore(lore));
 
         int piercing = 0;
         String piercingString = PIERCING_LEVELS.getValueFromLore(lore);
@@ -94,59 +70,32 @@ public class Wand extends SpecialWeapon implements UserInventoryInteractListener
             }
         }
 
-        this.cooldownUsers.add(user);
+        BulletManager bulletManager = MobDefServer.getWeaponManager().getBulletManager();
 
         for (int shots = 0; shots < multiShot; shots++) {
             int finalPiercing = piercing;
-            Server.runTaskLaterSynchrony(() -> {
-                ShulkerBullet bullet = user.getExWorld().spawn(user.getPlayer().getEyeLocation().add(0, -0.5, 0), ShulkerBullet.class);
-                bullet.setShooter(user.getPlayer());
-                bullet.setVelocity(user.getLocation().getDirection().multiply(speed));
-                bullet.setCustomName(BULLET_NAME + damage + PIERCING_NAME + finalPiercing);
-                bullet.setCustomNameVisible(false);
-                bullet.setPersistent(true);
-            }, shots * 2, GameMobDefence.getPlugin());
+            Server.runTaskLaterSynchrony(() -> bulletManager.shootBullet(new WandBullet(user, speed, damage, finalPiercing), user.getLocation().getDirection().multiply(speed)), shots * 2, GameMobDefence.getPlugin());
 
         }
-
-        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user), (int) (1 / fireRate * 20), GameMobDefence.getPlugin());
     }
 
-    @EventHandler
-    public void onBulletHit(ProjectileHitEvent e) {
-        if (!(e.getEntity() instanceof ShulkerBullet)) {
-            return;
-        }
-
-        if (e.getHitEntity() == null || !(e.getHitEntity() instanceof LivingEntity)) {
-            return;
-        }
-
-        ShulkerBullet bullet = ((ShulkerBullet) e.getEntity());
-
-        if (bullet.getCustomName() == null || !bullet.getCustomName().contains(BULLET_NAME)) {
-            return;
-        }
-
-        LivingEntity entity = (LivingEntity) e.getHitEntity();
-
-        e.setCancelled(true);
-
-        if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
-            return;
-        }
-
-        String[] nameParts = bullet.getCustomName().replaceAll(BULLET_NAME, "").split(PIERCING_NAME);
-
-        double damage = Double.parseDouble(nameParts[0]) * 2;
-        int piercing = Integer.parseInt(nameParts[1]);
-
-        entity.damage(damage, bullet);
-        entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 1));
-
-        if (piercing == 0) {
-            bullet.remove();
-        }
-
+    @Override
+    public int getCooldown(ExItemStack item) {
+        return (int) (1 / Double.parseDouble(FIRE_RATE_LEVELS.getValueFromLore(item.getLore())) * 20);
     }
+
+    private static class WandBullet extends PiercingBullet {
+
+        public WandBullet(User user, double speed, double damage, int piercing) {
+            super(user, user.getEyeLocation().add(0, -0.5, 0), TargetFinder.STRAIGHT, speed, damage, piercing);
+        }
+
+        @Override
+        public Entity spawn(Location location) {
+            ShulkerBullet bullet = location.getWorld().spawn(location, ShulkerBullet.class);
+            bullet.setShooter(this.shooter.getPlayer());
+            return bullet;
+        }
+    }
+
 }

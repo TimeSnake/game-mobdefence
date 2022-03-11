@@ -52,9 +52,11 @@ public class MobManager implements Listener {
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
-        if (!(e.getEntity() instanceof Creeper)) {
+        if (!(e.getEntity() instanceof Creeper creeper)) {
             return;
         }
+
+        Beeper.handleExplosion(creeper, e.getLocation());
 
         this.checkRespawn();
     }
