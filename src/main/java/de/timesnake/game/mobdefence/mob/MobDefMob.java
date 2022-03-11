@@ -11,6 +11,7 @@ import de.timesnake.game.mobdefence.mob.map.ExHeightPathfinder;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import net.minecraft.world.entity.EntityInsentient;
+import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 
@@ -23,15 +24,18 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
 
     public static final int BREAK_LEVEL = 16;
 
-    public static final List<Class<?>> ATTACKER_ENTITY_CLASSES = List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class, org.bukkit.entity.Blaze.class, org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class, org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class, org.bukkit.entity.Vindicator.class, Vex.class, Silverfish.class, Endermite.class, org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class, Stray.class);
+    public static final List<Class<? extends Monster>> ATTACKER_ENTITY_CLASSES = List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class, org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class, org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class, org.bukkit.entity.Vindicator.class, Vex.class, Silverfish.class, Endermite.class, org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class, Stray.class);
+    public static final List<EntityClass<? extends EntityLiving>> ATTACKER_ENTTIY_ENTITY_CLASSES = List.of(EntityClass.EntityZombie, EntityClass.EntitySkeleton, EntityClass.EntityIllagerIllusioner, EntityClass.EntityWitch, EntityClass.EntityPillager, EntityClass.EntityEvoker, EntityClass.EntityVindicator, EntityClass.EntityVex, EntityClass.EntitySilverfish, EntityClass.EntityEndermite, EntityClass.EntityCreeper, EntityClass.EntityCaveSpider, EntityClass.EntitySkeletonStray);
 
-    public static final List<Class<?>> ATTACKER_ENTITY_COUNT_CLASSES = List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class, org.bukkit.entity.Blaze.class, org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class, org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class, org.bukkit.entity.Vindicator.class, org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class, Stray.class);
+    public static final List<Class<? extends Monster>> ATTACKER_ENTITY_COUNT_CLASSES = List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class, org.bukkit.entity.Blaze.class, org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class, org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class, org.bukkit.entity.Vindicator.class, org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class, Stray.class);
 
     public static final List<EntityType> ATTACKER_ENTITY_TYPES = List.of(EntityType.ZOMBIE, EntityType.SKELETON, EntityType.BLAZE, EntityType.MAGMA_CUBE, EntityType.ILLUSIONER, EntityType.WITCH, EntityType.PILLAGER, EntityType.EVOKER, EntityType.VINDICATOR, EntityType.VEX, EntityType.SILVERFISH, EntityType.ENDERMITE, EntityType.CREEPER, EntityType.CAVE_SPIDER, EntityType.STRAY);
 
     public static final List<EntityClass<? extends EntityInsentient>> FIRST_DEFENDER_CLASSES = List.of(EntityClass.EntitySheep);
 
-    public static final List<EntityClass<? extends EntityInsentient>> SECOND_DEFENDER_CLASSES = List.of(EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf, EntityClass.EntitySnowman);
+    public static final List<EntityClass<? extends EntityInsentient>> SECOND_DEFENDER_CLASSES = List.of(EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf, EntityClass.EntitySnowman, EntityClass.EntityBlaze);
+
+    public static final List<EntityClass<? extends EntityLiving>> DEFENDER_CLASSES = List.of(EntityClass.EntitySheep, EntityClass.EntityHuman, EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf, EntityClass.EntitySnowman, EntityClass.EntityBlaze);
 
     public enum Type {
         MELEE, BREAKER, RANGED, OTHER, BOSS
@@ -62,10 +66,9 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
                 };
             }
             case RANGED -> {
-                r = random.nextInt(10);
+                r = random.nextInt(9);
                 mob = switch (r) {
                     case 0, 1, 2 -> new Pillager(spawn, wave);
-                    case 9 -> new FollowerSkeleton(spawn, wave);
                     default -> new Skeleton(spawn, wave);
                 };
             }

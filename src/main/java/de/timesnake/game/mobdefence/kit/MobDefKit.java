@@ -101,7 +101,7 @@ public class MobDefKit extends Kit {
 
     private static final ItemTrade ALCHEMIST_SPEED = new ItemTrade(false, new ShopPrice(4, ShopCurrency.BRONZE), List.of(new ExItemStack(Material.POTION, PotionType.SPEED, false, true)), new ExItemStack(Material.POTION, 1, "Speed", PotionType.SPEED, false, true));
 
-    private static final ItemShop ALCHEMIST_WEAPONS = new ItemShop("§6Weapons", 12, new ExItemStack(Material.IRON_SWORD), List.of(FireHoe.FIRE_HOE, FireStaff.FIRE_STAFF, Iceball.ITEM), List.of(ALCHEMIST_SPEED, Snowman.SNOWMAN));
+    private static final ItemShop ALCHEMIST_WEAPONS = new ItemShop("§6Weapons", 12, new ExItemStack(Material.IRON_SWORD), List.of(FireHoe.FIRE_HOE, FireStaff.FIRE_STAFF, Iceball.ITEM), List.of(ALCHEMIST_SPEED, Snowman.SNOWMAN, Blaze.BLAZE));
 
     public static final ItemShop ALCHEMIST_ARMOR = new ItemShop("Armor", 14, ARMOR, List.of(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS, RANGED_ARMOR_BOOTS), List.of());
 
