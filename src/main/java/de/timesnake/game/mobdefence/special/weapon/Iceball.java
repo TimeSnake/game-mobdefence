@@ -86,11 +86,9 @@ public class Iceball extends SpecialWeapon implements Listener {
 
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent e) {
-        if (!(e.getEntity() instanceof Snowball)) {
+        if (!(e.getEntity() instanceof Snowball snowball)) {
             return;
         }
-
-        Snowball snowball = ((Snowball) e.getEntity());
 
         if (snowball.getCustomName() == null || !snowball.getCustomName().contains(NAME)) {
             return;
@@ -101,9 +99,7 @@ public class Iceball extends SpecialWeapon implements Listener {
         double damage = Double.parseDouble(nameParts[0]) * 2;
         int piercing = Integer.parseInt(nameParts[1]);
 
-        if (e.getHitEntity() != null && e.getHitEntity() instanceof LivingEntity) {
-
-            LivingEntity entity = (LivingEntity) e.getHitEntity();
+        if (e.getHitEntity() != null && e.getHitEntity() instanceof LivingEntity entity) {
 
             e.setCancelled(true);
 

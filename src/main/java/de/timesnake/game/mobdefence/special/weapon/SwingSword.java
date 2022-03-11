@@ -2,11 +2,11 @@ package de.timesnake.game.mobdefence.special.weapon;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
-import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractListener;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
+import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.user.MobDefUser;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -14,11 +14,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SwingSword extends SpecialWeapon implements UserInventoryInteractListener {
+public class SwingSword extends CooldownWeapon implements UserInventoryInteractListener {
 
     private static final double DAMAGE = 3;
     private static final double RADIUS = 1.5;
@@ -32,8 +35,6 @@ public class SwingSword extends SpecialWeapon implements UserInventoryInteractLi
 
     public static final LevelItem SWORD = new LevelItem("Swing Sword", true, new ShopPrice(8, ShopCurrency.GOLD), new ExItemStack(Material.GOLDEN_SWORD, true).setDisplayName("§6Swing Sword").enchant().setLore("", DAMAGE_LEVELS.getBaseLevelLore(DAMAGE), RADIUS_LEVELS.getBaseLevelLore(RADIUS), COOLDOWN_LEVELS.getBaseLevelLore(COOLDOWN)), new ExItemStack(Material.GOLDEN_SWORD, true).enchant(), List.of(DAMAGE_LEVELS, RADIUS_LEVELS, COOLDOWN_LEVELS));
 
-
-    private final Set<User> cooldownUsers = new HashSet<>();
     private final Map<ArmorStand, BukkitTask> tasks = new HashMap<>();
 
     public SwingSword() {
@@ -42,30 +43,20 @@ public class SwingSword extends SpecialWeapon implements UserInventoryInteractLi
     }
 
     @Override
-    public void onUserInventoryInteract(UserInventoryInteractEvent event) {
-        User user = event.getUser();
-
-        event.setCancelled(true);
-
-        if (this.cooldownUsers.contains(user)) {
-            return;
-        }
-
-        this.cooldownUsers.add(user);
-
-        ExItemStack item = event.getClickedItem();
-
+    public void onInteract(ExItemStack item, MobDefUser user) {
         double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(item.getLore()));
         double radius = Double.parseDouble(RADIUS_LEVELS.getValueFromLore(item.getLore()));
-        int cooldown = Integer.parseInt(COOLDOWN_LEVELS.getValueFromLore(item.getLore()));
 
         Location loc = user.getLocation().clone().add(0, -0.35, 0);
 
-        for (LivingEntity entity : loc.getNearbyLivingEntities(radius, 1.5)) {
-            entity.damage(damage * 2, user.getPlayer());
-        }
+        for (LivingEntity entity : loc.getNearbyLivingEntities(radius, 1.5, e -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType()))) {
 
-        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user), cooldown * 20, GameMobDefence.getPlugin());
+            Vector vec = entity.getLocation().toVector().subtract(loc.toVector());
+            double knockback = 4 / vec.length();
+
+            entity.damage(damage * 2, user.getPlayer());
+            entity.setVelocity(vec.setY(0).normalize().setY(1).normalize().multiply(knockback));
+        }
 
         ArmorStand stand = user.getExWorld().spawn(loc, ArmorStand.class);
 
@@ -91,5 +82,10 @@ public class SwingSword extends SpecialWeapon implements UserInventoryInteractLi
             stand.setRotation(rotation.get(), 0);
 
         }, 0, 1, GameMobDefence.getPlugin()));
+    }
+
+    @Override
+    public int getCooldown(ExItemStack item) {
+        return Integer.parseInt(COOLDOWN_LEVELS.getValueFromLore(item.getLore()));
     }
 }

@@ -35,8 +35,8 @@ public class BossZombie extends MobDefMob<ExZombie> {
 
         ExPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.8, false, BlockCheck.BREAKABLE_MATERIALS);
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalZombieAttack(1));
-        this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1.3, breakBlock, BREAK_LEVEL));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalZombieAttack(1.1));
+        this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1, breakBlock, BREAK_LEVEL));
 
         this.entity.addPathfinderGoal(2, breakBlock);
         this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.8));
@@ -54,7 +54,7 @@ public class BossZombie extends MobDefMob<ExZombie> {
             this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass, true, true, 16D));
         }
 
-        this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityZombie, 6, 2 * 20) {
+        this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityZombie, 4, 5 * 20) {
             @Override
             public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<? extends ExEntityInsentient> entity) {
                 List<ExZombie> zombies = new ArrayList<>();

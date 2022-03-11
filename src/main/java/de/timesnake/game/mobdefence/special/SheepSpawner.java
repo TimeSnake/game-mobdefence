@@ -66,6 +66,9 @@ public class SheepSpawner extends EntitySpawner {
         entity.setMaxHealth(20);
         entity.setHealth(20);
 
+        entity.setGlowing(true);
+        entity.setInvisible(true);
+
         return entity;
     }
 }

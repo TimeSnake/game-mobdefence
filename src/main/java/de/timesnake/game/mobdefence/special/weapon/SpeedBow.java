@@ -23,13 +23,13 @@ public class SpeedBow extends SpecialWeapon implements UserInventoryInteractList
 
     private static final ItemLevelType<?> FLAME = new ItemLevelType<>("Flame", new ExItemStack(Material.BLAZE_POWDER), 0, 1, ItemLevel.getEnchantmentLevels(1, List.of(new ShopPrice(8, ShopCurrency.GOLD)), "Flame Arrows", Enchantment.ARROW_FIRE, List.of(1)));
 
-    public static final LevelItem BOW = new LevelItem("Bow", new ExItemStack(Material.BOW, true), new ExItemStack(Material.BOW, true), List.of(POWER, FLAME));
+    public static final LevelItem BOW = new LevelItem("Bow", new ExItemStack(Material.BOW, true).addExEnchantment(Enchantment.QUICK_CHARGE, 128), new ExItemStack(Material.BOW, true), List.of(POWER, FLAME));
 
     private final Set<User> cooldownUser = new HashSet<>();
 
     public SpeedBow() {
         super(BOW.getItem());
-        Server.getInventoryEventManager().addInteractListener(this, BOW.getItem());
+        //Server.getInventoryEventManager().addInteractListener(this, BOW.getItem());
     }
 
     @Override

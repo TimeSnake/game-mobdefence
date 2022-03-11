@@ -19,6 +19,7 @@ import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.map.MobDefMap;
 import de.timesnake.game.mobdefence.mob.MobManager;
+import de.timesnake.game.mobdefence.special.weapon.WeaponManager;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
@@ -73,6 +74,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
     private KitShopManager kitShopManager;
 
     private UserManager userManager;
+    private WeaponManager weaponManager;
 
     private BaseShops baseShops;
 
@@ -83,6 +85,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
         this.mobManager = new MobManager();
         this.kitShopManager = new KitShopManager();
         this.userManager = new UserManager();
+        this.weaponManager = new WeaponManager();
         this.baseShops = new BaseShops();
 
         this.coreHealthBar = Server.createBossBar("§c§lHealth", BarColor.RED, BarStyle.SOLID);
@@ -408,6 +411,10 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
 
     public UserManager getMobDefUserManager() {
         return userManager;
+    }
+
+    public WeaponManager getWeaponManager() {
+        return weaponManager;
     }
 
     public boolean isDelayRunning() {
