@@ -58,7 +58,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
         int random = this.random.nextInt(2);
 
         if (random == 0) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntitySilverfish, 6, 3 * 20) {
+            this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntitySilverfish, 3, 5 * 20) {
                 @Override
                 public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<? extends ExEntityInsentient> entity) {
                     World world = MobDefServer.getMap().getWorld().getBukkitWorld();
@@ -94,7 +94,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
 
             this.subEntities = this.getSilverFishs();
         } else if (random == 1) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityEndermite, 6, 3 * 20) {
+            this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityEndermite, 3, 5 * 20) {
                 @Override
                 public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<? extends ExEntityInsentient> entity) {
                     World world = MobDefServer.getMap().getWorld().getBukkitWorld();
