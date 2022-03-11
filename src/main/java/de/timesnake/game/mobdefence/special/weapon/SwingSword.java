@@ -52,7 +52,7 @@ public class SwingSword extends CooldownWeapon implements UserInventoryInteractL
         for (LivingEntity entity : loc.getNearbyLivingEntities(radius, 1.5, e -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType()))) {
 
             Vector vec = entity.getLocation().toVector().subtract(loc.toVector());
-            double knockback = 4 / vec.length();
+            double knockback = 2 / (vec.length() > 1 ? vec.length() : 1D);
 
             entity.damage(damage * 2, user.getPlayer());
             entity.setVelocity(vec.setY(0).normalize().setY(1).normalize().multiply(knockback));
