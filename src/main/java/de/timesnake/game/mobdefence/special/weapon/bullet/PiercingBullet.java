@@ -44,7 +44,6 @@ public abstract class PiercingBullet extends Bullet {
     @Override
     public WeaponTargetType onHit(LivingEntity entity) {
         super.onHit(entity);
-        System.out.println(this.piercing);
         return (this.piercing--) <= 0 ? WeaponTargetType.DESTROY : WeaponTargetType.ENTITY;
     }
 }

@@ -42,9 +42,9 @@ public class ItemTrade extends ShopTrade {
     public static final ExItemStack KELP = new ExItemStack(Material.DRIED_KELP, 8, "§6Dried Kelp").setLore("§7Healthy Fast Food");
     public static final ItemTrade DRIED_KELP = new ItemTrade(20, false, new ShopPrice(1, ShopCurrency.BRONZE), List.of(KELP), KELP, "Healthy Fast Food");
 
-    public static final ItemTrade GOLDEN_APPLE = new ItemTrade(12, false, new ShopPrice(2, ShopCurrency.SILVER), List.of(new ExItemStack(Material.GOLDEN_APPLE, 1)), new ExItemStack(Material.GOLDEN_APPLE, 1, "§6Golden Apple"));
+    public static final ItemTrade GOLDEN_APPLE = new IncreasingItemTrade(12, new ShopPrice(2, ShopCurrency.SILVER), 1, 6, List.of(new ExItemStack(Material.GOLDEN_APPLE, 1)), new ExItemStack(Material.GOLDEN_APPLE, 1, "§6Golden Apple"));
 
-    public static final ItemTrade GOLDEN_CARROT = new ItemTrade(21, false, new ShopPrice(2, ShopCurrency.SILVER), List.of(new ExItemStack(Material.GOLDEN_CARROT, 4)), new ExItemStack(Material.GOLDEN_CARROT, 4, "§6Golden Carrot"));
+    public static final ItemTrade GOLDEN_CARROT = new ItemTrade(21, false, new ShopPrice(1, ShopCurrency.GOLD), List.of(new ExItemStack(Material.GOLDEN_CARROT, 6)), new ExItemStack(Material.GOLDEN_CARROT, 6, "§6Golden Carrot"));
 
 
     public static final ItemTrade MILK = new ItemTrade(14, false, new ShopPrice(2, ShopCurrency.BRONZE), List.of(new ExItemStack(Material.MILK_BUCKET)), new ExItemStack(Material.MILK_BUCKET, "§6Milk"));

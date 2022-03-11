@@ -49,15 +49,12 @@ public abstract class Bullet implements Listener {
 
 
         if (this.target == null) {
-            System.out.println("null");
             this.remove();
             return;
         }
 
 
         this.entity = this.spawn(this.entity.getLocation());
-
-        System.out.println(this.target.getName());
 
         this.entityFollowTask = Server.runTaskTimerSynchrony(() -> {
             Vector vec = this.target.getLocation().add(0, 1, 0).toVector().subtract(this.entity.getLocation().toVector()).normalize();

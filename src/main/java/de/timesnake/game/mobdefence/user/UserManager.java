@@ -167,7 +167,7 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
     @EventHandler
     public void onBlockPlace(UserBlockPlaceEvent e) {
-        if (!BlockCheck.NORMAL_BREAKABLE.isTagged(e.getBlockPlaced().getType()) && !BlockCheck.HIGH_BREAKABLE.isTagged(e.getBlockPlaced().getType()) && !TrapManager.TRAP_MATERIALS.contains(e.getBlockPlaced().getType())) {
+        if (!BlockCheck.NORMAL_BREAKABLE.isTagged(e.getBlockPlaced().getType()) && !BlockCheck.HIGH_BREAKABLE.isTagged(e.getBlockPlaced().getType()) && !TrapManager.TRAP_MATERIALS.contains(e.getBlockPlaced().getType()) && !e.getBlockPlaced().getType().equals(Material.LADDER)) {
             e.setCancelled(true);
         }
 
