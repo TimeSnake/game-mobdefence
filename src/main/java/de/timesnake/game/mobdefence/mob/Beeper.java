@@ -27,7 +27,7 @@ public class Beeper extends MobDefMob<ExCreeper> {
     }
 
     public static void handleExplosion(Creeper creeper, Location location) {
-        if (!creeper.getCustomName().equals(NAME)) {
+        if (creeper.getCustomName() == null || !creeper.getCustomName().equals(NAME)) {
             return;
         }
 

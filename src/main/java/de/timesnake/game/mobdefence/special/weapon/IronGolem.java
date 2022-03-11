@@ -9,7 +9,9 @@ import de.timesnake.basic.entities.entity.bukkit.ExEntityIronGolem;
 import de.timesnake.basic.entities.pathfinder.*;
 import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
+import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -48,10 +50,14 @@ public class IronGolem extends SpecialWeapon implements Listener {
         golem.addPathfinderGoal(7, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
         golem.addPathfinderGoal(8, new ExPathfinderGoalRandomLookaround());
 
-        golem.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityHuman, EntityClass.EntitySnowman, EntityClass.EntityIronGolem));
-        golem.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityMonster, 5, true, true));
+        golem.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
+
+        for (EntityClass<? extends EntityLiving> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
+            golem.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass, 5, true, true));
+        }
 
         golem.setPersistent(true);
+
         EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), golem);
     }
 

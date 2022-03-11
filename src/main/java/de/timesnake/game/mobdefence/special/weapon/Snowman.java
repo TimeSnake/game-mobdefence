@@ -14,6 +14,8 @@ import de.timesnake.game.mobdefence.kit.ShopPrice;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
+import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -31,7 +33,7 @@ import java.util.List;
 
 public class Snowman extends SpecialWeapon implements Listener {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.CARVED_PUMPKIN, "§6 6 Snowmen", "Place the block to spawn the snowmen");
+    public static final ExItemStack ITEM = new ExItemStack(Material.CARVED_PUMPKIN, "§6 4 Snowmen", "Place the block to spawn a snowman", "§c4 Snowmen");
 
     public static final ItemTrade SNOWMAN = new ItemTrade(false, new ShopPrice(8, ShopCurrency.GOLD), List.of(Snowman.ITEM), Snowman.ITEM);
 
@@ -44,33 +46,45 @@ public class Snowman extends SpecialWeapon implements Listener {
     public void onBlockPlace(UserBlockPlaceEvent e) {
         User user = e.getUser();
 
-        if (!new ExItemStack(e.getItemInHand()).equals(ITEM)) {
+        ExItemStack item = new ExItemStack(e.getItemInHand()).cloneWithId();
+
+        if (!item.equals(ITEM)) {
             return;
+        }
+
+        int left = Integer.parseInt(item.getLore().get(1).replace("§c", "").replace(" Snowmen", "")) - 1;
+
+
+        if (left > 0) {
+            item.setLore("Place the block to spawn a snowman", "§c" + left + " Snowmen");
+            user.getInventory().setItem(e.getHand(), item);
+        } else {
+            user.getInventory().setItem(e.getHand(), null);
         }
 
         Location loc = e.getBlock().getLocation();
 
-        user.removeCertainItemStack(ITEM);
+        ExSnowman snowman = new ExSnowman(loc.getWorld(), false);
+        snowman.setPosition(loc.getX(), loc.getY(), loc.getZ());
+        snowman.setSlot(ExEnumItemSlot.HEAD, null);
 
-        for (int amount = 0; amount < 6; amount++) {
-            ExSnowman snowman = new ExSnowman(loc.getWorld(), false);
-            snowman.setPosition(loc.getX(), loc.getY(), loc.getZ());
+        snowman.addPathfinderGoal(1, new ExPathfinderGoalArrowAttack(1.25D, 1, 10.0F));
+        snowman.addPathfinderGoal(3, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        snowman.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
-            snowman.addPathfinderGoal(1, new ExPathfinderGoalArrowAttack(1.25D, 1, 10.0F));
-            snowman.addPathfinderGoal(2, new ExPathfinderGoalPet(user.getPlayer(), 1.2, 4, 12));
-            snowman.addPathfinderGoal(3, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
-            snowman.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
+        snowman.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
 
-            snowman.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityHuman, EntityClass.EntitySnowman, EntityClass.EntityIronGolem));
-            snowman.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityMonster, true, false));
-
-            snowman.setPersistent(true);
-
-            snowman.setMaxHealth(40);
-            snowman.setHealth(40);
-
-            EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), snowman);
+        for (EntityClass<? extends EntityLiving> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
+            snowman.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass, true, false));
         }
+
+
+        snowman.setPersistent(true);
+
+        snowman.setMaxHealth(40);
+        snowman.setHealth(40);
+
+        EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), snowman);
     }
 
     @EventHandler
