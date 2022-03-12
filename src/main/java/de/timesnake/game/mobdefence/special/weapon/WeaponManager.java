@@ -38,7 +38,6 @@ public class WeaponManager implements Listener {
         this.addWeapon(new PoisonArrow());
         this.addWeapon(new SheepSpawner());
         this.addWeapon(new DogSpawner());
-        this.addWeapon(new WeaknessShears());
         this.addWeapon(new LumberAxe());
         this.addWeapon(new SwingSword());
         this.addWeapon(this.iceballGenerator);

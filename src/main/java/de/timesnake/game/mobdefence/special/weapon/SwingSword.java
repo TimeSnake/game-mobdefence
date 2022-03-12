@@ -86,6 +86,6 @@ public class SwingSword extends CooldownWeapon implements UserInventoryInteractL
 
     @Override
     public int getCooldown(ExItemStack item) {
-        return Integer.parseInt(COOLDOWN_LEVELS.getValueFromLore(item.getLore()));
+        return Integer.parseInt(COOLDOWN_LEVELS.getValueFromLore(item.getLore())) * 20;
     }
 }
