@@ -32,7 +32,7 @@ public class Speer extends CooldownWeapon {
             return;
         }
 
-        user.getPlayer().getInventory().removeItem(SPEER.getItem().asOne());
+        //user.getPlayer().getInventory().removeItem(SPEER.getItem().asOne());
 
         int power = Integer.parseInt(POWER.getValueFromLore(item.getLore()));
 
