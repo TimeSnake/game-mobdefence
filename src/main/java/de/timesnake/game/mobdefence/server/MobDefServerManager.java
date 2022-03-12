@@ -225,7 +225,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
 
         this.userManager.getReviveManager().clear();
 
-        for (User user : Server.getGameNotServiceUsers()) {
+        for (User user : Server.getInOutGameUsers()) {
             if (!((MobDefUser) user).isAlive()) {
                 ((MobDefUser) user).rejoinGame();
             }

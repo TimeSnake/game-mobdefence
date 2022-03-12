@@ -27,8 +27,8 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.EntityBlockFormEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryAction;
@@ -315,16 +315,15 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
     @EventHandler
     public void onBlockForm(EntityBlockFormEvent e) {
-        if (e.getBlock().getType().equals(Material.SNOW)) {
+        if (e.getNewState().getType().equals(Material.SNOW)) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent e) {
-        if (e.getBlockPlaced().getType().equals(Material.SNOW)) {
+    public void onBlockPlace(EntityChangeBlockEvent e) {
+        if (e.getBlock().getType().equals(Material.SNOW)) {
             e.setCancelled(true);
-            e.setBuild(false);
         }
     }
 

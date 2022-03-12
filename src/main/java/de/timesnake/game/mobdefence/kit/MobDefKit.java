@@ -120,29 +120,21 @@ public class MobDefKit extends Kit {
 
     // lumberjack
 
+    private static final ItemTrade LUMBER_REGENERATION = new ItemTrade(false, new ShopPrice(4, ShopCurrency.SILVER), List.of(new ExItemStack("§6Regeneration", PotionEffectType.REGENERATION, 15, 3, 2)), new ExItemStack("§6Regeneration", PotionEffectType.REGENERATION, 15, 3, 2));
+
     private static final ItemTrade LUMBER_SPEED = new ItemTrade(false, new ShopPrice(4, ShopCurrency.BRONZE), List.of(new ExItemStack(Material.POTION, PotionType.SPEED, false, true)), new ExItemStack(Material.POTION, 1, "Speed", PotionType.SPEED, false, true));
 
     private static final ItemTrade LUMBER_STRENGTH = new ItemTrade(false, new ShopPrice(3, ShopCurrency.SILVER), List.of(new ExItemStack(Material.POTION, PotionType.STRENGTH, false, true)), new ExItemStack(Material.POTION, 1, "Strength", PotionType.STRENGTH, false, true));
 
-    public static final ItemShop LUMBERJACK_WEAPONS = new ItemShop("Weapons", 12, WEAPONS, List.of(LumberAxe.AXE, BoomerangAxe.BOOMERANG_AXE), List.of(LUMBER_SPEED, LUMBER_STRENGTH));
+    public static final ItemShop LUMBERJACK_WEAPONS = new ItemShop("Weapons", 12, WEAPONS, List.of(LumberAxe.AXE, BoomerangAxe.BOOMERANG_AXE, SheepSpawner.LEVEL_ITEM, DogSpawner.LEVEL_ITEM), List.of(LUMBER_SPEED, LUMBER_STRENGTH, LUMBER_REGENERATION));
 
     public static final ItemShop LUMBERJACK_ARMOR = new ItemShop("Armor", 14, ARMOR, List.of(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS, RANGED_ARMOR_BOOTS), List.of());
 
-    public static final MobDefKit LUMBERJACK = new MobDefKit(5, "Lumberjack", Material.IRON_AXE, List.of("§fWeapon: §7Axe", "§fArmor: §7Weak", "§7Speed and Strength Potions", "§7Regeneration effect after mob kill"), List.of(ItemTrade.BEEF, LumberAxe.AXE.getItem(), MobTracker.TRACKER), List.of(LUMBERJACK_WEAPONS, LUMBERJACK_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP, BaseShops.TEAM_SHOP));
+    public static final MobDefKit LUMBERJACK = new MobDefKit(5, "Lumberjack", Material.IRON_AXE, List.of("§fWeapon: §7Axe", "§fArmor: §7Weak", "§7Speed and Strength Potions", "", "§7Regeneration effect after mob kill", "§7Sheep as distraction", "§7Dogs as companions"), List.of(ItemTrade.BEEF, LumberAxe.AXE.getItem(), SheepSpawner.LEVEL_ITEM.getItem(), DogSpawner.LEVEL_ITEM.getItem(), MobTracker.TRACKER), List.of(LUMBERJACK_WEAPONS, LUMBERJACK_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP, BaseShops.TEAM_SHOP));
 
 
     // shepherd
-
-    private static final ItemTrade SHEPHERD_REGENERATION = new ItemTrade(false, new ShopPrice(4, ShopCurrency.SILVER), List.of(new ExItemStack("§6Regeneration", PotionEffectType.REGENERATION, 15, 3, 2)), new ExItemStack("§6Regeneration", PotionEffectType.REGENERATION, 15, 3, 2));
-
-    public static final ItemShop SHEPHERD_WEAPONS = new ItemShop("Weapons", 12, WEAPONS, List.of(WeaknessShears.LEVEL_ITEM, SheepSpawner.LEVEL_ITEM, DogSpawner.LEVEL_ITEM), List.of(SHEPHERD_REGENERATION));
-
-    public static final ItemShop SHEPHERD_ARMOR = new ItemShop("Armor", 14, ARMOR, List.of(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS, RANGED_ARMOR_BOOTS), List.of());
-
-    public static final MobDefKit SHEPHERD = new MobDefKit(6, "Shepherd", Material.SHEARS, List.of("§fWeapon: §7Shears", "§fArmor: §7Weak", "§7Sheep as distraction", "§7Dogs as companions"), List.of(ItemTrade.BEEF, WeaknessShears.LEVEL_ITEM.getItem(), SheepSpawner.LEVEL_ITEM.getItem(), DogSpawner.LEVEL_ITEM.getItem(), MobTracker.TRACKER), List.of(SHEPHERD_WEAPONS, SHEPHERD_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP, BaseShops.TEAM_SHOP));
-
-
-    public static final MobDefKit[] KITS = new MobDefKit[]{KNIGHT, ARCHER, ALCHEMIST, WIZARD, LUMBERJACK, SHEPHERD};
+    public static final MobDefKit[] KITS = new MobDefKit[]{KNIGHT, ARCHER, ALCHEMIST, WIZARD, LUMBERJACK};
 
 
     private final List<ItemShop> shopInventories;

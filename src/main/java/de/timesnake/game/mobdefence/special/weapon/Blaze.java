@@ -2,8 +2,6 @@ package de.timesnake.game.mobdefence.special.weapon;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
-import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.basic.bukkit.util.user.event.UserBlockPlaceEvent;
 import de.timesnake.basic.entities.EntityManager;
 import de.timesnake.basic.entities.entity.bukkit.ExBlaze;
 import de.timesnake.basic.entities.pathfinder.*;
@@ -14,53 +12,41 @@ import de.timesnake.game.mobdefence.kit.ShopPrice;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.game.mobdefence.special.BlockSpawner;
 import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.List;
 
-public class Blaze extends SpecialWeapon implements Listener {
+public class Blaze extends BlockSpawner implements Listener {
 
     public static final ExItemStack ITEM = new ExItemStack(Material.MAGMA_BLOCK, "§6 3 Blazes", "Place the block to spawn a blaze", "§c3 Blazes");
 
     public static final ItemTrade BLAZE = new ItemTrade(false, new ShopPrice(16, ShopCurrency.SILVER), List.of(Blaze.ITEM), Blaze.ITEM);
 
     public Blaze() {
-        super(ITEM);
+        super(EntityType.BLAZE, ITEM);
         Server.registerListener(this, GameMobDefence.getPlugin());
     }
 
-    @EventHandler
-    public void onBlockPlace(UserBlockPlaceEvent e) {
-        User user = e.getUser();
+    @Override
+    public int getLeftEntities(ExItemStack item) {
+        return Integer.parseInt(item.getLore().get(1).replace("§c", "").replace(" Blazes", "")) - 1;
+    }
 
-        ExItemStack item = new ExItemStack(e.getItemInHand()).cloneWithId();
+    @Override
+    public void updateItem(ExItemStack item, int left) {
+        item.setLore("Place the block to spawn a blaze", "§c" + left + " Blazes");
+    }
 
-        if (!item.equals(ITEM)) {
-            return;
-        }
+    @Override
+    public void spawnEntities(Location location) {
+        ExBlaze blaze = new ExBlaze(location.getWorld(), false);
 
-        int left = Integer.parseInt(item.getLore().get(1).replace("§c", "").replace(" Blazes", "")) - 1;
-
-
-        if (left > 0) {
-            item.setLore("Place the block to spawn a blaze", "§c" + left + " Blazes");
-            user.getInventory().setItem(e.getHand(), item);
-        } else {
-            user.getInventory().setItem(e.getHand(), null);
-        }
-
-        Location loc = e.getBlock().getLocation();
-
-        ExBlaze blaze = new ExBlaze(loc.getWorld(), false);
-
-        blaze.setPosition(loc.getX(), loc.getY(), loc.getZ());
+        blaze.setPosition(location.getX(), location.getY(), location.getZ());
 
         blaze.addPathfinderGoal(1, new ExPathfinderGoalBlazeFireball());
         blaze.addPathfinderGoal(8, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
@@ -79,20 +65,4 @@ public class Blaze extends SpecialWeapon implements Listener {
 
         EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), blaze);
     }
-
-    @EventHandler
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if (!(e.getDamager() instanceof Player) && !(e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)) {
-            return;
-        }
-
-        if (!(e.getEntity() instanceof org.bukkit.entity.Blaze)) {
-            return;
-        }
-
-        e.setCancelled(true);
-        e.setDamage(0);
-
-    }
-
 }
