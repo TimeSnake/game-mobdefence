@@ -6,7 +6,6 @@ import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.event.*;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.ItemTrade;
-import de.timesnake.game.mobdefence.kit.MobDefKit;
 import de.timesnake.game.mobdefence.kit.ShopCurrency;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
@@ -16,7 +15,6 @@ import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.*;
 import de.timesnake.game.mobdefence.special.trap.TrapManager;
-import de.timesnake.game.mobdefence.special.weapon.Speer;
 import de.timesnake.library.basic.util.Status;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
 import org.bukkit.Location;
@@ -68,7 +66,7 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
     public UserManager() {
 
-        this.itemGenerators.add(new ItemGenerator(MobDefKit.ARCHER, 1, Speer.SPEER.getItem().cloneWithId().asQuantity(3), 8));
+        //this.itemGenerators.add(new ItemGenerator(MobDefKit.ARCHER, 1, Speer.SPEER.getItem().cloneWithId().asQuantity(3), 8));
 
         this.coreRegeneration = new CoreRegeneration();
         this.resistanceAura = new ResistanceAura();

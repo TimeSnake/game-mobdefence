@@ -56,6 +56,7 @@ public class RocketCrossBow extends SpecialWeapon implements Listener {
         }
 
         e.setCancelled(true);
+        e.setConsumeItem(false);
 
 
         int multiShot = Integer.parseInt(MULTI_SHOT_LEVELS.getValueFromLore(item.getLore()));
