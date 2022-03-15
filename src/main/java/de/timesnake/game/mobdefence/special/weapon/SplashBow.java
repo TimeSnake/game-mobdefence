@@ -81,6 +81,8 @@ public class SplashBow extends SpecialWeapon implements Listener {
             return;
         }
 
+        e.setConsumeItem(false);
+
         double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(item.getLore()));
         int radius = Integer.parseInt(RADIUS_LEVELS.getValueFromLore(item.getLore()));
 

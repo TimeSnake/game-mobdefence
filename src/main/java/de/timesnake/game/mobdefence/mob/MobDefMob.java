@@ -60,7 +60,7 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
                 r = random.nextInt(10);
                 mob = switch (r) {
                     case 3, 4 -> new Vindicator(spawn, wave);
-                    case 5 -> new FollowerZombie(spawn, wave);
+                    //case 5 -> new FollowerZombie(spawn, wave);
                     case 6 -> new CaveSpider(spawn, wave);
                     default -> new Zombie(spawn, wave);
                 };
