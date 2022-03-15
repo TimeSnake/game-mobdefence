@@ -1,6 +1,5 @@
 package de.timesnake.game.mobdefence.special.weapon;
 
-import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.entities.EntityManager;
 import de.timesnake.basic.entities.entity.bukkit.ExSnowman;
@@ -9,7 +8,6 @@ import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.kit.ItemTrade;
 import de.timesnake.game.mobdefence.kit.ShopCurrency;
 import de.timesnake.game.mobdefence.kit.ShopPrice;
-import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.BlockSpawner;
@@ -30,13 +28,12 @@ import java.util.List;
 
 public class Snowman extends BlockSpawner implements Listener {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.CARVED_PUMPKIN, "§6 4 Snowmen", "Place the block to spawn a snowman", "§c4 Snowmen");
+    public static final ExItemStack ITEM = new ExItemStack(Material.CARVED_PUMPKIN, "§6 4 Snowmen", "§7Place the block to spawn a snowman", "§c4 Snowmen");
 
     public static final ItemTrade SNOWMAN = new ItemTrade(false, new ShopPrice(8, ShopCurrency.GOLD), List.of(Snowman.ITEM), Snowman.ITEM);
 
     public Snowman() {
         super(EntityType.SNOWMAN, ITEM);
-        Server.registerListener(this, GameMobDefence.getPlugin());
     }
 
     @Override
@@ -64,7 +61,6 @@ public class Snowman extends BlockSpawner implements Listener {
         for (EntityClass<? extends EntityLiving> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
             snowman.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass, true, false));
         }
-
 
         snowman.setPersistent(true);
 

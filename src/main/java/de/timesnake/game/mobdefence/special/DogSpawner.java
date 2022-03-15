@@ -8,6 +8,7 @@ import de.timesnake.basic.entities.pathfinder.*;
 import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
+import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Wolf;
@@ -71,7 +72,10 @@ public class DogSpawner extends EntitySpawner {
         entity.addPathfinderGoal(2, new ExPathfinderGoalOwnerHurtTarget());
 
         entity.addPathfinderGoal(3, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
-        entity.addPathfinderGoal(4, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityMonster, 10, true, false));
+        for (EntityClass<? extends EntityLiving> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
+            entity.addPathfinderGoal(4, new ExPathfinderGoalNearestAttackableTarget(entityClass, 10, true, false));
+        }
+
 
         entity.setMaxHealth(30);
         entity.setHealth(30);

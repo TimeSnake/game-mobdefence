@@ -1,12 +1,10 @@
 package de.timesnake.game.mobdefence.special.weapon;
 
-import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.entities.EntityManager;
 import de.timesnake.basic.entities.entity.bukkit.ExEntityIronGolem;
 import de.timesnake.basic.entities.pathfinder.*;
 import de.timesnake.basic.entities.wrapper.EntityClass;
-import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.BlockSpawner;
@@ -22,7 +20,6 @@ public class IronGolem extends BlockSpawner implements Listener {
 
     public IronGolem() {
         super(EntityType.IRON_GOLEM, ITEM);
-        Server.registerListener(this, GameMobDefence.getPlugin());
     }
 
     @Override

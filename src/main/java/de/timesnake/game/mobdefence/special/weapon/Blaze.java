@@ -1,6 +1,5 @@
 package de.timesnake.game.mobdefence.special.weapon;
 
-import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.entities.EntityManager;
 import de.timesnake.basic.entities.entity.bukkit.ExBlaze;
@@ -9,7 +8,6 @@ import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.kit.ItemTrade;
 import de.timesnake.game.mobdefence.kit.ShopCurrency;
 import de.timesnake.game.mobdefence.kit.ShopPrice;
-import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.BlockSpawner;
@@ -23,13 +21,12 @@ import java.util.List;
 
 public class Blaze extends BlockSpawner implements Listener {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.MAGMA_BLOCK, "§6 3 Blazes", "Place the block to spawn a blaze", "§c3 Blazes");
+    public static final ExItemStack ITEM = new ExItemStack(Material.MAGMA_BLOCK, "§6 3 Blazes", "§7Place the block to spawn a blaze", "§c3 Blazes");
 
     public static final ItemTrade BLAZE = new ItemTrade(false, new ShopPrice(16, ShopCurrency.SILVER), List.of(Blaze.ITEM), Blaze.ITEM);
 
     public Blaze() {
         super(EntityType.BLAZE, ITEM);
-        Server.registerListener(this, GameMobDefence.getPlugin());
     }
 
     @Override
