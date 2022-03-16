@@ -24,10 +24,7 @@ import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
 import de.timesnake.library.basic.util.Status;
-import org.bukkit.Difficulty;
-import org.bukkit.Instrument;
-import org.bukkit.Note;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -155,6 +152,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
         this.waveNumber = 0;
         this.userManager.runTasks();
         this.getMap().getWorld().setDifficulty(Difficulty.EASY);
+        this.getMap().getWorld().setGameRule(GameRule.NATURAL_REGENERATION, true);
         this.updateSideboardWave();
     }
 
@@ -273,6 +271,11 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
             this.getMap().getWorld().setDifficulty(Difficulty.NORMAL);
         } else if (this.waveNumber == 6) {
             this.getMap().getWorld().setDifficulty(Difficulty.HARD);
+        }
+
+        if (this.waveNumber == 13) {
+            this.getMap().getWorld().setGameRule(GameRule.NATURAL_REGENERATION, false);
+            this.broadcastGameMessage(ChatColor.WARNING + "No more natural regeneration");
         }
 
         Server.broadcastSound(Sound.EVENT_RAID_HORN, 6);
