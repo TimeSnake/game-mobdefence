@@ -27,27 +27,48 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
     public static final List<Class<? extends Monster>> ATTACKER_ENTITY_CLASSES = List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class, org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class, org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class, org.bukkit.entity.Vindicator.class, Vex.class, Silverfish.class, Endermite.class, org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class, Stray.class);
     public static final List<EntityClass<? extends EntityLiving>> ATTACKER_ENTTIY_ENTITY_CLASSES = List.of(EntityClass.EntityZombie, EntityClass.EntitySkeleton, EntityClass.EntityIllagerIllusioner, EntityClass.EntityWitch, EntityClass.EntityPillager, EntityClass.EntityEvoker, EntityClass.EntityVindicator, EntityClass.EntityVex, EntityClass.EntitySilverfish, EntityClass.EntityEndermite, EntityClass.EntityCreeper, EntityClass.EntityCaveSpider, EntityClass.EntitySkeletonStray);
 
-    public static final List<Class<? extends Monster>> ATTACKER_ENTITY_COUNT_CLASSES = List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class, org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class, org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class, org.bukkit.entity.Vindicator.class, org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class, Stray.class);
+    public static final List<Class<? extends Monster>> ATTACKER_ENTITY_COUNT_CLASSES =
+            List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class,
+                    org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class,
+                    org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class,
+                    org.bukkit.entity.Vindicator.class, org.bukkit.entity.Creeper.class,
+                    org.bukkit.entity.CaveSpider.class, Stray.class);
 
-    public static final List<EntityType> ATTACKER_ENTITY_TYPES = List.of(EntityType.ZOMBIE, EntityType.SKELETON, EntityType.BLAZE, EntityType.MAGMA_CUBE, EntityType.ILLUSIONER, EntityType.WITCH, EntityType.PILLAGER, EntityType.EVOKER, EntityType.VINDICATOR, EntityType.VEX, EntityType.SILVERFISH, EntityType.ENDERMITE, EntityType.CREEPER, EntityType.CAVE_SPIDER, EntityType.STRAY);
+    public static final List<EntityType> ATTACKER_ENTITY_TYPES = List.of(EntityType.ZOMBIE, EntityType.SKELETON,
+            EntityType.BLAZE, EntityType.MAGMA_CUBE, EntityType.ILLUSIONER, EntityType.WITCH, EntityType.PILLAGER,
+            EntityType.EVOKER, EntityType.VINDICATOR, EntityType.VEX, EntityType.SILVERFISH, EntityType.ENDERMITE,
+            EntityType.CREEPER, EntityType.CAVE_SPIDER, EntityType.STRAY);
 
-    public static final List<EntityClass<? extends EntityInsentient>> FIRST_DEFENDER_CLASSES = List.of(EntityClass.EntitySheep);
+    public static final List<EntityClass<? extends EntityInsentient>> FIRST_DEFENDER_CLASSES =
+            List.of(EntityClass.EntitySheep);
 
-    public static final List<EntityClass<? extends EntityInsentient>> SECOND_DEFENDER_CLASSES = List.of(EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf, EntityClass.EntitySnowman, EntityClass.EntityBlaze);
+    public static final List<EntityClass<? extends EntityInsentient>> SECOND_DEFENDER_CLASSES =
+            List.of(EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf,
+                    EntityClass.EntitySnowman, EntityClass.EntityBlaze);
 
-    public static final List<EntityClass<? extends EntityLiving>> DEFENDER_CLASSES = List.of(EntityClass.EntitySheep, EntityClass.EntityHuman, EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf, EntityClass.EntitySnowman, EntityClass.EntityBlaze);
+    public static final List<EntityClass<? extends EntityLiving>> DEFENDER_CLASSES = List.of(EntityClass.EntitySheep,
+            EntityClass.EntityHuman, EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf,
+            EntityClass.EntitySnowman, EntityClass.EntityBlaze);
 
-    public enum Type {
-        MELEE, BREAKER, RANGED, OTHER, BOSS
+    public static MobDefMob<?> getCompressedMob(int wave, Type type, ExLocation spawn) {
+        return switch (type) {
+            case COMPRESSED_MELEE -> new CompressedZombie(spawn, wave);
+            case COMBRESSED_RANGED -> new CompressedSkeleton(spawn, wave);
+            default -> null;
+        };
     }
 
-    static ExPathfinderGoal getCorePathfinder(HeightMapManager.MapType mapType, double speed, ExPathfinderGoal breakPathfinder, int breakLevel) {
+    static ExPathfinderGoal getCorePathfinder(HeightMapManager.MapType mapType, double speed,
+                                              ExPathfinderGoal breakPathfinder, int breakLevel) {
 
-        return new ExHeightPathfinder(MobDefServer.getMap().getHeightMapManager().getMap(mapType), 3, speed, 32, 0, breakPathfinder, breakLevel);
+        return new ExHeightPathfinder(MobDefServer.getMap().getHeightMapManager().getMap(mapType), 3, speed, 32, 0,
+                breakPathfinder, breakLevel);
     }
 
-    static ExPathfinderGoalBreakBlock getBreakPathfinder(double speed, boolean ignoreTarget, Collection<Material> breakable) {
-        return new ExPathfinderGoalBreakBlock(speed, ignoreTarget, (block) -> MobDefServer.getMap().getHeightMapManager().updateMaps(), breakable);
+    static ExPathfinderGoalBreakBlock getBreakPathfinder(double speed, boolean ignoreTarget,
+                                                         Collection<Material> breakable) {
+        return new ExPathfinderGoalBreakBlock(speed, ignoreTarget,
+                (block) -> MobDefServer.getMap().getHeightMapManager().updateMaps(), breakable);
     }
 
     public static MobDefMob<?> getRandomMob(int wave, MobDefMob.Type type, ExLocation spawn) {
@@ -96,6 +117,34 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
             return mob;
         }
         return getRandomMob(wave, type, spawn);
+    }
+
+    public enum Type {
+        COMPRESSED_MELEE,
+        COMBRESSED_RANGED,
+        MELEE(COMPRESSED_MELEE),
+        BREAKER,
+        RANGED(COMBRESSED_RANGED),
+        OTHER,
+        BOSS;
+
+        private final Type compressed;
+
+        Type() {
+            this.compressed = null;
+        }
+
+        Type(Type compressed) {
+            this.compressed = compressed;
+        }
+
+        public Type getCompressed() {
+            return compressed;
+        }
+
+        public boolean isCompressable() {
+            return this.compressed != null;
+        }
     }
 
     protected M entity;

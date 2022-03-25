@@ -52,7 +52,7 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
             this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(30.0F));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
 
         this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntitySkeletonStray, 4, 5 * 20) {
             @Override

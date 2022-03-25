@@ -105,11 +105,13 @@ public class MobDefUser extends GameUser {
         this.setGameMode(GameMode.CREATIVE);
     }
 
+    @Override
     public void rejoinGame() {
-
         if (this.getStatus().equals(Status.User.SPECTATOR)) {
             return;
         }
+
+        super.rejoinGame();
 
         this.alive = true;
         this.beingRevivedUser = null;

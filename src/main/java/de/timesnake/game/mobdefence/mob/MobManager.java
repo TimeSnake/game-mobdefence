@@ -30,9 +30,13 @@ public class MobManager implements Listener {
     public static final int MIN_GROUP_SIZE = 5;
     public static final int MAX_GROUP_SIZE = 7;
     public static final double GROUP_SIZE_INCREASE = 1.4;
-    public static final double GROUP_SIZE_PLAYER_MULTIPLIER = 1.5;
+    public static final double GROUP_SIZE_PLAYER_MULTIPLIER = 1.7;
+
+    public static final int MOB_LIMIT = 100;
 
     public static final double MOB_DAMAGE_MULTIPLIER = 1;
+
+    public static final int MOB_TO_COMPRESSED_RATIO = 5;
 
     private final LinkedList<MobGroup> mobGroups = new LinkedList<>();
 
@@ -101,6 +105,10 @@ public class MobManager implements Listener {
         }
     }
 
+    public boolean compressGroups() {
+        return MobDefServer.getMap().getWorld().getEntitiesByClasses(MobDefMob.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0])).size() > MOB_LIMIT;
+    }
+
     public Collection<Entity> getAliveMobs() {
         return MobDefServer.getMap().getWorld().getEntitiesByClasses(MobDefMob.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0]));
     }
@@ -129,6 +137,7 @@ public class MobManager implements Listener {
 
     public void spawnWave() {
         int wave = MobDefServer.getWaveNumber();
+
         double waveSqrt = Math.sqrt(wave);
         double players = MobDefServer.getPlayerAmount();
         double playerSqrt = Math.sqrt(players);
