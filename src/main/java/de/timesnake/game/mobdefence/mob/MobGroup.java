@@ -3,6 +3,7 @@ package de.timesnake.game.mobdefence.mob;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
@@ -13,12 +14,16 @@ public class MobGroup {
     private BukkitTask task;
     private boolean spawned;
 
+    private final int wave;
+    private final ExLocation spawn;
     private final Map<MobDefMob.Type, List<MobDefMob<?>>> mobsByType = new HashMap<>();
 
     private final int maxDelay; // in seconds
 
     public MobGroup(int wave, ExLocation spawn, int amount, int maxDelay) {
         this.maxDelay = maxDelay;
+        this.spawn = spawn;
+        this.wave = wave;
 
         Random random = new Random();
 
@@ -29,13 +34,15 @@ public class MobGroup {
         } else if (random.nextInt(16) == 0) {
             mobTypeGroups = List.of(new MobTypeGroup(MobDefMob.Type.MELEE, amount));
         } else {
-            mobTypeGroups = List.of(new MobTypeGroup(MobDefMob.Type.MELEE, amount / 3 + 2), new MobTypeGroup(MobDefMob.Type.RANGED, amount / 4 + 1), new MobTypeGroup(MobDefMob.Type.BREAKER, 0), new MobTypeGroup(MobDefMob.Type.OTHER, 1));
+            mobTypeGroups = List.of(new MobTypeGroup(MobDefMob.Type.MELEE, amount / 3 + 2),
+                    new MobTypeGroup(MobDefMob.Type.RANGED, amount / 4 + 1),
+                    new MobTypeGroup(MobDefMob.Type.BREAKER, 1),
+                    new MobTypeGroup(MobDefMob.Type.OTHER, 1));
 
             while (mobTypeGroups.stream().mapToInt(MobTypeGroup::getAmount).reduce(0, Integer::sum) < amount) {
                 mobTypeGroups.get(random.nextInt(3)).increaseAmount();
             }
         }
-
 
         for (MobTypeGroup typeGroup : mobTypeGroups) {
             List<MobDefMob<?>> mobs = this.mobsByType.computeIfAbsent(typeGroup.getType(), v -> new ArrayList<>());
@@ -49,6 +56,8 @@ public class MobGroup {
 
     public MobGroup(List<MobDefMob<?>> mobs, int maxDelay) {
         this.maxDelay = maxDelay;
+        this.spawn = null;
+        this.wave = 0;
 
         for (MobDefMob<?> mob : mobs) {
             List<MobDefMob<?>> mobTypeList = this.mobsByType.computeIfAbsent(mob.getType(), v -> new ArrayList<>());
@@ -71,13 +80,31 @@ public class MobGroup {
 
         this.spawned = true;
 
-        for (MobDefMob.Type type : MobDefMob.Type.values()) {
-            if (this.mobsByType.containsKey(type)) {
-                for (MobDefMob<?> mob : this.mobsByType.get(type)) {
-                    mob.spawn();
+        if (!MobDefServer.getMobManager().compressGroups()) {
+            for (MobDefMob.Type type : MobDefMob.Type.values()) {
+                if (this.mobsByType.containsKey(type)) {
+                    for (MobDefMob<?> mob : this.mobsByType.get(type)) {
+                        mob.spawn();
+                    }
+                }
+            }
+        } else {
+            for (MobDefMob.Type type : MobDefMob.Type.values()) {
+                if (this.mobsByType.containsKey(type)) {
+                    if (type.isCompressable()) {
+                        int size = this.mobsByType.get(type).size();
+                        for (int i = 0; i < size; i += 5) {
+                            MobDefMob.getCompressedMob(this.wave, type.getCompressed(), this.spawn);
+                        }
+                    } else {
+                        for (MobDefMob<?> mob : this.mobsByType.get(type)) {
+                            mob.spawn();
+                        }
+                    }
                 }
             }
         }
+
 
     }
 
