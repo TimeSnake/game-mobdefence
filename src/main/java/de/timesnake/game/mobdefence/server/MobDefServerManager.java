@@ -24,6 +24,7 @@ import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
 import de.timesnake.library.basic.util.Status;
+import de.timesnake.library.basic.util.TimeCoins;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -48,6 +49,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
     private static final boolean DEBUG = false;
 
     public static final double CORE_HEALTH_MULTIPLIER = 400; // in half hearts
+
+    public static final float TIME_COINS_MULTIPLIER = 1.5f * TimeCoins.MULTIPLIER;
 
     public static final int WAVE_DELAY = 80; // in seconds
 
@@ -167,7 +170,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
         this.updateCoreHealthBar();
 
         if (this.playerAmount == 1) {
-            Server.getInGameUsers().iterator().next().addItem(new ShopPrice(32, ShopCurrency.BRONZE).asItem(), new ShopPrice(16, ShopCurrency.SILVER).asItem(), new ShopPrice(8, ShopCurrency.GOLD).asItem());
+            Server.getInGameUsers().iterator().next().addItem(new ShopPrice(32, ShopCurrency.BRONZE).asItem(),
+                    new ShopPrice(16, ShopCurrency.SILVER).asItem(), new ShopPrice(8, ShopCurrency.GOLD).asItem());
         }
 
         // start wave
@@ -228,8 +232,10 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
                 ((MobDefUser) user).rejoinGame();
             }
             if (this.waveNumber > 0) {
-                user.addCoins(this.waveNumber * 1.5f, true);
-                user.addItem(new ShopPrice((int) (8 * Math.sqrt(this.waveNumber)), ShopCurrency.BRONZE).asItem(), new ShopPrice((int) (4 * Math.sqrt(this.waveNumber)), ShopCurrency.SILVER).asItem(), new ShopPrice((int) (2 * Math.sqrt(this.waveNumber)), ShopCurrency.GOLD).asItem());
+                user.addCoins(this.waveNumber * TIME_COINS_MULTIPLIER, true);
+                user.addItem(new ShopPrice((int) (8 * Math.sqrt(this.waveNumber)), ShopCurrency.BRONZE).asItem(),
+                        new ShopPrice((int) (4 * Math.sqrt(this.waveNumber)), ShopCurrency.SILVER).asItem(),
+                        new ShopPrice((int) (2 * Math.sqrt(this.waveNumber)), ShopCurrency.GOLD).asItem());
             }
         }
 

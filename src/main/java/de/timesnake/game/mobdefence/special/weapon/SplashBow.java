@@ -2,6 +2,7 @@ package de.timesnake.game.mobdefence.special.weapon;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
+import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import org.bukkit.Material;
@@ -62,12 +63,13 @@ public class SplashBow extends SpecialWeapon implements Listener {
         int radius = Integer.parseInt(nameParts[1]);
 
         arrow.getWorld().createExplosion(arrow, radius, false, false);
+
     }
 
 
     @EventHandler
     public void onEntityShootBow(EntityShootBowEvent e) {
-        if (!(e.getProjectile() instanceof Arrow)) {
+        if (!(e.getProjectile() instanceof Arrow arrow)) {
             return;
         }
 
@@ -75,6 +77,7 @@ public class SplashBow extends SpecialWeapon implements Listener {
             return;
         }
 
+        User user = Server.getUser(((Player) e.getEntity()));
         ExItemStack item = new ExItemStack(e.getBow());
 
         if (!item.equals(BOW.getItem())) {
@@ -86,8 +89,9 @@ public class SplashBow extends SpecialWeapon implements Listener {
         double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(item.getLore()));
         int radius = Integer.parseInt(RADIUS_LEVELS.getValueFromLore(item.getLore()));
 
-        Arrow arrow = ((Arrow) e.getProjectile());
         arrow.setCustomName(ARROW_NAME + damage + RADIUS_NAME + radius);
         arrow.setCustomNameVisible(false);
+
+        Server.runTaskLaterSynchrony(() -> user.addItem(e.getConsumable()), 1, GameMobDefence.getPlugin());
     }
 }

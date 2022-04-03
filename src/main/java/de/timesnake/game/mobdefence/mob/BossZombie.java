@@ -54,9 +54,10 @@ public class BossZombie extends MobDefMob<ExZombie> {
             this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass, true, true, 16D));
         }
 
-        this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityZombie, 4, 5 * 20) {
+        this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityZombie, 4, 10 * 20) {
             @Override
-            public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<? extends ExEntityInsentient> entity) {
+            public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<?
+                    extends ExEntityInsentient> entity) {
                 List<ExZombie> zombies = new ArrayList<>();
 
                 for (int i = 0; i < 4; i++) {

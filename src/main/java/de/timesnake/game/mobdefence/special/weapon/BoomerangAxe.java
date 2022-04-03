@@ -28,13 +28,32 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
     public static final double MAX_DISTANCE = 8;
     public static final double DAMAGE = 4;
 
-    private static final ItemLevelType<?> SPEED_LEVELS = new ItemLevelType<>("Speed", new ExItemStack(Material.FEATHER), 1, 6, ItemLevel.getLoreNumberLevels("Speed", 1, 1, "", 2, List.of(new ShopPrice(6, ShopCurrency.BRONZE), new ShopPrice(6, ShopCurrency.SILVER), new ShopPrice(6, ShopCurrency.GOLD), new ShopPrice(24, ShopCurrency.BRONZE), new ShopPrice(32, ShopCurrency.SILVER), new ShopPrice(64, ShopCurrency.BRONZE), new ShopPrice(64, ShopCurrency.BRONZE), new ShopPrice(24, ShopCurrency.GOLD), new ShopPrice(48, ShopCurrency.SILVER)), "+0.2 Speed", List.of(1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4, 2.6)));
+    private static final ItemLevelType<?> SPEED_LEVELS = new ItemLevelType<>("Speed",
+            new ExItemStack(Material.FEATHER), 1, 6, ItemLevel.getLoreNumberLevels("Speed", 1, 1, "", 2,
+            List.of(new ShopPrice(6, ShopCurrency.BRONZE), new ShopPrice(6, ShopCurrency.SILVER), new ShopPrice(6,
+                    ShopCurrency.GOLD), new ShopPrice(24, ShopCurrency.BRONZE), new ShopPrice(32,
+                    ShopCurrency.SILVER), new ShopPrice(64, ShopCurrency.BRONZE), new ShopPrice(64,
+                    ShopCurrency.BRONZE), new ShopPrice(24, ShopCurrency.GOLD), new ShopPrice(48,
+                    ShopCurrency.SILVER)), "+0.2 Speed", List.of(1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4, 2.6)));
 
-    private static final ItemLevelType<?> DAMAGE_LEVELS = new ItemLevelType<>("Damage", new ExItemStack(Material.RED_DYE), 1, 9, ItemLevel.getLoreNumberLevels("Damage", 2, 1, "❤", 2, List.of(new ShopPrice(5, ShopCurrency.BRONZE), new ShopPrice(5, ShopCurrency.SILVER), new ShopPrice(5, ShopCurrency.GOLD), new ShopPrice(31, ShopCurrency.SILVER), new ShopPrice(48, ShopCurrency.BRONZE), new ShopPrice(45, ShopCurrency.SILVER), new ShopPrice(64, ShopCurrency.BRONZE), new ShopPrice(18, ShopCurrency.GOLD)), "+0.5 ❤", List.of(4.5, 5, 5.5, 6, 7, 8, 9, 10)));
+    private static final ItemLevelType<?> DAMAGE_LEVELS = new ItemLevelType<>("Damage",
+            new ExItemStack(Material.RED_DYE), 1, 9, ItemLevel.getLoreNumberLevels("Damage", 2, 1, "❤", 2,
+            List.of(new ShopPrice(5, ShopCurrency.BRONZE), new ShopPrice(5, ShopCurrency.SILVER), new ShopPrice(5,
+                    ShopCurrency.GOLD), new ShopPrice(31, ShopCurrency.SILVER), new ShopPrice(48,
+                    ShopCurrency.BRONZE), new ShopPrice(45, ShopCurrency.SILVER), new ShopPrice(64,
+                    ShopCurrency.BRONZE), new ShopPrice(18, ShopCurrency.GOLD)), "+0.5 ❤", List.of(4.5, 5, 5.5, 6, 7,
+                    8, 9, 10)));
 
-    private static final ItemLevelType<?> DISTANCE_LEVELS = new ItemLevelType<>("Distance", new ExItemStack(Material.CHAIN), 1, 4, ItemLevel.getLoreNumberLevels("Distance", 3, 0, "blocks", 2, List.of(new ShopPrice(16, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER), new ShopPrice(10, ShopCurrency.GOLD), new ShopPrice(41, ShopCurrency.BRONZE)), "+1 Block", List.of(9, 10, 11, 12)));
+    private static final ItemLevelType<?> DISTANCE_LEVELS = new ItemLevelType<>("Distance",
+            new ExItemStack(Material.CHAIN), 1, 5, ItemLevel.getLoreNumberLevels("Distance", 3, 0, "blocks", 2,
+            List.of(new ShopPrice(16, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER), new ShopPrice(10,
+                    ShopCurrency.GOLD), new ShopPrice(41, ShopCurrency.BRONZE)), "+1 Block", List.of(9, 10, 11, 12)));
 
-    public static final LevelItem BOOMERANG_AXE = new LevelItem("Boomerang Axe", true, new ShopPrice(4, ShopCurrency.GOLD), new ExItemStack(Material.IRON_AXE, "§6Boomerang Axe").setLore("", SPEED_LEVELS.getBaseLevelLore(SPEED), DAMAGE_LEVELS.getBaseLevelLore(DAMAGE), DISTANCE_LEVELS.getBaseLevelLore(MAX_DISTANCE)), new ExItemStack(Material.IRON_AXE, "§6Boomerang Axe"), List.of(SPEED_LEVELS, DAMAGE_LEVELS, DISTANCE_LEVELS));
+    public static final LevelItem BOOMERANG_AXE = new LevelItem("Boomerang Axe", true, new ShopPrice(4,
+            ShopCurrency.GOLD), new ExItemStack(Material.IRON_AXE, "§6Boomerang Axe").setLore("",
+            SPEED_LEVELS.getBaseLevelLore(SPEED), DAMAGE_LEVELS.getBaseLevelLore(DAMAGE),
+            DISTANCE_LEVELS.getBaseLevelLore(MAX_DISTANCE)), new ExItemStack(Material.IRON_AXE, "§6Boomerang Axe"),
+            List.of(SPEED_LEVELS, DAMAGE_LEVELS, DISTANCE_LEVELS));
 
     private final Map<ArmorStand, BukkitTask> tasks = new HashMap<>();
 

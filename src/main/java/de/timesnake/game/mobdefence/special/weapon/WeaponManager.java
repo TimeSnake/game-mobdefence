@@ -29,7 +29,7 @@ public class WeaponManager implements Listener {
         this.addWeapon(new Wand());
         this.addWeapon(new IronGolem());
         this.addWeapon(new FireHoe());
-        this.addWeapon(new Speer());
+        this.addWeapon(new Shard());
         this.addWeapon(new RocketCrossBow());
         this.addWeapon(new WaterBottle());
         this.addWeapon(new Sword());
