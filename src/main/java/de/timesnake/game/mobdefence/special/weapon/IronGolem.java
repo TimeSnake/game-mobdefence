@@ -16,7 +16,8 @@ import org.bukkit.event.Listener;
 
 public class IronGolem extends BlockSpawner implements Listener {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.IRON_BLOCK, "§6Iron Golem", "Place the block to spawn the golem", "The golem tries to hold his position");
+    public static final ExItemStack ITEM = new ExItemStack(Material.IRON_BLOCK, "§6Iron Golem", "§7Place the block to" +
+            " spawn the golem", "§7The golem tries to hold his position");
 
     public IronGolem() {
         super(EntityType.IRON_GOLEM, ITEM);

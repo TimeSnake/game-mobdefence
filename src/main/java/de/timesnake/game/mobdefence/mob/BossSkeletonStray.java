@@ -54,9 +54,10 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
 
-        this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntitySkeletonStray, 4, 5 * 20) {
+        this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntitySkeletonStray, 3, 10 * 20) {
             @Override
-            public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<? extends ExEntityInsentient> entity) {
+            public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<?
+                    extends ExEntityInsentient> entity) {
                 List<ExStray> skeletons = new ArrayList<>();
 
                 for (int i = 0; i < 4; i++) {
@@ -64,9 +65,11 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
 
                     ExStray stray = new ExStray(world, false);
 
-                    ExPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.5, false, BlockCheck.BREAKABLE_MATERIALS);
+                    ExPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.5, false,
+                            BlockCheck.BREAKABLE_MATERIALS);
 
-                    stray.addPathfinderGoal(2, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, breakBlock, BREAK_LEVEL));
+                    stray.addPathfinderGoal(2, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, breakBlock,
+                            BREAK_LEVEL));
                     stray.addPathfinderGoal(2, breakBlock);
                     stray.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.9D));
                     stray.addPathfinderGoal(4, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));

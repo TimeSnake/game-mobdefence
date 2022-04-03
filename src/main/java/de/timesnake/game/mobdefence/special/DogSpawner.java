@@ -10,6 +10,7 @@ import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Wolf;
 
@@ -79,6 +80,8 @@ public class DogSpawner extends EntitySpawner {
 
         entity.setMaxHealth(30);
         entity.setHealth(30);
+
+        entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(8);
 
         return entity;
     }

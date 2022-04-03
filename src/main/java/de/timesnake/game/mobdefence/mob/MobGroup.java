@@ -36,7 +36,7 @@ public class MobGroup {
         } else {
             mobTypeGroups = List.of(new MobTypeGroup(MobDefMob.Type.MELEE, amount / 3 + 2),
                     new MobTypeGroup(MobDefMob.Type.RANGED, amount / 4 + 1),
-                    new MobTypeGroup(MobDefMob.Type.BREAKER, 1),
+                    new MobTypeGroup(MobDefMob.Type.BREAKER, 0),
                     new MobTypeGroup(MobDefMob.Type.OTHER, 1));
 
             while (mobTypeGroups.stream().mapToInt(MobTypeGroup::getAmount).reduce(0, Integer::sum) < amount) {

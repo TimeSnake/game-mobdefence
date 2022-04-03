@@ -19,6 +19,7 @@ import de.timesnake.library.basic.util.Status;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -160,19 +161,49 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
         if (!(BlockCheck.NORMAL_BREAKABLE.isTagged(type) || BlockCheck.HIGH_BREAKABLE.isTagged(type) || type.isEmpty() || type.equals(Material.FIRE))) {
             e.setCancelled(true);
+        } else {
+            // TODO give exitemstack
         }
     }
 
     @EventHandler
     public void onBlockPlace(UserBlockPlaceEvent e) {
-        if (!BlockCheck.NORMAL_BREAKABLE.isTagged(e.getBlockPlaced().getType()) && !BlockCheck.HIGH_BREAKABLE.isTagged(e.getBlockPlaced().getType()) && !TrapManager.TRAP_MATERIALS.contains(e.getBlockPlaced().getType()) && !e.getBlockPlaced().getType().equals(Material.LADDER)) {
+
+        User user = e.getUser();
+        Block blockPlaced = e.getBlockPlaced();
+        Material type = blockPlaced.getType();
+
+        if (!BlockCheck.NORMAL_BREAKABLE.isTagged(type) && !BlockCheck.HIGH_BREAKABLE.isTagged(type) && !TrapManager.TRAP_MATERIALS.contains(type) && !type.equals(Material.LADDER)) {
             e.setCancelled(true);
+            return;
         }
 
-        if (MobDefServer.getMap().getCoreLocation().distanceSquared(e.getBlock().getLocation()) < BLOCK_VILLAGER_DISTANCE * BLOCK_VILLAGER_DISTANCE) {
+        if (MobDefServer.getMap().getCoreLocation().distanceSquared(blockPlaced.getLocation()) < BLOCK_VILLAGER_DISTANCE * BLOCK_VILLAGER_DISTANCE) {
             e.setCancelled(true);
-
             e.getUser().sendPluginMessage(Plugin.MOB_DEFENCE, "You can not place a block here");
+            return;
+        }
+
+        Location loc = blockPlaced.getLocation();
+
+        boolean empty = true;
+
+        for (int y = 1; y <= 2; y++) {
+            loc = loc.clone().add(0, -y, 0);
+
+            if (!loc.getBlock().isEmpty()) {
+                empty = false;
+                break;
+            }
+        }
+
+        if (empty) {
+            Server.runTaskLaterSynchrony(() -> {
+                blockPlaced.setType(Material.AIR);
+                blockPlaced.getWorld().spawnFallingBlock(blockPlaced.getLocation().add(0.5, 0, 0.5),
+                        blockPlaced.getBlockData());
+            }, 1, GameMobDefence.getPlugin());
+
         }
     }
 

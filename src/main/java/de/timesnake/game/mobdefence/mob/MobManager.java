@@ -23,7 +23,7 @@ import java.util.*;
 public class MobManager implements Listener {
 
     public static final double SPAWN_AMOUNT_MULTIPLIER = 5;
-    public static final double SPAWN_AMOUNT_INCREASE = 1.7;
+    public static final double SPAWN_AMOUNT_INCREASE = 1.6;
 
     public static final double SPAWN_TIME_MULTIPLIER = 17;
 
