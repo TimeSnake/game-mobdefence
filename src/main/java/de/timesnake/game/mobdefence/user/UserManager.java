@@ -5,7 +5,7 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.event.*;
 import de.timesnake.game.mobdefence.chat.Plugin;
-import de.timesnake.game.mobdefence.kit.ItemTrade;
+import de.timesnake.game.mobdefence.kit.MobDefKit;
 import de.timesnake.game.mobdefence.kit.ShopCurrency;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
@@ -43,7 +43,11 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
     public static final ExItemStack DEBUG_TOOL = new ExItemStack(Material.BONE);
 
-    private static final List<Material> ALLOWED_DROPS = List.of(ShopCurrency.BRONZE.getItem().getType(), ShopCurrency.SILVER.getItem().getType(), ShopCurrency.GOLD.getItem().getType(), ShopCurrency.EMERALD.getItem().getType(), Material.COOKED_BEEF, ItemTrade.KELP.getType(), Material.GOLDEN_APPLE, Material.OAK_FENCE, Material.OAK_PLANKS, Material.IRON_BARS, Material.COBBLESTONE_WALL, Material.OAK_SLAB);
+    private static final List<Material> ALLOWED_DROPS = List.of(ShopCurrency.BRONZE.getItem().getType(),
+            ShopCurrency.SILVER.getItem().getType(), ShopCurrency.GOLD.getItem().getType(),
+            ShopCurrency.EMERALD.getItem().getType(), Material.COOKED_BEEF, MobDefKit.KELP.getType(),
+            Material.GOLDEN_APPLE, Material.OAK_FENCE, Material.OAK_PLANKS, Material.IRON_BARS,
+            Material.COBBLESTONE_WALL, Material.OAK_SLAB);
 
     private static final List<Material> REMOVED_DROPS = List.of(Material.GLASS_BOTTLE, Material.BUCKET);
 
@@ -83,7 +87,7 @@ public class UserManager implements Listener, UserInventoryInteractListener {
         this.trapManager = new TrapManager();
 
         Server.registerListener(this, GameMobDefence.getPlugin());
-        Server.getInventoryEventManager().addInteractListener(this, DEBUG_TOOL, ItemTrade.KELP);
+        Server.getInventoryEventManager().addInteractListener(this, DEBUG_TOOL, MobDefKit.KELP);
     }
 
     public void runTasks() {
@@ -162,7 +166,14 @@ public class UserManager implements Listener, UserInventoryInteractListener {
         if (!(BlockCheck.NORMAL_BREAKABLE.isTagged(type) || BlockCheck.HIGH_BREAKABLE.isTagged(type) || type.isEmpty() || type.equals(Material.FIRE))) {
             e.setCancelled(true);
         } else {
-            // TODO give exitemstack
+            ExItemStack item = MobDefKit.BLOCK_ITEM_BY_TYPE.get(type);
+
+            if (item == null) {
+                return;
+            }
+
+            e.setDropItems(false);
+            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation().add(0.5, 0, 0.5), item);
         }
     }
 
@@ -199,9 +210,10 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
         if (empty) {
             Server.runTaskLaterSynchrony(() -> {
-                blockPlaced.setType(Material.AIR);
                 blockPlaced.getWorld().spawnFallingBlock(blockPlaced.getLocation().add(0.5, 0, 0.5),
                         blockPlaced.getBlockData());
+
+                Server.runTaskLaterSynchrony(() -> blockPlaced.setType(Material.AIR), 1, GameMobDefence.getPlugin());
             }, 1, GameMobDefence.getPlugin());
 
         }
@@ -321,21 +333,23 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
         if (item.equals(DEBUG_TOOL)) {
             if (user.getPlayer().isSneaking()) {
-                HeightBlock block = MobDefServer.getMap().getHeightMapManager().getMap(HeightMapManager.MapType.WALL_FINDER).getHeightBlock(user.getExLocation());
+                HeightBlock block =
+                        MobDefServer.getMap().getHeightMapManager().getMap(HeightMapManager.MapType.WALL_FINDER).getHeightBlock(user.getExLocation());
                 this.sendHeightLevel(user, block);
                 return;
             }
 
-            HeightBlock block = MobDefServer.getMap().getHeightMapManager().getMap(HeightMapManager.MapType.NORMAL).getHeightBlock(user.getExLocation());
+            HeightBlock block =
+                    MobDefServer.getMap().getHeightMapManager().getMap(HeightMapManager.MapType.NORMAL).getHeightBlock(user.getExLocation());
             this.sendHeightLevel(user, block);
-        } else if (ItemTrade.KELP.equals(item)) {
+        } else if (MobDefKit.KELP.equals(item)) {
             event.setCancelled(true);
 
             if (user.getPlayer().getFoodLevel() == 20) {
                 return;
             }
 
-            user.removeCertainItemStack(ItemTrade.KELP.cloneWithId().asOne());
+            user.removeCertainItemStack(MobDefKit.KELP.cloneWithId().asOne());
             double food = user.getPlayer().getFoodLevel();
             user.getPlayer().setFoodLevel(food <= 19 ? ((int) (food + 1)) : 20);
             user.getPlayer().setSaturation(3);

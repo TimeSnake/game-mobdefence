@@ -15,21 +15,21 @@ public class BaseShops {
     public static final TeamItemShop BLOCK_SHOP = new TeamItemShop("§6Blocks", 31,
             new ExItemStack(Material.OAK_FENCE),
             List.of(),
-            List.of(ItemTrade.OAK_FENCE, ItemTrade.OAK_FENCE_GATE, ItemTrade.OAK_PLANKS, ItemTrade.OAK_SLABS,
-                    ItemTrade.IRON_BARS, ItemTrade.COBBLESTONE_WALL, ItemTrade.STONE_AXE, ItemTrade.IRON_PICKAXE),
+            List.of(MobDefKit.OAK_FENCE, MobDefKit.OAK_FENCE_GATE, MobDefKit.OAK_PLANKS, MobDefKit.OAK_SLABS,
+                    MobDefKit.IRON_BARS, MobDefKit.COBBLESTONE_WALL, MobDefKit.STONE_AXE, MobDefKit.IRON_PICKAXE),
             TrapMaker.getShopTrades());
 
     public static final TeamItemShop BASIC_SHOP = new TeamItemShop("§6Basics", 29,
             new ExItemStack(Material.COOKED_BEEF),
             List.of(),
-            List.of(ItemTrade.APPLE, ItemTrade.COOKED_BEEF, ItemTrade.PUMPKIN_PIE, ItemTrade.DRIED_KELP,
-                    ItemTrade.GOLDEN_APPLE, ItemTrade.GOLDEN_CARROT, ItemTrade.MILK, WaterBottle.WATER,
-                    ItemTrade.SPEED, ItemTrade.INSTANT_HEAL));
+            List.of(MobDefKit.APPLE, MobDefKit.COOKED_BEEF, MobDefKit.PUMPKIN_PIE, MobDefKit.DRIED_KELP,
+                    MobDefKit.GOLDEN_APPLE, MobDefKit.GOLDEN_CARROT, MobDefKit.MILK, WaterBottle.WATER,
+                    MobDefKit.SPEED, MobDefKit.INSTANT_HEAL));
 
     public static final TeamItemShop TEAM_SHOP = new TeamItemShop("§6Team Stuff", 33,
             new ExItemStack(Material.PLAYER_HEAD),
             List.of(TeamHealth.MAX_HEALTH, ReviveManager.REVIVE),
-            List.of(ItemTrade.IRON_GOLEM, ItemTrade.REGEN));
+            List.of(MobDefKit.IRON_GOLEM, MobDefKit.REGEN));
 
     private static final List<TeamItemShop> SHOPS = List.of(BLOCK_SHOP, BASIC_SHOP, TEAM_SHOP);
 

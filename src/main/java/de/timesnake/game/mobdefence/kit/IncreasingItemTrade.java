@@ -5,7 +5,6 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -15,14 +14,17 @@ public class IncreasingItemTrade extends ItemTrade {
     private int priceIndex;
     private final List<ShopPrice> prices;
 
-    public IncreasingItemTrade(int slot, List<ShopPrice> prices, Collection<ExItemStack> sellingItems, ExItemStack displayItem) {
+    public IncreasingItemTrade(int slot, List<ShopPrice> prices, List<ExItemStack> sellingItems,
+                               ExItemStack displayItem) {
         super(slot, false, prices.get(0), sellingItems, displayItem, "§cThe price increases per buy");
         this.priceIndex = 0;
         this.prices = prices;
     }
 
-    public IncreasingItemTrade(int slot, ShopPrice basePrice, int increase, int increaseMultiplier, Collection<ExItemStack> sellingItems, ExItemStack displayItem, String... description) {
-        super(slot, false, basePrice, sellingItems, displayItem, Stream.concat(Arrays.stream(description), Stream.of("§cThe price increases per buy")).toArray(String[]::new));
+    public IncreasingItemTrade(int slot, ShopPrice basePrice, int increase, int increaseMultiplier,
+                               List<ExItemStack> sellingItems, ExItemStack displayItem, String... description) {
+        super(slot, false, basePrice, sellingItems, displayItem, Stream.concat(Arrays.stream(description), Stream.of(
+                "§cThe price increases per buy")).toArray(String[]::new));
         this.priceIndex = 0;
         this.prices = new LinkedList<>();
 
