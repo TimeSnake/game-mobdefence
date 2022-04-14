@@ -50,6 +50,10 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
             EntityClass.EntityHuman, EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf,
             EntityClass.EntitySnowman, EntityClass.EntityBlaze);
 
+    public static final List<EntityType> DEFENDER_TYPES = List.of(EntityType.SHEEP,
+            EntityType.PLAYER, EntityType.IRON_GOLEM, EntityType.VILLAGER, EntityType.WOLF,
+            EntityType.SNOWMAN, EntityType.BLAZE);
+
     public static MobDefMob<?> getCompressedMob(int wave, Type type, ExLocation spawn) {
         return switch (type) {
             case COMPRESSED_MELEE -> new CompressedZombie(spawn, wave);

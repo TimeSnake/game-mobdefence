@@ -5,6 +5,7 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractListener;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
+import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import org.bukkit.Location;
@@ -111,8 +112,10 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
                 counter.getAndIncrement();
             }
 
-            for (LivingEntity entity : loc.getNearbyLivingEntities(0.7, 1)) {
-                entity.damage(damage * 2, user.getPlayer());
+            for (LivingEntity entity : loc.getNearbyLivingEntities(1, 2)) {
+                if (entity.getBoundingBox().contains(loc.toVector()) && !MobDefMob.DEFENDER_TYPES.contains(entity.getType())) {
+                    entity.damage(damage * 2, user.getPlayer());
+                }
             }
 
             stand.setVelocity(vec);
