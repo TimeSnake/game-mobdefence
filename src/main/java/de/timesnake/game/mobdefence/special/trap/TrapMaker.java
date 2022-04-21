@@ -23,7 +23,7 @@ public enum TrapMaker {
             return new RangedTrap(block, 2, 3) {
                 @Override
                 public boolean trigger(Collection<LivingEntity> entities) {
-                    this.getLocation().createExplosion(3, false, false);
+                    this.getLocation().createExplosion(4, false, false);
                     return super.trigger(entities);
                 }
             };
@@ -43,7 +43,7 @@ public enum TrapMaker {
                         Location loc = this.getLocation();
                         Vector vec = new Vector(eyeLoc.getX(), eyeLoc.getY(), eyeLoc.getZ()).subtract(new Vector(loc.getX(), loc.getY(), loc.getZ()));
 
-                        loc.getWorld().spawnArrow(loc, vec, 2, 1);
+                        loc.getWorld().spawnArrow(loc, vec, 5, 1);
                     }
 
                     return super.trigger(entities);
@@ -52,10 +52,13 @@ public enum TrapMaker {
         }
     },
 
-    SLOWNESS(new IncreasingItemTrade(33, new ShopPrice(7, ShopCurrency.BRONZE), 1, 8, List.of(new ExItemStack(Material.POLISHED_BLACKSTONE_BUTTON, "§6Slowness Trap").setLore("§fRadius: §75 blocks")), new ExItemStack(Material.POLISHED_BLACKSTONE_BUTTON, "§6Slowness Trap"), "§fRadius: §75 blocks", "§fUses: §72", "§7Gives mobs slowness V for 20s")) {
+    SLOWNESS(new IncreasingItemTrade(33, new ShopPrice(7, ShopCurrency.BRONZE), 1, 8,
+            List.of(new ExItemStack(Material.POLISHED_BLACKSTONE_BUTTON, "§6Slowness Trap").setLore("§fRadius: §75 " +
+                    "blocks")), new ExItemStack(Material.POLISHED_BLACKSTONE_BUTTON, "§6Slowness Trap"), "§fRadius: " +
+            "§75 blocks", "§fUses: §73", "§7Gives mobs slowness V for 20s")) {
         @Override
         public Trap newInstance(ExBlock block) {
-            return new MultipleRangedTrap(block, 5, 2, 2) {
+            return new MultipleRangedTrap(block, 5, 2, 3) {
                 @Override
                 public boolean trigger(Collection<LivingEntity> entities) {
                     this.getLocation().getWorld().playSound(this.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 2, 1);
