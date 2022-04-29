@@ -271,7 +271,13 @@ public class HeightMap {
 
     private enum BlockArea {
 
-        STRAIGHT(List.of(new Vector(-1, 0, 0), new Vector(1, 0, 0), new Vector(0, 0, -1), new Vector(0, 0, 1))), DIAGONAL(List.of(new Vector(-1, 0, -1), new Vector(-1, 0, 1), new Vector(1, 0, -1), new Vector(1, 0, 1), new Vector(-1, -1, 0), new Vector(-1, 1, 0), new Vector(1, -1, 0), new Vector(1, 1, 0), new Vector(0, -1, -1), new Vector(0, -1, 1), new Vector(0, 1, -1), new Vector(0, 1, 1))), DOUBLE_DIAGONAL(List.of(new Vector(-1, -1, -1), new Vector(-1, -1, 1), new Vector(-1, 1, -1), new Vector(-1, 1, 1), new Vector(1, -1, -1), new Vector(1, -1, 1), new Vector(1, 1, -1), new Vector(1, 1, 1)));
+        STRAIGHT(List.of(new Vector(-1, 0, 0), new Vector(1, 0, 0), new Vector(0, 0, -1), new Vector(0, 0, 1))),
+        DIAGONAL(List.of(new Vector(-1, 0, -1), new Vector(-1, 0, 1), new Vector(1, 0, -1), new Vector(1, 0, 1),
+                new Vector(-1, -1, 0), new Vector(-1, 1, 0), new Vector(1, -1, 0), new Vector(1, 1, 0),
+                new Vector(0, -1, -1), new Vector(0, -1, 1), new Vector(0, 1, -1), new Vector(0, 1, 1))),
+        DOUBLE_DIAGONAL(List.of(new Vector(-1, -1, -1), new Vector(-1, -1, 1), new Vector(-1, 1, -1), new Vector(-1,
+                        1, 1),
+                new Vector(1, -1, -1), new Vector(1, -1, 1), new Vector(1, 1, -1), new Vector(1, 1, 1)));
 
         private final List<Vector> vectors;
 
