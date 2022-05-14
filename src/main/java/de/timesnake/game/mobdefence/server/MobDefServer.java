@@ -8,12 +8,16 @@ import de.timesnake.game.mobdefence.mob.MobManager;
 import de.timesnake.game.mobdefence.special.weapon.WeaponManager;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
+import de.timesnake.library.basic.util.statistics.Stat;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.LivingEntity;
 
 import java.util.Collection;
 
 public class MobDefServer extends LoungeBridgeServer {
+
+    public static final Stat<Integer> MOB_KILLS = Stat.Type.INTEGER.asStat("mob_kill", "Mob Kills",
+            0, 10, 2, true, 0, 2);
 
     private static final MobDefServerManager server = MobDefServerManager.getInstance();
 

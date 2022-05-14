@@ -25,6 +25,7 @@ import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.basic.util.TimeCoins;
+import de.timesnake.library.basic.util.statistics.Stat;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -39,6 +40,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 public class MobDefServerManager extends LoungeBridgeServerManager implements Listener {
 
@@ -453,5 +455,17 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         ((MobDefMap) this.getMap()).getHeightMapManager().updateMaps();
+    }
+
+    @Override
+    public void saveGameUserStats(GameUser user) {
+        super.saveGameUserStats(user);
+
+        user.increaseStat(MobDefServer.MOB_KILLS, user.getStatistic(Statistic.MOB_KILLS));
+    }
+
+    @Override
+    public Set<Stat<?>> getStats() {
+        return Set.of(MobDefServer.MOB_KILLS);
     }
 }

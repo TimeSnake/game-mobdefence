@@ -113,7 +113,7 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
             }
 
             for (LivingEntity entity : loc.getNearbyLivingEntities(1, 2)) {
-                if (entity.getBoundingBox().contains(loc.toVector()) && !MobDefMob.DEFENDER_TYPES.contains(entity.getType())) {
+                if (MobDefMob.DEFENDER_TYPES.contains(entity.getType())) {
                     entity.damage(damage * 2, user.getPlayer());
                 }
             }
