@@ -11,6 +11,7 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.TeamHealth;
 import de.timesnake.library.basic.util.Status;
 import org.bukkit.GameMode;
+import org.bukkit.Statistic;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
@@ -45,6 +46,8 @@ public class MobDefUser extends GameUser {
         this.getPlayer().setMaxHealth(TeamHealth.MAX_HEALTH.getMaxHealth());
 
         MobDefServer.updateSideboardPlayers();
+
+        this.setStatistic(Statistic.MOB_KILLS, 0);
     }
 
     public void startGame() {
