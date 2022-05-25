@@ -49,7 +49,8 @@ public class Illusioner extends MobDefMob<ExIllagerIllusioner> {
             this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
-        this.entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.CROSSBOW).addExEnchantment(Enchantment.QUICK_CHARGE, 3).addExEnchantment(Enchantment.ARROW_DAMAGE, 2));
+        this.entity.setSlot(ExEnumItemSlot.MAIN_HAND,
+                new ExItemStack(Material.CROSSBOW).addExEnchantment(Enchantment.QUICK_CHARGE, 3).addExEnchantment(Enchantment.ARROW_DAMAGE, 2));
 
         this.entity.setMaxHealth(80);
         this.entity.setHealth(80);

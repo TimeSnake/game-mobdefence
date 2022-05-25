@@ -28,9 +28,11 @@ import java.util.List;
 
 public class Snowman extends BlockSpawner implements Listener {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.CARVED_PUMPKIN, "§6 4 Snowmen", "§7Place the block to spawn a snowman", "§c4 Snowmen");
+    public static final ExItemStack ITEM = new ExItemStack(Material.CARVED_PUMPKIN, "§6 4 Snowmen", "§7Place the " +
+            "block to spawn a snowman", "§c4 Snowmen");
 
-    public static final ItemTrade SNOWMAN = new ItemTrade(false, new ShopPrice(8, ShopCurrency.GOLD), List.of(Snowman.ITEM), Snowman.ITEM);
+    public static final ItemTrade SNOWMAN = new ItemTrade(false, new ShopPrice(8, ShopCurrency.GOLD),
+            List.of(Snowman.ITEM), Snowman.ITEM);
 
     public Snowman() {
         super(EntityType.SNOWMAN, ITEM);

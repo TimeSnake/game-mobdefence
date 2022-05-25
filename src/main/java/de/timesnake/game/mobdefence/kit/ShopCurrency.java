@@ -5,7 +5,10 @@ import org.bukkit.Material;
 
 public enum ShopCurrency {
 
-    BRONZE("Bronze", new ExItemStack(Material.BRICK, "§6Bronze")), SILVER("Silver", new ExItemStack(Material.IRON_INGOT, "§6Silver")), GOLD("Gold", new ExItemStack(Material.GOLD_INGOT, "§6Gold")), EMERALD("Emerald", new ExItemStack(Material.EMERALD, "§6Emerald"));
+    BRONZE("Bronze", new ExItemStack(Material.BRICK, "§6Bronze")),
+    SILVER("Silver", new ExItemStack(Material.IRON_INGOT, "§6Silver")),
+    GOLD("Gold", new ExItemStack(Material.GOLD_INGOT, "§6Gold")),
+    EMERALD("Emerald", new ExItemStack(Material.EMERALD, "§6Emerald"));
 
     private final String name;
     private final ExItemStack item;

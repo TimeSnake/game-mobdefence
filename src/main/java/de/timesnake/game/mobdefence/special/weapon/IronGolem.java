@@ -40,7 +40,8 @@ public class IronGolem extends BlockSpawner implements Listener {
 
         golem.addPathfinderGoal(1, new ExPathfinderGoalMeleeAttack(1.0D));
         golem.addPathfinderGoal(2, new ExPathfinderGoalMoveTowardsTarget(0.9D, 32.0F));
-        golem.addPathfinderGoal(3, new ExPathfinderGoalLocation(location.getX(), location.getY(), location.getZ(), 1, 32, 2));
+        golem.addPathfinderGoal(3, new ExPathfinderGoalLocation(location.getX(), location.getY(), location.getZ(), 1,
+                32, 2));
         golem.addPathfinderGoal(7, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
         golem.addPathfinderGoal(8, new ExPathfinderGoalRandomLookaround());
 

@@ -9,7 +9,8 @@ import org.bukkit.Location;
 
 public class ExHeightPathfinder extends ExPathfinderGoalUpdatedLocation {
 
-    public ExHeightPathfinder(HeightMap map, int steps, double speed, double trackingDistance, double minDistance, ExPathfinderGoal breakBlock, int breakLevel) {
+    public ExHeightPathfinder(HeightMap map, int steps, double speed, double trackingDistance, double minDistance,
+                              ExPathfinderGoal breakBlock, int breakLevel) {
         super(new CorePathfinder(map, steps, speed, trackingDistance, minDistance, breakBlock, breakLevel));
 
     }
@@ -23,7 +24,8 @@ public class ExHeightPathfinder extends ExPathfinderGoalUpdatedLocation {
         private final LocationTargetable breakBlock;
         private final int breakLevel;
 
-        public CorePathfinder(HeightMap map, int steps, double speed, double trackingDistance, double minDistance, ExPathfinderGoal breakBlock, int breakLevel) {
+        public CorePathfinder(HeightMap map, int steps, double speed, double trackingDistance, double minDistance,
+                              ExPathfinderGoal breakBlock, int breakLevel) {
             super(null, speed, trackingDistance, minDistance);
             this.map = map;
             this.steps = steps;

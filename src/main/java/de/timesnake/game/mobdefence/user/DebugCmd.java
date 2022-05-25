@@ -31,7 +31,10 @@ public class DebugCmd implements CommandListener {
 
         if (args.isLengthEquals(1, false)) {
             if ("coins".equalsIgnoreCase(args.getString(0))) {
-                user.addItem(new ShopPrice(64, ShopCurrency.BRONZE).asItem(), new ShopPrice(64, ShopCurrency.SILVER).asItem(), new ShopPrice(64, ShopCurrency.GOLD).asItem(), new ShopPrice(64, ShopCurrency.EMERALD).asItem());
+                user.addItem(new ShopPrice(64, ShopCurrency.BRONZE).asItem(),
+                        new ShopPrice(64, ShopCurrency.SILVER).asItem(),
+                        new ShopPrice(64, ShopCurrency.GOLD).asItem(),
+                        new ShopPrice(64, ShopCurrency.EMERALD).asItem());
             }
         }
     }

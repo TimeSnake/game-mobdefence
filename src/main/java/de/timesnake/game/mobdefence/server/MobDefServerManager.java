@@ -93,7 +93,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
         this.coreHealthBar = Server.createBossBar("§c§lHealth", BarColor.RED, BarStyle.SOLID);
         this.coreHealthBar.setProgress(1);
 
-        this.sideboard = Server.getScoreboardManager().registerNewSideboard("mobdef", "§6§l" + this.getGame().getDisplayName());
+        this.sideboard = Server.getScoreboardManager().registerNewSideboard("mobdef",
+                "§6§l" + this.getGame().getDisplayName());
         this.sideboard.setScore(4, "§3§lWave");
         this.updateSideboardWave();
         this.sideboard.setScore(2, "§f-------------");
@@ -265,7 +266,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
             }
 
             if (this.delay <= 5) {
-                this.broadcastGameMessage(ChatColor.PUBLIC + "Next wave spawns in " + ChatColor.VALUE + this.delay + "s");
+                this.broadcastGameMessage(ChatColor.PUBLIC + "Next wave spawns in " + ChatColor.VALUE + this.delay +
+                        "s");
             }
             delay--;
         }, 0, 20, GameMobDefence.getPlugin());
@@ -434,7 +436,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
 
     public Collection<MobDefUser> getAliveUsers() {
         Collection<MobDefUser> users = new ArrayList<>();
-        for (User user : Server.getUsers((user) -> user.getStatus().equals(Status.User.IN_GAME) || user.getStatus().equals(Status.User.PRE_GAME))) {
+        for (User user :
+                Server.getUsers((user) -> user.getStatus().equals(Status.User.IN_GAME) || user.getStatus().equals(Status.User.PRE_GAME))) {
 
             if (((MobDefUser) user).isAlive()) {
                 users.add(((MobDefUser) user));

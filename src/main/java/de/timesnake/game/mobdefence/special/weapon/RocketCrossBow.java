@@ -99,8 +99,10 @@ public class RocketCrossBow extends SpecialWeapon implements Listener {
 
     private static class FollowerArrow extends PiercingBullet {
 
-        public FollowerArrow(User user, double speed, Double damage, int piercing, Collection<LivingEntity> hitTargets) {
-            super(user, user.getEyeLocation().add(0, -0.5, 0), TargetFinder.NEAREST_ATTACKER, speed, damage, piercing, hitTargets);
+        public FollowerArrow(User user, double speed, Double damage, int piercing,
+                             Collection<LivingEntity> hitTargets) {
+            super(user, user.getEyeLocation().add(0, -0.5, 0), TargetFinder.NEAREST_ATTACKER, speed, damage, piercing
+                    , hitTargets);
         }
 
         @Override

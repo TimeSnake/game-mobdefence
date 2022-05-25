@@ -24,8 +24,18 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
 
     public static final int BREAK_LEVEL = 16;
 
-    public static final List<Class<? extends Monster>> ATTACKER_ENTITY_CLASSES = List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class, org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class, org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class, org.bukkit.entity.Vindicator.class, Vex.class, Silverfish.class, Endermite.class, org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class, Stray.class);
-    public static final List<EntityClass<? extends EntityLiving>> ATTACKER_ENTTIY_ENTITY_CLASSES = List.of(EntityClass.EntityZombie, EntityClass.EntitySkeleton, EntityClass.EntityIllagerIllusioner, EntityClass.EntityWitch, EntityClass.EntityPillager, EntityClass.EntityEvoker, EntityClass.EntityVindicator, EntityClass.EntityVex, EntityClass.EntitySilverfish, EntityClass.EntityEndermite, EntityClass.EntityCreeper, EntityClass.EntityCaveSpider, EntityClass.EntitySkeletonStray);
+    public static final List<Class<? extends Monster>> ATTACKER_ENTITY_CLASSES =
+            List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class,
+                    org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class,
+                    org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class,
+                    org.bukkit.entity.Vindicator.class, Vex.class, Silverfish.class, Endermite.class,
+                    org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class, Stray.class);
+    public static final List<EntityClass<? extends EntityLiving>> ATTACKER_ENTTIY_ENTITY_CLASSES =
+            List.of(EntityClass.EntityZombie, EntityClass.EntitySkeleton, EntityClass.EntityIllagerIllusioner,
+                    EntityClass.EntityWitch, EntityClass.EntityPillager, EntityClass.EntityEvoker,
+                    EntityClass.EntityVindicator, EntityClass.EntityVex, EntityClass.EntitySilverfish,
+                    EntityClass.EntityEndermite, EntityClass.EntityCreeper, EntityClass.EntityCaveSpider,
+                    EntityClass.EntitySkeletonStray);
 
     public static final List<Class<? extends Monster>> ATTACKER_ENTITY_COUNT_CLASSES =
             List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class,
@@ -195,14 +205,16 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
 
     public void spawn() {
         this.entity.setPersistent(true);
-        this.entity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(), this.spawn.getYaw(), this.spawn.getPitch());
+        this.entity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
+                this.spawn.getYaw(), this.spawn.getPitch());
         EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), this.entity);
 
         this.entity.getExtension().setMaxNoDamageTicks(1);
 
         for (EntityExtension<?> subEntity : this.subEntities) {
             subEntity.getExtension().setPersistent(true);
-            subEntity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(), this.spawn.getYaw(), this.spawn.getPitch());
+            subEntity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
+                    this.spawn.getYaw(), this.spawn.getPitch());
             EntityManager.spawnExEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), subEntity);
         }
 

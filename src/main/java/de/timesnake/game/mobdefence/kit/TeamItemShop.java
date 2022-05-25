@@ -11,7 +11,8 @@ import java.util.List;
 
 public class TeamItemShop extends ItemShop {
 
-    public TeamItemShop(String name, int shopSlot, ExItemStack displayItem, List<Levelable<?>> levelItems, List<ShopTrade>... trades) {
+    public TeamItemShop(String name, int shopSlot, ExItemStack displayItem, List<Levelable<?>> levelItems,
+                        List<ShopTrade>... trades) {
         super(name, shopSlot, displayItem, levelItems, trades);
     }
 

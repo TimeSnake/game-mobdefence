@@ -21,9 +21,11 @@ import java.util.List;
 
 public class Blaze extends BlockSpawner implements Listener {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.MAGMA_BLOCK, "§6 3 Blazes", "§7Place the block to spawn a blaze", "§c3 Blazes");
+    public static final ExItemStack ITEM = new ExItemStack(Material.MAGMA_BLOCK, "§6 3 Blazes", "§7Place the block to" +
+            " spawn a blaze", "§c3 Blazes");
 
-    public static final ItemTrade BLAZE = new ItemTrade(false, new ShopPrice(16, ShopCurrency.SILVER), List.of(Blaze.ITEM), Blaze.ITEM);
+    public static final ItemTrade BLAZE = new ItemTrade(false, new ShopPrice(16, ShopCurrency.SILVER),
+            List.of(Blaze.ITEM), Blaze.ITEM);
 
     public Blaze() {
         super(EntityType.BLAZE, ITEM);

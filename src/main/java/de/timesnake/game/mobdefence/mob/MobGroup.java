@@ -94,7 +94,9 @@ public class MobGroup {
                     if (type.isCompressable()) {
                         int size = this.mobsByType.get(type).size();
                         for (int i = 0; i < size; i += 5) {
-                            MobDefMob.getCompressedMob(this.wave, type.getCompressed(), this.spawn);
+                            MobDefMob<?> compressed = MobDefMob.getCompressedMob(this.wave, type.getCompressed(),
+                                    this.spawn);
+                            compressed.spawn();
                         }
                     } else {
                         for (MobDefMob<?> mob : this.mobsByType.get(type)) {

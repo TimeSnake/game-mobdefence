@@ -60,7 +60,8 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
         if (random == 0) {
             this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntitySilverfish, 3, 5 * 20) {
                 @Override
-                public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<? extends ExEntityInsentient> entity) {
+                public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<?
+                        extends ExEntityInsentient> entity) {
                     World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
                     List<EntityExtension<? extends ExEntityInsentient>> fishs = new ArrayList<>();
@@ -70,7 +71,8 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
 
                         fish.addPathfinderGoal(1, new ExPathfinderGoalMeleeAttack(1.2));
                         fish.addPathfinderGoal(2, new ExPathfinderGoalFollowEntity(entity, 1.1f, 5, 20));
-                        fish.addPathfinderGoal(3, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, null, BREAK_LEVEL));
+                        fish.addPathfinderGoal(3, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, null,
+                                BREAK_LEVEL));
 
                         fish.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
 
@@ -96,7 +98,8 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
         } else if (random == 1) {
             this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityEndermite, 3, 5 * 20) {
                 @Override
-                public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<? extends ExEntityInsentient> entity) {
+                public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<?
+                        extends ExEntityInsentient> entity) {
                     World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
                     List<ExEndermite> mites = new ArrayList<>();
@@ -106,7 +109,8 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
 
                         mite.addPathfinderGoal(1, new ExPathfinderGoalFloat());
                         mite.addPathfinderGoal(2, new ExPathfinderGoalMeleeAttack(1.2));
-                        mite.addPathfinderGoal(3, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, null, BREAK_LEVEL));
+                        mite.addPathfinderGoal(3, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, null,
+                                BREAK_LEVEL));
 
                         mite.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
 
@@ -149,7 +153,8 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
     @Override
     public void equipArmor() {
         super.equipArmor();
-        this.entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET, List.of(Enchantment.PROTECTION_ENVIRONMENTAL), List.of(5)));
+        this.entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET,
+                List.of(Enchantment.PROTECTION_ENVIRONMENTAL), List.of(5)));
     }
 
     private List<EntityExtension<?>> getSilverFishs() {

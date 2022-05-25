@@ -13,7 +13,8 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class CoreRegeneration {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.BEACON, "Villager Regeneration", "Gives players regeneration, within 7 blocks.");
+    public static final ExItemStack ITEM = new ExItemStack(Material.BEACON, "Villager Regeneration", "Gives players " +
+            "regeneration, within 7 blocks.");
     public static final double RADIUS = 7;
 
     private BukkitTask task;

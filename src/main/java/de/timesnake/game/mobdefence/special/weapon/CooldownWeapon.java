@@ -28,7 +28,8 @@ public abstract class CooldownWeapon extends InteractWeapon {
 
         this.cooldownUsers.add(user);
 
-        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user), this.getCooldown(event.getClickedItem()), GameMobDefence.getPlugin());
+        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user), this.getCooldown(event.getClickedItem()),
+                GameMobDefence.getPlugin());
 
         super.onUserInventoryInteract(event);
     }

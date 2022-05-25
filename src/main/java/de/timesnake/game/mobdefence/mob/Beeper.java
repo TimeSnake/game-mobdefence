@@ -40,7 +40,8 @@ public class Beeper extends MobDefMob<ExCreeper> {
         for (int i = 0; i < 6; i++) {
             ExBee bee = new ExBee(location.getWorld(), true);
             bee.setPosition(location.getX(), location.getY() + 1.5, location.getZ());
-            bee.setTarget(((CraftPlayer) player).getHandle(), EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY, true);
+            bee.setTarget(((CraftPlayer) player).getHandle(), EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY,
+                    true);
             EntityManager.spawnEntity(location.getWorld(), bee);
         }
     }
@@ -71,7 +72,8 @@ public class Beeper extends MobDefMob<ExCreeper> {
         this.entity.addPathfinderGoal(6, new ExPathfinderGoalRandomLookaround());
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
-        this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman, true, true));
+        this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman, true,
+                true));
 
         if (this.currentWave > 10) {
             this.entity.setMaxHealth(60);

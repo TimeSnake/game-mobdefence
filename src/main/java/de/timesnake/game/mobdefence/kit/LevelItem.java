@@ -25,7 +25,8 @@ public class LevelItem extends Levelable<ItemLevelType<?>> {
         this.item = baseItem;
     }
 
-    public LevelItem(String name, boolean oneTimeBuy, ShopPrice price, ExItemStack baseItem, ExItemStack displayItem, List<ItemLevelType<?>> levelTypes) {
+    public LevelItem(String name, boolean oneTimeBuy, ShopPrice price, ExItemStack baseItem, ExItemStack displayItem,
+                     List<ItemLevelType<?>> levelTypes) {
         this(name, baseItem, displayItem, levelTypes);
 
         this.buyPrice = price;
@@ -34,11 +35,13 @@ public class LevelItem extends Levelable<ItemLevelType<?>> {
         this.displayItem.setLore("§7Buy the item", "", "§7Price:        §2" + this.buyPrice.toString());
     }
 
-    public LevelItem(String name, boolean oneTimeBuy, int unlockWave, ShopPrice price, ExItemStack baseItem, ExItemStack displayItem, List<ItemLevelType<?>> levelTypes) {
+    public LevelItem(String name, boolean oneTimeBuy, int unlockWave, ShopPrice price, ExItemStack baseItem,
+                     ExItemStack displayItem, List<ItemLevelType<?>> levelTypes) {
         this(name, oneTimeBuy, price, baseItem, displayItem, levelTypes);
         this.unlockWave = unlockWave;
 
-        this.displayItem.setLore("§7Buy the item", "", "§7Price:        §2" + this.buyPrice.toString(), "", "§cLocked until wave " + this.unlockWave);
+        this.displayItem.setLore("§7Buy the item", "", "§7Price:        §2" + this.buyPrice.toString(), "", "§cLocked" +
+                " until wave " + this.unlockWave);
     }
 
     public LevelItem(LevelItem levelItem) {
@@ -74,7 +77,8 @@ public class LevelItem extends Levelable<ItemLevelType<?>> {
             if (levelType == null && this.getDisplayItem().equals(item)) {
 
                 if (MobDefServer.getWaveNumber() < this.unlockWave) {
-                    user.sendPluginMessage(Plugin.MOB_DEFENCE, "This item is locked until wave " + this.unlockWave + " is completed");
+                    user.sendPluginMessage(Plugin.MOB_DEFENCE, "This item is locked until wave " + this.unlockWave +
+                            " is completed");
                     return;
                 }
 

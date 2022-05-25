@@ -72,7 +72,8 @@ public class MobDefUser extends GameUser {
 
 
         if (this.kit.equals(MobDefKit.ALCHEMIST)) {
-            Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0), GameMobDefence.getPlugin());
+            Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0),
+                    GameMobDefence.getPlugin());
             this.setPvpMode(true, 6);
         } else if (this.kit.equals(MobDefKit.KNIGHT)) {
             this.setPvpMode(true);
@@ -98,7 +99,8 @@ public class MobDefUser extends GameUser {
         this.alive = false;
 
         if (this.getStatus().equals(Status.User.IN_GAME) || this.getStatus().equals(Status.User.OUT_GAME)) {
-            this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager().addDeadUser(this, this.getLocation());
+            this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager().addDeadUser(this,
+                    this.getLocation());
         }
 
         super.joinSpectator();
@@ -139,7 +141,8 @@ public class MobDefUser extends GameUser {
         this.setGameMode(GameMode.SURVIVAL);
 
         if (this.kit.equals(MobDefKit.ALCHEMIST)) {
-            Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0), GameMobDefence.getPlugin());
+            Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0),
+                    GameMobDefence.getPlugin());
         }
 
         if (this.deadBody != null) {
@@ -147,7 +150,8 @@ public class MobDefUser extends GameUser {
             this.deadBody = null;
 
             this.getPlayer().setInvulnerable(true);
-            Server.runTaskLaterSynchrony(() -> this.getPlayer().setInvulnerable(false), 3 * 20, GameMobDefence.getPlugin());
+            Server.runTaskLaterSynchrony(() -> this.getPlayer().setInvulnerable(false), 3 * 20,
+                    GameMobDefence.getPlugin());
         } else {
             this.teleport(MobDefServer.getMap().getUserSpawn());
         }

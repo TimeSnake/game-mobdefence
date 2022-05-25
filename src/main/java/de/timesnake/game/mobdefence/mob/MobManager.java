@@ -66,7 +66,8 @@ public class MobManager implements Listener {
     }
 
     private void checkRespawn() {
-        int alive = MobDefServer.getMap().getWorld().getEntitiesByClasses(MobDefMob.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0])).size();
+        int alive =
+                MobDefServer.getMap().getWorld().getEntitiesByClasses(MobDefMob.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0])).size();
 
         if (alive <= 3 * MobDefServer.getPlayerAmount() * Math.sqrt(MobDefServer.getWaveNumber())) {
             boolean allSpawned = true;
@@ -145,13 +146,16 @@ public class MobManager implements Listener {
         Server.printText(Plugin.MOB_DEFENCE, "Spawning wave " + wave + " ...");
         this.mobGroups.clear();
 
-        int totalMobAmount = (int) (SPAWN_AMOUNT_MULTIPLIER * Math.sqrt(wave) * SPAWN_AMOUNT_INCREASE * players * this.nextLimitedGaussian(0.2));
+        int totalMobAmount =
+                (int) (SPAWN_AMOUNT_MULTIPLIER * Math.sqrt(wave) * SPAWN_AMOUNT_INCREASE * players * this.nextLimitedGaussian(0.2));
         int mobAmount = totalMobAmount;
 
         int totalTime = (int) (Math.log(totalMobAmount) * SPAWN_TIME_MULTIPLIER);
 
-        int minGroupSize = (int) (MIN_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE + playerSqrt * GROUP_SIZE_PLAYER_MULTIPLIER);
-        int maxGroupSize = ((int) (MAX_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE + playerSqrt * GROUP_SIZE_PLAYER_MULTIPLIER));
+        int minGroupSize =
+                (int) (MIN_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE + playerSqrt * GROUP_SIZE_PLAYER_MULTIPLIER);
+        int maxGroupSize =
+                ((int) (MAX_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE + playerSqrt * GROUP_SIZE_PLAYER_MULTIPLIER));
 
         List<Integer> groupSizes = new ArrayList<>();
 
@@ -164,11 +168,13 @@ public class MobManager implements Listener {
         int groupAmount = groupSizes.size();
         int delay = totalTime / groupAmount;
 
-        this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(), groupSizes.get(0), 1));
+        this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+                groupSizes.get(0), 1));
 
         for (int i = 1; i < groupSizes.size(); i++) {
             int groupDelay = (int) (this.nextLimitedGaussian(0.2) * delay) + delay * (i - 1);
-            this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(), groupSizes.get(i), groupDelay));
+            this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+                    groupSizes.get(i), groupDelay));
         }
 
         if (wave % 5 == 0) {
@@ -183,8 +189,10 @@ public class MobManager implements Listener {
             MobGroup bossGroup = new MobGroup(bossMobs, delay);
             this.mobGroups.addLast(bossGroup);
 
-            this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(), this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
-            this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(), this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
+            this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+                    this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
+            this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+                    this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
 
             Server.printText(Plugin.MOB_DEFENCE, "Bosses: " + bossGroup.size());
         }
@@ -200,8 +208,10 @@ public class MobManager implements Listener {
             MobGroup bossGroup = new MobGroup(bossMobs, delay);
             this.mobGroups.addLast(bossGroup);
 
-            this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(), this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
-            this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(), this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
+            this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+                    this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
+            this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+                    this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
 
             Server.printText(Plugin.MOB_DEFENCE, "Bosses: " + bossGroup.size());
         }

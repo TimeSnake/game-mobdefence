@@ -40,7 +40,8 @@ public abstract class Levelable<T extends LevelType<?>> {
             List<LevelType<?>> conflictingTypes = new ArrayList<>();
 
             for (LevelType<?> conflictingType : levelType.getConflictingTypes()) {
-                LevelType<?> clonedConflictingLevelType = this.levelTypeByItemId.get(conflictingType.getDisplayItem().getId());
+                LevelType<?> clonedConflictingLevelType =
+                        this.levelTypeByItemId.get(conflictingType.getDisplayItem().getId());
                 conflictingTypes.add(clonedConflictingLevelType);
             }
 

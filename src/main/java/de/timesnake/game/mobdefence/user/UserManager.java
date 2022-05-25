@@ -71,7 +71,8 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
     public UserManager() {
 
-        //this.itemGenerators.add(new ItemGenerator(MobDefKit.ARCHER, 1, Speer.SPEER.getItem().cloneWithId().asQuantity(3), 8));
+        //this.itemGenerators.add(new ItemGenerator(MobDefKit.ARCHER, 1, Speer.SPEER.getItem().cloneWithId()
+        // .asQuantity(3), 8));
 
         this.coreRegeneration = new CoreRegeneration();
         this.resistanceAura = new ResistanceAura();
@@ -275,7 +276,8 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
         if (REMOVED_DROPS.contains(material)) {
             e.setCancelled(true);
-            Server.runTaskLaterSynchrony(() -> e.getUser().getInventory().remove(material), 1, GameMobDefence.getPlugin());
+            Server.runTaskLaterSynchrony(() -> e.getUser().getInventory().remove(material), 1,
+                    GameMobDefence.getPlugin());
         }
 
         if (!ALLOWED_DROPS.contains(material)) {
