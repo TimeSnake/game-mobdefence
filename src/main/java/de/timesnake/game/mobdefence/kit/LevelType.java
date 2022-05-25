@@ -103,7 +103,8 @@ public abstract class LevelType<L extends Level<?>> {
         }
 
         if (MobDefServer.getWaveNumber() < nextLevel.getUnlockWave()) {
-            user.sendPluginMessage(Plugin.MOB_DEFENCE, "§cThis level is locked until wave " + nextLevel.getUnlockWave());
+            user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                    "§cThis level is locked until wave " + nextLevel.getUnlockWave());
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return false;
         }
@@ -148,9 +149,13 @@ public abstract class LevelType<L extends Level<?>> {
             this.displayItem.setLore("§fLevel: §2" + this.level, "", "§7Next Level: §cmax level reached", "");
         } else {
             if (this.conflictingTypes.size() > 0) {
-                this.displayItem.setLore("§7Level: §2" + this.level, "", "§7Next Level: §9" + nextLevel.getDescription(), "", "§7Price:        §2" + nextLevel.getPrice().toString(), "", sb.toString());
+                this.displayItem.setLore("§7Level: §2" + this.level, "",
+                        "§7Next Level: §9" + nextLevel.getDescription(), "",
+                        "§7Price:        §2" + nextLevel.getPrice().toString(), "", sb.toString());
             } else {
-                this.displayItem.setLore("§7Level: §2" + this.level, "", "§7Next Level: §9" + nextLevel.getDescription(), "", "§7Price:        §2" + nextLevel.getPrice().toString());
+                this.displayItem.setLore("§7Level: §2" + this.level, "",
+                        "§7Next Level: §9" + nextLevel.getDescription(), "",
+                        "§7Price:        §2" + nextLevel.getPrice().toString());
             }
 
         }

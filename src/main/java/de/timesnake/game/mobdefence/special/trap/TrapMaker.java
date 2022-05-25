@@ -17,7 +17,10 @@ import java.util.List;
 
 public enum TrapMaker {
 
-    EXPLOSION(new IncreasingItemTrade(31, new ShopPrice(8, ShopCurrency.BRONZE), 1, 8, List.of(new ExItemStack(Material.CRIMSON_BUTTON, "§6Explosion Trap").setLore("§fRadius: §73 blocks")), new ExItemStack(Material.CRIMSON_BUTTON, "§6Explosion Trap"), "§fRadius: §73 blocks", "§7Explodes if 3 mobs are nearby")) {
+    EXPLOSION(new IncreasingItemTrade(31, new ShopPrice(8, ShopCurrency.BRONZE), 1, 8,
+            List.of(new ExItemStack(Material.CRIMSON_BUTTON, "§6Explosion Trap").setLore("§fRadius: §73 blocks")),
+            new ExItemStack(Material.CRIMSON_BUTTON, "§6Explosion Trap"), "§fRadius: §73 blocks", "§7Explodes if 3 " +
+            "mobs are nearby")) {
         @Override
         public Trap newInstance(ExBlock block) {
             return new RangedTrap(block, 2, 3) {
@@ -30,7 +33,10 @@ public enum TrapMaker {
         }
     },
 
-    ARROW(new IncreasingItemTrade(32, new ShopPrice(3, ShopCurrency.SILVER), 1, 8, List.of(new ExItemStack(Material.STONE_BUTTON, "§6Arrow Trap").setLore("§fRadius: §77 blocks")), new ExItemStack(Material.STONE_BUTTON, "§6Arrow Trap"), "§fRadius: §77 blocks", "§fUses: §716", "§7Shoots against mobs")) {
+    ARROW(new IncreasingItemTrade(32, new ShopPrice(3, ShopCurrency.SILVER), 1, 8,
+            List.of(new ExItemStack(Material.STONE_BUTTON, "§6Arrow Trap").setLore("§fRadius: §77 blocks")),
+            new ExItemStack(Material.STONE_BUTTON, "§6Arrow Trap"), "§fRadius: §77 blocks", "§fUses: §716", "§7Shoots" +
+            " against mobs")) {
         @Override
         public Trap newInstance(ExBlock block) {
             return new MultipleRangedTrap(block, 7, 1, 16) {
@@ -41,7 +47,8 @@ public enum TrapMaker {
                         this.getLocation().getWorld().playSound(this.getLocation(), Sound.ENTITY_ARROW_SHOOT, 2, 1);
                         Location eyeLoc = entity.getEyeLocation();
                         Location loc = this.getLocation();
-                        Vector vec = new Vector(eyeLoc.getX(), eyeLoc.getY(), eyeLoc.getZ()).subtract(new Vector(loc.getX(), loc.getY(), loc.getZ()));
+                        Vector vec =
+                                new Vector(eyeLoc.getX(), eyeLoc.getY(), eyeLoc.getZ()).subtract(new Vector(loc.getX(), loc.getY(), loc.getZ()));
 
                         loc.getWorld().spawnArrow(loc, vec, 5, 1);
                     }
@@ -72,7 +79,10 @@ public enum TrapMaker {
         }
     },
 
-    POISON(new IncreasingItemTrade(34, new ShopPrice(7, ShopCurrency.BRONZE), 1, 8, List.of(new ExItemStack(Material.WARPED_BUTTON, "§6Poison Trap").setLore("§fRadius: §74 blocks")), new ExItemStack(Material.WARPED_BUTTON, "§6Poison Trap"), "§fRadius: §74 blocks", "§7Gives mobs poison III for 20s")) {
+    POISON(new IncreasingItemTrade(34, new ShopPrice(7, ShopCurrency.BRONZE), 1, 8,
+            List.of(new ExItemStack(Material.WARPED_BUTTON, "§6Poison Trap").setLore("§fRadius: §74 blocks")),
+            new ExItemStack(Material.WARPED_BUTTON, "§6Poison Trap"), "§fRadius: §74 blocks", "§7Gives mobs poison " +
+            "III for 20s")) {
         @Override
         public Trap newInstance(ExBlock block) {
             return new RangedTrap(block, 4, 4) {

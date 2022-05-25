@@ -21,9 +21,14 @@ public class DogSpawner extends EntitySpawner {
 
     private static final int MAX = 4;
 
-    public static final ItemLevelType<?> AMOUNT_LEVELS = new ItemLevelType<>("Amount", new ExItemStack(Material.WOLF_SPAWN_EGG), 1, 5, ItemLevel.getLoreNumberLevels("Amount", 1, 0, "Dogs", 2, List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER), new ShopPrice(24, ShopCurrency.BRONZE), new ShopPrice(16, ShopCurrency.GOLD)), "+1 Dog", List.of(5, 6, 7, 8)));
+    public static final ItemLevelType<?> AMOUNT_LEVELS = new ItemLevelType<>("Amount",
+            new ExItemStack(Material.WOLF_SPAWN_EGG), 1, 5, ItemLevel.getLoreNumberLevels("Amount", 1, 0, "Dogs", 2,
+            List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER), new ShopPrice(24,
+                    ShopCurrency.BRONZE), new ShopPrice(16, ShopCurrency.GOLD)), "+1 Dog", List.of(5, 6, 7, 8)));
 
-    public static final LevelItem LEVEL_ITEM = new LevelItem("§6Call Dogs", new ExItemStack(Material.BONE, "§6Call Dogs").setLore("", AMOUNT_LEVELS.getBaseLevelLore(4)), new ExItemStack(Material.BONE, "§6Call Dogs"), List.of(AMOUNT_LEVELS));
+    public static final LevelItem LEVEL_ITEM = new LevelItem("§6Call Dogs", new ExItemStack(Material.BONE, "§6Call " +
+            "Dogs").setLore("", AMOUNT_LEVELS.getBaseLevelLore(4)), new ExItemStack(Material.BONE, "§6Call Dogs"),
+            List.of(AMOUNT_LEVELS));
 
     public DogSpawner() {
         super(LEVEL_ITEM.getItem(), 20 * 60);

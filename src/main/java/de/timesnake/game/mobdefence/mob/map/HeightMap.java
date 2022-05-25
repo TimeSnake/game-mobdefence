@@ -148,7 +148,8 @@ public class HeightMap {
                     for (HeightBlock center : heightBlockCenters) {
 
                         // get blocks, which have a path to the center
-                        Map<Block, Integer> pathBlocks = this.getReachableByBlocks(center.getLocation().getBlock(), blockArea);
+                        Map<Block, Integer> pathBlocks = this.getReachableByBlocks(center.getLocation().getBlock(),
+                                blockArea);
 
 
                         for (Map.Entry<Block, Integer> entry : pathBlocks.entrySet()) {
@@ -185,7 +186,8 @@ public class HeightMap {
             }
 
             long timeDelta = (System.currentTimeMillis() - begin);
-            // Server.printText(Plugin.MOB_DEFENCE, "Map updated in " + (timeDelta / 1000) + "." + timeDelta % 1000 + "s");
+            // Server.printText(Plugin.MOB_DEFENCE, "Map updated in " + (timeDelta / 1000) + "." + timeDelta % 1000 +
+            // "s");
 
             HeightMap.this.running = false;
             this.waitForUpdate();

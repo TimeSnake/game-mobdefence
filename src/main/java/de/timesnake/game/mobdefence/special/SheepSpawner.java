@@ -18,9 +18,15 @@ public class SheepSpawner extends EntitySpawner {
 
     private static final int MAX = 4;
 
-    public static final ItemLevelType<?> AMOUNT_LEVELS = new ItemLevelType<>("Amount", new ExItemStack(Material.SHEEP_SPAWN_EGG), 1, 5, ItemLevel.getLoreNumberLevels("Amount", 1, 0, "Sheep", 2, List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER), new ShopPrice(24, ShopCurrency.BRONZE), new ShopPrice(16, ShopCurrency.GOLD)), "+1 Sheep", List.of(5, 6, 7, 8)));
+    public static final ItemLevelType<?> AMOUNT_LEVELS = new ItemLevelType<>("Amount",
+            new ExItemStack(Material.SHEEP_SPAWN_EGG), 1, 5, ItemLevel.getLoreNumberLevels("Amount", 1, 0, "Sheep", 2
+            , List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER),
+                    new ShopPrice(24, ShopCurrency.BRONZE), new ShopPrice(16, ShopCurrency.GOLD)), "+1 Sheep",
+            List.of(5, 6, 7, 8)));
 
-    public static final LevelItem LEVEL_ITEM = new LevelItem("§6Herd Sheep", new ExItemStack(Material.WHEAT, "§6Herd Sheep").setLore("", AMOUNT_LEVELS.getBaseLevelLore(4)), new ExItemStack(Material.WHEAT, "§6Herd Sheep"), List.of(AMOUNT_LEVELS));
+    public static final LevelItem LEVEL_ITEM = new LevelItem("§6Herd Sheep", new ExItemStack(Material.WHEAT, "§6Herd " +
+            "Sheep").setLore("", AMOUNT_LEVELS.getBaseLevelLore(4)), new ExItemStack(Material.WHEAT, "§6Herd Sheep"),
+            List.of(AMOUNT_LEVELS));
 
     public SheepSpawner() {
         super(LEVEL_ITEM.getItem(), 5 * 20);

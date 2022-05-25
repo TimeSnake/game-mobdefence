@@ -23,13 +23,36 @@ public class LumberAxe extends SpecialWeapon implements Listener {
 
     private static final int ATTACK_SPEED = 6;
 
-    private static final ItemLevelType<?> TYPE = new ItemLevelType<>("Type", new ExItemStack(Material.ANVIL), 1, 3, ItemLevel.getMaterialLevels(2, List.of(new ShopPrice(6, ShopCurrency.SILVER), new ShopPrice(32, ShopCurrency.BRONZE)), List.of("Diamond Axe", "Netherite Axe"), List.of(Material.DIAMOND_AXE, Material.NETHERITE_AXE)));
+    private static final ItemLevelType<?> TYPE = new ItemLevelType<>("Type", new ExItemStack(Material.ANVIL), 1, 3,
+            ItemLevel.getMaterialLevels(2, List.of(new ShopPrice(6, ShopCurrency.SILVER), new ShopPrice(32,
+                    ShopCurrency.BRONZE)), List.of("Diamond Axe", "Netherite Axe"), List.of(Material.DIAMOND_AXE,
+                    Material.NETHERITE_AXE)));
 
-    private static final ItemLevelType<?> SHARPNESS = new ItemLevelType<>("Sharpness", new ExItemStack(Material.RED_DYE), 0, 12, ItemLevel.getEnchantmentLevels(1, List.of(new ShopPrice(4, ShopCurrency.SILVER), new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(4, ShopCurrency.GOLD), new ShopPrice(19, ShopCurrency.BRONZE), new ShopPrice(12, ShopCurrency.SILVER), new ShopPrice(8, ShopCurrency.GOLD), new ShopPrice(27, ShopCurrency.BRONZE), new ShopPrice(16, ShopCurrency.SILVER), new ShopPrice(14, ShopCurrency.GOLD), new ShopPrice(51, ShopCurrency.BRONZE), new ShopPrice(56, ShopCurrency.SILVER), new ShopPrice(64, ShopCurrency.BRONZE)), List.of("+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+2 Sharpness", "+2 Sharpness", "+2 Sharpness", "+2 Sharpness"), Enchantment.DAMAGE_ALL, List.of(1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16)));
+    private static final ItemLevelType<?> SHARPNESS = new ItemLevelType<>("Sharpness",
+            new ExItemStack(Material.RED_DYE), 0, 12, ItemLevel.getEnchantmentLevels(1, List.of(new ShopPrice(4,
+                    ShopCurrency.SILVER), new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(4, ShopCurrency.GOLD),
+            new ShopPrice(19, ShopCurrency.BRONZE), new ShopPrice(12, ShopCurrency.SILVER), new ShopPrice(8,
+                    ShopCurrency.GOLD), new ShopPrice(27, ShopCurrency.BRONZE), new ShopPrice(16,
+                    ShopCurrency.SILVER), new ShopPrice(14, ShopCurrency.GOLD), new ShopPrice(51,
+                    ShopCurrency.BRONZE), new ShopPrice(56, ShopCurrency.SILVER), new ShopPrice(64,
+                    ShopCurrency.BRONZE)), List.of("+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+1 Sharpness",
+            "+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+2 Sharpness", "+2 Sharpness", "+2 " +
+                    "Sharpness", "+2 Sharpness"), Enchantment.DAMAGE_ALL, List.of(1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14,
+            16)));
 
-    private static final ItemLevelType<?> KNOCKBACK = new ItemLevelType<>("Knockback", new ExItemStack(Material.FEATHER), 0, 5, ItemLevel.getEnchantmentLevels(1, List.of(new ShopPrice(4, ShopCurrency.SILVER), new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(6, ShopCurrency.GOLD), new ShopPrice(32, ShopCurrency.BRONZE), new ShopPrice(29, ShopCurrency.SILVER)), "+1 Knockback", Enchantment.KNOCKBACK, List.of(1, 2, 3, 4, 5)));
+    private static final ItemLevelType<?> KNOCKBACK = new ItemLevelType<>("Knockback",
+            new ExItemStack(Material.FEATHER), 0, 5, ItemLevel.getEnchantmentLevels(1, List.of(new ShopPrice(4,
+                            ShopCurrency.SILVER), new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(6,
+                            ShopCurrency.GOLD),
+                    new ShopPrice(32, ShopCurrency.BRONZE), new ShopPrice(29, ShopCurrency.SILVER)), "+1 Knockback",
+            Enchantment.KNOCKBACK, List.of(1, 2, 3, 4, 5)));
 
-    private static final ItemLevelType<?> ATTACK_SPEED_LEVELS = new ItemLevelType<>("Attack Speed", new ExItemStack(Material.FEATHER), 1, 11, ItemLevel.getLoreNumberLevels("Attack Speed", 2, 0, "per second", 1, List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(7, ShopCurrency.GOLD), new ShopPrice(16, ShopCurrency.SILVER), new ShopPrice(32, ShopCurrency.BRONZE), new ShopPrice(18, ShopCurrency.GOLD), new ShopPrice(64, ShopCurrency.BRONZE)), "+0.5 per second", List.of(8, 10, 12, 14, 16, 18))) {
+    private static final ItemLevelType<?> ATTACK_SPEED_LEVELS = new ItemLevelType<>("Attack Speed",
+            new ExItemStack(Material.FEATHER), 1, 11, ItemLevel.getLoreNumberLevels("Attack Speed", 2, 0, "per " +
+            "second", 1, List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(7, ShopCurrency.GOLD),
+            new ShopPrice(16, ShopCurrency.SILVER), new ShopPrice(32, ShopCurrency.BRONZE), new ShopPrice(18,
+                    ShopCurrency.GOLD), new ShopPrice(64, ShopCurrency.BRONZE)), "+0.5 per second", List.of(8, 10, 12
+            , 14, 16, 18))) {
         @Override
         protected boolean levelUp(MobDefUser user, ItemLevel.LoreNumberLevel<Integer> level) {
             AttributeInstance speed = user.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
@@ -39,7 +62,9 @@ public class LumberAxe extends SpecialWeapon implements Listener {
         }
     };
 
-    public static final LevelItem AXE = new LevelItem("§6Axe", new ExItemStack(Material.IRON_AXE, true).setLore("", ATTACK_SPEED_LEVELS.getBaseLevelLore(ATTACK_SPEED)), new ExItemStack(Material.IRON_AXE), List.of(TYPE, SHARPNESS, ATTACK_SPEED_LEVELS));
+    public static final LevelItem AXE = new LevelItem("§6Axe", new ExItemStack(Material.IRON_AXE, true).setLore("",
+            ATTACK_SPEED_LEVELS.getBaseLevelLore(ATTACK_SPEED)), new ExItemStack(Material.IRON_AXE), List.of(TYPE,
+            SHARPNESS, ATTACK_SPEED_LEVELS));
 
     public LumberAxe() {
         super(AXE.getItem());

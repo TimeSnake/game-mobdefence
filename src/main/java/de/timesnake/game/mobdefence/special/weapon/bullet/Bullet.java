@@ -57,7 +57,8 @@ public abstract class Bullet implements Listener {
         this.entity = this.spawn(this.entity.getLocation());
 
         this.entityFollowTask = Server.runTaskTimerSynchrony(() -> {
-            Vector vec = this.target.getLocation().add(0, 1, 0).toVector().subtract(this.entity.getLocation().toVector()).normalize();
+            Vector vec =
+                    this.target.getLocation().add(0, 1, 0).toVector().subtract(this.entity.getLocation().toVector()).normalize();
             this.entity.setVelocity(vec.multiply(this.speed));
         }, 0, 2, GameMobDefence.getPlugin());
     }

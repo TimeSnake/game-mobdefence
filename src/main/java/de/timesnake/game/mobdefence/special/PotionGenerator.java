@@ -15,7 +15,8 @@ import org.bukkit.scheduler.BukkitTask;
 public class PotionGenerator implements Listener {
 
 
-    public static final ExItemStack INSTANT_HEAL = new ExItemStack(Material.SPLASH_POTION, PotionType.INSTANT_HEAL, false, false).setSlot(1).asQuantity(2);
+    public static final ExItemStack INSTANT_HEAL = new ExItemStack(Material.SPLASH_POTION, PotionType.INSTANT_HEAL,
+            false, false).setSlot(1).asQuantity(2);
 
     private BukkitTask task;
 
@@ -47,7 +48,8 @@ public class PotionGenerator implements Listener {
         ItemStack baseSlotItem = user.getInventory().getItem(INSTANT_HEAL.getSlot());
 
         if (baseSlotItem != null && new ExItemStack(baseSlotItem).equals(INSTANT_HEAL)) {
-            user.setItem(INSTANT_HEAL.getSlot(), INSTANT_HEAL.cloneWithId().asQuantity(baseSlotItem.getAmount() + Math.min(max - baseSlotItem.getAmount(), INSTANT_HEAL.getAmount())));
+            user.setItem(INSTANT_HEAL.getSlot(),
+                    INSTANT_HEAL.cloneWithId().asQuantity(baseSlotItem.getAmount() + Math.min(max - baseSlotItem.getAmount(), INSTANT_HEAL.getAmount())));
             user.updateInventory();
             return;
         }
@@ -56,7 +58,8 @@ public class PotionGenerator implements Listener {
             ItemStack slotItem = user.getInventory().getItem(slot);
 
             if (slotItem != null && new ExItemStack(slotItem).equals(INSTANT_HEAL)) {
-                user.setItem(slot, INSTANT_HEAL.cloneWithId().asQuantity(slotItem.getAmount() + Math.min(max - slotItem.getAmount(), INSTANT_HEAL.getAmount())));
+                user.setItem(slot,
+                        INSTANT_HEAL.cloneWithId().asQuantity(slotItem.getAmount() + Math.min(max - slotItem.getAmount(), INSTANT_HEAL.getAmount())));
                 user.updateInventory();
                 return;
             }

@@ -43,7 +43,8 @@ public abstract class MeleeMob<M extends Mob & EntityExtension<? extends ExEntit
                         new ItemStack(Material.STONE_SWORD));
                 case 1 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
                         new ItemStack(Material.IRON_SWORD));
-                case 2 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.DIAMOND_SWORD));
+                case 2 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
+                        new ItemStack(Material.DIAMOND_SWORD));
             }
 
         } else if (this.currentWave <= 10) {
@@ -56,7 +57,8 @@ public abstract class MeleeMob<M extends Mob & EntityExtension<? extends ExEntit
                         new ItemStack(Material.IRON_SWORD));
                 case 2 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
                         new ItemStack(Material.DIAMOND_SWORD));
-                case 3 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.IRON_AXE));
+                case 3 ->
+                        this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.IRON_AXE));
             }
         } else if (this.currentWave <= 14) {
             int random = this.random.nextInt(5);
@@ -70,7 +72,8 @@ public abstract class MeleeMob<M extends Mob & EntityExtension<? extends ExEntit
                         new ItemStack(Material.DIAMOND_SWORD));
                 case 3 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
                         new ItemStack(Material.IRON_AXE));
-                case 4 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.DIAMOND_AXE));
+                case 4 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
+                        new ItemStack(Material.DIAMOND_AXE));
             }
         } else {
             int random = this.random.nextInt(5);

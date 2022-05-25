@@ -19,11 +19,19 @@ import java.util.Set;
 
 public class SpeedBow extends SpecialWeapon implements UserInventoryInteractListener {
 
-    private static final ItemLevelType<?> POWER = new ItemLevelType<>("Power", new ExItemStack(Material.RED_DYE), 0, 7, ItemLevel.getEnchantmentLevels(1, List.of(new ShopPrice(9, ShopCurrency.BRONZE), new ShopPrice(12, ShopCurrency.SILVER), new ShopPrice(8, ShopCurrency.GOLD), new ShopPrice(27, ShopCurrency.SILVER), new ShopPrice(14, ShopCurrency.GOLD), new ShopPrice(48, ShopCurrency.BRONZE), new ShopPrice(43, ShopCurrency.SILVER)), "+1 Power", Enchantment.ARROW_DAMAGE, List.of(1, 2, 3, 4, 5, 6, 7)));
+    private static final ItemLevelType<?> POWER = new ItemLevelType<>("Power", new ExItemStack(Material.RED_DYE), 0,
+            7, ItemLevel.getEnchantmentLevels(1, List.of(new ShopPrice(9, ShopCurrency.BRONZE), new ShopPrice(12,
+                    ShopCurrency.SILVER), new ShopPrice(8, ShopCurrency.GOLD), new ShopPrice(27, ShopCurrency.SILVER),
+            new ShopPrice(14, ShopCurrency.GOLD), new ShopPrice(48, ShopCurrency.BRONZE), new ShopPrice(43,
+                    ShopCurrency.SILVER)), "+1 Power", Enchantment.ARROW_DAMAGE, List.of(1, 2, 3, 4, 5, 6, 7)));
 
-    private static final ItemLevelType<?> FLAME = new ItemLevelType<>("Flame", new ExItemStack(Material.BLAZE_POWDER), 0, 1, ItemLevel.getEnchantmentLevels(1, List.of(new ShopPrice(8, ShopCurrency.GOLD)), "Flame Arrows", Enchantment.ARROW_FIRE, List.of(1)));
+    private static final ItemLevelType<?> FLAME = new ItemLevelType<>("Flame", new ExItemStack(Material.BLAZE_POWDER)
+            , 0, 1, ItemLevel.getEnchantmentLevels(1, List.of(new ShopPrice(8, ShopCurrency.GOLD)), "Flame Arrows",
+            Enchantment.ARROW_FIRE, List.of(1)));
 
-    public static final LevelItem BOW = new LevelItem("Bow", new ExItemStack(Material.BOW, true).addExEnchantment(Enchantment.QUICK_CHARGE, 128), new ExItemStack(Material.BOW, true), List.of(POWER, FLAME));
+    public static final LevelItem BOW = new LevelItem("Bow",
+            new ExItemStack(Material.BOW, true).addExEnchantment(Enchantment.QUICK_CHARGE, 128),
+            new ExItemStack(Material.BOW, true), List.of(POWER, FLAME));
 
     private final Set<User> cooldownUser = new HashSet<>();
 
@@ -56,7 +64,9 @@ public class SpeedBow extends SpecialWeapon implements UserInventoryInteractList
 
         user.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
 
-        Arrow arrow = user.getPlayer().getWorld().spawnArrow(user.getPlayer().getEyeLocation().add(0, -0.2, 0), user.getPlayer().getLocation().getDirection(), event.getClickedItem().getEnchantmentLevel(Enchantment.ARROW_DAMAGE) + 2, 1);
+        Arrow arrow = user.getPlayer().getWorld().spawnArrow(user.getPlayer().getEyeLocation().add(0, -0.2, 0),
+                user.getPlayer().getLocation().getDirection(),
+                event.getClickedItem().getEnchantmentLevel(Enchantment.ARROW_DAMAGE) + 2, 1);
 
         if (event.getClickedItem().getEnchantmentLevel(Enchantment.ARROW_FIRE) > 0) {
             arrow.setFireTicks(Integer.MAX_VALUE);

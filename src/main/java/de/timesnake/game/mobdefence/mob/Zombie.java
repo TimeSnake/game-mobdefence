@@ -41,7 +41,8 @@ public class Zombie extends MeleeMob<ExZombie> {
         double random = Math.random();
 
         if (random < RUNNER_CHANCE) {
-            this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), speed + 0.2, breakBlock, BREAK_LEVEL));
+            this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), speed + 0.2, breakBlock,
+                    BREAK_LEVEL));
             this.entity.addPathfinderGoal(3, new ExPathfinderGoalZombieAttack(speed + 0.2));
         } else {
             this.entity.addPathfinderGoal(1, new ExPathfinderGoalZombieAttack(speed));
@@ -58,7 +59,8 @@ public class Zombie extends MeleeMob<ExZombie> {
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass, true, true, 16D));
         }
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman, true, true, 1D));
+        this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman, true,
+                true, 1D));
 
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass, true, true, 16D));

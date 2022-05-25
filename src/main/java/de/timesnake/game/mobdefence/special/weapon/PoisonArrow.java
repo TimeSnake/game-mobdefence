@@ -29,9 +29,11 @@ public class PoisonArrow extends SpecialWeapon implements UserInventoryInteractL
 
     private static final String NAME = "poison_arrow";
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.TIPPED_ARROW, 3, PotionType.POISON, false, false).setDisplayName("§6Poison Arrow");
+    public static final ExItemStack ITEM =
+            new ExItemStack(Material.TIPPED_ARROW, 3, PotionType.POISON, false, false).setDisplayName("§6Poison Arrow");
 
-    public static final ItemTrade TRADE = new ItemTrade(3, false, new ShopPrice(5, ShopCurrency.BRONZE), List.of(ITEM), ITEM);
+    public static final ItemTrade TRADE = new ItemTrade(3, false, new ShopPrice(5, ShopCurrency.BRONZE),
+            List.of(ITEM), ITEM);
 
     public PoisonArrow() {
         super(ITEM);
@@ -45,7 +47,8 @@ public class PoisonArrow extends SpecialWeapon implements UserInventoryInteractL
 
         user.removeCertainItemStack(ITEM.cloneWithId().asOne());
 
-        Arrow arrow = user.getPlayer().getWorld().spawnArrow(user.getPlayer().getEyeLocation().add(0, -0.2, 0), user.getPlayer().getLocation().getDirection(), 2, 1);
+        Arrow arrow = user.getPlayer().getWorld().spawnArrow(user.getPlayer().getEyeLocation().add(0, -0.2, 0),
+                user.getPlayer().getLocation().getDirection(), 2, 1);
 
         arrow.setCustomName(NAME);
         arrow.setCustomNameVisible(false);

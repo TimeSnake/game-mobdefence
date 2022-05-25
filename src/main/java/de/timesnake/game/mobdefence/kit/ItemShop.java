@@ -28,7 +28,8 @@ public class ItemShop implements UserInventoryClickListener, InventoryHolder {
 
     protected final Map<Integer, ShopTrade> tradesByDisplayItemId = new HashMap<>();
 
-    public ItemShop(String name, int slot, ExItemStack displayItem, List<Levelable<?>> levelItems, List<ShopTrade>... trades) {
+    public ItemShop(String name, int slot, ExItemStack displayItem, List<Levelable<?>> levelItems,
+                    List<ShopTrade>... trades) {
         this.name = name;
         this.slot = slot;
         this.displayItem = displayItem;
@@ -71,7 +72,8 @@ public class ItemShop implements UserInventoryClickListener, InventoryHolder {
                 slot += 9;
             }
         } else if (this.levelItems.isEmpty()) {
-            this.inv = Server.createExInventory(this.getTrades().stream().max(Comparator.comparingInt(ShopTrade::getSlot)).get().getSlot() + 9, this.name, this);
+            this.inv =
+                    Server.createExInventory(this.getTrades().stream().max(Comparator.comparingInt(ShopTrade::getSlot)).get().getSlot() + 9, this.name, this);
 
             for (ShopTrade trade : this.getTrades()) {
                 this.inv.setItemStack(trade.getSlot(), trade.getDisplayItem());

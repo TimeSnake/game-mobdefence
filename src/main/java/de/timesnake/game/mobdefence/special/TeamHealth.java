@@ -17,21 +17,6 @@ import java.util.List;
 public class TeamHealth extends Levelable<LevelType<Level<Integer>>> {
 
     public static final int BASE_MAX_HEALTH = 8 * 2;
-
-    public static final TeamHealth MAX_HEALTH = new TeamHealth("Health", new ExItemStack(Material.NETHER_WART), List.of(new LevelType<>("Max Health", new ExItemStack(Material.FIRE_CORAL_BLOCK), 1, 13, getHealthLevels(2, List.of(new ShopPrice(1, ShopCurrency.EMERALD), new ShopPrice(2, ShopCurrency.EMERALD), new ShopPrice(3, ShopCurrency.EMERALD), new ShopPrice(4, ShopCurrency.EMERALD), new ShopPrice(5, ShopCurrency.EMERALD), new ShopPrice(6, ShopCurrency.EMERALD), new ShopPrice(7, ShopCurrency.EMERALD), new ShopPrice(8, ShopCurrency.EMERALD), new ShopPrice(9, ShopCurrency.EMERALD), new ShopPrice(10, ShopCurrency.EMERALD), new ShopPrice(11, ShopCurrency.EMERALD), new ShopPrice(12, ShopCurrency.EMERALD)), List.of(9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20))) {
-        @Override
-        protected boolean levelUp(MobDefUser user, Level<Integer> level) {
-            for (User gameUser : Server.getInOutGameUsers()) {
-                gameUser.getPlayer().setMaxHealth(level.getValue() * 2);
-            }
-
-            MAX_HEALTH.setMaxHealth(level.getValue() * 2);
-
-            MobDefServer.broadcastGameMessage(user.getChatName() + ChatColor.WARNING + " leveled up max health");
-            return true;
-        }
-    }));
-
     private int maxHealth = BASE_MAX_HEALTH;
 
     protected TeamHealth(String name, ExItemStack displayItem, List<LevelType<Level<Integer>>> levelTypes) {
@@ -40,6 +25,40 @@ public class TeamHealth extends Levelable<LevelType<Level<Integer>>> {
 
     protected TeamHealth(TeamHealth levelable) {
         super(levelable);
+    }    public static final TeamHealth MAX_HEALTH = new TeamHealth("Health", new ExItemStack(Material.NETHER_WART),
+            List.of(new LevelType<>("Max Health", new ExItemStack(Material.FIRE_CORAL_BLOCK), 1, 13,
+                    getHealthLevels(2, List.of(new ShopPrice(1, ShopCurrency.EMERALD), new ShopPrice(2,
+                            ShopCurrency.EMERALD), new ShopPrice(3, ShopCurrency.EMERALD), new ShopPrice(4,
+                            ShopCurrency.EMERALD), new ShopPrice(5, ShopCurrency.EMERALD), new ShopPrice(6,
+                            ShopCurrency.EMERALD), new ShopPrice(7, ShopCurrency.EMERALD), new ShopPrice(8,
+                            ShopCurrency.EMERALD), new ShopPrice(9, ShopCurrency.EMERALD), new ShopPrice(10,
+                            ShopCurrency.EMERALD), new ShopPrice(11, ShopCurrency.EMERALD), new ShopPrice(12,
+                            ShopCurrency.EMERALD)), List.of(9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20))) {
+                @Override
+                protected boolean levelUp(MobDefUser user, Level<Integer> level) {
+                    for (User gameUser : Server.getInOutGameUsers()) {
+                        gameUser.getPlayer().setMaxHealth(level.getValue() * 2);
+                    }
+
+                    MAX_HEALTH.setMaxHealth(level.getValue() * 2);
+
+                    MobDefServer.broadcastGameMessage(user.getChatName() + ChatColor.WARNING + " leveled up max " +
+                            "health");
+                    return true;
+                }
+            }));
+
+    private static List<Level<Integer>> getHealthLevels(int start, List<ShopPrice> prices,
+                                                        List<Integer> maxHealthLimits) {
+        List<Level<Integer>> levels = new ArrayList<>();
+
+        Iterator<ShopPrice> priceIt = prices.listIterator();
+        Iterator<Integer> maxHealthIt = maxHealthLimits.listIterator();
+
+        for (int level = start; priceIt.hasNext() && maxHealthIt.hasNext(); level++) {
+            levels.add(new Level<>(level, priceIt.next(), "+1 ❤ Max Health", maxHealthIt.next()));
+        }
+        return levels;
     }
 
     public void reset() {
@@ -69,18 +88,6 @@ public class TeamHealth extends Levelable<LevelType<Level<Integer>>> {
         inv.setItemStack(levelType.getDisplayItem());
     }
 
-    private static List<Level<Integer>> getHealthLevels(int start, List<ShopPrice> prices, List<Integer> maxHealthLimits) {
-        List<Level<Integer>> levels = new ArrayList<>();
-
-        Iterator<ShopPrice> priceIt = prices.listIterator();
-        Iterator<Integer> maxHealthIt = maxHealthLimits.listIterator();
-
-        for (int level = start; priceIt.hasNext() && maxHealthIt.hasNext(); level++) {
-            levels.add(new Level<>(level, priceIt.next(), "+1 ❤ Max Health", maxHealthIt.next()));
-        }
-        return levels;
-    }
-
     public int getMaxHealth() {
         return maxHealth;
     }
@@ -88,4 +95,8 @@ public class TeamHealth extends Levelable<LevelType<Level<Integer>>> {
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
+
+
+
+
 }

@@ -40,7 +40,8 @@ public class Creeper extends MobDefMob<ExCreeper> {
         this.entity.addPathfinderGoal(6, new ExPathfinderGoalRandomLookaround());
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
-        this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman, true, true));
+        this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman, true,
+                true));
 
         if (this.currentWave > 10) {
             this.entity.setMaxHealth(60);

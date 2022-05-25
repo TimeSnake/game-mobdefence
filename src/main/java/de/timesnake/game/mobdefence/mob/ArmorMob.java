@@ -3,8 +3,8 @@ package de.timesnake.game.mobdefence.mob;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.entities.entity.extension.EntityExtension;
 import de.timesnake.basic.entities.entity.extension.ExEntityInsentient;
-import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
+import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Material;
 import org.bukkit.entity.Mob;
 import org.bukkit.inventory.ItemStack;
@@ -28,7 +28,8 @@ public abstract class ArmorMob<M extends Mob & EntityExtension<? extends ExEntit
 
             switch (random) {
                 case 0:
-                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST, new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST,
+                            new ItemStack(Material.CHAINMAIL_CHESTPLATE));
                 case 1:
                     this.entity.getExtension().setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.CHAINMAIL_LEGGINGS));
                 case 2:
@@ -61,11 +62,13 @@ public abstract class ArmorMob<M extends Mob & EntityExtension<? extends ExEntit
                 case 4:
                     this.entity.getExtension().setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.IRON_LEGGINGS));
                 case 5:
-                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST, new ItemStack(Material.DIAMOND_CHESTPLATE));
+                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST,
+                            new ItemStack(Material.DIAMOND_CHESTPLATE));
                     break;
 
                 case 6:
-                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST, new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST,
+                            new ItemStack(Material.CHAINMAIL_CHESTPLATE));
                 case 7:
                     this.entity.getExtension().setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.CHAINMAIL_LEGGINGS));
                 case 8:
@@ -90,7 +93,8 @@ public abstract class ArmorMob<M extends Mob & EntityExtension<? extends ExEntit
                     this.entity.getExtension().setSlot(ExEnumItemSlot.HEAD, new ItemStack(Material.IRON_HELMET));
                     break;
                 case 3:
-                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST, new ItemStack(Material.DIAMOND_CHESTPLATE));
+                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST,
+                            new ItemStack(Material.DIAMOND_CHESTPLATE));
                 case 4:
                     this.entity.getExtension().setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.IRON_LEGGINGS));
                 case 5:
@@ -103,7 +107,8 @@ public abstract class ArmorMob<M extends Mob & EntityExtension<? extends ExEntit
                 case 0:
                     this.entity.getExtension().setSlot(ExEnumItemSlot.HEAD, new ItemStack(Material.IRON_HELMET));
                 case 1:
-                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST, new ItemStack(Material.DIAMOND_CHESTPLATE));
+                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST,
+                            new ItemStack(Material.DIAMOND_CHESTPLATE));
                 case 2:
                     this.entity.getExtension().setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.IRON_LEGGINGS));
                     this.entity.getExtension().setSlot(ExEnumItemSlot.FEET, new ItemStack(Material.IRON_BOOTS));
@@ -111,7 +116,8 @@ public abstract class ArmorMob<M extends Mob & EntityExtension<? extends ExEntit
                 case 3:
                     this.entity.getExtension().setSlot(ExEnumItemSlot.HEAD, new ItemStack(Material.DIAMOND_HELMET));
                 case 4:
-                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST, new ItemStack(Material.DIAMOND_CHESTPLATE));
+                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST,
+                            new ItemStack(Material.DIAMOND_CHESTPLATE));
                 case 5:
                     this.entity.getExtension().setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.DIAMOND_LEGGINGS));
                     this.entity.getExtension().setSlot(ExEnumItemSlot.FEET, new ItemStack(Material.DIAMOND_BOOTS));
@@ -124,7 +130,8 @@ public abstract class ArmorMob<M extends Mob & EntityExtension<? extends ExEntit
                     this.entity.getExtension().setSlot(ExEnumItemSlot.HEAD, new ItemStack(Material.DIAMOND_HELMET));
                 case 1:
                 case 2:
-                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST, new ItemStack(Material.DIAMOND_CHESTPLATE));
+                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST,
+                            new ItemStack(Material.DIAMOND_CHESTPLATE));
                     this.entity.getExtension().setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.DIAMOND_LEGGINGS));
                     this.entity.getExtension().setSlot(ExEnumItemSlot.FEET, new ItemStack(Material.DIAMOND_BOOTS));
                     break;
@@ -133,7 +140,8 @@ public abstract class ArmorMob<M extends Mob & EntityExtension<? extends ExEntit
                     this.entity.getExtension().setSlot(ExEnumItemSlot.FEET, new ItemStack(Material.DIAMOND_BOOTS));
                 case 4:
                 case 5:
-                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST, new ItemStack(Material.DIAMOND_CHESTPLATE));
+                    this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST,
+                            new ItemStack(Material.DIAMOND_CHESTPLATE));
                     this.entity.getExtension().setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.DIAMOND_LEGGINGS));
             }
         }

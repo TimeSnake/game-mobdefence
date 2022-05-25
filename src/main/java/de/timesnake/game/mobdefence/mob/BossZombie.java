@@ -74,7 +74,8 @@ public class BossZombie extends MobDefMob<ExZombie> {
             }
         });
 
-        this.entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.GOLDEN_AXE).addExEnchantment(Enchantment.FIRE_ASPECT, 2));
+        this.entity.setSlot(ExEnumItemSlot.MAIN_HAND,
+                new ExItemStack(Material.GOLDEN_AXE).addExEnchantment(Enchantment.FIRE_ASPECT, 2));
 
         this.entity.getBukkitAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
         this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(5);

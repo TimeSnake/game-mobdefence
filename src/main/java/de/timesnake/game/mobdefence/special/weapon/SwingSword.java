@@ -27,13 +27,33 @@ public class SwingSword extends CooldownWeapon implements UserInventoryInteractL
     private static final double RADIUS = 1.5;
     private static final int COOLDOWN = 8; // in sec
 
-    private static final ItemLevelType<?> DAMAGE_LEVELS = new ItemLevelType<>("Damage", new ExItemStack(Material.RED_DYE), 1, 11, ItemLevel.getLoreNumberLevels("Damage", 1, 1, "❤", 2, List.of(new ShopPrice(9, ShopCurrency.BRONZE), new ShopPrice(15, ShopCurrency.SILVER), new ShopPrice(7, ShopCurrency.GOLD), new ShopPrice(27, ShopCurrency.BRONZE), new ShopPrice(25, ShopCurrency.SILVER), new ShopPrice(15, ShopCurrency.GOLD), new ShopPrice(48, ShopCurrency.BRONZE), new ShopPrice(48, ShopCurrency.SILVER), new ShopPrice(64, ShopCurrency.BRONZE), new ShopPrice(64, ShopCurrency.SILVER)), "+1 ❤", List.of(4, 5, 6, 7, 8, 9, 10, 11, 12, 13)));
+    private static final ItemLevelType<?> DAMAGE_LEVELS = new ItemLevelType<>("Damage",
+            new ExItemStack(Material.RED_DYE), 1, 11, ItemLevel.getLoreNumberLevels("Damage", 1, 1, "❤", 2,
+            List.of(new ShopPrice(9, ShopCurrency.BRONZE), new ShopPrice(15, ShopCurrency.SILVER), new ShopPrice(7,
+                    ShopCurrency.GOLD), new ShopPrice(27, ShopCurrency.BRONZE), new ShopPrice(25,
+                    ShopCurrency.SILVER), new ShopPrice(15, ShopCurrency.GOLD), new ShopPrice(48,
+                    ShopCurrency.BRONZE), new ShopPrice(48, ShopCurrency.SILVER), new ShopPrice(64,
+                    ShopCurrency.BRONZE), new ShopPrice(64, ShopCurrency.SILVER)), "+1 ❤", List.of(4, 5, 6, 7, 8, 9,
+                    10, 11, 12, 13)));
 
-    private static final ItemLevelType<?> RADIUS_LEVELS = new ItemLevelType<>("Radius", new ExItemStack(Material.TARGET), 1, 5, ItemLevel.getLoreNumberLevels("Radius", 2, 2, "blocks", 2, List.of(new ShopPrice(9, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER), new ShopPrice(32, ShopCurrency.BRONZE), new ShopPrice(13, ShopCurrency.GOLD)), "+0.25 blocks", List.of(1.75, 2, 2.25, 2.5)));
+    private static final ItemLevelType<?> RADIUS_LEVELS = new ItemLevelType<>("Radius",
+            new ExItemStack(Material.TARGET), 1, 5, ItemLevel.getLoreNumberLevels("Radius", 2, 2, "blocks", 2,
+            List.of(new ShopPrice(9, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER), new ShopPrice(32,
+                    ShopCurrency.BRONZE), new ShopPrice(13, ShopCurrency.GOLD)), "+0.25 blocks", List.of(1.75, 2,
+                    2.25, 2.5)));
 
-    private static final ItemLevelType<?> COOLDOWN_LEVELS = new ItemLevelType<>("Cooldown", new ExItemStack(Material.FEATHER), 1, 5, ItemLevel.getLoreNumberLevels("Cooldown", 3, 0, "s", 2, List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(18, ShopCurrency.SILVER), new ShopPrice(16, ShopCurrency.GOLD), new ShopPrice(34, ShopCurrency.SILVER)), List.of("-2 s", "-2 s", "-2 s", "-2 s", "-1 s"), List.of(8, 6, 4, 2, 1)));
+    private static final ItemLevelType<?> COOLDOWN_LEVELS = new ItemLevelType<>("Cooldown",
+            new ExItemStack(Material.FEATHER), 1, 5, ItemLevel.getLoreNumberLevels("Cooldown", 3, 0, "s", 2,
+            List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(18, ShopCurrency.SILVER), new ShopPrice(16,
+                    ShopCurrency.GOLD), new ShopPrice(34, ShopCurrency.SILVER)), List.of("-2 s", "-2 s", "-2 s", "-2 " +
+                    "s", "-1 s"), List.of(8, 6, 4, 2, 1)));
 
-    public static final LevelItem SWORD = new LevelItem("Swing Sword", true, new ShopPrice(8, ShopCurrency.GOLD), new ExItemStack(Material.GOLDEN_SWORD, true).setDisplayName("§6Swing Sword").enchant().setLore("", DAMAGE_LEVELS.getBaseLevelLore(DAMAGE), RADIUS_LEVELS.getBaseLevelLore(RADIUS), COOLDOWN_LEVELS.getBaseLevelLore(COOLDOWN)), new ExItemStack(Material.GOLDEN_SWORD, true).enchant(), List.of(DAMAGE_LEVELS, RADIUS_LEVELS, COOLDOWN_LEVELS));
+    public static final LevelItem SWORD = new LevelItem("Swing Sword", true, new ShopPrice(8, ShopCurrency.GOLD),
+            new ExItemStack(Material.GOLDEN_SWORD, true).setDisplayName("§6Swing Sword").enchant().setLore("",
+                    DAMAGE_LEVELS.getBaseLevelLore(DAMAGE), RADIUS_LEVELS.getBaseLevelLore(RADIUS),
+                    COOLDOWN_LEVELS.getBaseLevelLore(COOLDOWN)),
+            new ExItemStack(Material.GOLDEN_SWORD, true).enchant(), List.of(DAMAGE_LEVELS, RADIUS_LEVELS,
+            COOLDOWN_LEVELS));
 
     private final Map<ArmorStand, BukkitTask> tasks = new HashMap<>();
 
@@ -49,7 +69,8 @@ public class SwingSword extends CooldownWeapon implements UserInventoryInteractL
 
         Location loc = user.getLocation().clone().add(0, -0.35, 0);
 
-        for (LivingEntity entity : loc.getNearbyLivingEntities(radius, 1.5, e -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType()))) {
+        for (LivingEntity entity : loc.getNearbyLivingEntities(radius, 1.5,
+                e -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType()))) {
 
             Vector vec = entity.getLocation().toVector().subtract(loc.toVector());
             double knockback = 2 / (vec.length() > 1 ? vec.length() : 1D);
