@@ -4,6 +4,7 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.chat.ChatColor;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
+import de.timesnake.basic.bukkit.util.user.scoreboard.Tablist;
 import de.timesnake.basic.entities.EntityManager;
 import de.timesnake.basic.game.util.Game;
 import de.timesnake.basic.game.util.Map;
@@ -25,7 +26,7 @@ import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.basic.util.TimeCoins;
-import de.timesnake.library.basic.util.statistics.Stat;
+import de.timesnake.library.basic.util.statistics.StatType;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -44,40 +45,30 @@ import java.util.Set;
 
 public class MobDefServerManager extends LoungeBridgeServerManager implements Listener {
 
+    public static final double CORE_HEALTH_MULTIPLIER = 400; // in half hearts
+    public static final float TIME_COINS_MULTIPLIER = 1.5f * TimeCoins.MULTIPLIER;
+    public static final int WAVE_DELAY = 80; // in seconds
+
     public static MobDefServerManager getInstance() {
         return (MobDefServerManager) LoungeBridgeServerManager.getInstance();
     }
 
     private static final boolean DEBUG = false;
-
-    public static final double CORE_HEALTH_MULTIPLIER = 400; // in half hearts
-
-    public static final float TIME_COINS_MULTIPLIER = 1.5f * TimeCoins.MULTIPLIER;
-
-    public static final int WAVE_DELAY = 80; // in seconds
-
     private boolean running;
-
     private Integer playerAmount; // set at game start
     private double coreMaxHealth;
-
     private LivingEntity coreEntity;
     private BossBar coreHealthBar;
     private double coreHealth;
-
     private Sideboard sideboard;
-
     private Integer delay;
     private boolean delayIsRunning = false;
     private BukkitTask delayTask;
     private Integer waveNumber = 0;
     private MobManager mobManager;
-
     private KitShopManager kitShopManager;
-
     private UserManager userManager;
     private WeaponManager weaponManager;
-
     private BaseShops baseShops;
 
     public void onMobGameEnable() {
@@ -100,6 +91,11 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
         this.sideboard.setScore(2, "§f-------------");
         this.sideboard.setScore(1, "§9§lPlayers");
         this.updateSideboardPlayers();
+    }
+
+    @Override
+    public void loadTablist(Tablist.Type type) {
+        super.loadTablist(Tablist.Type.HEARTS);
     }
 
     @Override
@@ -133,7 +129,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
     }
 
     @Override
-    public void loadMap() {
+    public void onMapLoad() {
         for (Entity entity : this.getMap().getWorld().getBukkitWorld().getEntities()) {
             if (entity instanceof LivingEntity || entity instanceof Item) {
                 entity.remove();
@@ -163,7 +159,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
     }
 
     @Override
-    public void startGame() {
+    public void onGameStart() {
         this.running = true;
         this.playerAmount = Server.getInGameUsers().size();
         for (User user : Server.getInGameUsers()) {
@@ -464,11 +460,11 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
     public void saveGameUserStats(GameUser user) {
         super.saveGameUserStats(user);
 
-        user.increaseStat(MobDefServer.MOB_KILLS, user.getStatistic(Statistic.MOB_KILLS));
+        user.getStat(MobDefServer.MOB_KILLS).increaseAll(user.getStatistic(Statistic.MOB_KILLS));
     }
 
     @Override
-    public Set<Stat<?>> getStats() {
+    public Set<StatType<?>> getStats() {
         return Set.of(MobDefServer.MOB_KILLS);
     }
 }
