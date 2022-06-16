@@ -2,13 +2,13 @@ package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
-import de.timesnake.basic.entities.EntityManager;
-import de.timesnake.basic.entities.entity.bukkit.ExBee;
-import de.timesnake.basic.entities.entity.bukkit.ExCreeper;
-import de.timesnake.basic.entities.pathfinder.*;
-import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.library.entities.EntityManager;
+import de.timesnake.library.entities.entity.bukkit.ExBee;
+import de.timesnake.library.entities.entity.bukkit.ExCreeper;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.wrapper.EntityClass;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,12 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 public class Beeper extends MobDefMob<ExCreeper> {
-
-    private static final String NAME = "beeper";
-
-    public Beeper(ExLocation spawn, int currentWave) {
-        super(Type.OTHER, HeightMapManager.MapType.WALL_FINDER, 5, spawn, currentWave);
-    }
 
     public static void handleExplosion(Creeper creeper, Location location) {
         if (creeper.getCustomName() == null || !creeper.getCustomName().equals(NAME)) {
@@ -44,6 +38,12 @@ public class Beeper extends MobDefMob<ExCreeper> {
                     true);
             EntityManager.spawnEntity(location.getWorld(), bee);
         }
+    }
+
+    private static final String NAME = "beeper";
+
+    public Beeper(ExLocation spawn, int currentWave) {
+        super(Type.OTHER, HeightMapManager.MapType.WALL_FINDER, 5, spawn, currentWave);
     }
 
     @Override

@@ -5,15 +5,14 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.server.TimeTask;
 import de.timesnake.basic.bukkit.util.user.ExInventory;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
-import de.timesnake.basic.entities.entity.bukkit.ExArmorStand;
-import de.timesnake.basic.entities.entity.bukkit.ExPlayer;
-import de.timesnake.basic.entities.entity.extension.EntityExtension;
-import de.timesnake.basic.packets.util.packet.*;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.basic.util.chat.ChatColor;
+import de.timesnake.library.entities.entity.bukkit.ExArmorStand;
+import de.timesnake.library.entities.entity.bukkit.extension.ExPlayer;
+import de.timesnake.library.packets.util.packet.*;
 import de.timesnake.library.reflection.wrapper.ExEntityPose;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,8 +23,20 @@ import java.util.*;
 
 public class ReviveManager {
 
-    private static final double RADIUS = 3;
+    private static List<Level<Integer>> getTimeLevels(int start, String text, List<ShopPrice> prices,
+                                                      List<Integer> respawnTimes) {
+        List<Level<Integer>> levels = new ArrayList<>();
 
+        Iterator<ShopPrice> priceIt = prices.listIterator();
+        Iterator<Integer> timeIt = respawnTimes.listIterator();
+
+        for (int level = start; priceIt.hasNext() && timeIt.hasNext(); level++) {
+            levels.add(new Level<>(level, priceIt.next(), text, timeIt.next()));
+        }
+        return levels;
+    }
+
+    private static final double RADIUS = 3;
     private static final LevelType<Level<Integer>> RESPAWN_TIME_LEVELS = new LevelType<>("Respawn Time",
             new ExItemStack(Material.PLAYER_HEAD), 1, 5, getTimeLevels(2, "-1s Revive Time", List.of(new ShopPrice(3,
                     ShopCurrency.EMERALD), new ShopPrice(5, ShopCurrency.EMERALD), new ShopPrice(7,
@@ -37,7 +48,6 @@ public class ReviveManager {
             return true;
         }
     };
-
     private static final LevelType<Level<Integer>> DESPAWN_TIME_LEVELS = new LevelType<>("Despawn Time",
             new ExItemStack(Material.SKELETON_SKULL), 1, 11, getTimeLevels(2, "+3s Despawn Time",
             List.of(new ShopPrice(2, ShopCurrency.EMERALD), new ShopPrice(4, ShopCurrency.EMERALD), new ShopPrice(6,
@@ -52,7 +62,6 @@ public class ReviveManager {
             return true;
         }
     };
-
     public static final Revive REVIVE = new Revive("Revive", new ExItemStack(Material.TOTEM_OF_UNDYING),
             List.of(RESPAWN_TIME_LEVELS, DESPAWN_TIME_LEVELS));
     private final HashMap<MobDefUser, Location> deathLocationsByUser = new HashMap<>();
@@ -61,19 +70,6 @@ public class ReviveManager {
     private int reviveRespawnTime = 7;
     private int reviveDespawnTime = 30;
     private BukkitTask revivingCheckTask;
-
-    private static List<Level<Integer>> getTimeLevels(int start, String text, List<ShopPrice> prices,
-                                                      List<Integer> respawnTimes) {
-        List<Level<Integer>> levels = new ArrayList<>();
-
-        Iterator<ShopPrice> priceIt = prices.listIterator();
-        Iterator<Integer> timeIt = respawnTimes.listIterator();
-
-        for (int level = start; priceIt.hasNext() && timeIt.hasNext(); level++) {
-            levels.add(new Level<>(level, priceIt.next(), text, timeIt.next()));
-        }
-        return levels;
-    }
 
     public ExPlayer addDeadUser(MobDefUser user, Location location) {
         this.deathLocationsByUser.put(user, location);
@@ -96,7 +92,7 @@ public class ReviveManager {
 
         Server.broadcastPacket(ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.ADD_PLAYER, deadBody));
         Server.broadcastPacket(ExPacketPlayOutSpawnNamedEntity.wrap(deadBody));
-        Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(((EntityExtension<?>) deadBody),
+        Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(deadBody,
                 ExPacketPlayOutEntityMetadata.DataType.UPDATE));
 
         Server.runTaskLaterSynchrony(() -> Server.broadcastPacket(ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.REMOVE_PLAYER, deadBody)), 3, GameMobDefence.getPlugin());

@@ -2,13 +2,13 @@ package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
-import de.timesnake.basic.entities.entity.bukkit.ExSkeleton;
-import de.timesnake.basic.entities.pathfinder.*;
-import de.timesnake.basic.entities.wrapper.EntityClass;
-import de.timesnake.basic.entities.wrapper.ExMobEffects;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.library.entities.entity.bukkit.ExSkeleton;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.wrapper.EntityClass;
+import de.timesnake.library.entities.wrapper.ExMobEffects;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import net.minecraft.world.entity.EntityInsentient;
 import org.bukkit.Color;

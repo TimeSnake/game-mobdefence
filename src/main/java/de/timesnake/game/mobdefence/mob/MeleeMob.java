@@ -2,9 +2,9 @@ package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
-import de.timesnake.basic.entities.entity.extension.EntityExtension;
-import de.timesnake.basic.entities.entity.extension.ExEntityInsentient;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
+import de.timesnake.library.entities.entity.extension.EntityExtension;
+import de.timesnake.library.entities.entity.extension.ExEntityInsentient;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

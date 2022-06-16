@@ -1,16 +1,16 @@
 package de.timesnake.game.mobdefence.special.weapon;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
-import de.timesnake.basic.entities.EntityManager;
-import de.timesnake.basic.entities.entity.bukkit.ExSnowman;
-import de.timesnake.basic.entities.pathfinder.*;
-import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.kit.ItemTrade;
 import de.timesnake.game.mobdefence.kit.ShopCurrency;
 import de.timesnake.game.mobdefence.kit.ShopPrice;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.BlockSpawner;
+import de.timesnake.library.entities.EntityManager;
+import de.timesnake.library.entities.entity.bukkit.ExSnowman;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.wrapper.EntityClass;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Location;
