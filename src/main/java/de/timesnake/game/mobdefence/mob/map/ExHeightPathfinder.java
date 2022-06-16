@@ -1,10 +1,10 @@
 package de.timesnake.game.mobdefence.mob.map;
 
 import de.timesnake.basic.bukkit.util.world.ExLocation;
-import de.timesnake.basic.entities.pathfinder.ExPathfinderGoal;
-import de.timesnake.basic.entities.pathfinder.ExPathfinderGoalUpdatedLocation;
-import de.timesnake.basic.entities.pathfinder.LocationTargetable;
-import de.timesnake.basic.entities.pathfinder.PathfinderGoalUpdatedLocation;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoal;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalUpdatedLocation;
+import de.timesnake.library.entities.pathfinder.LocationTargetable;
+import de.timesnake.library.entities.pathfinder.PathfinderGoalUpdatedLocation;
 import org.bukkit.Location;
 
 public class ExHeightPathfinder extends ExPathfinderGoalUpdatedLocation {
@@ -18,11 +18,10 @@ public class ExHeightPathfinder extends ExPathfinderGoalUpdatedLocation {
     public static class CorePathfinder extends PathfinderGoalUpdatedLocation {
 
         private final HeightMap map;
-        private HeightBlock current;
         private final int steps;
-
         private final LocationTargetable breakBlock;
         private final int breakLevel;
+        private HeightBlock current;
 
         public CorePathfinder(HeightMap map, int steps, double speed, double trackingDistance, double minDistance,
                               ExPathfinderGoal breakBlock, int breakLevel) {

@@ -5,10 +5,10 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractListener;
-import de.timesnake.basic.entities.EntityManager;
-import de.timesnake.basic.entities.entity.extension.EntityExtension;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.special.weapon.SpecialWeapon;
+import de.timesnake.library.entities.EntityManager;
+import de.timesnake.library.entities.entity.extension.EntityExtension;
 import org.bukkit.Location;
 
 import java.util.HashSet;

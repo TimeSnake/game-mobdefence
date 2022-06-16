@@ -1,12 +1,12 @@
 package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.world.ExLocation;
-import de.timesnake.basic.entities.entity.bukkit.ExZombie;
-import de.timesnake.basic.entities.pathfinder.*;
-import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.ExplosionManager;
+import de.timesnake.library.entities.entity.bukkit.ExZombie;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.wrapper.EntityClass;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import net.minecraft.world.entity.EntityInsentient;
 import org.bukkit.Material;

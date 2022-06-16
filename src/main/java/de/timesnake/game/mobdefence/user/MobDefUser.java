@@ -2,7 +2,6 @@ package de.timesnake.game.mobdefence.user;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.basic.entities.entity.bukkit.ExPlayer;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.game.mobdefence.kit.KitShop;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
@@ -10,6 +9,7 @@ import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.TeamHealth;
 import de.timesnake.library.basic.util.Status;
+import de.timesnake.library.entities.entity.bukkit.extension.ExPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.Statistic;
 import org.bukkit.attribute.Attribute;
@@ -171,24 +171,12 @@ public class MobDefUser extends GameUser {
         return this.alive;
     }
 
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
     public KitShop getShop() {
         return shop;
-    }
-
-    public boolean isBeingRevived() {
-        return this.beingRevivedUser != null;
-    }
-
-    public void setBeingRevivedUser(MobDefUser user) {
-        this.beingRevivedUser = user;
-    }
-
-    public MobDefUser getBeingRevivedUser() {
-        return this.beingRevivedUser;
-    }
-
-    public ExPlayer getDeadBody() {
-        return deadBody;
     }
 
     public void setShop(KitShop shop) {
@@ -196,7 +184,19 @@ public class MobDefUser extends GameUser {
         this.shop.setUser(this);
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
+    public boolean isBeingRevived() {
+        return this.beingRevivedUser != null;
+    }
+
+    public MobDefUser getBeingRevivedUser() {
+        return this.beingRevivedUser;
+    }
+
+    public void setBeingRevivedUser(MobDefUser user) {
+        this.beingRevivedUser = user;
+    }
+
+    public ExPlayer getDeadBody() {
+        return deadBody;
     }
 }

@@ -1,15 +1,15 @@
 package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.world.ExLocation;
-import de.timesnake.basic.entities.EntityManager;
-import de.timesnake.basic.entities.entity.extension.EntityExtension;
-import de.timesnake.basic.entities.entity.extension.ExEntityInsentient;
-import de.timesnake.basic.entities.pathfinder.ExPathfinderGoal;
-import de.timesnake.basic.entities.pathfinder.ExPathfinderGoalBreakBlock;
-import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.mob.map.ExHeightPathfinder;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.library.entities.EntityManager;
+import de.timesnake.library.entities.entity.extension.EntityExtension;
+import de.timesnake.library.entities.entity.extension.ExEntityInsentient;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoal;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalBreakBlock;
+import de.timesnake.library.entities.wrapper.EntityClass;
 import net.minecraft.world.entity.EntityInsentient;
 import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Material;
@@ -133,47 +133,14 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
         return getRandomMob(wave, type, spawn);
     }
 
-    public enum Type {
-        COMPRESSED_MELEE,
-        COMBRESSED_RANGED,
-        MELEE(COMPRESSED_MELEE),
-        BREAKER,
-        RANGED(COMBRESSED_RANGED),
-        OTHER,
-        BOSS;
-
-        private final Type compressed;
-
-        Type() {
-            this.compressed = null;
-        }
-
-        Type(Type compressed) {
-            this.compressed = compressed;
-        }
-
-        public Type getCompressed() {
-            return compressed;
-        }
-
-        public boolean isCompressable() {
-            return this.compressed != null;
-        }
-    }
-
-    protected M entity;
-
-    protected List<EntityExtension<?>> subEntities = new ArrayList<>();
-
     protected final Type type;
     protected final HeightMapManager.MapType mapType;
     protected final int wave;
-
     protected final int currentWave;
     protected final ExLocation spawn;
-
     protected final Random random = new Random();
-
+    protected M entity;
+    protected List<EntityExtension<?>> subEntities = new ArrayList<>();
 
     MobDefMob(Type type, HeightMapManager.MapType mapType, int wave, ExLocation spawn, int currentWave) {
         this.type = type;
@@ -218,5 +185,33 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
             EntityManager.spawnExEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), subEntity);
         }
 
+    }
+
+    public enum Type {
+        COMPRESSED_MELEE,
+        COMBRESSED_RANGED,
+        MELEE(COMPRESSED_MELEE),
+        BREAKER,
+        RANGED(COMBRESSED_RANGED),
+        OTHER,
+        BOSS;
+
+        private final Type compressed;
+
+        Type() {
+            this.compressed = null;
+        }
+
+        Type(Type compressed) {
+            this.compressed = compressed;
+        }
+
+        public Type getCompressed() {
+            return compressed;
+        }
+
+        public boolean isCompressable() {
+            return this.compressed != null;
+        }
     }
 }

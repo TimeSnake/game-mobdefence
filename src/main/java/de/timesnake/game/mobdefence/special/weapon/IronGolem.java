@@ -1,13 +1,13 @@
 package de.timesnake.game.mobdefence.special.weapon;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
-import de.timesnake.basic.entities.EntityManager;
-import de.timesnake.basic.entities.entity.bukkit.ExEntityIronGolem;
-import de.timesnake.basic.entities.pathfinder.*;
-import de.timesnake.basic.entities.wrapper.EntityClass;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.BlockSpawner;
+import de.timesnake.library.entities.EntityManager;
+import de.timesnake.library.entities.entity.bukkit.ExIronGolem;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.wrapper.EntityClass;
 import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,7 +35,7 @@ public class IronGolem extends BlockSpawner implements Listener {
 
     @Override
     public void spawnEntities(Location location) {
-        ExEntityIronGolem golem = new ExEntityIronGolem(location.getWorld(), false);
+        ExIronGolem golem = new ExIronGolem(location.getWorld(), false);
         golem.setPosition(location.getX(), location.getY(), location.getZ());
 
         golem.addPathfinderGoal(1, new ExPathfinderGoalMeleeAttack(1.0D));
