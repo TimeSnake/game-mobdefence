@@ -26,7 +26,7 @@ public enum TrapMaker {
             return new RangedTrap(block, 2, 3) {
                 @Override
                 public boolean trigger(Collection<LivingEntity> entities) {
-                    this.getLocation().createExplosion(4, false, false);
+                    this.getLocation().getWorld().createExplosion(this.getLocation(), 4, false, false);
                     return super.trigger(entities);
                 }
             };
@@ -100,6 +100,15 @@ public enum TrapMaker {
     };
 
 
+    public static List<ShopTrade> getShopTrades() {
+        List<ShopTrade> trades = new ArrayList<>();
+
+        for (TrapMaker trapMaker : TrapMaker.values()) {
+            trades.add(trapMaker.getTrade());
+        }
+        return trades;
+    }
+
     private final ExItemStack item;
     private final ItemTrade trade;
 
@@ -117,13 +126,4 @@ public enum TrapMaker {
     }
 
     public abstract Trap newInstance(ExBlock block);
-
-    public static List<ShopTrade> getShopTrades() {
-        List<ShopTrade> trades = new ArrayList<>();
-
-        for (TrapMaker trapMaker : TrapMaker.values()) {
-            trades.add(trapMaker.getTrade());
-        }
-        return trades;
-    }
 }

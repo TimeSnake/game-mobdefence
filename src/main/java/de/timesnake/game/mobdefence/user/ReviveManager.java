@@ -1,6 +1,5 @@
 package de.timesnake.game.mobdefence.user;
 
-import com.destroystokyo.paper.profile.ProfileProperty;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.server.TimeTask;
 import de.timesnake.basic.bukkit.util.user.ExInventory;
@@ -9,9 +8,10 @@ import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.library.basic.util.Tuple;
 import de.timesnake.library.basic.util.chat.ChatColor;
 import de.timesnake.library.entities.entity.bukkit.ExArmorStand;
-import de.timesnake.library.entities.entity.bukkit.extension.ExPlayer;
+import de.timesnake.library.entities.entity.bukkit.ExPlayer;
 import de.timesnake.library.packets.util.packet.*;
 import de.timesnake.library.reflection.wrapper.ExEntityPose;
 import org.bukkit.Location;
@@ -76,11 +76,9 @@ public class ReviveManager {
 
         ExPlayer deadBody = new ExPlayer(user.getExWorld().getBukkitWorld(), user.getName());
 
-        ProfileProperty textures =
-                user.getPlayer().getPlayerProfile().getProperties().stream().filter((p) -> p.getName().equals(
-                        "textures")).findFirst().get();
+        Tuple<String, String> textures = user.asExPlayer().getTextureValueSiganture();
 
-        deadBody.setTextures(textures.getValue(), textures.getSignature());
+        deadBody.setTextures(textures.getA(), textures.getB());
 
         Location loc = user.getLocation();
         deadBody.setPositionRotation(loc.getX(), loc.getY() + 0.2, loc.getZ(), 120, 0);
@@ -118,7 +116,7 @@ public class ReviveManager {
 
         this.displayEntitiesByUser.put(user, stand);
 
-        Server.broadcastPacket(ExPacketPlayOutSpawnEntityLiving.wrap(stand));
+        Server.broadcastPacket(ExPacketPlayOutSpawnEntity.wrap(stand));
         Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(stand,
                 ExPacketPlayOutEntityMetadata.DataType.UPDATE));
 

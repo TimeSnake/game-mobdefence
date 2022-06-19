@@ -22,7 +22,7 @@ public class ResistanceAura implements Listener {
         this.task = Server.runTaskTimerSynchrony(() -> {
             for (User user : Server.getInGameUsers()) {
                 if (((MobDefUser) user).isAlive() && ((MobDefUser) user).getKit().equals(MobDefKit.KNIGHT)) {
-                    for (Player player : user.getPlayer().getLocation().getNearbyPlayers(RADIUS)) {
+                    for (Player player : user.getWorld().getNearbyPlayers(user.getLocation(), RADIUS)) {
                         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1));
                     }
                     user.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1));

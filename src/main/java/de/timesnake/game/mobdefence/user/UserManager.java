@@ -164,7 +164,7 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
         Material type = e.getBlock().getType();
 
-        if (!(BlockCheck.NORMAL_BREAKABLE.isTagged(type) || BlockCheck.HIGH_BREAKABLE.isTagged(type) || type.isEmpty() || type.equals(Material.FIRE))) {
+        if (!(BlockCheck.NORMAL_BREAKABLE.isTagged(type) || BlockCheck.HIGH_BREAKABLE.isTagged(type) || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
             e.setCancelled(true);
         } else {
             ExItemStack item = MobDefKit.BLOCK_ITEM_BY_TYPE.get(type);

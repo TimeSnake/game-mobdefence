@@ -16,12 +16,6 @@ import java.util.Set;
 public abstract class BlockCheck {
 
     public static final Set<Material> ROUNDED_BLOCK_MATERIALS = new HashSet<>();
-
-    static {
-        ROUNDED_BLOCK_MATERIALS.addAll(Tag.SLABS.getValues());
-        ROUNDED_BLOCK_MATERIALS.addAll(Tag.STAIRS.getValues());
-    }
-
     public static final Tag<Material> ROUNDED_BLOCKS = new Tag<>() {
         @Override
         public boolean isTagged(@NotNull Material material) {
@@ -38,27 +32,7 @@ public abstract class BlockCheck {
             return new NamespacedKey(GameMobDefence.getPlugin(), "walkable");
         }
     };
-
     public static final Set<Material> WALKABLE_IN_MATERIALS = new HashSet<>();
-
-    static {
-        WALKABLE_IN_MATERIALS.add(Material.AIR);
-        WALKABLE_IN_MATERIALS.addAll(Tag.CLIMBABLE.getValues());
-        WALKABLE_IN_MATERIALS.addAll(Tag.CROPS.getValues());
-        WALKABLE_IN_MATERIALS.addAll(Tag.CARPETS.getValues());
-        WALKABLE_IN_MATERIALS.addAll(Tag.SIGNS.getValues());
-        WALKABLE_IN_MATERIALS.addAll(Tag.BANNERS.getValues());
-        WALKABLE_IN_MATERIALS.addAll(Tag.BUTTONS.getValues());
-        WALKABLE_IN_MATERIALS.addAll(Tag.PRESSURE_PLATES.getValues());
-        WALKABLE_IN_MATERIALS.addAll(Tag.RAILS.getValues());
-        WALKABLE_IN_MATERIALS.addAll(Tag.FLOWERS.getValues());
-        WALKABLE_IN_MATERIALS.addAll(Tag.SAPLINGS.getValues());
-        WALKABLE_IN_MATERIALS.addAll(Tag.RAILS.getValues());
-        WALKABLE_IN_MATERIALS.add(Material.SNOW);
-        WALKABLE_IN_MATERIALS.add(Material.TRIPWIRE);
-        WALKABLE_IN_MATERIALS.addAll(List.of(Material.GRASS, Material.TALL_GRASS, Material.ARMOR_STAND));
-    }
-
     public static final Tag<Material> WALKABLE_IN = new Tag<>() {
         @Override
         public boolean isTagged(@NotNull Material material) {
@@ -75,55 +49,6 @@ public abstract class BlockCheck {
             return new NamespacedKey(GameMobDefence.getPlugin(), "walkable");
         }
     };
-
-
-    public static final Set<Material> NORMAL_BREAKABLE_MATERIALS = Set.of(Material.OAK_PLANKS, Material.OAK_SLAB,
-            Material.IRON_BARS);
-
-    public static final Tag<Material> NORMAL_BREAKABLE = new Tag<>() {
-        @Override
-        public boolean isTagged(@NotNull Material material) {
-            return NORMAL_BREAKABLE_MATERIALS.contains(material);
-        }
-
-        @Override
-        public @NotNull Set<Material> getValues() {
-            return NORMAL_BREAKABLE_MATERIALS;
-        }
-
-        @Override
-        public @NotNull NamespacedKey getKey() {
-            return new NamespacedKey(GameMobDefence.getPlugin(), "normal_breakable");
-        }
-    };
-
-    public static final Set<Material> HIGH_BREAKABLE_MATERIALS = Set.of(Material.OAK_FENCE, Material.OAK_FENCE_GATE,
-            Material.COBBLESTONE_WALL);
-
-    public static final Tag<Material> HIGH_BREAKABLE = new Tag<>() {
-        @Override
-        public boolean isTagged(@NotNull Material material) {
-            return HIGH_BREAKABLE_MATERIALS.contains(material);
-        }
-
-        @Override
-        public @NotNull Set<Material> getValues() {
-            return HIGH_BREAKABLE_MATERIALS;
-        }
-
-        @Override
-        public @NotNull NamespacedKey getKey() {
-            return new NamespacedKey(GameMobDefence.getPlugin(), "high_breakable");
-        }
-    };
-
-    public static final Set<Material> BREAKABLE_MATERIALS = new HashSet<>();
-
-    static {
-        BREAKABLE_MATERIALS.addAll(NORMAL_BREAKABLE_MATERIALS);
-        BREAKABLE_MATERIALS.addAll(HIGH_BREAKABLE_MATERIALS);
-    }
-
     public static final BlockCheck WALK_IN = new BlockCheck() {
         @Override
         public int getLevelDelta(Block start, Block finish, int heightDelta) {
@@ -152,7 +77,6 @@ public abstract class BlockCheck {
             return 1;
         }
     };
-
     public static final BlockCheck WALK_IN_SMALL = new BlockCheck() {
         @Override
         public int getLevelDelta(Block start, Block finish, int heightDelta) {
@@ -180,6 +104,128 @@ public abstract class BlockCheck {
             return 1;
         }
     };
+    public static final BlockCheck WALL = new BlockCheck() {
+        @Override
+        public int getLevelDelta(Block start, Block finish, int heightDelta) {
+            if (heightDelta < -1 || heightDelta > 1) {
+                return -1;
+            }
+
+            if (WALKABLE_IN.isTagged(finish.getType()) && WALKABLE_IN.isTagged(finish.getLocation().add(0, 1, 0).getBlock().getType())) {
+                return 5;
+            }
+
+            if (WALKABLE_IN.isTagged(start.getType()) && WALKABLE_IN.isTagged(start.getLocation().add(0, 1, 0).getBlock().getType())) {
+                return 5;
+            }
+
+
+            return -1;
+        }
+    };
+    public static final Set<Material> NORMAL_BREAKABLE_MATERIALS = Set.of(Material.OAK_PLANKS, Material.OAK_SLAB,
+            Material.IRON_BARS);
+    public static final Tag<Material> NORMAL_BREAKABLE = new Tag<>() {
+        @Override
+        public boolean isTagged(@NotNull Material material) {
+            return NORMAL_BREAKABLE_MATERIALS.contains(material);
+        }
+
+        @Override
+        public @NotNull Set<Material> getValues() {
+            return NORMAL_BREAKABLE_MATERIALS;
+        }
+
+        @Override
+        public @NotNull NamespacedKey getKey() {
+            return new NamespacedKey(GameMobDefence.getPlugin(), "normal_breakable");
+        }
+    };
+    public static final Set<Material> HIGH_BREAKABLE_MATERIALS = Set.of(Material.OAK_FENCE, Material.OAK_FENCE_GATE,
+            Material.COBBLESTONE_WALL);
+    public static final Tag<Material> HIGH_BREAKABLE = new Tag<>() {
+        @Override
+        public boolean isTagged(@NotNull Material material) {
+            return HIGH_BREAKABLE_MATERIALS.contains(material);
+        }
+
+        @Override
+        public @NotNull Set<Material> getValues() {
+            return HIGH_BREAKABLE_MATERIALS;
+        }
+
+        @Override
+        public @NotNull NamespacedKey getKey() {
+            return new NamespacedKey(GameMobDefence.getPlugin(), "high_breakable");
+        }
+    };
+    public static final BlockCheck ON_SOLID_1H = new BlockCheck() {
+        @Override
+        public int getLevelDelta(Block start, Block finish, int heightDelta) {
+            Block underBlock = start.getLocation().add(0, -1, 0).getBlock();
+
+            if (!underBlock.getType().isSolid()) {
+                return -1;
+            }
+
+            if (WALKABLE_IN.isTagged(underBlock.getType())) {
+                return -1;
+            }
+
+            if (HIGH_BREAKABLE.isTagged(underBlock.getType())) {
+                return -1;
+            }
+
+            return 1;
+        }
+    };
+    public static final Set<Material> BREAKABLE_MATERIALS = new HashSet<>();
+    public static final BlockCheck OPEN_DOOR = new BlockCheck() {
+        @Override
+        public int getLevelDelta(Block start, Block finish, int heightDelta) {
+            if (!Tag.DOORS.isTagged(start.getType())) {
+                return -1;
+            }
+            if (start.getBlockData() instanceof Door) {
+                return ((Door) start.getBlockData()).isOpen() ? 1 : -1;
+            }
+            return -1;
+        }
+    };
+
+    static {
+        ROUNDED_BLOCK_MATERIALS.addAll(Tag.SLABS.getValues());
+        ROUNDED_BLOCK_MATERIALS.addAll(Tag.STAIRS.getValues());
+    }
+
+    ;
+
+    static {
+        WALKABLE_IN_MATERIALS.add(Material.AIR);
+        WALKABLE_IN_MATERIALS.addAll(Tag.CLIMBABLE.getValues());
+        WALKABLE_IN_MATERIALS.addAll(Tag.CROPS.getValues());
+        WALKABLE_IN_MATERIALS.addAll(Tag.CARPETS.getValues());
+        WALKABLE_IN_MATERIALS.addAll(Tag.SIGNS.getValues());
+        WALKABLE_IN_MATERIALS.addAll(Tag.BANNERS.getValues());
+        WALKABLE_IN_MATERIALS.addAll(Tag.BUTTONS.getValues());
+        WALKABLE_IN_MATERIALS.addAll(Tag.PRESSURE_PLATES.getValues());
+        WALKABLE_IN_MATERIALS.addAll(Tag.RAILS.getValues());
+        WALKABLE_IN_MATERIALS.addAll(Tag.FLOWERS.getValues());
+        WALKABLE_IN_MATERIALS.addAll(Tag.SAPLINGS.getValues());
+        WALKABLE_IN_MATERIALS.addAll(Tag.RAILS.getValues());
+        WALKABLE_IN_MATERIALS.add(Material.SNOW);
+        WALKABLE_IN_MATERIALS.add(Material.TRIPWIRE);
+        WALKABLE_IN_MATERIALS.addAll(List.of(Material.GRASS, Material.TALL_GRASS, Material.ARMOR_STAND));
+    }
+
+    ;
+
+    static {
+        BREAKABLE_MATERIALS.addAll(NORMAL_BREAKABLE_MATERIALS);
+        BREAKABLE_MATERIALS.addAll(HIGH_BREAKABLE_MATERIALS);
+    }
+
+    public abstract int getLevelDelta(Block start, Block finish, int heightDelta);
 
     public static class HighBlockBreak extends Breakable {
 
@@ -216,8 +262,6 @@ public abstract class BlockCheck {
         }
     }
 
-    ;
-
     public static class FloorFenceWallBlocked extends Breakable {
 
         public FloorFenceWallBlocked(Tag<Material>... breakable) {
@@ -251,61 +295,6 @@ public abstract class BlockCheck {
     }
 
     ;
-
-
-    public static final BlockCheck OPEN_DOOR = new BlockCheck() {
-        @Override
-        public int getLevelDelta(Block start, Block finish, int heightDelta) {
-            if (!Tag.DOORS.isTagged(start.getType())) {
-                return -1;
-            }
-            if (start.getBlockData() instanceof Door) {
-                return ((Door) start.getBlockData()).isOpen() ? 1 : -1;
-            }
-            return -1;
-        }
-    };
-
-    public static final BlockCheck ON_SOLID_1H = new BlockCheck() {
-        @Override
-        public int getLevelDelta(Block start, Block finish, int heightDelta) {
-            Block underBlock = start.getLocation().add(0, -1, 0).getBlock();
-
-            if (!underBlock.isSolid()) {
-                return -1;
-            }
-
-            if (WALKABLE_IN.isTagged(underBlock.getType())) {
-                return -1;
-            }
-
-            if (HIGH_BREAKABLE.isTagged(underBlock.getType())) {
-                return -1;
-            }
-
-            return 1;
-        }
-    };
-
-    public static final BlockCheck WALL = new BlockCheck() {
-        @Override
-        public int getLevelDelta(Block start, Block finish, int heightDelta) {
-            if (heightDelta < -1 || heightDelta > 1) {
-                return -1;
-            }
-
-            if (WALKABLE_IN.isTagged(finish.getType()) && WALKABLE_IN.isTagged(finish.getLocation().add(0, 1, 0).getBlock().getType())) {
-                return 5;
-            }
-
-            if (WALKABLE_IN.isTagged(start.getType()) && WALKABLE_IN.isTagged(start.getLocation().add(0, 1, 0).getBlock().getType())) {
-                return 5;
-            }
-
-
-            return -1;
-        }
-    };
 
     public static class HardBreakable extends BlockCheck {
 
@@ -428,12 +417,10 @@ public abstract class BlockCheck {
 
     }
 
-    ;
-
     private static abstract class Breakable extends BlockCheck {
 
-        private final Set<Material> materials = new HashSet<>();
         protected final Tag<Material> breakable;
+        private final Set<Material> materials = new HashSet<>();
 
         public Breakable(Tag<Material>... breakable) {
             for (Tag<Material> tag : breakable) {
@@ -459,6 +446,4 @@ public abstract class BlockCheck {
         }
 
     }
-
-    public abstract int getLevelDelta(Block start, Block finish, int heightDelta);
 }
