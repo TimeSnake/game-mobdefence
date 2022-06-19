@@ -82,9 +82,9 @@ public class Iceball extends SpecialWeapon implements Listener {
             return;
         }
 
-        double speed = Double.parseDouble(SPEED_LEVELS.getValueFromLore(item.getLore()));
-        double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(item.getLore()));
-        int piercing = Integer.parseInt(PIERCING_LEVELS.getValueFromLore(item.getLore()));
+        double speed = Double.parseDouble(SPEED_LEVELS.getValueFromLore(item.getItemMeta().getLore()));
+        double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(item.getItemMeta().getLore()));
+        int piercing = Integer.parseInt(PIERCING_LEVELS.getValueFromLore(item.getItemMeta().getLore()));
 
         Snowball snowball = user.getExWorld().spawn(user.getPlayer().getEyeLocation().add(0, -0.2, 0), Snowball.class);
 

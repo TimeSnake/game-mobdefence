@@ -95,8 +95,9 @@ public class TrapManager implements Listener {
                 ExLocation loc = entry.getKey();
                 RangedTrap trap = entry.getValue();
 
-                Collection<LivingEntity> entities = loc.getNearbyLivingEntities(trap.getRange(), 1,
-                        (e) -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType()));
+                Collection<LivingEntity> entities = ((Collection) loc.getWorld().getNearbyEntities(loc,
+                        trap.getRange(), 1, trap.getRange(),
+                        (e) -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType())));
 
                 if (entities.size() >= trap.getMobAmount()) {
                     if (trap.trigger(entities)) {

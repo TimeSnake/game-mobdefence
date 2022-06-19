@@ -9,7 +9,7 @@ import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.TeamHealth;
 import de.timesnake.library.basic.util.Status;
-import de.timesnake.library.entities.entity.bukkit.extension.ExPlayer;
+import de.timesnake.library.entities.entity.bukkit.ExPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.Statistic;
 import org.bukkit.attribute.Attribute;

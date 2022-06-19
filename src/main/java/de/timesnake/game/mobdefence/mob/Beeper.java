@@ -13,7 +13,7 @@ import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;

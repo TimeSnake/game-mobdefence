@@ -10,6 +10,7 @@ import de.timesnake.game.mobdefence.user.MobDefUser;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitTask;
@@ -64,29 +65,30 @@ public class SwingSword extends CooldownWeapon implements UserInventoryInteractL
 
     @Override
     public void onInteract(ExItemStack item, MobDefUser user) {
-        double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(item.getLore()));
-        double radius = Double.parseDouble(RADIUS_LEVELS.getValueFromLore(item.getLore()));
+        double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(item.getItemMeta().getLore()));
+        double radius = Double.parseDouble(RADIUS_LEVELS.getValueFromLore(item.getItemMeta().getLore()));
 
         Location loc = user.getLocation().clone().add(0, -0.35, 0);
 
-        for (LivingEntity entity : loc.getNearbyLivingEntities(radius, 1.5,
+        for (Entity entity : loc.getWorld().getNearbyEntities(loc, radius, 1.5, radius,
                 e -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType()))) {
 
             Vector vec = entity.getLocation().toVector().subtract(loc.toVector());
             double knockback = 2 / (vec.length() > 1 ? vec.length() : 1D);
 
-            entity.damage(damage * 2, user.getPlayer());
+            ((LivingEntity) entity).damage(damage * 2, user.getPlayer());
             entity.setVelocity(vec.setY(0).normalize().setY(1).normalize().multiply(knockback));
         }
 
         ArmorStand stand = user.getExWorld().spawn(loc, ArmorStand.class);
 
         stand.setVisible(false);
-        stand.setItem(EquipmentSlot.HEAD, SWORD.getItem());
+        stand.getEquipment().setItem(EquipmentSlot.HEAD, SWORD.getItem());
         stand.setInvulnerable(true);
         stand.setGravity(false);
         stand.setCollidable(false);
-        stand.setKiller(user.getPlayer());
+        stand.setCustomName(user.getPlayer().getName());
+        stand.setCustomNameVisible(false);
         stand.setHeadPose(new EulerAngle(Math.PI / 2, 0, 0));
 
         AtomicReference<Float> rotation = new AtomicReference<>((float) 0);
@@ -107,6 +109,6 @@ public class SwingSword extends CooldownWeapon implements UserInventoryInteractL
 
     @Override
     public int getCooldown(ExItemStack item) {
-        return Integer.parseInt(COOLDOWN_LEVELS.getValueFromLore(item.getLore())) * 20;
+        return Integer.parseInt(COOLDOWN_LEVELS.getValueFromLore(item.getItemMeta().getLore())) * 20;
     }
 }

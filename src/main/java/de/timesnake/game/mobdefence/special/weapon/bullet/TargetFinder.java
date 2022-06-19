@@ -10,8 +10,9 @@ import java.util.Collection;
 public interface TargetFinder {
 
     TargetFinder STRAIGHT = (excludedTargets, location) -> null;
-    TargetFinder NEAREST_ATTACKER = (excludedTargets, location) -> location.getNearbyLivingEntities(16,
-            e -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType()) && !excludedTargets.contains(e)).stream().findFirst().orElse(null);
+    TargetFinder NEAREST_ATTACKER =
+            (excludedTargets, location) -> (LivingEntity) location.getWorld().getNearbyEntities(location, 16, 16, 16,
+                    e -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType()) && !excludedTargets.contains(e)).stream().findFirst().orElse(null);
 
     LivingEntity nextTarget(Collection<LivingEntity> excludedTargets, Location location);
 }
