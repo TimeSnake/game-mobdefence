@@ -5,10 +5,12 @@ import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.library.entities.entity.ExtendedCraftEntity;
 import de.timesnake.library.entities.entity.bukkit.ExZombie;
-import de.timesnake.library.entities.entity.extension.EntityExtension;
 import de.timesnake.library.entities.entity.extension.ExEntityInsentient;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalZombieAttack;
+import de.timesnake.library.entities.pathfinder.custom.*;
 import de.timesnake.library.entities.wrapper.EntityClass;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import net.minecraft.world.entity.EntityInsentient;
@@ -32,30 +34,32 @@ public class BossZombie extends MobDefMob<ExZombie> {
 
         this.entity = new ExZombie(world, false);
 
-        ExPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.8, false, BlockCheck.BREAKABLE_MATERIALS);
+        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.8, false, BlockCheck.BREAKABLE_MATERIALS);
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalZombieAttack(1.1));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalZombieAttack(1.1, false));
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1, breakBlock, BREAK_LEVEL));
 
         this.entity.addPathfinderGoal(2, breakBlock);
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.8));
-        this.entity.addPathfinderGoal(4, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalRandomStrollLand(0.8));
+        this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
         this.entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
 
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass, true, true, 16D));
+            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
+                    true, 16D));
         }
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
 
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass, true, true, 16D));
+            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
+                    true, 16D));
         }
 
-        this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntityZombie, 4, 10 * 20) {
+        this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalSpawnArmy(EntityClass.EntityZombie, 4, 10 * 20) {
             @Override
-            public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<?
+            public List<? extends ExtendedCraftEntity<? extends ExEntityInsentient>> getArmee(ExtendedCraftEntity<?
                     extends ExEntityInsentient> entity) {
                 List<ExZombie> zombies = new ArrayList<>();
 

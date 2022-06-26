@@ -9,7 +9,11 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.BlockSpawner;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExBlaze;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBlazeFireball;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalHurtByTarget;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLookAtPlayer;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
 import de.timesnake.library.entities.wrapper.EntityClass;
 import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Location;
@@ -47,14 +51,14 @@ public class Blaze extends BlockSpawner implements Listener {
 
         blaze.setPosition(location.getX(), location.getY(), location.getZ());
 
-        blaze.addPathfinderGoal(1, new ExPathfinderGoalBlazeFireball());
-        blaze.addPathfinderGoal(8, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        blaze.addPathfinderGoal(1, new ExCustomPathfinderGoalBlazeFireball());
+        blaze.addPathfinderGoal(8, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
         blaze.addPathfinderGoal(8, new ExPathfinderGoalRandomLookaround());
 
-        blaze.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
+        blaze.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
 
         for (EntityClass<? extends EntityLiving> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
-            blaze.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass));
+            blaze.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
         blaze.setPersistent(true);

@@ -4,7 +4,10 @@ import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.bukkit.ExCaveSpider;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLeapAtTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
+import de.timesnake.library.entities.pathfinder.custom.*;
 import de.timesnake.library.entities.wrapper.EntityClass;
 import net.minecraft.world.entity.EntityInsentient;
 import org.bukkit.World;
@@ -26,20 +29,20 @@ public class CaveSpider extends MobDefMob<ExCaveSpider> {
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalFloat());
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1, null, BREAK_LEVEL));
         this.entity.addPathfinderGoal(3, new ExPathfinderGoalLeapAtTarget(0.4F));
-        this.entity.addPathfinderGoal(4, new ExPathfinderGoalSpiderMeleeAttack(1));
-        this.entity.addPathfinderGoal(5, new ExPathfinderGoalRandomStrollLand(0.8D));
-        this.entity.addPathfinderGoal(6, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalSpiderMeleeAttack(1));
+        this.entity.addPathfinderGoal(5, new ExCustomPathfinderGoalRandomStrollLand(0.8D));
+        this.entity.addPathfinderGoal(6, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
         this.entity.addPathfinderGoal(6, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
 
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
 
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
         if (this.currentWave > 13) {

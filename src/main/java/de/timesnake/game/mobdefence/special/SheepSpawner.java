@@ -3,9 +3,13 @@ package de.timesnake.game.mobdefence.special;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.kit.*;
+import de.timesnake.library.entities.entity.ExtendedCraftEntity;
 import de.timesnake.library.entities.entity.bukkit.ExSheep;
-import de.timesnake.library.entities.entity.extension.EntityExtension;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLookAtPlayer;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalPet;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalRandomStrollLand;
 import de.timesnake.library.entities.wrapper.EntityClass;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -31,7 +35,7 @@ public class SheepSpawner extends EntitySpawner {
     }
 
     @Override
-    public List<EntityExtension<?>> getEntities(User user, ExItemStack item) {
+    public List<ExtendedCraftEntity<?>> getEntities(User user, ExItemStack item) {
 
         int sheep = 0;
         for (Entity s : user.getExWorld().getEntitiesByClasses(Sheep.class)) {
@@ -47,7 +51,7 @@ public class SheepSpawner extends EntitySpawner {
 
         int amount = Integer.parseInt(AMOUNT_LEVELS.getValueFromLore(item.getLore()));
 
-        List<EntityExtension<?>> entities = new ArrayList<>();
+        List<ExtendedCraftEntity<?>> entities = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
             entities.add(this.getSheep(user));
         }
@@ -59,9 +63,9 @@ public class SheepSpawner extends EntitySpawner {
         ExSheep entity = new ExSheep(user.getExWorld().getBukkitWorld(), false);
 
         entity.addPathfinderGoal(0, new ExPathfinderGoalFloat());
-        entity.addPathfinderGoal(1, new ExPathfinderGoalPet(user.getPlayer(), 1.3, 4, 7));
-        entity.addPathfinderGoal(2, new ExPathfinderGoalRandomStrollLand(1.1D));
-        entity.addPathfinderGoal(3, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        entity.addPathfinderGoal(1, new ExCustomPathfinderGoalPet(user.getPlayer(), 1.3, 4, 7));
+        entity.addPathfinderGoal(2, new ExCustomPathfinderGoalRandomStrollLand(1.1D));
+        entity.addPathfinderGoal(3, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
         entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
         entity.setCustomName(user.getName());

@@ -5,7 +5,7 @@ import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.bukkit.ExVillager;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLocation;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLocation;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Creeper;
@@ -124,7 +124,7 @@ public class MobManager implements Listener {
     public LivingEntity createCoreEntity() {
         Location loc = MobDefServer.getMap().getCoreLocation();
         ExVillager entity = new ExVillager(loc.getWorld(), ExVillager.Type.PLAINS, false, false);
-        entity.addPathfinderGoal(1, new ExPathfinderGoalLocation(loc.getX(), loc.getY(), loc.getZ(), 1.4, 32, 1));
+        entity.addPathfinderGoal(1, new ExCustomPathfinderGoalLocation(loc.getX(), loc.getY(), loc.getZ(), 1.4, 32, 1));
         entity.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         entity.setPersistent(true);
         entity.setInvulnerable(false);

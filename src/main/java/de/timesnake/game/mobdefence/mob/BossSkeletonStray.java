@@ -5,10 +5,12 @@ import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.library.entities.entity.ExtendedCraftEntity;
 import de.timesnake.library.entities.entity.bukkit.ExStray;
-import de.timesnake.library.entities.entity.extension.EntityExtension;
 import de.timesnake.library.entities.entity.extension.ExEntityInsentient;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalBowShoot;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
+import de.timesnake.library.entities.pathfinder.custom.*;
 import de.timesnake.library.entities.wrapper.EntityClass;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import net.minecraft.world.entity.EntityInsentient;
@@ -33,30 +35,31 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
 
         this.entity = new ExStray(world, false);
 
-        ExPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false, BlockCheck.BREAKABLE_MATERIALS);
+        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false, BlockCheck.BREAKABLE_MATERIALS);
 
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1.3, breakBlock, BREAK_LEVEL));
         this.entity.addPathfinderGoal(2, breakBlock);
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(1.3D));
-        this.entity.addPathfinderGoal(4, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalRandomStrollLand(1.3D));
+        this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
         this.entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
 
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
 
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
 
-        this.entity.addPathfinderGoal(2, new ExPathfinderGoalSpawnArmy(EntityClass.EntitySkeletonStray, 3, 10 * 20) {
+        this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalSpawnArmy(EntityClass.EntitySkeletonStray, 3,
+                10 * 20) {
             @Override
-            public List<? extends EntityExtension<? extends ExEntityInsentient>> getArmee(EntityExtension<?
+            public List<? extends ExtendedCraftEntity<? extends ExEntityInsentient>> getArmee(ExtendedCraftEntity<?
                     extends ExEntityInsentient> entity) {
                 List<ExStray> skeletons = new ArrayList<>();
 
@@ -65,25 +68,26 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
 
                     ExStray stray = new ExStray(world, false);
 
-                    ExPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.5, false,
+                    ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.5, false,
                             BlockCheck.BREAKABLE_MATERIALS);
 
                     stray.addPathfinderGoal(2, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, breakBlock,
                             BREAK_LEVEL));
                     stray.addPathfinderGoal(2, breakBlock);
-                    stray.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.9D));
-                    stray.addPathfinderGoal(4, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+                    stray.addPathfinderGoal(3, new ExCustomPathfinderGoalRandomStrollLand(0.9D));
+                    stray.addPathfinderGoal(4, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
                     stray.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
-                    stray.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+                    stray.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
 
                     for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-                        stray.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass));
+                        stray.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
                     }
-                    stray.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+                    stray.addPathfinderGoal(3,
+                            new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
 
                     for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-                        stray.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass));
+                        stray.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
                     }
 
                     stray.setMaxNoDamageTicks(1);
