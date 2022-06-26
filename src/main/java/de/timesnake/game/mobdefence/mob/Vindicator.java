@@ -5,7 +5,8 @@ import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.bukkit.ExVindicator;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
+import de.timesnake.library.entities.pathfinder.custom.*;
 import de.timesnake.library.entities.wrapper.EntityClass;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import net.minecraft.world.entity.EntityInsentient;
@@ -23,7 +24,7 @@ public class Vindicator extends MobDefMob<ExVindicator> {
     public void spawn() {
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        ExPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.3, false, BlockCheck.BREAKABLE_MATERIALS);
+        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.3, false, BlockCheck.BREAKABLE_MATERIALS);
 
         this.entity = new ExVindicator(world, false);
         this.entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.IRON_AXE));
@@ -31,27 +32,27 @@ public class Vindicator extends MobDefMob<ExVindicator> {
         this.entity.addPathfinderGoal(0, new ExPathfinderGoalFloat());
         this.entity.addPathfinderGoal(4, getCorePathfinder(this.getMapType(), 0.7, breakBlock, BREAK_LEVEL));
         this.entity.addPathfinderGoal(4, breakBlock);
-        this.entity.addPathfinderGoal(8, new ExPathfinderGoalRandomStroll(0.6));
-        this.entity.addPathfinderGoal(9, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
-        this.entity.addPathfinderGoal(10, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityInsentient));
+        this.entity.addPathfinderGoal(8, new ExCustomPathfinderGoalRandomStroll(0.6));
+        this.entity.addPathfinderGoal(9, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(10, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityInsentient));
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
 
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
 
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
         if (this.currentWave < 13) {
-            this.entity.addPathfinderGoal(3, new ExPathfinderGoalMeleeAttackVindicator(1));
+            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalMeleeAttackVindicator(1));
         } else if (this.currentWave < 19) {
-            this.entity.addPathfinderGoal(3, new ExPathfinderGoalMeleeAttackVindicator(1.1));
+            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalMeleeAttackVindicator(1.1));
         } else {
-            this.entity.addPathfinderGoal(3, new ExPathfinderGoalMeleeAttackVindicator(1.2));
+            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalMeleeAttackVindicator(1.2));
         }
 
         super.spawn();

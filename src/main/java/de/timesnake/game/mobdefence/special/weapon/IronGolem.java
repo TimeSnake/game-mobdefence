@@ -6,7 +6,9 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.BlockSpawner;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExIronGolem;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMeleeAttack;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMoveTowardsTarget;
+import de.timesnake.library.entities.pathfinder.custom.*;
 import de.timesnake.library.entities.wrapper.EntityClass;
 import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Location;
@@ -40,15 +42,16 @@ public class IronGolem extends BlockSpawner implements Listener {
 
         golem.addPathfinderGoal(1, new ExPathfinderGoalMeleeAttack(1.0D));
         golem.addPathfinderGoal(2, new ExPathfinderGoalMoveTowardsTarget(0.9D, 32.0F));
-        golem.addPathfinderGoal(3, new ExPathfinderGoalLocation(location.getX(), location.getY(), location.getZ(), 1,
+        golem.addPathfinderGoal(3, new ExCustomPathfinderGoalLocation(location.getX(), location.getY(),
+                location.getZ(), 1,
                 32, 2));
-        golem.addPathfinderGoal(7, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
-        golem.addPathfinderGoal(8, new ExPathfinderGoalRandomLookaround());
+        golem.addPathfinderGoal(7, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        golem.addPathfinderGoal(8, new ExCustomPathfinderGoalRandomLookaround());
 
-        golem.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
+        golem.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
 
         for (EntityClass<? extends EntityLiving> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
-            golem.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass, 5, true, true));
+            golem.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, 5, true, true));
         }
 
         golem.setPersistent(true);

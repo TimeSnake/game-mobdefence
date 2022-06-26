@@ -5,7 +5,10 @@ import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.bukkit.ExWitch;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalArrowAttack;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
+import de.timesnake.library.entities.pathfinder.custom.*;
 import de.timesnake.library.entities.wrapper.EntityClass;
 import net.minecraft.world.entity.EntityInsentient;
 import org.bukkit.World;
@@ -24,28 +27,30 @@ public class Witch extends MobDefMob<ExWitch> {
 
         this.entity.clearPathfinderGoals();
 
-        ExPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.2, false, BlockCheck.BREAKABLE_MATERIALS);
+        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.2, false, BlockCheck.BREAKABLE_MATERIALS);
 
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1.5, breakBlock, BREAK_LEVEL));
         this.entity.addPathfinderGoal(2, breakBlock);
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalFloat());
         this.entity.addPathfinderGoal(2, new ExPathfinderGoalArrowAttack(1.0D, 60, 10.0F));
-        this.entity.addPathfinderGoal(2, new ExPathfinderGoalRandomStrollLand(1.0D));
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalRandomStrollLand(1.0D));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
         this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
 
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTargetWitch(entityClass, 10, true,
+            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTargetWitch(entityClass, 10,
+                    true,
                     false));
 
         }
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
 
         for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTargetWitch(entityClass, 10, true,
+            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTargetWitch(entityClass, 10,
+                    true,
                     false));
 
         }

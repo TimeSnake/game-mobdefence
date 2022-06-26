@@ -7,7 +7,10 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExBee;
 import de.timesnake.library.entities.entity.bukkit.ExCreeper;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMeleeAttack;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
+import de.timesnake.library.entities.pathfinder.custom.*;
 import de.timesnake.library.entities.wrapper.EntityClass;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Location;
@@ -53,7 +56,7 @@ public class Beeper extends MobDefMob<ExCreeper> {
 
         this.entity = new ExCreeper(world, false);
 
-        ExPathfinderGoalLocationSwell swell = new ExPathfinderGoalLocationSwell(4, 7);
+        ExCustomPathfinderGoalLocationSwell swell = new ExCustomPathfinderGoalLocationSwell(4, 7);
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalFloat());
         this.entity.addPathfinderGoal(2, swell);
@@ -66,13 +69,14 @@ public class Beeper extends MobDefMob<ExCreeper> {
             this.entity.addPathfinderGoal(2, getCorePathfinder(HeightMapManager.MapType.WALL_FINDER, 1.2, swell, 5));
         }
 
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalSwell(3, 5));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalSwell(3, 5));
         this.entity.addPathfinderGoal(4, new ExPathfinderGoalMeleeAttack(1.1D));
-        this.entity.addPathfinderGoal(6, new ExPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(6, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
         this.entity.addPathfinderGoal(6, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
-        this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman, true,
+        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+        this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman,
+                true,
                 true));
 
         if (this.currentWave > 10) {

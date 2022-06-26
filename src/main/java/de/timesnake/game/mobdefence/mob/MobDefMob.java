@@ -5,10 +5,10 @@ import de.timesnake.game.mobdefence.mob.map.ExHeightPathfinder;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.EntityManager;
-import de.timesnake.library.entities.entity.extension.EntityExtension;
+import de.timesnake.library.entities.entity.ExtendedCraftEntity;
 import de.timesnake.library.entities.entity.extension.ExEntityInsentient;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoal;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalBreakBlock;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
 import de.timesnake.library.entities.wrapper.EntityClass;
 import net.minecraft.world.entity.EntityInsentient;
 import net.minecraft.world.entity.EntityLiving;
@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEntityInsentient>> {
+public abstract class MobDefMob<M extends Mob & ExtendedCraftEntity<? extends ExEntityInsentient>> {
 
     public static final int BREAK_LEVEL = 16;
 
@@ -79,9 +79,9 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
                 breakPathfinder, breakLevel);
     }
 
-    static ExPathfinderGoalBreakBlock getBreakPathfinder(double speed, boolean ignoreTarget,
-                                                         Collection<Material> breakable) {
-        return new ExPathfinderGoalBreakBlock(speed, ignoreTarget,
+    static ExCustomPathfinderGoalBreakBlock getBreakPathfinder(double speed, boolean ignoreTarget,
+                                                               Collection<Material> breakable) {
+        return new ExCustomPathfinderGoalBreakBlock(speed, ignoreTarget,
                 (block) -> MobDefServer.getMap().getHeightMapManager().updateMaps(), breakable);
     }
 
@@ -140,7 +140,7 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
     protected final ExLocation spawn;
     protected final Random random = new Random();
     protected M entity;
-    protected List<EntityExtension<?>> subEntities = new ArrayList<>();
+    protected List<ExtendedCraftEntity<?>> subEntities = new ArrayList<>();
 
     MobDefMob(Type type, HeightMapManager.MapType mapType, int wave, ExLocation spawn, int currentWave) {
         this.type = type;
@@ -178,7 +178,7 @@ public abstract class MobDefMob<M extends Mob & EntityExtension<? extends ExEnti
 
         this.entity.getExtension().setMaxNoDamageTicks(1);
 
-        for (EntityExtension<?> subEntity : this.subEntities) {
+        for (ExtendedCraftEntity<?> subEntity : this.subEntities) {
             subEntity.getExtension().setPersistent(true);
             subEntity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
                     this.spawn.getYaw(), this.spawn.getPitch());
