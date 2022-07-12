@@ -32,7 +32,7 @@ public class MobManager implements Listener {
     public static final double GROUP_SIZE_INCREASE = 1.4;
     public static final double GROUP_SIZE_PLAYER_MULTIPLIER = 1.7;
 
-    public static final int MOB_LIMIT = 100;
+    public static final int MOB_LIMIT = 70;
 
     public static final double MOB_DAMAGE_MULTIPLIER = 1;
 
@@ -62,7 +62,7 @@ public class MobManager implements Listener {
 
         Beeper.handleExplosion(creeper, e.getLocation());
 
-        this.checkRespawn();
+        Server.runTaskLaterSynchrony(this::checkRespawn, 1, GameMobDefence.getPlugin());
     }
 
     private void checkRespawn() {

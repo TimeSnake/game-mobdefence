@@ -11,6 +11,7 @@ import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExSnowman;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalArrowAttack;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalHurtByTarget;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLookAtPlayer;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
@@ -60,6 +61,7 @@ public class Snowman extends BlockSpawner implements Listener {
 
         snowman.addPathfinderGoal(1, new ExPathfinderGoalArrowAttack(0D, 1, 10.0F));
         snowman.addPathfinderGoal(3, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        snowman.addPathfinderGoal(4, new ExPathfinderGoalRandomStrollLand(0, 0));
         snowman.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
         snowman.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));

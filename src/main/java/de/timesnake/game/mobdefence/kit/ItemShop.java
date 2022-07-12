@@ -18,15 +18,13 @@ import java.util.*;
 
 public class ItemShop implements UserInventoryClickListener, InventoryHolder {
 
-    protected final String name;
     protected final int slot;
     protected final ExItemStack displayItem;
-    protected ExInventory inv;
-
     protected final List<Levelable<?>> levelItems;
     protected final HashMap<Integer, Levelable<?>> levelItemsBySlot = new HashMap<>();
-
     protected final Map<Integer, ShopTrade> tradesByDisplayItemId = new HashMap<>();
+    protected String name;
+    protected ExInventory inv;
 
     public ItemShop(String name, int slot, ExItemStack displayItem, List<Levelable<?>> levelItems,
                     List<ShopTrade>... trades) {
