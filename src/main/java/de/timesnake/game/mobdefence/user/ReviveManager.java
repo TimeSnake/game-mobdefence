@@ -17,6 +17,7 @@ import de.timesnake.library.reflection.wrapper.ExEntityPose;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
@@ -90,7 +91,7 @@ public class ReviveManager {
 
         Server.broadcastPacket(ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.ADD_PLAYER, deadBody));
         Server.broadcastPacket(ExPacketPlayOutSpawnNamedEntity.wrap(deadBody));
-        Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(deadBody,
+        Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap((Player) deadBody,
                 ExPacketPlayOutEntityMetadata.DataType.UPDATE));
 
         Server.runTaskLaterSynchrony(() -> Server.broadcastPacket(ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.REMOVE_PLAYER, deadBody)), 3, GameMobDefence.getPlugin());

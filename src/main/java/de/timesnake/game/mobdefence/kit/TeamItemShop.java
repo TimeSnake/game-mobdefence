@@ -18,6 +18,7 @@ public class TeamItemShop extends ItemShop {
 
     public TeamItemShop(TeamItemShop shop) {
         super(shop);
+        this.name = this.name + " I";
     }
 
     @Override
@@ -33,6 +34,7 @@ public class TeamItemShop extends ItemShop {
     @Override
     public void onUserInventoryClick(UserInventoryClickEvent event) {
         super.onUserInventoryClick(event);
+        System.out.println(this.name);
 
         for (User user : Server.getInGameUsers()) {
             user.updateInventory();
