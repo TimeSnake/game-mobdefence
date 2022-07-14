@@ -147,15 +147,9 @@ public class MobDefKit extends Kit {
                     new ShopPrice(18, ShopCurrency.SILVER), new ShopPrice(24, ShopCurrency.SILVER),
                     new ShopPrice(16, ShopCurrency.GOLD), new ShopPrice(64, ShopCurrency.BRONZE)),
             "+1 Projectile Protection", Enchantment.PROTECTION_ENVIRONMENTAL, List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
-
-    static {
-        PROTECTION.setConflictingTypes(List.of(PROJECTILE_PROTECTION));
-        PROJECTILE_PROTECTION.setConflictingTypes(List.of(PROTECTION));
-    }
+    public static final ExItemStack MELEE_BASE_ARMOR_HELMET = new ExItemStack(Material.LEATHER_HELMET, true);
 
     // melee
-
-    public static final ExItemStack MELEE_BASE_ARMOR_HELMET = new ExItemStack(Material.LEATHER_HELMET, true);
     public static final ExItemStack MELEE_BASE_ARMOR_CHESTPLATE = new ExItemStack(Material.LEATHER_CHESTPLATE, true);
     public static final ExItemStack MELEE_BASE_ARMOR_LEGGINGS = new ExItemStack(Material.LEATHER_LEGGINGS, true);
     public static final ExItemStack MELEE_BASE_ARMOR_BOOTS = new ExItemStack(Material.LEATHER_BOOTS, true);
@@ -201,14 +195,14 @@ public class MobDefKit extends Kit {
     public static final LevelItem MELEE_ARMOR_LEGGINGS = new LevelItem("Leggings", MELEE_BASE_ARMOR_LEGGINGS,
             ARMOR_LEGGINGS,
             List.of(MELEE_ARMOR_LEGGINGS_TYPE, PROTECTION, PROJECTILE_PROTECTION));
-
     // ranged
     public static final LevelItem MELEE_ARMOR_BOOTS = new LevelItem("Boots", MELEE_BASE_ARMOR_BOOTS, ARMOR_BOOTS,
             List.of(MELEE_ARMOR_BOOTS_TYPE, PROTECTION, PROJECTILE_PROTECTION));
     public static final ItemShop KNIGHT_ARMOR = new ItemShop("§6Armor", 14, ARMOR,
             List.of(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS, MELEE_ARMOR_BOOTS),
             List.of(IRON_SKIN));
-
+    public static final ItemShop LUMBERJACK_ARMOR = new ItemShop("Armor", 14, ARMOR,
+            List.of(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS, MELEE_ARMOR_BOOTS), List.of());
     public static final ItemLevelType<?> RANGED_ARMOR_HELMET_TYPE = new ItemLevelType<>("Type",
             new ExItemStack(Material.ANVIL),
             1, 4, ItemLevel.getMaterialLevels(2,
@@ -254,16 +248,21 @@ public class MobDefKit extends Kit {
     public static final LevelItem RANGED_ARMOR_BOOTS = new LevelItem("Boots", true,
             new ShopPrice(4, ShopCurrency.BRONZE), MELEE_BASE_ARMOR_BOOTS, ARMOR_BOOTS,
             List.of(RANGED_ARMOR_BOOTS_TYPE, PROTECTION, PROJECTILE_PROTECTION));
-
-
+    public static final ItemShop ALCHEMIST_ARMOR = new ItemShop("Armor", 14, ARMOR,
+            List.of(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS, RANGED_ARMOR_BOOTS),
+            List.of());
+    public static final ItemShop ARCHER_ARMOR = new ItemShop("Armor", 14, ARMOR,
+            List.of(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS, RANGED_ARMOR_BOOTS),
+            List.of());
+    public static final ItemShop WIZARD_ARMOR = new ItemShop("Armor", 14, ARMOR,
+            List.of(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS, RANGED_ARMOR_BOOTS),
+            List.of());
     // knight
     public static final ItemTrade FIRE_GOLD_SWORD = new ItemTrade(false, new ShopPrice(2, ShopCurrency.SILVER),
             List.of(new ExItemStack(Material.GOLDEN_SWORD, List.of(Enchantment.FIRE_ASPECT), List.of(2))),
             new ExItemStack(new ExItemStack(Material.GOLDEN_SWORD, false, true)).setDisplayName("§6Fire Sword"));
-
     public static final ItemShop KNIGHT_LEVEL_WEAPONS = new ItemShop("Weapons", 12, WEAPONS,
             List.of(Sword.SWORD, SwingSword.SWORD), List.of(FIRE_GOLD_SWORD));
-
     public static final MobDefKit KNIGHT = new MobDefKit(1, "Knight", Material.IRON_SWORD,
             List.of("§fWeapons: §7Sword, Axe", "§fArmor: §7Strong", "", "§7Resistance aura"),
             List.of(Sword.WOODEN_SWORD, new ExItemStack(Material.SHIELD, true).setSlot(EquipmentSlot.OFF_HAND),
@@ -274,53 +273,34 @@ public class MobDefKit extends Kit {
                     MobDefKit.BEEF, MobTracker.TRACKER),
             List.of(KNIGHT_LEVEL_WEAPONS, KNIGHT_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP,
                     BaseShops.TEAM_SHOP));
-
     // alchemist
     public static final ItemTrade ALCHEMIST_SPEED = new ItemTrade(false, new ShopPrice(4, ShopCurrency.BRONZE),
             List.of(new ExItemStack(Material.POTION, PotionType.SPEED, false, true)),
             new ExItemStack(Material.POTION, 1, "Speed", PotionType.SPEED, false, true));
 
+    // archer
     public static final ItemShop ALCHEMIST_WEAPONS = new ItemShop("§6Weapons", 12,
             new ExItemStack(Material.IRON_SWORD),
             List.of(FireHoe.FIRE_HOE, FireStaff.FIRE_STAFF, Iceball.ITEM), List.of(ALCHEMIST_SPEED, Snowman.SNOWMAN,
             Blaze.BLAZE));
-
-    public static final ItemShop ALCHEMIST_ARMOR = new ItemShop("Armor", 14, ARMOR,
-            List.of(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS, RANGED_ARMOR_BOOTS),
-            List.of());
-
     public static final MobDefKit ALCHEMIST = new MobDefKit(3, "Alchemist", Material.BLAZE_POWDER,
             List.of("§fWeapons: §7Fire Hoe, Fire Staff, Iceball", "§fArmor: §7Weak", "", "§7Resistant against fire",
                     "§7Defence Snowmen, Blazes"),
             List.of(FireHoe.FIRE_HOE.getItem(), Iceball.ICEBALL, MobDefKit.BEEF, MobTracker.TRACKER),
             List.of(ALCHEMIST_WEAPONS, ALCHEMIST_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP,
                     BaseShops.TEAM_SHOP));
-
-    // archer
-
     public static final ItemShop ARCHER_WEAPONS = new ItemShop("Weapons", 12, WEAPONS,
-            List.of(CrystalShard.SHARD, SplashBow.BOW, RocketCrossBow.CROSSBOW), List.of(PoisonArrow.TRADE));
-    public static final ItemShop ARCHER_ARMOR = new ItemShop("Armor", 14, ARMOR,
-            List.of(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS, RANGED_ARMOR_BOOTS),
-            List.of());
-
+            List.of(SpeedBow.BOW, SplashBow.BOW, RocketCrossBow.CROSSBOW), List.of(PoisonArrow.TRADE));
     public static final MobDefKit ARCHER = new MobDefKit(2, "Archer", Material.BOW,
-            List.of("§fWeapons: §7Speers, Bows, Crossbow", "§fArmor: §7Weak"),
-            List.of(CrystalShard.SHARD.getItem(), MobDefKit.BEEF, MobTracker.TRACKER),
+            List.of("§fWeapons: §7Bows, Crossbow", "§fArmor: §7Weak"),
+            List.of(SpeedBow.BOW.getItem(), MobDefKit.BEEF, MobTracker.TRACKER),
             List.of(ARCHER_WEAPONS, ARCHER_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP, BaseShops.TEAM_SHOP));
-
     // wizard
     public static final ItemTrade WIZARD_REGEN = new ItemTrade(false, new ShopPrice(4, ShopCurrency.BRONZE),
             List.of(new ExItemStack(true, "§6Regeneration", PotionEffectType.REGENERATION, 10 * 20, 2, 2)),
             new ExItemStack("Regeneration", PotionEffectType.REGENERATION, 10 * 20, 2, 2));
-
     public static final ItemShop WIZARD_WEAPONS = new ItemShop("Weapons", 12, WEAPONS,
             List.of(Wand.WAND), List.of(WIZARD_REGEN, IRON_SKIN));
-
-    public static final ItemShop WIZARD_ARMOR = new ItemShop("Armor", 14, ARMOR,
-            List.of(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS, RANGED_ARMOR_BOOTS),
-            List.of());
-
     public static final MobDefKit WIZARD = new MobDefKit(4, "Wizard",
             new ExItemStack(Material.POTION, PotionType.INSTANT_HEAL, false, false).getType(),
             List.of("§fWeapon: §7Wand", "§fArmor: §7Weak", "", "§7Instant Heal Potions"),
@@ -345,10 +325,6 @@ public class MobDefKit extends Kit {
     public static final ItemShop LUMBERJACK_WEAPONS = new ItemShop("Weapons", 12, WEAPONS,
             List.of(LumberAxe.AXE, BoomerangAxe.BOOMERANG_AXE, SheepSpawner.LEVEL_ITEM, DogSpawner.LEVEL_ITEM),
             List.of(LUMBER_SPEED, LUMBER_STRENGTH, LUMBER_REGENERATION));
-
-    public static final ItemShop LUMBERJACK_ARMOR = new ItemShop("Armor", 14, ARMOR,
-            List.of(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS, MELEE_ARMOR_BOOTS), List.of());
-
     public static final MobDefKit LUMBERJACK = new MobDefKit(5, "Lumberjack", Material.IRON_AXE,
             List.of("§fWeapon: §7Axe", "§fArmor: §7Strong", "", "§7Speed and Strength Potions",
                     "§7Regeneration effect after mob kill", "§7Sheep as distraction", "§7Dogs as companions"),
@@ -360,6 +336,12 @@ public class MobDefKit extends Kit {
                     MELEE_BASE_ARMOR_BOOTS.setSlot(EquipmentSlot.FEET)),
             List.of(LUMBERJACK_WEAPONS, LUMBERJACK_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP,
                     BaseShops.TEAM_SHOP));
+    public static final MobDefKit[] KITS = new MobDefKit[]{KNIGHT, ARCHER, ALCHEMIST, WIZARD, LUMBERJACK};
+
+    static {
+        PROTECTION.setConflictingTypes(List.of(PROJECTILE_PROTECTION));
+        PROJECTILE_PROTECTION.setConflictingTypes(List.of(PROTECTION));
+    }
 
     static {
         BLOCK_ITEM_BY_TYPE.put(Material.OAK_FENCE, OAK_FENCE.getSellingItems().get(0).cloneWithId().asOne());
@@ -370,10 +352,6 @@ public class MobDefKit extends Kit {
         BLOCK_ITEM_BY_TYPE.put(Material.COBBLESTONE_WALL,
                 COBBLESTONE_WALL.getSellingItems().get(0).cloneWithId().asOne());
     }
-
-
-    public static final MobDefKit[] KITS = new MobDefKit[]{KNIGHT, ARCHER, ALCHEMIST, WIZARD, LUMBERJACK};
-
 
     public final List<ItemShop> shopInventories;
 

@@ -32,8 +32,11 @@ import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerPickupArrowEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -221,9 +224,10 @@ public class UserManager implements Listener, UserInventoryInteractListener {
     }
 
     @EventHandler
-    public void onInventoryOpen(PlayerInteractEvent e) {
-        if (e.getClickedBlock() instanceof InventoryHolder) {
+    public void onInventoryOpen(InventoryOpenEvent e) {
+        if (e.getView().getTopInventory().getHolder() instanceof Block) {
             e.setCancelled(true);
+            e.getPlayer().closeInventory();
         }
     }
 

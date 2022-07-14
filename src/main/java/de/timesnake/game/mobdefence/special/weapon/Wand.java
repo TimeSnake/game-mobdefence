@@ -30,11 +30,11 @@ public class Wand extends CooldownWeapon {
 
     private static final ItemLevelType<?> DAMAGE_LEVELS = new ItemLevelType<>("Damage",
             new ExItemStack(Material.RED_DYE), 1, 8, ItemLevel.getLoreNumberLevels("Damage", 2, 1, "❤", 2,
-            List.of(new ShopPrice(5, ShopCurrency.BRONZE), new ShopPrice(5, ShopCurrency.SILVER), new ShopPrice(5,
-                            ShopCurrency.GOLD), new ShopPrice(10, ShopCurrency.GOLD), new ShopPrice(16,
-                            ShopCurrency.SILVER),
-                    new ShopPrice(16, ShopCurrency.GOLD), new ShopPrice(32, ShopCurrency.SILVER)), "+0.5 ❤",
-            List.of(2, 2.5, 3, 3.5, 4, 4, 5, 6)));
+            List.of(new ShopPrice(5, ShopCurrency.BRONZE), new ShopPrice(5, ShopCurrency.SILVER),
+                    new ShopPrice(5, ShopCurrency.GOLD), new ShopPrice(10, ShopCurrency.GOLD),
+                    new ShopPrice(16, ShopCurrency.SILVER), new ShopPrice(16, ShopCurrency.GOLD),
+                    new ShopPrice(32, ShopCurrency.SILVER)), "+0.5 ❤",
+            List.of(2, 2.5, 3, 3.5, 4, 4.5, 5)));
 
     private static final ItemLevelType<?> FIRE_RATE_LEVELS = new ItemLevelType<>("Fire Rate",
             new ExItemStack(Material.FIRE_CHARGE), 1, 5, ItemLevel.getLoreNumberLevels("Fire Rate", 3, 0, "per sec.",
@@ -42,10 +42,10 @@ public class Wand extends CooldownWeapon {
                     ShopCurrency.GOLD), new ShopPrice(64, ShopCurrency.BRONZE)), "+1 per second", List.of(3, 4, 5, 6)));
 
     private static final ItemLevelType<?> PIERCING_LEVELS = new ItemLevelType<>("Piercing",
-            new ExItemStack(Material.TORCH), 0, 5, ItemLevel.getLoreNumberLevels("Piercing", 4, 0, "mobs", 1,
+            new ExItemStack(Material.TORCH), 0, 6, ItemLevel.getLoreNumberLevels("Piercing", 4, 0, "mobs", 1,
             List.of(new ShopPrice(10, ShopCurrency.SILVER), new ShopPrice(11, ShopCurrency.GOLD), new ShopPrice(32,
                     ShopCurrency.BRONZE), new ShopPrice(24, ShopCurrency.SILVER), new ShopPrice(16,
-                    ShopCurrency.GOLD)), "+1 mob", List.of(1, 2, 3, 4, 5)));
+                    ShopCurrency.GOLD), new ShopPrice(64, ShopCurrency.BRONZE)), "+1 mob", List.of(1, 2, 3, 4, 5, 6)));
 
     private static final ItemLevelType<?> MULTISHOT_LEVELS = new ItemLevelType<>("Multishot",
             new ExItemStack(Material.SOUL_TORCH), 0, 2, ItemLevel.getLoreNumberLevels("Multishot", 4, 0, "bullets", 1

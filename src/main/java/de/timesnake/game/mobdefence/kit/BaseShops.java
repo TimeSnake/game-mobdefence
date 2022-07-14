@@ -50,4 +50,16 @@ public class BaseShops {
     public TeamItemShop getShop(String name) {
         return this.shopsByName.get(name);
     }
+
+    public TeamItemShop getBlockShop() {
+        return this.getShop(BLOCK_SHOP.getName());
+    }
+
+    public TeamItemShop getBasicShop() {
+        return this.getShop(BASIC_SHOP.getName());
+    }
+
+    public TeamItemShop getTeamShop() {
+        return this.getShop(TEAM_SHOP.getName());
+    }
 }
