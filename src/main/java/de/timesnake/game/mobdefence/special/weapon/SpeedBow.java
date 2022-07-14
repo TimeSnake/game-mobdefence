@@ -30,8 +30,8 @@ public class SpeedBow extends SpecialWeapon implements UserInventoryInteractList
             Enchantment.ARROW_FIRE, List.of(1)));
 
     public static final LevelItem BOW = new LevelItem("Bow",
-            new ExItemStack(Material.BOW, true).addExEnchantment(Enchantment.QUICK_CHARGE, 128),
-            new ExItemStack(Material.BOW, true), List.of(POWER, FLAME));
+            new ExItemStack(Material.BOW).setUnbreakable(true),
+            new ExItemStack(Material.BOW).setUnbreakable(true), List.of(POWER, FLAME));
 
     private final Set<User> cooldownUser = new HashSet<>();
 

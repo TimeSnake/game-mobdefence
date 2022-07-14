@@ -5,8 +5,8 @@ import de.timesnake.basic.bukkit.util.chat.ChatColor;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Tablist;
-import de.timesnake.basic.game.util.Game;
 import de.timesnake.basic.game.util.Map;
+import de.timesnake.basic.game.util.TmpGame;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.basic.loungebridge.util.user.Kit;
@@ -14,6 +14,7 @@ import de.timesnake.basic.loungebridge.util.user.KitNotDefinedException;
 import de.timesnake.basic.loungebridge.util.user.OfflineUser;
 import de.timesnake.database.util.game.DbGame;
 import de.timesnake.database.util.game.DbMap;
+import de.timesnake.database.util.game.DbTmpGame;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
-public class MobDefServerManager extends LoungeBridgeServerManager implements Listener {
+public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> implements Listener {
 
     public static final double CORE_HEALTH_MULTIPLIER = 400; // in half hearts
     public static final float TIME_COINS_MULTIPLIER = 1.5f * TimeCoins.MULTIPLIER;
@@ -104,8 +105,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
     }
 
     @Override
-    protected Game loadGame(DbGame dbGame, boolean loadWorlds) {
-        return new Game(dbGame, loadWorlds) {
+    protected TmpGame loadGame(DbGame dbGame, boolean loadWorlds) {
+        return new TmpGame((DbTmpGame) dbGame, loadWorlds) {
             @Override
             public Map loadMap(DbMap dbMap, boolean loadWorld) {
                 return new MobDefMap(dbMap);
@@ -284,7 +285,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager implements Li
             this.broadcastGameMessage(ChatColor.WARNING + "No more natural regeneration");
         }
 
-        Server.broadcastSound(Sound.EVENT_RAID_HORN, 6);
+        Server.broadcastSound(Sound.ITEM_GOAT_HORN_SOUND_2, 2);
 
         this.mobManager.spawnWave();
     }

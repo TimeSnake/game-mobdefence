@@ -73,12 +73,12 @@ public abstract class ArmorMob<M extends Mob & ExtendedCraftEntity<? extends ExE
                     this.entity.getExtension().setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.CHAINMAIL_LEGGINGS));
                 case 8:
                     this.entity.getExtension().setSlot(ExEnumItemSlot.FEET, new ItemStack(Material.CHAINMAIL_BOOTS));
-                    this.entity.getExtension().setSlot(ExEnumItemSlot.HEAD, new ItemStack(Material.GOLDEN_HELMET));
+                    this.entity.getExtension().setSlot(ExEnumItemSlot.HEAD, new ItemStack(Material.LEATHER_HELMET));
                     break;
 
                 case 9:
                     this.entity.getExtension().setSlot(ExEnumItemSlot.CHEST, new ItemStack(Material.IRON_CHESTPLATE));
-                    this.entity.getExtension().setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.GOLDEN_LEGGINGS));
+                    this.entity.getExtension().setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.LEATHER_LEGGINGS));
             }
         } else if (this.currentWave <= 10) {
             int random = this.random.nextInt(6);

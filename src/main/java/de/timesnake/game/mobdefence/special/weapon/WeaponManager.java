@@ -29,7 +29,6 @@ public class WeaponManager implements Listener {
         this.addWeapon(new Wand());
         this.addWeapon(new IronGolem());
         this.addWeapon(new FireHoe());
-        this.addWeapon(new CrystalShard());
         this.addWeapon(new RocketCrossBow());
         this.addWeapon(new WaterBottle());
         this.addWeapon(new Sword());
@@ -40,6 +39,7 @@ public class WeaponManager implements Listener {
         this.addWeapon(new DogSpawner());
         this.addWeapon(new LumberAxe());
         this.addWeapon(new SwingSword());
+        this.addWeapon(new PotionBow());
         this.addWeapon(this.iceballGenerator);
 
         Server.registerListener(this, GameMobDefence.getPlugin());
