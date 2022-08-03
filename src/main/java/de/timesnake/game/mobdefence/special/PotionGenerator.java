@@ -15,7 +15,7 @@ import org.bukkit.scheduler.BukkitTask;
 public class PotionGenerator implements Listener {
 
 
-    public static final ExItemStack INSTANT_HEAL = new ExItemStack(Material.SPLASH_POTION, PotionType.INSTANT_HEAL,
+    public static final ExItemStack INSTANT_HEAL = ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.INSTANT_HEAL,
             false, false).setSlot(1).asQuantity(2);
 
     private BukkitTask task;

@@ -62,7 +62,7 @@ public class LumberAxe extends SpecialWeapon implements Listener {
         }
     };
 
-    public static final LevelItem AXE = new LevelItem("§6Axe", new ExItemStack(Material.IRON_AXE, true).setLore("",
+    public static final LevelItem AXE = new LevelItem("§6Axe", new ExItemStack(Material.IRON_AXE).unbreakable().setLore("",
             ATTACK_SPEED_LEVELS.getBaseLevelLore(ATTACK_SPEED)), new ExItemStack(Material.IRON_AXE), List.of(TYPE,
             SHARPNESS, ATTACK_SPEED_LEVELS));
 

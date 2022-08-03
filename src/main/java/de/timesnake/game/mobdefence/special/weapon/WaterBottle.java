@@ -20,9 +20,9 @@ import java.util.List;
 public class WaterBottle extends SpecialWeapon implements Listener {
 
     public static final ExItemStack ITEM =
-            new ExItemStack(Material.SPLASH_POTION, PotionType.WATER, false, false).setDisplayName("§6Water Bottle").setLore("§7Extinguish players").hideAll();
+            ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.WATER, false, false).setDisplayName("§6Water Bottle").setLore("§7Extinguish players").hideAll();
     public static final ItemTrade WATER = new ItemTrade(23, false, new ShopPrice(3, ShopCurrency.BRONZE),
-            List.of(ITEM), new ExItemStack(Material.SPLASH_POTION, PotionType.WATER, false, false).setDisplayName(
+            List.of(ITEM), ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.WATER, false, false).setDisplayName(
             "§6Water Bottle").setLore("§7Extinguish players").hideAll());
     private static final double RADIUS = 3;
 

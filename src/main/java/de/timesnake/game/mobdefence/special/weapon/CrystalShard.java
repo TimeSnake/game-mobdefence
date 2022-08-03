@@ -38,8 +38,8 @@ public class CrystalShard extends CooldownWeapon {
                     new ShopPrice(29, ShopCurrency.SILVER)),
             "+1", List.of(1, 2, 3, 4, 5)));
     public static final LevelItem SHARD = new LevelItem("Shard",
-            new ExItemStack(Material.AMETHYST_SHARD, true).enchant().setLore("", POWER.getBaseLevelLore(1)).setDisplayName("§6Crystal Shard"),
-            new ExItemStack(Material.BOW, true), List.of(POWER, PIERCING));
+            new ExItemStack(Material.AMETHYST_SHARD).unbreakable().enchant().setLore("", POWER.getBaseLevelLore(1)).setDisplayName("§6Crystal Shard"),
+            new ExItemStack(Material.BOW).unbreakable(), List.of(POWER, PIERCING));
     private static final ItemLevelType<?> FLAME = new ItemLevelType<>("Flame", new ExItemStack(Material.BLAZE_POWDER)
             , 0, 1, ItemLevel.getLoreNumberLevels("Flame", 3, 0, "", 1,
             List.of(new ShopPrice(64, ShopCurrency.BRONZE)), "Flame", List.of(1)));
