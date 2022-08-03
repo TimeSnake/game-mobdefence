@@ -3,6 +3,7 @@ package de.timesnake.game.mobdefence.map;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.game.util.Map;
+import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.mob.map.HeightBlock;
@@ -11,21 +12,16 @@ import org.bukkit.GameRule;
 
 import java.util.HashMap;
 
-public class MobDefMap extends Map {
-
-    private static final Integer DEFAULT_MAP_RADIUS = 100;
-
-    private static final Integer CORE_LOCATION_INDEX = 0;
-    private static final Integer USER_SPAWN_INDEX = 1;
+public class MobDefMap extends Map implements ResetableMap {
 
     public static final Integer MOB_SPAWN_START_INDEX = 10;
     public static final Integer STAGE_LOC_SIZE = 100;
-
     public static final Integer HEIGHT_MAP_UPDATE_DELAY = 20 * 8;
-
-    private MobDefStage current;
-
+    private static final Integer DEFAULT_MAP_RADIUS = 100;
+    private static final Integer CORE_LOCATION_INDEX = 0;
+    private static final Integer USER_SPAWN_INDEX = 1;
     private final java.util.Map<Integer, MobDefStage> stages = new HashMap<>();
+    private MobDefStage current;
 
     public MobDefMap(DbMap map) {
         super(map, true);

@@ -62,11 +62,11 @@ public class MobDefKit extends Kit {
             new ExItemStack(Material.COBBLESTONE_WALL, 2, "§6Cobblestone Wall"));
 
     public static final ItemTrade STONE_AXE = new ItemTrade(13, false, new ShopPrice(4, ShopCurrency.BRONZE),
-            List.of(new ExItemStack(Material.STONE_AXE, true)),
+            List.of(new ExItemStack(Material.STONE_AXE).unbreakable()),
             new ExItemStack(Material.STONE_AXE, 1, "§6Stone Axe"));
 
     public static final ItemTrade IRON_PICKAXE = new ItemTrade(14, false, new ShopPrice(8, ShopCurrency.BRONZE),
-            List.of(new ExItemStack(Material.STONE_PICKAXE, true)),
+            List.of(new ExItemStack(Material.STONE_PICKAXE).unbreakable()),
             new ExItemStack(Material.STONE_PICKAXE, 1, "§6Stone Pickaxe"));
 
     public static final Map<Material, ExItemStack> BLOCK_ITEM_BY_TYPE = new HashMap<>();
@@ -96,13 +96,13 @@ public class MobDefKit extends Kit {
             List.of(new ExItemStack(Material.ENDER_PEARL, "§6Ender Pearl")),
             new ExItemStack(Material.ENDER_PEARL, "§6Ender Pearl"));
     public static final ItemTrade SPEED = new ItemTrade(37, false, new ShopPrice(1, ShopCurrency.SILVER),
-            List.of(new ExItemStack(Material.SPLASH_POTION, PotionType.SPEED, false, false)),
-            new ExItemStack(Material.SPLASH_POTION, PotionType.SPEED, false, false).setDisplayName("§6Speed"));
+            List.of(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.SPEED, false, false)),
+            ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.SPEED, false, false).setDisplayName("§6Speed"));
     public static final ItemTrade INSTANT_HEAL = new IncreasingItemTrade(38, new ShopPrice(6, ShopCurrency.BRONZE),
             1, 32,
-            List.of(new ExItemStack(Material.SPLASH_POTION, PotionType.INSTANT_HEAL, false, true).setDisplayName(
+            List.of(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.INSTANT_HEAL, false, true).setDisplayName(
                     "§6Instant Heal")),
-            new ExItemStack(Material.SPLASH_POTION, PotionType.INSTANT_HEAL, false, true).setDisplayName("§6Instant " +
+            ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.INSTANT_HEAL, false, true).setDisplayName("§6Instant " +
                     "Heal"));
     public static final ItemTrade IRON_GOLEM = new IncreasingItemTrade(37, new ShopPrice(12, ShopCurrency.SILVER),
             2, 4, List.of(IronGolem.ITEM), IronGolem.ITEM);
@@ -147,15 +147,15 @@ public class MobDefKit extends Kit {
                     new ShopPrice(18, ShopCurrency.SILVER), new ShopPrice(24, ShopCurrency.SILVER),
                     new ShopPrice(16, ShopCurrency.GOLD), new ShopPrice(64, ShopCurrency.BRONZE)),
             "+1 Projectile Protection", Enchantment.PROTECTION_ENVIRONMENTAL, List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
-    public static final ExItemStack MELEE_BASE_ARMOR_HELMET = new ExItemStack(Material.LEATHER_HELMET, true);
+    public static final ExItemStack MELEE_BASE_ARMOR_HELMET = new ExItemStack(Material.LEATHER_HELMET).unbreakable();
 
     // melee
-    public static final ExItemStack MELEE_BASE_ARMOR_CHESTPLATE = new ExItemStack(Material.LEATHER_CHESTPLATE, true);
-    public static final ExItemStack MELEE_BASE_ARMOR_LEGGINGS = new ExItemStack(Material.LEATHER_LEGGINGS, true);
-    public static final ExItemStack MELEE_BASE_ARMOR_BOOTS = new ExItemStack(Material.LEATHER_BOOTS, true);
+    public static final ExItemStack MELEE_BASE_ARMOR_CHESTPLATE = new ExItemStack(Material.LEATHER_CHESTPLATE).unbreakable();
+    public static final ExItemStack MELEE_BASE_ARMOR_LEGGINGS = new ExItemStack(Material.LEATHER_LEGGINGS).unbreakable();
+    public static final ExItemStack MELEE_BASE_ARMOR_BOOTS = new ExItemStack(Material.LEATHER_BOOTS).unbreakable();
     public static final ItemTrade IRON_SKIN = new ItemTrade(false, new ShopPrice(8, ShopCurrency.SILVER),
-            List.of(new ExItemStack(false, "Iron Skin", PotionEffectType.DAMAGE_RESISTANCE, 60 * 20, 3, 1)),
-            new ExItemStack("Iron Skin", PotionEffectType.DAMAGE_RESISTANCE, 60 * 20, 3, 1));
+            List.of(ExItemStack.getPotion(ExItemStack.PotionMaterial.DRINK, 1, "Iron Skin", PotionEffectType.DAMAGE_RESISTANCE, 60 * 20, 3)),
+            ExItemStack.getPotion(ExItemStack.PotionMaterial.DRINK, 1, "Iron Skin", PotionEffectType.DAMAGE_RESISTANCE, 60 * 20, 3));
     public static final ItemLevelType<?> MELEE_ARMOR_HELMET_TYPE = new ItemLevelType<>("Type",
             new ExItemStack(Material.ANVIL),
             1, 5, ItemLevel.getMaterialLevels(2,
@@ -259,13 +259,13 @@ public class MobDefKit extends Kit {
             List.of());
     // knight
     public static final ItemTrade FIRE_GOLD_SWORD = new ItemTrade(false, new ShopPrice(2, ShopCurrency.SILVER),
-            List.of(new ExItemStack(Material.GOLDEN_SWORD, List.of(Enchantment.FIRE_ASPECT), List.of(2))),
-            new ExItemStack(new ExItemStack(Material.GOLDEN_SWORD, false, true)).setDisplayName("§6Fire Sword"));
+            List.of(new ExItemStack(Material.GOLDEN_SWORD).addExEnchantment(Enchantment.FIRE_ASPECT, 2)),
+            new ExItemStack(new ExItemStack(Material.GOLDEN_SWORD).enchant()).setDisplayName("§6Fire Sword"));
     public static final ItemShop KNIGHT_LEVEL_WEAPONS = new ItemShop("Weapons", 12, WEAPONS,
             List.of(Sword.SWORD, SwingSword.SWORD), List.of(FIRE_GOLD_SWORD));
     public static final MobDefKit KNIGHT = new MobDefKit(1, "Knight", Material.IRON_SWORD,
             List.of("§fWeapons: §7Sword, Axe", "§fArmor: §7Strong", "", "§7Resistance aura"),
-            List.of(Sword.WOODEN_SWORD, new ExItemStack(Material.SHIELD, true).setSlot(EquipmentSlot.OFF_HAND),
+            List.of(Sword.WOODEN_SWORD, new ExItemStack(Material.SHIELD).unbreakable().setSlot(EquipmentSlot.OFF_HAND),
                     MELEE_BASE_ARMOR_HELMET.setSlot(EquipmentSlot.HEAD),
                     MELEE_BASE_ARMOR_CHESTPLATE.setSlot(EquipmentSlot.CHEST),
                     MELEE_BASE_ARMOR_LEGGINGS.setSlot(EquipmentSlot.LEGS),
@@ -275,8 +275,8 @@ public class MobDefKit extends Kit {
                     BaseShops.TEAM_SHOP));
     // alchemist
     public static final ItemTrade ALCHEMIST_SPEED = new ItemTrade(false, new ShopPrice(4, ShopCurrency.BRONZE),
-            List.of(new ExItemStack(Material.POTION, PotionType.SPEED, false, true)),
-            new ExItemStack(Material.POTION, 1, "Speed", PotionType.SPEED, false, true));
+            List.of(ExItemStack.getPotion(Material.POTION, PotionType.SPEED, false, true)),
+            ExItemStack.getPotion(Material.POTION, 1, "Speed", PotionType.SPEED, false, true));
 
     // archer
     public static final ItemShop ALCHEMIST_WEAPONS = new ItemShop("§6Weapons", 12,
@@ -297,12 +297,12 @@ public class MobDefKit extends Kit {
             List.of(ARCHER_WEAPONS, ARCHER_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP, BaseShops.TEAM_SHOP));
     // wizard
     public static final ItemTrade WIZARD_REGEN = new ItemTrade(false, new ShopPrice(4, ShopCurrency.BRONZE),
-            List.of(new ExItemStack(true, "§6Regeneration", PotionEffectType.REGENERATION, 10 * 20, 2, 2)),
-            new ExItemStack("Regeneration", PotionEffectType.REGENERATION, 10 * 20, 2, 2));
+            List.of(ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 2, "§6Regeneration", PotionEffectType.REGENERATION, 10 * 20, 2)),
+            ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 2, "Regeneration", PotionEffectType.REGENERATION, 10 * 20, 2));
     public static final ItemShop WIZARD_WEAPONS = new ItemShop("Weapons", 12, WEAPONS,
             List.of(Wand.WAND), List.of(WIZARD_REGEN, IRON_SKIN));
     public static final MobDefKit WIZARD = new MobDefKit(4, "Wizard",
-            new ExItemStack(Material.POTION, PotionType.INSTANT_HEAL, false, false).getType(),
+            ExItemStack.getPotion(Material.POTION, PotionType.INSTANT_HEAL, false, false).getType(),
             List.of("§fWeapon: §7Wand", "§fArmor: §7Weak", "", "§7Instant Heal Potions"),
             List.of(Wand.WAND.getItem(), MobDefKit.BEEF, PotionGenerator.INSTANT_HEAL, MobTracker.TRACKER),
             List.of(WIZARD_WEAPONS, WIZARD_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP, BaseShops.TEAM_SHOP));
@@ -311,16 +311,16 @@ public class MobDefKit extends Kit {
     // lumberjack
 
     public static final ItemTrade LUMBER_SPEED = new ItemTrade(false, new ShopPrice(4, ShopCurrency.BRONZE),
-            List.of(new ExItemStack(Material.POTION, PotionType.SPEED, false, true)),
-            new ExItemStack(Material.POTION, 1, "Speed", PotionType.SPEED, false, true));
+            List.of(ExItemStack.getPotion(Material.POTION, PotionType.SPEED, false, true)),
+            ExItemStack.getPotion(Material.POTION, 1, "Speed", PotionType.SPEED, false, true));
 
     public static final ItemTrade LUMBER_STRENGTH = new ItemTrade(false, new ShopPrice(3, ShopCurrency.SILVER),
-            List.of(new ExItemStack(Material.POTION, PotionType.STRENGTH, false, true)),
-            new ExItemStack(Material.POTION, 1, "Strength", PotionType.STRENGTH, false, true));
+            List.of(ExItemStack.getPotion(Material.POTION, PotionType.STRENGTH, false, true)),
+            ExItemStack.getPotion(Material.POTION, 1, "Strength", PotionType.STRENGTH, false, true));
 
     public static final ItemTrade LUMBER_REGENERATION = new ItemTrade(false, new ShopPrice(4, ShopCurrency.SILVER),
-            List.of(new ExItemStack("§6Regeneration", PotionEffectType.REGENERATION, 15, 3, 2)),
-            new ExItemStack("§6Regeneration", PotionEffectType.REGENERATION, 15, 3, 2));
+            List.of(ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 2, "§6Regeneration", PotionEffectType.REGENERATION, 15, 3)),
+            ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 2, "§6Regeneration", PotionEffectType.REGENERATION, 15, 3));
 
     public static final ItemShop LUMBERJACK_WEAPONS = new ItemShop("Weapons", 12, WEAPONS,
             List.of(LumberAxe.AXE, BoomerangAxe.BOOMERANG_AXE, SheepSpawner.LEVEL_ITEM, DogSpawner.LEVEL_ITEM),

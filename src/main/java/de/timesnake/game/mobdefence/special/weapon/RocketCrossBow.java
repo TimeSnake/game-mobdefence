@@ -42,7 +42,7 @@ public class RocketCrossBow extends SpecialWeapon implements Listener {
                     ShopCurrency.SILVER)), "+1 ❤", List.of(6, 7, 8, 9)));
     public static final LevelItem CROSSBOW = new LevelItem("Rocket Crossbow", true, new ShopPrice(16,
             ShopCurrency.SILVER),
-            new ExItemStack(Material.CROSSBOW, true, true).setDisplayName("§6Rocket Crossbow").setLore("",
+            new ExItemStack(Material.CROSSBOW).enchant().unbreakable().setDisplayName("§6Rocket Crossbow").setLore("",
                     MULTI_SHOT_LEVELS.getBaseLevelLore(1), DAMAGE.getBaseLevelLore(5), "§cAim on block or entity to " +
                             "target nearby entities"),
             new ExItemStack(Material.CROSSBOW).addExEnchantment(Enchantment.ARROW_INFINITE, 1),

@@ -163,8 +163,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
     @Override
     public void equipArmor() {
         super.equipArmor();
-        this.entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET,
-                List.of(Enchantment.PROTECTION_ENVIRONMENTAL), List.of(5)));
+        this.entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
     }
 
     private List<ExtendedCraftEntity<?>> getSilverFishs() {

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Sword extends SpecialWeapon implements Listener {
 
-    public static final ExItemStack WOODEN_SWORD = new ExItemStack(Material.WOODEN_SWORD, true);
+    public static final ExItemStack WOODEN_SWORD = new ExItemStack(Material.WOODEN_SWORD).unbreakable();
     private static final ItemLevelType<?> SWORD_TYPE = new ItemLevelType<>("Type", new ExItemStack(Material.ANVIL), 1
             , 5, ItemLevel.getMaterialLevels(2, List.of(new ShopPrice(8, ShopCurrency.BRONZE), new ShopPrice(12,
                     ShopCurrency.SILVER), new ShopPrice(32, ShopCurrency.SILVER), new ShopPrice(16, ShopCurrency.GOLD)),

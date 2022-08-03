@@ -50,10 +50,10 @@ public class SwingSword extends CooldownWeapon implements UserInventoryInteractL
                     "s", "-1 s"), List.of(8, 6, 4, 2, 1)));
 
     public static final LevelItem SWORD = new LevelItem("Swing Sword", true, new ShopPrice(8, ShopCurrency.GOLD),
-            new ExItemStack(Material.GOLDEN_SWORD, true).setDisplayName("§6Swing Sword").enchant().setLore("",
+            new ExItemStack(Material.GOLDEN_SWORD).unbreakable().setDisplayName("§6Swing Sword").enchant().setLore("",
                     DAMAGE_LEVELS.getBaseLevelLore(DAMAGE), RADIUS_LEVELS.getBaseLevelLore(RADIUS),
                     COOLDOWN_LEVELS.getBaseLevelLore(COOLDOWN)),
-            new ExItemStack(Material.GOLDEN_SWORD, true).enchant(), List.of(DAMAGE_LEVELS, RADIUS_LEVELS,
+            new ExItemStack(Material.GOLDEN_SWORD).unbreakable().enchant(), List.of(DAMAGE_LEVELS, RADIUS_LEVELS,
             COOLDOWN_LEVELS));
 
     private final Map<ArmorStand, BukkitTask> tasks = new HashMap<>();

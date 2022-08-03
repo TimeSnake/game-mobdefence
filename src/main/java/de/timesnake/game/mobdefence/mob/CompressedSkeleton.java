@@ -19,8 +19,6 @@ import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 
-import java.util.List;
-
 public class CompressedSkeleton extends MobDefMob<ExSkeleton> {
 
     public CompressedSkeleton(ExLocation spawn, int currentWave) {
@@ -59,18 +57,18 @@ public class CompressedSkeleton extends MobDefMob<ExSkeleton> {
 
 
         if (this.currentWave < 3) {
-            entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW, List.of(Enchantment.ARROW_DAMAGE),
-                    List.of(2)));
+            entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE,
+                    2));
             entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET));
             this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
         } else if (this.currentWave < 11) {
-            entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW, List.of(Enchantment.ARROW_DAMAGE),
-                    List.of(4)));
+            entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE,
+                    4));
             entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET));
             this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
         } else {
-            entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW, List.of(Enchantment.ARROW_DAMAGE),
-                    List.of(this.currentWave / 4)));
+            entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE,
+                    this.currentWave / 4));
             entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET));
             this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
         }
@@ -84,13 +82,13 @@ public class CompressedSkeleton extends MobDefMob<ExSkeleton> {
         }
 
         this.entity.setSlot(ExEnumItemSlot.HEAD,
-                new ExItemStack(Material.LEATHER_HELMET, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
+                ExItemStack.getLeatherArmor(Material.LEATHER_HELMET, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
         this.entity.setSlot(ExEnumItemSlot.CHEST,
-                new ExItemStack(Material.LEATHER_CHESTPLATE, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
+                ExItemStack.getLeatherArmor(Material.LEATHER_CHESTPLATE, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
         this.entity.setSlot(ExEnumItemSlot.LEGS,
-                new ExItemStack(Material.LEATHER_LEGGINGS, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
+                ExItemStack.getLeatherArmor(Material.LEATHER_LEGGINGS, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
         this.entity.setSlot(ExEnumItemSlot.FEET,
-                new ExItemStack(Material.LEATHER_BOOTS, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
+                ExItemStack.getLeatherArmor(Material.LEATHER_BOOTS, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
 
         this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER);
     }

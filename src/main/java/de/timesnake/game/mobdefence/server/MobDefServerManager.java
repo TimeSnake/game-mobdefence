@@ -8,6 +8,7 @@ import de.timesnake.basic.bukkit.util.user.scoreboard.Tablist;
 import de.timesnake.basic.game.util.Map;
 import de.timesnake.basic.game.util.TmpGame;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
+import de.timesnake.basic.loungebridge.util.server.TablistManager;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.basic.loungebridge.util.user.Kit;
 import de.timesnake.basic.loungebridge.util.user.KitNotDefinedException;
@@ -95,8 +96,13 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     @Override
-    public void loadTablist(Tablist.Type type) {
-        super.loadTablist(Tablist.Type.HEARTS);
+    public TablistManager loadTablistManager() {
+        return new TablistManager() {
+            @Override
+            public void loadTablist(Tablist.Type type) {
+                super.loadTablist(Tablist.Type.HEARTS);
+            }
+        };
     }
 
     @Override
@@ -151,7 +157,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     @Override
-    public void prepareGame() {
+    public void onGamePrepare() {
         this.waveNumber = 0;
         this.userManager.runTasks();
         this.getMap().getWorld().setDifficulty(Difficulty.EASY);
@@ -290,7 +296,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
         this.mobManager.spawnWave();
     }
 
-    public void stopGame() {
+    @Override
+    public void onGameStop() {
         if (!this.running) {
             return;
         }
@@ -315,10 +322,9 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     @Override
-    public void resetGame() {
+    public void onGameReset() {
         this.coreHealthBar.setProgress(1);
         this.baseShops.resetShops();
-        Server.getWorldManager().reloadWorld(this.getMap().getWorld());
     }
 
     @Override

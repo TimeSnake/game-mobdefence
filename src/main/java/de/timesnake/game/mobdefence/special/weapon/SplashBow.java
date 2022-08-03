@@ -30,7 +30,8 @@ public class SplashBow extends SpecialWeapon implements Listener {
             List.of(new ShopPrice(12, ShopCurrency.SILVER), new ShopPrice(8, ShopCurrency.GOLD)), "+1 block",
             List.of(3, 4)));
     public static final LevelItem BOW = new LevelItem("Splash Bow", false, new ShopPrice(6, ShopCurrency.GOLD),
-            new ExItemStack(Material.BOW, Material.BOW.getMaxDurability() - 24, true).setDisplayName("§6Splash Bow").setLore("", DAMAGE_LEVELS.getBaseLevelLore(DAMAGE), RADIUS_LEVELS.getBaseLevelLore(RADIUS)), new ExItemStack(Material.BOW, Material.BOW.getMaxDurability() - 24, true), List.of(DAMAGE_LEVELS, RADIUS_LEVELS));
+            new ExItemStack(Material.BOW, Material.BOW.getMaxDurability() - 24).enchant().setDisplayName("§6Splash Bow").setLore("", DAMAGE_LEVELS.getBaseLevelLore(DAMAGE), RADIUS_LEVELS.getBaseLevelLore(RADIUS)),
+            new ExItemStack(Material.BOW, Material.BOW.getMaxDurability() - 24).enchant(), List.of(DAMAGE_LEVELS, RADIUS_LEVELS));
     private static final String ARROW_NAME = "splashArrow";
     private static final String RADIUS_NAME = "radius";
 
