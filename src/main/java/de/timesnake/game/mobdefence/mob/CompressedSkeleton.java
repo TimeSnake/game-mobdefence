@@ -34,7 +34,15 @@ public class CompressedSkeleton extends MobDefMob<ExSkeleton> {
     public void init() {
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExSkeleton(world, false, ExMobEffects.POISON, 8 * 20, 2);
+        if (this.currentWave > 20) {
+            if (this.random.nextBoolean()) {
+                this.entity = new ExSkeleton(world, false, ExMobEffects.INSTANT_DAMAGE, 0, 2);
+            } else {
+                this.entity = new ExSkeleton(world, false, ExMobEffects.POISON, (int) (this.currentWave * 0.5 * 20), 3);
+            }
+        } else {
+            this.entity = new ExSkeleton(world, false, ExMobEffects.POISON, (int) (this.currentWave * 0.5 * 20), 3);
+        }
 
         ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.8, false, BlockCheck.BREAKABLE_MATERIALS);
 
@@ -56,39 +64,27 @@ public class CompressedSkeleton extends MobDefMob<ExSkeleton> {
         }
 
 
-        if (this.currentWave < 3) {
-            entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE,
-                    2));
-            entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET));
-            this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
-        } else if (this.currentWave < 11) {
-            entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE,
-                    4));
-            entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET));
-            this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
+        entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE,
+                this.currentWave / 2));
+
+        if (this.currentWave > 20) {
+            this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 5, 30.0F));
         } else {
-            entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE,
-                    this.currentWave / 4));
-            entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET));
             this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
+
         }
 
-        if (this.currentWave > 11) {
-            this.entity.setMaxHealth(this.currentWave * 20);
-            this.entity.setHealth(this.currentWave * 20);
-        } else if (this.currentWave > 6) {
-            this.entity.setMaxHealth(160);
-            this.entity.setHealth(160);
-        }
+        this.entity.setMaxHealth(this.currentWave * 20);
+        this.entity.setHealth(this.currentWave * 20);
 
         this.entity.setSlot(ExEnumItemSlot.HEAD,
-                ExItemStack.getLeatherArmor(Material.LEATHER_HELMET, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
+                ExItemStack.getLeatherArmor(Material.LEATHER_HELMET, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4));
         this.entity.setSlot(ExEnumItemSlot.CHEST,
-                ExItemStack.getLeatherArmor(Material.LEATHER_CHESTPLATE, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
+                ExItemStack.getLeatherArmor(Material.LEATHER_CHESTPLATE, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4));
         this.entity.setSlot(ExEnumItemSlot.LEGS,
-                ExItemStack.getLeatherArmor(Material.LEATHER_LEGGINGS, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
+                ExItemStack.getLeatherArmor(Material.LEATHER_LEGGINGS, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4));
         this.entity.setSlot(ExEnumItemSlot.FEET,
-                ExItemStack.getLeatherArmor(Material.LEATHER_BOOTS, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
+                ExItemStack.getLeatherArmor(Material.LEATHER_BOOTS, Color.GREEN).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4));
 
         this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER);
     }
