@@ -83,7 +83,7 @@ public class CompressedZombie extends MobDefMob<ExZombie> {
         this.entity.setSlot(ExEnumItemSlot.FEET, new ExItemStack(Material.NETHERITE_BOOTS));
 
         this.entity.setSlot(ExEnumItemSlot.MAIN_HAND,
-                new ExItemStack(Material.NETHERITE_SHOVEL).addExEnchantment(Enchantment.DAMAGE_ALL, 10));
+                new ExItemStack(Material.NETHERITE_SHOVEL).addExEnchantment(Enchantment.DAMAGE_ALL, this.currentWave * 2));
 
     }
 }

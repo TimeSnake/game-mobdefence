@@ -80,7 +80,7 @@ public class MobManager implements Listener {
             }
 
             if (allSpawned && alive == 0 && MobDefServer.isGameRunning() && !MobDefServer.isDelayRunning()) {
-                Server.broadcastSound(Sound.ENTITY_PLAYER_LEVELUP, 2);
+                Server.broadcastSound(Sound.ITEM_GOAT_HORN_SOUND_1, 2);
                 MobDefServer.initNextWave();
             }
 
