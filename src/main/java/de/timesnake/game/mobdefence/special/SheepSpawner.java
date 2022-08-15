@@ -3,6 +3,7 @@ package de.timesnake.game.mobdefence.special;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.kit.*;
+import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.entities.entity.ExtendedCraftEntity;
 import de.timesnake.library.entities.entity.bukkit.ExSheep;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
@@ -11,6 +12,7 @@ import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLoo
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalPet;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalRandomStrollLand;
 import de.timesnake.library.entities.wrapper.EntityClass;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Sheep;
@@ -45,7 +47,7 @@ public class SheepSpawner extends EntitySpawner {
         }
 
         if (sheep >= MAX) {
-            user.sendActionBarText("§cToo many are alive");
+            user.sendActionBarText(Component.text("Too many are alive", ExTextColor.WARNING));
             return new ArrayList<>();
         }
 

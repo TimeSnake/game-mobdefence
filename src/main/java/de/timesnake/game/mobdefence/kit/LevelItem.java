@@ -5,6 +5,8 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
+import de.timesnake.library.basic.util.chat.ExTextColor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
 
@@ -77,18 +79,19 @@ public class LevelItem extends Levelable<ItemLevelType<?>> {
             if (levelType == null && this.getDisplayItem().equals(item)) {
 
                 if (MobDefServer.getWaveNumber() < this.unlockWave) {
-                    user.sendPluginMessage(Plugin.MOB_DEFENCE, "This item is locked until wave " + this.unlockWave +
-                            " is completed");
+                    user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("This item is locked until wave ", ExTextColor.WARNING)
+                            .append(Component.text(this.unlockWave, ExTextColor.VALUE))
+                            .append(Component.text(" is completed", ExTextColor.WARNING)));
                     return;
                 }
 
                 if (this.bought && this.oneTimeBuy) {
-                    user.sendPluginMessage(Plugin.MOB_DEFENCE, "You already bought this item");
+                    user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("You already bought this item", ExTextColor.WARNING));
                     return;
                 }
 
                 if (!user.containsAtLeast(this.buyPrice.asItem())) {
-                    user.sendPluginMessage(Plugin.MOB_DEFENCE, "§cNot enough money");
+                    user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Not enough money", ExTextColor.WARNING));
                     user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
                     return;
                 }
@@ -103,7 +106,7 @@ public class LevelItem extends Levelable<ItemLevelType<?>> {
             }
 
             if (!this.bought) {
-                user.sendPluginMessage(Plugin.MOB_DEFENCE, "You must buy this item before");
+                user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("You must buy this item before", ExTextColor.WARNING));
                 return;
             }
         }

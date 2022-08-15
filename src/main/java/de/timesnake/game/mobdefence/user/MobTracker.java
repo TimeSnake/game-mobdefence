@@ -6,7 +6,8 @@ import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractListener;
 import de.timesnake.game.mobdefence.server.MobDefServer;
-import de.timesnake.library.basic.util.chat.ChatColor;
+import de.timesnake.library.basic.util.chat.ExTextColor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 
@@ -29,12 +30,12 @@ public class MobTracker implements UserInventoryInteractListener {
         user.getPlayer().setCompassTarget(user.getLocation());
 
         if (mobs.isEmpty()) {
-            user.sendActionBarText(ChatColor.WARNING + "No mobs alive");
+            user.sendActionBarText(Component.text("No mobs alive", ExTextColor.WARNING));
             return;
         }
 
         if (mobs.size() > 3) {
-            user.sendActionBarText(ChatColor.WARNING + "Too many mobs to track");
+            user.sendActionBarText(Component.text("Too many mobs to track", ExTextColor.WARNING));
             return;
         }
 
@@ -50,11 +51,13 @@ public class MobTracker implements UserInventoryInteractListener {
         }
 
         if (nearestEntity == null) {
-            user.sendActionBarText(ChatColor.WARNING + "No mob nearby");
+            user.sendActionBarText(Component.text("No mob nearby", ExTextColor.WARNING));
             return;
         }
 
         user.getPlayer().setCompassTarget(nearestEntity.getLocation());
-        user.sendActionBarText(ChatColor.GOLD + "Nearest mob: " + ChatColor.WHITE + ((int) distance) + ChatColor.GOLD + " blocks");
+        user.sendActionBarText(Component.text("Nearest mob: ", ExTextColor.PERSONAL)
+                .append(Component.text((int) distance, ExTextColor.VALUE))
+                .append(Component.text(" blocks", ExTextColor.PERSONAL)));
     }
 }

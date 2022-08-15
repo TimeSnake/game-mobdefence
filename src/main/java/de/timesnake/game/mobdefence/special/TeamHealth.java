@@ -7,7 +7,8 @@ import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
-import de.timesnake.library.basic.util.chat.ChatColor;
+import de.timesnake.library.basic.util.chat.ExTextColor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
@@ -17,6 +18,20 @@ import java.util.List;
 public class TeamHealth extends Levelable<LevelType<Level<Integer>>> {
 
     public static final int BASE_MAX_HEALTH = 8 * 2;
+
+    private static List<Level<Integer>> getHealthLevels(int start, List<ShopPrice> prices,
+                                                        List<Integer> maxHealthLimits) {
+        List<Level<Integer>> levels = new ArrayList<>();
+
+        Iterator<ShopPrice> priceIt = prices.listIterator();
+        Iterator<Integer> maxHealthIt = maxHealthLimits.listIterator();
+
+        for (int level = start; priceIt.hasNext() && maxHealthIt.hasNext(); level++) {
+            levels.add(new Level<>(level, priceIt.next(), "+1 ❤ Max Health", maxHealthIt.next()));
+        }
+        return levels;
+    }
+
     private int maxHealth = BASE_MAX_HEALTH;
 
     protected TeamHealth(String name, ExItemStack displayItem, List<LevelType<Level<Integer>>> levelTypes) {
@@ -25,6 +40,10 @@ public class TeamHealth extends Levelable<LevelType<Level<Integer>>> {
 
     protected TeamHealth(TeamHealth levelable) {
         super(levelable);
+    }
+
+    public void reset() {
+        this.maxHealth = BASE_MAX_HEALTH;
     }    public static final TeamHealth MAX_HEALTH = new TeamHealth("Health", new ExItemStack(Material.NETHER_WART),
             List.of(new LevelType<>("Max Health", new ExItemStack(Material.FIRE_CORAL_BLOCK), 1, 13,
                     getHealthLevels(2, List.of(new ShopPrice(1, ShopCurrency.EMERALD), new ShopPrice(2,
@@ -42,28 +61,11 @@ public class TeamHealth extends Levelable<LevelType<Level<Integer>>> {
 
                     MAX_HEALTH.setMaxHealth(level.getValue() * 2);
 
-                    MobDefServer.broadcastGameMessage(user.getChatName() + ChatColor.WARNING + " leveled up max " +
-                            "health");
+                    MobDefServer.broadcastGameMessage(user.getChatNameComponent()
+                            .append(Component.text(" leveled up max " + "health", ExTextColor.WARNING)));
                     return true;
                 }
             }));
-
-    private static List<Level<Integer>> getHealthLevels(int start, List<ShopPrice> prices,
-                                                        List<Integer> maxHealthLimits) {
-        List<Level<Integer>> levels = new ArrayList<>();
-
-        Iterator<ShopPrice> priceIt = prices.listIterator();
-        Iterator<Integer> maxHealthIt = maxHealthLimits.listIterator();
-
-        for (int level = start; priceIt.hasNext() && maxHealthIt.hasNext(); level++) {
-            levels.add(new Level<>(level, priceIt.next(), "+1 ❤ Max Health", maxHealthIt.next()));
-        }
-        return levels;
-    }
-
-    public void reset() {
-        this.maxHealth = BASE_MAX_HEALTH;
-    }
 
     @Override
     public LevelType<Level<Integer>> cloneLevelType(LevelType<Level<Integer>> levelType) {

@@ -4,6 +4,7 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.entities.entity.ExtendedCraftEntity;
 import de.timesnake.library.entities.entity.bukkit.ExWolf;
 import de.timesnake.library.entities.pathfinder.*;
@@ -12,6 +13,7 @@ import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLoo
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalRandomStrollLand;
 import de.timesnake.library.entities.wrapper.EntityClass;
+import net.kyori.adventure.text.Component;
 import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -40,14 +42,14 @@ public class DogSpawner extends EntitySpawner {
     public List<? extends ExtendedCraftEntity<?>> getEntities(User user, ExItemStack item) {
 
         int dogs = 0;
-        for (Entity wolf : user.getExWorld().getEntitiesByClasses(Wolf.class)) {
+        for (Entity wolf : user.getWorld().getEntitiesByClasses(Wolf.class)) {
             if (wolf instanceof Wolf && ((Wolf) wolf).getOwnerUniqueId() != null && ((Wolf) wolf).getOwnerUniqueId().equals(user.getUniqueId())) {
                 dogs++;
             }
         }
 
         if (dogs >= MAX) {
-            user.sendActionBarText("§cToo many are alive");
+            user.sendActionBarText(Component.text("Too many are alive", ExTextColor.WARNING));
             return new ArrayList<>();
         }
 

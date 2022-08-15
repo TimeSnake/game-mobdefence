@@ -204,7 +204,7 @@ public abstract class BlockCheck {
         WALKABLE_IN_MATERIALS.add(Material.AIR);
         WALKABLE_IN_MATERIALS.addAll(Tag.CLIMBABLE.getValues());
         WALKABLE_IN_MATERIALS.addAll(Tag.CROPS.getValues());
-        WALKABLE_IN_MATERIALS.addAll(Tag.CARPETS.getValues());
+        WALKABLE_IN_MATERIALS.addAll(Tag.WOOL_CARPETS.getValues());
         WALKABLE_IN_MATERIALS.addAll(Tag.SIGNS.getValues());
         WALKABLE_IN_MATERIALS.addAll(Tag.BANNERS.getValues());
         WALKABLE_IN_MATERIALS.addAll(Tag.BUTTONS.getValues());

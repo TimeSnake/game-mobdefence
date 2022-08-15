@@ -9,11 +9,12 @@ import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.basic.util.Tuple;
-import de.timesnake.library.basic.util.chat.ChatColor;
+import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.entities.entity.bukkit.ExArmorStand;
 import de.timesnake.library.entities.entity.bukkit.ExPlayer;
 import de.timesnake.library.packets.util.packet.*;
 import de.timesnake.library.reflection.wrapper.ExEntityPose;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -178,7 +179,8 @@ public class ReviveManager {
 
         deadUser.setBeingRevivedUser(user);
 
-        user.sendPluginMessage(Plugin.MOB_DEFENCE, ChatColor.WARNING + "Reviving " + deadUser.getChatName());
+        user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Reviving ", ExTextColor.WARNING)
+                .append(deadUser.getChatNameComponent()));
     }
 
     public void removeDyingUser(MobDefUser user, boolean removeFromList) {
@@ -261,7 +263,9 @@ public class ReviveManager {
 
             if (user.isBeingRevived()) {
                 if (reviveTime == ReviveManager.this.reviveRespawnTime) {
-                    MobDefServer.broadcastGameMessage(user.getChatName() + ChatColor.WARNING + " was revived by " + user.getBeingRevivedUser().getChatName());
+                    MobDefServer.broadcastGameMessage(user.getChatNameComponent()
+                            .append(Component.text(" was revived by ", ExTextColor.WARNING))
+                            .append(user.getBeingRevivedUser().getChatNameComponent()));
                     ReviveManager.this.removeDyingUser(user, true);
                     Server.runTaskSynchrony(user::rejoinGame, GameMobDefence.getPlugin());
                     return;
@@ -276,8 +280,8 @@ public class ReviveManager {
                 this.reviveTime = 0;
 
                 if (time <= 0) {
-                    MobDefServer.broadcastGameMessage(user.getChatName() + ChatColor.WARNING + " is now resting in " +
-                            "pieces");
+                    MobDefServer.broadcastGameMessage(user.getChatNameComponent()
+                            .append(Component.text(" is now resting in pieces", ExTextColor.WARNING)));
                     ReviveManager.this.removeDyingUser(user, true);
                     return;
                 }

@@ -16,7 +16,9 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.*;
 import de.timesnake.game.mobdefence.special.trap.TrapManager;
 import de.timesnake.library.basic.util.Status;
+import de.timesnake.library.basic.util.chat.ExTextColor;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -195,7 +197,7 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
         if (MobDefServer.getMap().getCoreLocation().distanceSquared(blockPlaced.getLocation()) < BLOCK_VILLAGER_DISTANCE * BLOCK_VILLAGER_DISTANCE) {
             e.setCancelled(true);
-            e.getUser().sendPluginMessage(Plugin.MOB_DEFENCE, "You can not place a block here");
+            e.getUser().sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("You can not place a block here", ExTextColor.WARNING));
             return;
         }
 
@@ -383,14 +385,17 @@ public class UserManager implements Listener, UserInventoryInteractListener {
         } else {
             level = "null";
         }
-        user.sendPluginMessage(Plugin.MOB_DEFENCE, "Height: " + level);
+        user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Height: ", ExTextColor.PERSONAL)
+                .append(Component.text(level, ExTextColor.VALUE)));
         if (block != null) {
             HeightBlock next = block.getNext();
             if (next != null) {
                 Location loc = next.getLocation();
-                user.sendPluginMessage(Plugin.MOB_DEFENCE, "Next: " + loc.getX() + " " + loc.getY() + " " + loc.getZ());
+                user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Next: ", ExTextColor.PERSONAL)
+                        .append(Component.text(loc.getX() + " " + loc.getY() + " " + loc.getZ(), ExTextColor.VALUE)));
             } else {
-                user.sendPluginMessage(Plugin.MOB_DEFENCE, "Next: null");
+                user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Next:", ExTextColor.PERSONAL)
+                        .append(Component.text(" null", ExTextColor.VALUE)));
             }
         }
     }

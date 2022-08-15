@@ -6,6 +6,8 @@ import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
+import de.timesnake.library.basic.util.chat.ExTextColor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.potion.PotionEffectType;
@@ -23,7 +25,8 @@ public class CoreRegeneration {
     }
 
     public void run(MobDefUser userActivated) {
-        MobDefServer.broadcastGameMessage(userActivated.getChatName() + " §cenabled villager regeneration");
+        MobDefServer.broadcastGameMessage(userActivated.getChatNameComponent()
+                .append(Component.text(" enabled villager regeneration", ExTextColor.WARNING)));
 
         this.task = Server.runTaskTimerSynchrony(() -> {
             Location coreLoc = MobDefServer.getMap().getCoreLocation();
