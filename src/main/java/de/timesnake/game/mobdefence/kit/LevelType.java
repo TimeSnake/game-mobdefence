@@ -4,6 +4,8 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
+import de.timesnake.library.basic.util.chat.ExTextColor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
 
@@ -14,14 +16,12 @@ import java.util.List;
 
 public abstract class LevelType<L extends Level<?>> {
 
-    private int level;
-
     private final ExItemStack displayItem;
     private final String name;
     private final int baseLevel;
     private final int maxLevel;
     private final HashMap<Integer, L> levels;
-
+    private int level;
     private List<LevelType<?>> conflictingTypes = new ArrayList<>();
 
     public LevelType(String name, ExItemStack displayItem, int baseLevel, int maxLevel, List<L> levels) {
@@ -84,13 +84,14 @@ public abstract class LevelType<L extends Level<?>> {
 
         for (LevelType<?> conflictingLevelType : this.conflictingTypes) {
             if (conflictingLevelType.getLevel() > 0) {
-                user.sendPluginMessage(Plugin.MOB_DEFENCE, "§cConflicting with " + conflictingLevelType.getName());
+                user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Conflicting with ", ExTextColor.WARNING)
+                        .append(Component.text(conflictingLevelType.getName(), ExTextColor.VALUE)));
                 return false;
             }
         }
 
         if (this.level == this.maxLevel) {
-            user.sendPluginMessage(Plugin.MOB_DEFENCE, "§cMax level reached");
+            user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Max level reached", ExTextColor.WARNING));
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return false;
         }
@@ -104,13 +105,14 @@ public abstract class LevelType<L extends Level<?>> {
 
         if (MobDefServer.getWaveNumber() < nextLevel.getUnlockWave()) {
             user.sendPluginMessage(Plugin.MOB_DEFENCE,
-                    "§cThis level is locked until wave " + nextLevel.getUnlockWave());
+                    Component.text("This level is locked until wave ", ExTextColor.WARNING)
+                            .append(Component.text(nextLevel.getUnlockWave(), ExTextColor.VALUE)));
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return false;
         }
 
         if (!user.containsAtLeast(nextLevel.getPrice().asItem())) {
-            user.sendPluginMessage(Plugin.MOB_DEFENCE, "§cNot enough money");
+            user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Not enough money", ExTextColor.WARNING));
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return false;
         }

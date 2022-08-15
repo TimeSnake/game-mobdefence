@@ -1,13 +1,14 @@
 package de.timesnake.game.mobdefence.kit;
 
 import de.timesnake.basic.bukkit.util.Server;
-import de.timesnake.basic.bukkit.util.chat.ChatColor;
 import de.timesnake.basic.bukkit.util.user.ExInventory;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryClickEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryClickListener;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.user.MobDefUser;
+import de.timesnake.library.basic.util.chat.ExTextColor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
 import org.bukkit.inventory.Inventory;
@@ -124,13 +125,13 @@ public class ItemShop implements UserInventoryClickListener, InventoryHolder {
         }
 
         if (trade.isOneTimeBuy() && trade.isBought()) {
-            user.sendPluginMessage(Plugin.MOB_DEFENCE, ChatColor.WARNING + "You already bought this item");
+            user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("You already bought this item", ExTextColor.WARNING));
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return;
         }
 
         if (!user.containsAtLeast(trade.getPrice().asItem())) {
-            user.sendPluginMessage(Plugin.MOB_DEFENCE, ChatColor.WARNING + "Not enough money");
+            user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Not enough money", ExTextColor.WARNING));
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return;
         }

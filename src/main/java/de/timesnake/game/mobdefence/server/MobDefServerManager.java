@@ -1,7 +1,6 @@
 package de.timesnake.game.mobdefence.server;
 
 import de.timesnake.basic.bukkit.util.Server;
-import de.timesnake.basic.bukkit.util.chat.ChatColor;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Tablist;
@@ -27,8 +26,10 @@ import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.basic.util.TimeCoins;
+import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.basic.util.statistics.StatType;
 import de.timesnake.library.entities.EntityManager;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -131,7 +132,13 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     @Override
+    @Deprecated
     public void broadcastGameMessage(String message) {
+        Server.broadcastMessage(Plugin.MOB_DEFENCE, message);
+    }
+
+    @Override
+    public void broadcastGameMessage(Component message) {
         Server.broadcastMessage(Plugin.MOB_DEFENCE, message);
     }
 
@@ -262,15 +269,16 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
             this.updateSideboardDelay();
             if (delay <= 0) {
                 this.delayIsRunning = false;
-                this.broadcastGameMessage(ChatColor.PUBLIC + "Next wave spawns " + ChatColor.VALUE + "now");
+                this.broadcastGameMessage(Component.text("Next wave spawns ", ExTextColor.PUBLIC)
+                        .append(Component.text("now", ExTextColor.VALUE)));
                 this.startNextWave();
                 delayTask.cancel();
                 return;
             }
 
             if (this.delay <= 5) {
-                this.broadcastGameMessage(ChatColor.PUBLIC + "Next wave spawns in " + ChatColor.VALUE + this.delay +
-                        "s");
+                this.broadcastGameMessage(Component.text("Next wave spawns in ", ExTextColor.PUBLIC)
+                        .append(Component.text(this.delay + "s", ExTextColor.VALUE)));
             }
             delay--;
         }, 0, 20, GameMobDefence.getPlugin());
@@ -288,7 +296,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
         if (this.waveNumber == 13) {
             this.getMap().getWorld().setGameRule(GameRule.NATURAL_REGENERATION, false);
-            this.broadcastGameMessage(ChatColor.WARNING + "No more natural regeneration");
+            this.broadcastGameMessage(Component.text("No more natural regeneration", ExTextColor.WARNING));
         }
 
         Server.broadcastSound(Sound.ITEM_GOAT_HORN_SOUND_2, 2);
@@ -440,7 +448,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     public Collection<MobDefUser> getAliveUsers() {
         Collection<MobDefUser> users = new ArrayList<>();
         for (User user :
-                Server.getUsers((user) -> user.getStatus().equals(Status.User.IN_GAME) || user.getStatus().equals(Status.User.PRE_GAME))) {
+                Server.getUsers((user) -> user.getStatus().equals(Status.User.IN_GAME)
+                        || user.getStatus().equals(Status.User.PRE_GAME))) {
 
             if (((MobDefUser) user).isAlive()) {
                 users.add(((MobDefUser) user));

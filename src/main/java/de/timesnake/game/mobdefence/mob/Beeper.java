@@ -24,7 +24,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 public class Beeper extends MobDefMob<ExCreeper> {
 
     public static void handleExplosion(Creeper creeper, Location location) {
-        if (creeper.getCustomName() == null || !creeper.getCustomName().equals(NAME)) {
+        if (creeper.customName() == null || !creeper.customName().equals(NAME)) {
             return;
         }
 
