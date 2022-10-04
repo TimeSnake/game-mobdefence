@@ -6,6 +6,8 @@ import de.timesnake.basic.bukkit.util.chat.Sender;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.kit.ShopCurrency;
 import de.timesnake.game.mobdefence.kit.ShopPrice;
+import de.timesnake.library.extension.util.chat.Code;
+import de.timesnake.library.extension.util.chat.Plugin;
 import de.timesnake.library.extension.util.cmd.Arguments;
 import de.timesnake.library.extension.util.cmd.ExCommand;
 
@@ -13,9 +15,11 @@ import java.util.List;
 
 public class DebugCmd implements CommandListener {
 
+    private Code.Permission perm;
+
     @Override
     public void onCommand(Sender sender, ExCommand<Sender, Argument> cmd, Arguments<Argument> args) {
-        if (!sender.hasPermission("game.mobdef.debug", 2411)) {
+        if (!sender.hasPermission(this.perm)) {
             return;
         }
 
@@ -42,5 +46,10 @@ public class DebugCmd implements CommandListener {
     @Override
     public List<String> getTabCompletion(ExCommand<Sender, Argument> cmd, Arguments<Argument> args) {
         return null;
+    }
+
+    @Override
+    public void loadCodes(Plugin plugin) {
+        this.perm = plugin.createPermssionCode("mob", "game.mobdef.debug");
     }
 }
