@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class BoomerangAxe extends CooldownWeapon implements UserInventoryInteractListener {
 
     public static final double SPEED = 1;
-    public static final double MAX_DISTANCE = 8;
+    public static final double MAX_DISTANCE = 10;
     public static final double DAMAGE = 4;
 
     private static final ItemLevelType<?> SPEED_LEVELS = new ItemLevelType<>("Speed",
@@ -48,7 +48,7 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
     private static final ItemLevelType<?> DISTANCE_LEVELS = new ItemLevelType<>("Distance",
             new ExItemStack(Material.CHAIN), 1, 5, ItemLevel.getLoreNumberLevels("Distance", 3, 0, "blocks", 2,
             List.of(new ShopPrice(16, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER), new ShopPrice(10,
-                    ShopCurrency.GOLD), new ShopPrice(41, ShopCurrency.BRONZE)), "+1 Block", List.of(9, 10, 11, 12)));
+                    ShopCurrency.GOLD), new ShopPrice(41, ShopCurrency.BRONZE)), "+1 Block", List.of(11, 12, 13, 14)));
 
     public static final LevelItem BOOMERANG_AXE = new LevelItem("Boomerang Axe", true, new ShopPrice(4,
             ShopCurrency.GOLD), new ExItemStack(Material.IRON_AXE, "§6Boomerang Axe").setLore("",

@@ -29,9 +29,16 @@ public class DogSpawner extends EntitySpawner {
             new ExItemStack(Material.WOLF_SPAWN_EGG), 1, 5, ItemLevel.getLoreNumberLevels("Amount", 1, 0, "Dogs", 2,
             List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER), new ShopPrice(24,
                     ShopCurrency.BRONZE), new ShopPrice(16, ShopCurrency.GOLD)), "+1 Dog", List.of(5, 6, 7, 8)));
+    public static final ItemLevelType<?> HEALTH_LEVELS = new ItemLevelType<>("Health",
+            new ExItemStack(Material.RED_DYE), 1, 5, ItemLevel.getLoreNumberLevels("Health", 2, 1, "❤", 2,
+            List.of(new ShopPrice(16, ShopCurrency.BRONZE), new ShopPrice(32, ShopCurrency.BRONZE),
+                    new ShopPrice(11, ShopCurrency.GOLD), new ShopPrice(22, ShopCurrency.SILVER)),
+            "+2.5 ❤", List.of(20, 25, 30, 35)));
+    private static final double BASE_HEALTH = 15;
     public static final LevelItem LEVEL_ITEM = new LevelItem("§6Call Dogs", new ExItemStack(Material.BONE, "§6Call " +
-            "Dogs").setLore("", AMOUNT_LEVELS.getBaseLevelLore(4)), new ExItemStack(Material.BONE, "§6Call Dogs"),
-            List.of(AMOUNT_LEVELS));
+            "Dogs").setLore("", AMOUNT_LEVELS.getBaseLevelLore(4), HEALTH_LEVELS.getBaseLevelLore(BASE_HEALTH)), new ExItemStack(Material.BONE, "§6Call Dogs"),
+            List.of(AMOUNT_LEVELS, HEALTH_LEVELS));
+
     private static final int MAX = 4;
 
     public DogSpawner() {
@@ -54,16 +61,17 @@ public class DogSpawner extends EntitySpawner {
         }
 
         int amount = Integer.parseInt(AMOUNT_LEVELS.getValueFromLore(item.getLore()));
+        double health = 2 * Double.parseDouble(HEALTH_LEVELS.getValueFromLore(item.getLore()));
 
         List<ExtendedCraftEntity<?>> entities = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            entities.add(this.getDog(user));
+            entities.add(this.getDog(user, health));
         }
 
         return entities;
     }
 
-    private ExWolf getDog(User user) {
+    private ExWolf getDog(User user, double health) {
         ExWolf entity = new ExWolf(user.getExWorld().getBukkitWorld(), false);
 
         entity.setTamed(true);
@@ -88,8 +96,8 @@ public class DogSpawner extends EntitySpawner {
         }
 
 
-        entity.setMaxHealth(30);
-        entity.setHealth(30);
+        entity.setMaxHealth(health);
+        entity.setHealth(health);
 
         entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(8);
 
