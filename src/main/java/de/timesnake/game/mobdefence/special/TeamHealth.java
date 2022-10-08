@@ -1,3 +1,21 @@
+/*
+ * game-mobdefence.main
+ * Copyright (C) 2022 timesnake
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package de.timesnake.game.mobdefence.special;
 
 import de.timesnake.basic.bukkit.util.Server;
@@ -44,28 +62,7 @@ public class TeamHealth extends Levelable<LevelType<Level<Integer>>> {
 
     public void reset() {
         this.maxHealth = BASE_MAX_HEALTH;
-    }    public static final TeamHealth MAX_HEALTH = new TeamHealth("Health", new ExItemStack(Material.NETHER_WART),
-            List.of(new LevelType<>("Max Health", new ExItemStack(Material.FIRE_CORAL_BLOCK), 1, 13,
-                    getHealthLevels(2, List.of(new ShopPrice(1, ShopCurrency.EMERALD), new ShopPrice(2,
-                            ShopCurrency.EMERALD), new ShopPrice(3, ShopCurrency.EMERALD), new ShopPrice(4,
-                            ShopCurrency.EMERALD), new ShopPrice(5, ShopCurrency.EMERALD), new ShopPrice(6,
-                            ShopCurrency.EMERALD), new ShopPrice(7, ShopCurrency.EMERALD), new ShopPrice(8,
-                            ShopCurrency.EMERALD), new ShopPrice(9, ShopCurrency.EMERALD), new ShopPrice(10,
-                            ShopCurrency.EMERALD), new ShopPrice(11, ShopCurrency.EMERALD), new ShopPrice(12,
-                            ShopCurrency.EMERALD)), List.of(9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20))) {
-                @Override
-                protected boolean levelUp(MobDefUser user, Level<Integer> level) {
-                    for (User gameUser : Server.getInOutGameUsers()) {
-                        gameUser.getPlayer().setMaxHealth(level.getValue() * 2);
-                    }
-
-                    MAX_HEALTH.setMaxHealth(level.getValue() * 2);
-
-                    MobDefServer.broadcastGameMessage(user.getChatNameComponent()
-                            .append(Component.text(" leveled up max " + "health", ExTextColor.WARNING)));
-                    return true;
-                }
-            }));
+    }
 
     @Override
     public LevelType<Level<Integer>> cloneLevelType(LevelType<Level<Integer>> levelType) {
@@ -88,7 +85,28 @@ public class TeamHealth extends Levelable<LevelType<Level<Integer>>> {
         levelType.tryLevelUp(user);
 
         inv.setItemStack(levelType.getDisplayItem());
-    }
+    }    public static final TeamHealth MAX_HEALTH = new TeamHealth("Health", new ExItemStack(Material.NETHER_WART),
+            List.of(new LevelType<>("Max Health", new ExItemStack(Material.FIRE_CORAL_BLOCK), 1, 13,
+                    getHealthLevels(2, List.of(new ShopPrice(1, ShopCurrency.EMERALD), new ShopPrice(2,
+                            ShopCurrency.EMERALD), new ShopPrice(3, ShopCurrency.EMERALD), new ShopPrice(4,
+                            ShopCurrency.EMERALD), new ShopPrice(5, ShopCurrency.EMERALD), new ShopPrice(6,
+                            ShopCurrency.EMERALD), new ShopPrice(7, ShopCurrency.EMERALD), new ShopPrice(8,
+                            ShopCurrency.EMERALD), new ShopPrice(9, ShopCurrency.EMERALD), new ShopPrice(10,
+                            ShopCurrency.EMERALD), new ShopPrice(11, ShopCurrency.EMERALD), new ShopPrice(12,
+                            ShopCurrency.EMERALD)), List.of(9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20))) {
+                @Override
+                protected boolean levelUp(MobDefUser user, Level<Integer> level) {
+                    for (User gameUser : Server.getInOutGameUsers()) {
+                        gameUser.getPlayer().setMaxHealth(level.getValue() * 2);
+                    }
+
+                    MAX_HEALTH.setMaxHealth(level.getValue() * 2);
+
+                    MobDefServer.broadcastGameMessage(user.getChatNameComponent()
+                            .append(Component.text(" leveled up max " + "health", ExTextColor.WARNING)));
+                    return true;
+                }
+            }));
 
     public int getMaxHealth() {
         return maxHealth;
