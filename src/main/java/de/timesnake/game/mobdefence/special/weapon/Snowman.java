@@ -40,17 +40,17 @@ public class Snowman extends BlockSpawner implements Listener {
             List.of(Snowman.ITEM), Snowman.ITEM);
 
     public Snowman() {
-        super(EntityType.SNOWMAN, ITEM);
+        super(EntityType.SNOWMAN, ITEM, 1);
     }
 
     @Override
-    public int getLeftEntities(ExItemStack item) {
-        return Integer.parseInt(item.getLore().get(1).replace("§c", "").replace(" Snowmen", "")) - 1;
+    public int getAmountFromString(String s) {
+        return Integer.parseInt(s.replace("§c", "").replace(" Snowmen", ""));
     }
 
     @Override
-    public void updateItem(ExItemStack item, int left) {
-        item.setLore("Place the block to spawn a snowman", "§c" + left + " Snowmen");
+    public String parseAmountToString(int amount) {
+        return "§c" + amount + " Snowmen";
     }
 
     @Override

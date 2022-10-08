@@ -22,17 +22,17 @@ public class IronGolem extends BlockSpawner implements Listener {
             " spawn the golem", "§7The golem tries to hold his position");
 
     public IronGolem() {
-        super(EntityType.IRON_GOLEM, ITEM);
+        super(EntityType.IRON_GOLEM, ITEM, 3);
     }
 
     @Override
-    public int getLeftEntities(ExItemStack item) {
-        return 0;
+    public int getAmountFromString(String s) {
+        return Integer.parseInt(s.replace("§c", "").replace(" Iron-Golems", ""));
     }
 
     @Override
-    public void updateItem(ExItemStack item, int left) {
-
+    public String parseAmountToString(int amount) {
+        return "§c" + amount + " Iron-Golems";
     }
 
     @Override

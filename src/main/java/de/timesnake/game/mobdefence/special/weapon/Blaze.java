@@ -32,17 +32,17 @@ public class Blaze extends BlockSpawner implements Listener {
             List.of(Blaze.ITEM), Blaze.ITEM);
 
     public Blaze() {
-        super(EntityType.BLAZE, ITEM);
+        super(EntityType.BLAZE, ITEM, 1);
     }
 
     @Override
-    public int getLeftEntities(ExItemStack item) {
-        return Integer.parseInt(item.getLore().get(1).replace("§c", "").replace(" Blazes", "")) - 1;
+    public int getAmountFromString(String s) {
+        return Integer.parseInt(s.replace("§c", "").replace(" Blazes", ""));
     }
 
     @Override
-    public void updateItem(ExItemStack item, int left) {
-        item.setLore("Place the block to spawn a blaze", "§c" + left + " Blazes");
+    public String parseAmountToString(int amount) {
+        return "§c" + amount + " Blazes";
     }
 
     @Override

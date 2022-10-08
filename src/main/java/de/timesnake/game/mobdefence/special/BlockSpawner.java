@@ -14,21 +14,36 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import java.util.List;
+
 public abstract class BlockSpawner extends SpecialWeapon implements Listener {
 
     protected final EntityType entityType;
 
-    public BlockSpawner(EntityType type, ExItemStack item) {
+    protected final int loreLine;
+
+
+    public BlockSpawner(EntityType type, ExItemStack item, int loreLine) {
         super(item);
         this.entityType = type;
+        this.loreLine = loreLine;
         Server.registerListener(this, GameMobDefence.getPlugin());
     }
 
-    public abstract int getLeftEntities(ExItemStack item);
+    public int getLeftEntities(ExItemStack item) {
+        return this.getAmountFromString(item.getLore().get(this.loreLine));
+    }
 
-    public abstract void updateItem(ExItemStack item, int left);
+    public void updateItem(ExItemStack item, int left) {
+        List<String> lore = item.getLore();
+        lore.add(this.loreLine, this.parseAmountToString(left));
+    }
 
     public abstract void spawnEntities(Location location);
+
+    public abstract int getAmountFromString(String s);
+
+    public abstract String parseAmountToString(int amount);
 
     @EventHandler
     public void onBlockPlace(UserBlockPlaceEvent e) {
@@ -40,8 +55,9 @@ public abstract class BlockSpawner extends SpecialWeapon implements Listener {
             return;
         }
 
-        int left = this.getLeftEntities(item);
+        this.spawnEntities(e.getBlock().getLocation());
 
+        int left = this.getLeftEntities(item) - 1;
 
         if (left > 0) {
             this.updateItem(item, left);
@@ -50,7 +66,6 @@ public abstract class BlockSpawner extends SpecialWeapon implements Listener {
             user.getInventory().setItem(e.getHand(), null);
         }
 
-        this.spawnEntities(e.getBlock().getLocation());
     }
 
     @EventHandler
