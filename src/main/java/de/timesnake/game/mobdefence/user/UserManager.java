@@ -179,6 +179,10 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
     @EventHandler
     public void onBlockBreak(UserBlockBreakEvent e) {
+        if (e.getUser().isService()) {
+            return;
+        }
+
         if (e.getUser() instanceof MobDefUser) {
             if (!((MobDefUser) e.getUser()).isAlive()) {
                 e.setCancelled(true);
@@ -207,6 +211,10 @@ public class UserManager implements Listener, UserInventoryInteractListener {
         User user = e.getUser();
         Block blockPlaced = e.getBlockPlaced();
         Material type = blockPlaced.getType();
+
+        if (user.isService()) {
+            return;
+        }
 
         if (!BlockCheck.NORMAL_BREAKABLE.isTagged(type) && !BlockCheck.HIGH_BREAKABLE.isTagged(type) && !TrapManager.TRAP_MATERIALS.contains(type) && !type.equals(Material.LADDER)) {
             e.setCancelled(true);
@@ -296,6 +304,10 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
     @EventHandler
     public void onUserDropItem(UserDropItemEvent e) {
+        if (e.getUser().isService()) {
+            return;
+        }
+
         Material material = e.getItemStack().getType();
 
         if (REMOVED_DROPS.contains(material)) {
