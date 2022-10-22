@@ -44,7 +44,7 @@ public class ZombieBreaker extends ArmorMob<ExZombie> {
     public void spawn() {
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExZombie(world, false);
+        this.entity = new ExZombie(world, false, false);
 
         ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.7, true, ExplosionManager.EXPLODEABLE);
 

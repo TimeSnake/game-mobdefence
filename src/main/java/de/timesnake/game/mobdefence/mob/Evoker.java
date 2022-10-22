@@ -40,7 +40,7 @@ public class Evoker extends MobDefMob<ExEvoker> {
 
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExEvoker(world, false);
+        this.entity = new ExEvoker(world, false, false);
 
         ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.3, false, BlockCheck.BREAKABLE_MATERIALS);
 

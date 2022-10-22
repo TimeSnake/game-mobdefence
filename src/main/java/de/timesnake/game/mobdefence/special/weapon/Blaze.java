@@ -65,7 +65,7 @@ public class Blaze extends BlockSpawner implements Listener {
 
     @Override
     public void spawnEntities(Location location) {
-        ExBlaze blaze = new ExBlaze(location.getWorld(), false);
+        ExBlaze blaze = new ExBlaze(location.getWorld(), false, false);
 
         blaze.setPosition(location.getX(), location.getY(), location.getZ());
 

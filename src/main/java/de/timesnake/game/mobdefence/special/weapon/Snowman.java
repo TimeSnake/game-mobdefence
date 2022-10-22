@@ -73,7 +73,7 @@ public class Snowman extends BlockSpawner implements Listener {
 
     @Override
     public void spawnEntities(Location location) {
-        ExSnowman snowman = new ExSnowman(location.getWorld(), false);
+        ExSnowman snowman = new ExSnowman(location.getWorld(), false, false);
         snowman.setPosition(location.getX(), location.getY(), location.getZ());
         snowman.setSlot(ExEnumItemSlot.HEAD, null);
 

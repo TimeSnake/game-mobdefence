@@ -41,7 +41,7 @@ public class BabyZombie extends ArmorMob<ExZombie> {
     public void spawn() {
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExZombie(world, false);
+        this.entity = new ExZombie(world, false, false);
         entity.setBaby(true);
 
         ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.3, false, BlockCheck.BREAKABLE_MATERIALS);

@@ -44,7 +44,7 @@ public class Vindicator extends MobDefMob<ExVindicator> {
 
         ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.3, false, BlockCheck.BREAKABLE_MATERIALS);
 
-        this.entity = new ExVindicator(world, false);
+        this.entity = new ExVindicator(world, false, false);
         this.entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.IRON_AXE));
 
         this.entity.addPathfinderGoal(0, new ExPathfinderGoalFloat());

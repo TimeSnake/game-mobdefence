@@ -46,7 +46,7 @@ public class Illusioner extends MobDefMob<ExIllusioner> {
 
         ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false, BlockCheck.BREAKABLE_MATERIALS);
 
-        this.entity = new ExIllusioner(world, false);
+        this.entity = new ExIllusioner(world, false, false);
 
         this.entity.addPathfinderGoal(0, new ExPathfinderGoalFloat());
         this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalIllagerWizardNoneSpell());

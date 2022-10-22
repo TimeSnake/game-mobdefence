@@ -53,7 +53,7 @@ public class Beeper extends MobDefMob<ExCreeper> {
         }
 
         for (int i = 0; i < 6; i++) {
-            ExBee bee = new ExBee(location.getWorld(), true);
+            ExBee bee = new ExBee(location.getWorld(), true, false);
             bee.setPosition(location.getX(), location.getY() + 1.5, location.getZ());
             bee.setTarget(((CraftPlayer) player).getHandle(), EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY,
                     true);
@@ -72,7 +72,7 @@ public class Beeper extends MobDefMob<ExCreeper> {
 
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExCreeper(world, false);
+        this.entity = new ExCreeper(world, false, false);
 
         ExCustomPathfinderGoalLocationSwell swell = new ExCustomPathfinderGoalLocationSwell(4, 7);
 
