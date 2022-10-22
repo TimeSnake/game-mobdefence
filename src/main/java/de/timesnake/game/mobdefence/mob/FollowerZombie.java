@@ -54,7 +54,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
     public void spawn() {
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExZombie(world, false);
+        this.entity = new ExZombie(world, false, false);
 
         ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.5, false, BlockCheck.BREAKABLE_MATERIALS);
 
@@ -92,7 +92,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
                     List<ExtendedCraftEntity<? extends ExEntityInsentient>> fishs = new ArrayList<>();
 
                     for (int i = 0; i < 6; i++) {
-                        ExSilverfish fish = new ExSilverfish(world, false);
+                        ExSilverfish fish = new ExSilverfish(world, false, false);
 
                         fish.addPathfinderGoal(1, new ExPathfinderGoalMeleeAttack(1.2));
                         fish.addPathfinderGoal(2, new ExCustomPathfinderGoalFollowEntity(entity, 1.1f, 5, 20));
@@ -132,7 +132,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
                     List<ExEndermite> mites = new ArrayList<>();
 
                     for (int i = 0; i < 8; i++) {
-                        ExEndermite mite = new ExEndermite(world, false);
+                        ExEndermite mite = new ExEndermite(world, false, false);
 
                         mite.addPathfinderGoal(1, new ExPathfinderGoalFloat());
                         mite.addPathfinderGoal(2, new ExPathfinderGoalMeleeAttack(1.2));
@@ -188,7 +188,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
         List<ExtendedCraftEntity<?>> fishs = new ArrayList<>();
 
         for (int i = 0; i < 6; i++) {
-            ExSilverfish fish = new ExSilverfish(this.entity.getWorld(), false);
+            ExSilverfish fish = new ExSilverfish(this.entity.getWorld(), false, false);
 
             fish.addPathfinderGoal(1, new ExPathfinderGoalMeleeAttack(2.0D));
             fish.addPathfinderGoal(2, new ExCustomPathfinderGoalFollowEntity(this.entity, 1.1f, 5, 20));
@@ -217,7 +217,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
         List<ExtendedCraftEntity<?>> mites = new ArrayList<>();
 
         for (int i = 0; i < 6; i++) {
-            ExEndermite mite = new ExEndermite(this.entity.getWorld(), false);
+            ExEndermite mite = new ExEndermite(this.entity.getWorld(), false, false);
 
             mite.addPathfinderGoal(1, new ExPathfinderGoalMeleeAttack(2.0D));
             mite.addPathfinderGoal(2, new ExCustomPathfinderGoalFollowEntity(this.entity, 1.1f, 5, 20));

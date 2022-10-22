@@ -46,7 +46,7 @@ import java.util.List;
 public class PoisonArrow extends SpecialWeapon implements UserInventoryInteractListener, Listener {
 
     public static final ExItemStack ITEM =
-            ExItemStack.getPotion(Material.TIPPED_ARROW, 3, PotionType.POISON, false, false).setDisplayName("§6Poison Arrow");
+            ExItemStack.getPotion(Material.TIPPED_ARROW, 8, PotionType.POISON, false, false).setDisplayName("§6Poison Arrow");
     public static final ItemTrade TRADE = new ItemTrade(3, false, new ShopPrice(5, ShopCurrency.BRONZE),
             List.of(ITEM), ITEM);
     private static final String NAME = "poison_arrow";

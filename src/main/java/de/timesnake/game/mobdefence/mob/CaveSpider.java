@@ -42,7 +42,7 @@ public class CaveSpider extends MobDefMob<ExCaveSpider> {
 
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExCaveSpider(world, false);
+        this.entity = new ExCaveSpider(world, false, false);
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalFloat());
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1, null, BREAK_LEVEL));

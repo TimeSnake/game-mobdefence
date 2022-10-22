@@ -40,7 +40,7 @@ public class Creeper extends MobDefMob<ExCreeper> {
 
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExCreeper(world, false);
+        this.entity = new ExCreeper(world, false, false);
 
         ExCustomPathfinderGoalLocationSwell swell = new ExCustomPathfinderGoalLocationSwell(4, 7);
 

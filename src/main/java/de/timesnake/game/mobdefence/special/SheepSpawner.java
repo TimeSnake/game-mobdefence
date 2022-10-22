@@ -80,7 +80,7 @@ public class SheepSpawner extends EntitySpawner {
     }
 
     private ExSheep getSheep(User user) {
-        ExSheep entity = new ExSheep(user.getExWorld().getBukkitWorld(), false);
+        ExSheep entity = new ExSheep(user.getExWorld().getBukkitWorld(), false, false);
 
         entity.addPathfinderGoal(0, new ExPathfinderGoalFloat());
         entity.addPathfinderGoal(1, new ExCustomPathfinderGoalPet(user.getPlayer(), 1.3, 4, 7));

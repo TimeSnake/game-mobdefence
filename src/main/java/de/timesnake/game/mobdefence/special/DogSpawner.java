@@ -90,7 +90,7 @@ public class DogSpawner extends EntitySpawner {
     }
 
     private ExWolf getDog(User user, double health) {
-        ExWolf entity = new ExWolf(user.getExWorld().getBukkitWorld(), false);
+        ExWolf entity = new ExWolf(user.getExWorld().getBukkitWorld(), false, false);
 
         entity.setTamed(true);
         entity.setOwnerUUID(user.getUniqueId());

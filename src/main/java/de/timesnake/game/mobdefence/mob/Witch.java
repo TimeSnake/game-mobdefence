@@ -41,7 +41,7 @@ public class Witch extends MobDefMob<ExWitch> {
     public void spawn() {
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExWitch(world, true);
+        this.entity = new ExWitch(world, true, false);
 
         this.entity.clearPathfinderGoals();
 

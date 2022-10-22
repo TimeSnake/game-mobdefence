@@ -141,7 +141,7 @@ public class MobManager implements Listener {
 
     public LivingEntity createCoreEntity() {
         Location loc = MobDefServer.getMap().getCoreLocation();
-        ExVillager entity = new ExVillager(loc.getWorld(), ExVillager.Type.PLAINS, false, false);
+        ExVillager entity = new ExVillager(loc.getWorld(), ExVillager.Type.PLAINS, false, false, false);
         entity.addPathfinderGoal(1, new ExCustomPathfinderGoalLocation(loc.getX(), loc.getY(), loc.getZ(), 1.4, 32, 1));
         entity.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         entity.setPersistent(true);

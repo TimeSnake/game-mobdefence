@@ -311,7 +311,7 @@ public class MobDefKit extends Kit {
             List.of(Bow.BOW, SplashBow.BOW, RocketCrossBow.CROSSBOW), List.of(PoisonArrow.TRADE));
     public static final MobDefKit ARCHER = new MobDefKit(2, "Archer", Material.BOW,
             List.of("§fWeapons: §7Bows, Crossbow", "§fArmor: §7Weak"),
-            List.of(Bow.BOW.getItem(), MobDefKit.BEEF, MobTracker.TRACKER),
+            List.of(Bow.BOW.getItem(), MobDefKit.BEEF, MobTracker.TRACKER, new ItemStack(Material.ARROW)),
             List.of(ARCHER_WEAPONS, ARCHER_ARMOR, BaseShops.BLOCK_SHOP, BaseShops.BASIC_SHOP, BaseShops.TEAM_SHOP));
     // wizard
     public static final ItemTrade WIZARD_REGEN = new ItemTrade(false, new ShopPrice(4, ShopCurrency.BRONZE),

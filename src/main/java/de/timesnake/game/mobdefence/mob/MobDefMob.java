@@ -192,7 +192,7 @@ public abstract class MobDefMob<M extends Mob & ExtendedCraftEntity<? extends Ex
         this.entity.setPersistent(true);
         this.entity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
                 this.spawn.getYaw(), this.spawn.getPitch());
-        EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), this.entity);
+        EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), this.entity, false);
 
         this.entity.getExtension().setMaxNoDamageTicks(1);
 

@@ -51,7 +51,7 @@ public class Skeleton extends ArmorMob<ExSkeleton> {
     public void init() {
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExSkeleton(world, false);
+        this.entity = new ExSkeleton(world, false, false);
 
         ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false, BlockCheck.BREAKABLE_MATERIALS);
 

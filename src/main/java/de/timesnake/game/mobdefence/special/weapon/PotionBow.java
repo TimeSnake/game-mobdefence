@@ -26,6 +26,7 @@ import de.timesnake.game.mobdefence.kit.ShopCurrency;
 import de.timesnake.game.mobdefence.kit.ShopPrice;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.ThrownPotion;
@@ -41,8 +42,8 @@ public class PotionBow extends SpecialWeapon implements Listener {
 
 
     public static final LevelItem BOW = new LevelItem("Splash Bow", false, new ShopPrice(6, ShopCurrency.GOLD),
-            new ExItemStack(Material.BOW).setUnbreakable(true).setDisplayName("§6Potion Bow"),
-            new ExItemStack(Material.BOW).setUnbreakable(true).setDisplayName("§6Potion Bow"), List.of());
+            new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_INFINITE, 1).setUnbreakable(true).setDisplayName("§6Potion Bow"),
+            new ExItemStack(Material.BOW).enchant().setUnbreakable(true).setDisplayName("§6Potion Bow"), List.of());
 
     public PotionBow() {
         super(BOW.getItem());

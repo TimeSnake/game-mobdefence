@@ -55,7 +55,7 @@ public class IronGolem extends BlockSpawner implements Listener {
 
     @Override
     public void spawnEntities(Location location) {
-        ExIronGolem golem = new ExIronGolem(location.getWorld(), false);
+        ExIronGolem golem = new ExIronGolem(location.getWorld(), false, false);
         golem.setPosition(location.getX(), location.getY(), location.getZ());
 
         golem.addPathfinderGoal(1, new ExPathfinderGoalMeleeAttack(1.0D));

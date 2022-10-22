@@ -50,7 +50,7 @@ public class CompressedZombie extends MobDefMob<ExZombie> {
     public void init() {
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExZombie(world, false);
+        this.entity = new ExZombie(world, false, false);
 
         ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.8, false, BlockCheck.BREAKABLE_MATERIALS);
 

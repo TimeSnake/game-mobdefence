@@ -58,7 +58,8 @@ public class Bow extends SpecialWeapon implements UserInventoryInteractListener,
             "+1 mob", List.of(1, 2, 3, 4, 5)));
 
     public static final LevelItem BOW = new LevelItem("Bow",
-            new ExItemStack(Material.BOW).setUnbreakable(true).setLore("", PIERCING.getBaseLevelLore(0)),
+            new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_INFINITE, 1)
+                    .setUnbreakable(true).setLore("", PIERCING.getBaseLevelLore(0)),
             new ExItemStack(Material.BOW).setUnbreakable(true), List.of(POWER, FLAME, PIERCING));
     private final Set<User> cooldownUser = new HashSet<>();
 

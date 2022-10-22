@@ -51,9 +51,10 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
     public void spawn() {
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        this.entity = new ExStray(world, false);
+        this.entity = new ExStray(world, false, false);
 
-        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false, BlockCheck.BREAKABLE_MATERIALS);
+        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false,
+                BlockCheck.BREAKABLE_MATERIALS);
 
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1.3, breakBlock, BREAK_LEVEL));
         this.entity.addPathfinderGoal(2, breakBlock);
@@ -72,7 +73,7 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
             this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 5, 30.0F));
 
         this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalSpawnArmy(EntityClass.EntitySkeletonStray, 3,
                 10 * 20) {
@@ -84,7 +85,7 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
                 for (int i = 0; i < 4; i++) {
                     World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-                    ExStray stray = new ExStray(world, false);
+                    ExStray stray = new ExStray(world, false, false);
 
                     ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.5, false,
                             BlockCheck.BREAKABLE_MATERIALS);
@@ -137,10 +138,12 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
         this.entity.setSlot(ExEnumItemSlot.FEET, new ItemStack(Material.GOLDEN_BOOTS));
 
         this.entity.setSlot(ExEnumItemSlot.MAIN_HAND,
-                new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_FIRE, 2).addExEnchantment(Enchantment.ARROW_DAMAGE, 5).addExEnchantment(Enchantment.ARROW_KNOCKBACK, 4));
+                new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_FIRE, 2)
+                        .addExEnchantment(Enchantment.ARROW_DAMAGE, 10)
+                        .addExEnchantment(Enchantment.ARROW_KNOCKBACK, 6));
 
         this.entity.getBukkitAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
-        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(5);
+        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(10);
         this.entity.getBukkitAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(5);
 
         this.entity.setMaxHealth(this.currentWave * 70);
