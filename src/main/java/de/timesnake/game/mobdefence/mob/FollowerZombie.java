@@ -23,19 +23,15 @@ import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
-import de.timesnake.library.entities.entity.ExtendedCraftEntity;
-import de.timesnake.library.entities.entity.bukkit.ExEndermite;
-import de.timesnake.library.entities.entity.bukkit.ExSilverfish;
-import de.timesnake.library.entities.entity.bukkit.ExZombie;
-import de.timesnake.library.entities.entity.extension.ExEntityInsentient;
+import de.timesnake.library.entities.entity.bukkit.*;
+import de.timesnake.library.entities.entity.extension.Mob;
+import de.timesnake.library.entities.entity.extension.Monster;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMeleeAttack;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalZombieAttack;
 import de.timesnake.library.entities.pathfinder.custom.*;
-import de.timesnake.library.entities.wrapper.EntityClass;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
-import net.minecraft.world.entity.EntityInsentient;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -63,18 +59,18 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
 
         this.entity.addPathfinderGoal(2, breakBlock);
         this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalRandomStrollLand(1));
-        this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
         this.entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
 
-        for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
+        for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
                     true, 16D));
         }
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
-        for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
+        for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
                     true, 16D));
         }
@@ -82,14 +78,13 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
         int random = this.random.nextInt(2);
 
         if (random == 0) {
-            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalSpawnArmy(EntityClass.EntitySilverfish, 3,
+            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalSpawnArmy(Silverfish.class, 3,
                     5 * 20) {
                 @Override
-                public List<? extends ExtendedCraftEntity<? extends ExEntityInsentient>> getArmee(ExtendedCraftEntity<?
-                        extends ExEntityInsentient> entity) {
+                public List<? extends Monster> getArmee(Mob entity) {
                     World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-                    List<ExtendedCraftEntity<? extends ExEntityInsentient>> fishs = new ArrayList<>();
+                    List<Monster> fishs = new ArrayList<>();
 
                     for (int i = 0; i < 6; i++) {
                         ExSilverfish fish = new ExSilverfish(world, false, false);
@@ -99,15 +94,15 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
                         fish.addPathfinderGoal(3, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, null,
                                 BREAK_LEVEL));
 
-                        fish.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+                        fish.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
 
-                        for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
+                        for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
                             fish.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
                         }
                         fish.addPathfinderGoal(3,
-                                new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+                                new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
-                        for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
+                        for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
                             fish.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
                         }
 
@@ -122,11 +117,10 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
 
             this.subEntities = this.getSilverFishs();
         } else if (random == 1) {
-            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalSpawnArmy(EntityClass.EntityEndermite, 3,
+            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalSpawnArmy(Endermite.class, 3,
                     5 * 20) {
                 @Override
-                public List<? extends ExtendedCraftEntity<? extends ExEntityInsentient>> getArmee(ExtendedCraftEntity<?
-                        extends ExEntityInsentient> entity) {
+                public List<? extends Monster> getArmee(de.timesnake.library.entities.entity.extension.Mob entity) {
                     World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
                     List<ExEndermite> mites = new ArrayList<>();
@@ -139,15 +133,15 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
                         mite.addPathfinderGoal(3, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, null,
                                 BREAK_LEVEL));
 
-                        mite.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+                        mite.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
 
-                        for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
+                        for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
                             mite.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
                         }
                         mite.addPathfinderGoal(3,
-                                new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+                                new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
-                        for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
+                        for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
                             mite.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
                         }
 
@@ -184,8 +178,8 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
         this.entity.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET).addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 5));
     }
 
-    private List<ExtendedCraftEntity<?>> getSilverFishs() {
-        List<ExtendedCraftEntity<?>> fishs = new ArrayList<>();
+    private List<Monster> getSilverFishs() {
+        List<Monster> fishs = new ArrayList<>();
 
         for (int i = 0; i < 6; i++) {
             ExSilverfish fish = new ExSilverfish(this.entity.getWorld(), false, false);
@@ -194,14 +188,14 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
             fish.addPathfinderGoal(2, new ExCustomPathfinderGoalFollowEntity(this.entity, 1.1f, 5, 20));
             fish.addPathfinderGoal(3, getCorePathfinder(this.getMapType(), 1, null, BREAK_LEVEL));
 
-            fish.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+            fish.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
 
-            for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
+            for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
                 fish.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
             }
-            fish.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+            fish.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
-            for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
+            for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
                 fish.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
             }
 
@@ -213,8 +207,8 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
         return fishs;
     }
 
-    private List<ExtendedCraftEntity<?>> getEnderMites() {
-        List<ExtendedCraftEntity<?>> mites = new ArrayList<>();
+    private List<Monster> getEnderMites() {
+        List<Monster> mites = new ArrayList<>();
 
         for (int i = 0; i < 6; i++) {
             ExEndermite mite = new ExEndermite(this.entity.getWorld(), false, false);
@@ -223,14 +217,14 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
             mite.addPathfinderGoal(2, new ExCustomPathfinderGoalFollowEntity(this.entity, 1.1f, 5, 20));
             mite.addPathfinderGoal(3, getCorePathfinder(this.getMapType(), 1, null, BREAK_LEVEL));
 
-            mite.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+            mite.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
 
-            for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
+            for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
                 mite.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
             }
-            mite.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+            mite.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
-            for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
+            for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
                 mite.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
             }
 

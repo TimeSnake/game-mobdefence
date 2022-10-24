@@ -23,16 +23,15 @@ import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.library.basic.util.chat.ExTextColor;
-import de.timesnake.library.entities.entity.ExtendedCraftEntity;
 import de.timesnake.library.entities.entity.bukkit.ExWolf;
+import de.timesnake.library.entities.entity.bukkit.HumanEntity;
+import de.timesnake.library.entities.entity.extension.LivingEntity;
 import de.timesnake.library.entities.pathfinder.*;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalHurtByTarget;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLookAtPlayer;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalRandomStrollLand;
-import de.timesnake.library.entities.wrapper.EntityClass;
 import net.kyori.adventure.text.Component;
-import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
@@ -64,7 +63,7 @@ public class DogSpawner extends EntitySpawner {
     }
 
     @Override
-    public List<? extends ExtendedCraftEntity<?>> getEntities(User user, ExItemStack item) {
+    public List<de.timesnake.library.entities.entity.extension.Entity> getEntities(User user, ExItemStack item) {
 
         int dogs = 0;
         for (Entity wolf : user.getWorld().getEntitiesByClasses(Wolf.class)) {
@@ -81,7 +80,7 @@ public class DogSpawner extends EntitySpawner {
         int amount = Integer.parseInt(AMOUNT_LEVELS.getValueFromLore(item.getLore()));
         double health = 2 * Double.parseDouble(HEALTH_LEVELS.getValueFromLore(item.getLore()));
 
-        List<ExtendedCraftEntity<?>> entities = new ArrayList<>();
+        List<de.timesnake.library.entities.entity.extension.Entity> entities = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
             entities.add(this.getDog(user, health));
         }
@@ -101,14 +100,14 @@ public class DogSpawner extends EntitySpawner {
         entity.addPathfinderGoal(5, new ExPathfinderGoalMeleeAttack(1.0D));
         entity.addPathfinderGoal(6, new ExPathfinderGoalFollowOwner(1.0D, 10.0F, 2.0F, false));
         entity.addPathfinderGoal(8, new ExCustomPathfinderGoalRandomStrollLand(1.0D));
-        entity.addPathfinderGoal(10, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
+        entity.addPathfinderGoal(10, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
         entity.addPathfinderGoal(10, new ExPathfinderGoalRandomLookaround());
 
         entity.addPathfinderGoal(1, new ExPathfinderGoalOwnerHurtByTarget());
         entity.addPathfinderGoal(2, new ExPathfinderGoalOwnerHurtTarget());
 
         entity.addPathfinderGoal(3, new ExCustomPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
-        for (EntityClass<? extends EntityLiving> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
+        for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
             entity.addPathfinderGoal(4, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, 10, true,
                     false));
         }
