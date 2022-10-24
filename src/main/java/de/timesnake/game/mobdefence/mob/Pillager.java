@@ -23,12 +23,13 @@ import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.bukkit.ExPillager;
+import de.timesnake.library.entities.entity.bukkit.HumanEntity;
+import de.timesnake.library.entities.entity.extension.Mob;
+import de.timesnake.library.entities.entity.extension.Monster;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalCrossbowAttack;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
 import de.timesnake.library.entities.pathfinder.custom.*;
-import de.timesnake.library.entities.wrapper.EntityClass;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
-import net.minecraft.world.entity.EntityInsentient;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -54,17 +55,17 @@ public class Pillager extends MobDefMob<ExPillager> {
         this.entity.addPathfinderGoal(4, getCorePathfinder(this.getMapType(), 0.7, breakBlock, BREAK_LEVEL));
         this.entity.addPathfinderGoal(4, breakBlock);
         this.entity.addPathfinderGoal(8, new ExCustomPathfinderGoalRandomStroll(0.6));
-        this.entity.addPathfinderGoal(9, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
-        this.entity.addPathfinderGoal(10, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityInsentient));
+        this.entity.addPathfinderGoal(9, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        this.entity.addPathfinderGoal(10, new ExCustomPathfinderGoalLookAtPlayer(Mob.class));
 
-        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
 
-        for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
+        for (Class<? extends Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
-        for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
+        for (Class<? extends Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 

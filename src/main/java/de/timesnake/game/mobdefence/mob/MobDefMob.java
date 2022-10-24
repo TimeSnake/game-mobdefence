@@ -23,22 +23,20 @@ import de.timesnake.game.mobdefence.mob.map.ExHeightPathfinder;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.EntityManager;
-import de.timesnake.library.entities.entity.ExtendedCraftEntity;
-import de.timesnake.library.entities.entity.extension.ExEntityInsentient;
+import de.timesnake.library.entities.entity.bukkit.*;
+import de.timesnake.library.entities.entity.extension.LivingEntity;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoal;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
-import de.timesnake.library.entities.wrapper.EntityClass;
-import net.minecraft.world.entity.EntityInsentient;
-import net.minecraft.world.entity.EntityLiving;
 import org.bukkit.Material;
-import org.bukkit.entity.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public abstract class MobDefMob<M extends Mob & ExtendedCraftEntity<? extends ExEntityInsentient>> {
+public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.extension.Mob> {
 
     public static final int BREAK_LEVEL = 16;
 
@@ -48,12 +46,17 @@ public abstract class MobDefMob<M extends Mob & ExtendedCraftEntity<? extends Ex
                     org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class,
                     org.bukkit.entity.Vindicator.class, Vex.class, Silverfish.class, Endermite.class,
                     org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class, Stray.class);
-    public static final List<EntityClass<? extends EntityLiving>> ATTACKER_ENTTIY_ENTITY_CLASSES =
-            List.of(EntityClass.EntityZombie, EntityClass.EntitySkeleton, EntityClass.EntityIllagerIllusioner,
-                    EntityClass.EntityWitch, EntityClass.EntityPillager, EntityClass.EntityEvoker,
-                    EntityClass.EntityVindicator, EntityClass.EntityVex, EntityClass.EntitySilverfish,
-                    EntityClass.EntityEndermite, EntityClass.EntityCreeper, EntityClass.EntityCaveSpider,
-                    EntityClass.EntitySkeletonStray);
+
+    public static final List<Class<? extends LivingEntity>> ATTACKER_ENTTIY_ENTITY_CLASSES =
+            List.of(de.timesnake.library.entities.entity.bukkit.Zombie.class,
+                    de.timesnake.library.entities.entity.bukkit.Skeleton.class,
+                    de.timesnake.library.entities.entity.extension.Illager.class,
+                    de.timesnake.library.entities.entity.bukkit.Vex.class,
+                    de.timesnake.library.entities.entity.bukkit.Silverfish.class,
+                    de.timesnake.library.entities.entity.bukkit.Endermite.class,
+                    de.timesnake.library.entities.entity.bukkit.Creeper.class,
+                    de.timesnake.library.entities.entity.bukkit.CaveSpider.class,
+                    de.timesnake.library.entities.entity.bukkit.Stray.class);
 
     public static final List<Class<? extends Monster>> ATTACKER_ENTITY_COUNT_CLASSES =
             List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class,
@@ -67,16 +70,14 @@ public abstract class MobDefMob<M extends Mob & ExtendedCraftEntity<? extends Ex
             EntityType.EVOKER, EntityType.VINDICATOR, EntityType.VEX, EntityType.SILVERFISH, EntityType.ENDERMITE,
             EntityType.CREEPER, EntityType.CAVE_SPIDER, EntityType.STRAY);
 
-    public static final List<EntityClass<? extends EntityInsentient>> FIRST_DEFENDER_CLASSES =
-            List.of(EntityClass.EntitySheep);
+    public static final List<Class<? extends de.timesnake.library.entities.entity.extension.Mob>> FIRST_DEFENDER_CLASSES =
+            List.of(de.timesnake.library.entities.entity.bukkit.Sheep.class);
 
-    public static final List<EntityClass<? extends EntityInsentient>> SECOND_DEFENDER_CLASSES =
-            List.of(EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf,
-                    EntityClass.EntitySnowman, EntityClass.EntityBlaze);
+    public static final List<Class<? extends de.timesnake.library.entities.entity.extension.Mob>> SECOND_DEFENDER_CLASSES =
+            List.of(IronGolem.class, Villager.class, Wolf.class, Snowman.class, Blaze.class);
 
-    public static final List<EntityClass<? extends EntityLiving>> DEFENDER_CLASSES = List.of(EntityClass.EntitySheep,
-            EntityClass.EntityHuman, EntityClass.EntityIronGolem, EntityClass.EntityVillager, EntityClass.EntityWolf,
-            EntityClass.EntitySnowman, EntityClass.EntityBlaze);
+    public static final List<Class<? extends LivingEntity>> DEFENDER_CLASSES =
+            List.of(Sheep.class, HumanEntity.class, IronGolem.class, Villager.class, Wolf.class, Snowman.class, Blaze.class);
 
     public static final List<EntityType> DEFENDER_TYPES = List.of(EntityType.SHEEP,
             EntityType.PLAYER, EntityType.IRON_GOLEM, EntityType.VILLAGER, EntityType.WOLF,
@@ -158,7 +159,7 @@ public abstract class MobDefMob<M extends Mob & ExtendedCraftEntity<? extends Ex
     protected final ExLocation spawn;
     protected final Random random = new Random();
     protected M entity;
-    protected List<ExtendedCraftEntity<?>> subEntities = new ArrayList<>();
+    protected List<? extends de.timesnake.library.entities.entity.extension.Mob> subEntities = new ArrayList<>();
 
     MobDefMob(Type type, HeightMapManager.MapType mapType, int wave, ExLocation spawn, int currentWave) {
         this.type = type;
@@ -190,17 +191,17 @@ public abstract class MobDefMob<M extends Mob & ExtendedCraftEntity<? extends Ex
 
     public void spawn() {
         this.entity.setPersistent(true);
-        this.entity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
+        this.entity.setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
                 this.spawn.getYaw(), this.spawn.getPitch());
         EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), this.entity, false);
 
-        this.entity.getExtension().setMaxNoDamageTicks(1);
+        this.entity.setMaxNoDamageTicks(1);
 
-        for (ExtendedCraftEntity<?> subEntity : this.subEntities) {
-            subEntity.getExtension().setPersistent(true);
-            subEntity.getExtension().setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
+        for (de.timesnake.library.entities.entity.extension.Mob subEntity : this.subEntities) {
+            subEntity.setPersistent(true);
+            subEntity.setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
                     this.spawn.getYaw(), this.spawn.getPitch());
-            EntityManager.spawnExEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), subEntity);
+            EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), subEntity);
         }
 
     }

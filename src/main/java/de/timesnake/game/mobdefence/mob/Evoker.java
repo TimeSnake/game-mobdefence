@@ -23,10 +23,11 @@ import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.bukkit.ExEvoker;
+import de.timesnake.library.entities.entity.bukkit.HumanEntity;
+import de.timesnake.library.entities.entity.extension.Mob;
+import de.timesnake.library.entities.entity.extension.Monster;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
 import de.timesnake.library.entities.pathfinder.custom.*;
-import de.timesnake.library.entities.wrapper.EntityClass;
-import net.minecraft.world.entity.EntityInsentient;
 import org.bukkit.World;
 
 public class Evoker extends MobDefMob<ExEvoker> {
@@ -46,23 +47,23 @@ public class Evoker extends MobDefMob<ExEvoker> {
 
         this.entity.addPathfinderGoal(0, new ExPathfinderGoalFloat());
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1, breakBlock, BREAK_LEVEL));
-        this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalAvoidTarget(EntityClass.EntityHuman, 8.0F, 0.6, 12
+        this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalAvoidTarget(HumanEntity.class, 8.0F, 0.6, 12
                 , 1));
         this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalEvokerCastSpellVex());
         this.entity.addPathfinderGoal(5, new ExCustomPathfinderGoalEvokerCastSpellFangs());
         this.entity.addPathfinderGoal(6, new ExCustomPathfinderGoalEvokerCastSpellWololo());
         this.entity.addPathfinderGoal(8, new ExCustomPathfinderGoalRandomStroll(0.6D));
-        this.entity.addPathfinderGoal(9, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityHuman));
-        this.entity.addPathfinderGoal(10, new ExCustomPathfinderGoalLookAtPlayer(EntityClass.EntityInsentient));
+        this.entity.addPathfinderGoal(9, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        this.entity.addPathfinderGoal(10, new ExCustomPathfinderGoalLookAtPlayer(Mob.class));
 
-        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(EntityClass.EntityMonster));
+        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
 
-        for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
+        for (Class<? extends Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(EntityClass.EntityHuman));
+        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
-        for (EntityClass<? extends EntityInsentient> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
+        for (Class<? extends Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 

@@ -27,7 +27,7 @@ import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.special.weapon.SpecialWeapon;
 import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.entities.EntityManager;
-import de.timesnake.library.entities.entity.ExtendedCraftEntity;
+import de.timesnake.library.entities.entity.extension.Entity;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 
@@ -56,13 +56,13 @@ public abstract class EntitySpawner extends SpecialWeapon implements UserInvento
             return;
         }
 
-        List<? extends ExtendedCraftEntity<?>> entities = this.getEntities(user, event.getClickedItem());
+        List<? extends Entity> entities = this.getEntities(user, event.getClickedItem());
 
         Location loc = user.getLocation();
 
-        for (ExtendedCraftEntity<?> entity : entities) {
+        for (Entity entity : entities) {
             entity.getExtension().setPosition(loc.getX(), loc.getY(), loc.getZ());
-            EntityManager.spawnExEntity(user.getExWorld().getBukkitWorld(), entity);
+            EntityManager.spawnEntity(user.getExWorld().getBukkitWorld(), entity);
         }
 
         this.cooldownUsers.add(user);
@@ -70,5 +70,5 @@ public abstract class EntitySpawner extends SpecialWeapon implements UserInvento
         Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user), this.cooldown, GameMobDefence.getPlugin());
     }
 
-    public abstract List<? extends ExtendedCraftEntity<?>> getEntities(User user, ExItemStack item);
+    public abstract List<? extends Entity> getEntities(User user, ExItemStack item);
 }

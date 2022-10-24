@@ -21,15 +21,13 @@ package de.timesnake.game.mobdefence.mob;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import de.timesnake.library.entities.entity.ExtendedCraftEntity;
-import de.timesnake.library.entities.entity.extension.ExEntityInsentient;
+import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Mob;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class MeleeMob<M extends Mob & ExtendedCraftEntity<? extends ExEntityInsentient>> extends ArmorMob<M> {
+public abstract class MeleeMob<M extends Mob> extends ArmorMob<M> {
 
     public MeleeMob(Type type, HeightMapManager.MapType mapType, int wave, ExLocation spawn, int currentWave) {
         super(type, mapType, wave, spawn, currentWave);
