@@ -20,6 +20,7 @@ package de.timesnake.game.mobdefence.map;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
+import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.basic.game.util.Map;
 import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
@@ -52,12 +53,12 @@ public class MobDefMap extends Map implements ResetableMap {
         this.getWorld().setGameRule(GameRule.KEEP_INVENTORY, true);
         this.getWorld().setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         this.getWorld().setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
-        this.getWorld().allowFireSpread(false);
-        this.getWorld().allowEntityExplode(true);
+        this.getWorld().restrict(ExWorld.Restriction.FIRE_SPREAD, true);
+        this.getWorld().restrict(ExWorld.Restriction.ENTITY_EXPLODE, false);
         this.getWorld().setAutoSave(false);
         this.getWorld().setExceptService(true);
-        this.getWorld().allowEntityBlockBreak(false);
-        this.getWorld().allowBlockBurnUp(false);
+        this.getWorld().restrict(ExWorld.Restriction.ENTITY_BLOCK_BREAK, true);
+        this.getWorld().restrict(ExWorld.Restriction.BLOCK_BURN_UP, true);
 
         for (int stageNumber = 0; stageNumber <= map.getLastLocationNumber(); stageNumber += STAGE_LOC_SIZE) {
             Server.printText(Plugin.MOB_DEFENCE, "Loading stage " + stageNumber + " ...");
