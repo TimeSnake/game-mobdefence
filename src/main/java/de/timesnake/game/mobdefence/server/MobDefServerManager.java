@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * timesnake.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -105,7 +105,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
         this.coreHealthBar = Server.createBossBar("§c§lHealth", BarColor.RED, BarStyle.SOLID);
         this.coreHealthBar.setProgress(1);
 
-        this.sideboard = Server.getScoreboardManager().registerNewSideboard("mobdef",
+        this.sideboard = Server.getScoreboardManager().registerSideboard("mobdef",
                 "§6§l" + this.getGame().getDisplayName());
         this.sideboard.setScore(4, "§3§lWave");
         this.updateSideboardWave();
