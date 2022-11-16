@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -191,6 +191,7 @@ public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.e
 
     public void spawn() {
         this.entity.setPersistent(true);
+        this.entity.setRemoveWhenFarAway(false);
         this.entity.setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
                 this.spawn.getYaw(), this.spawn.getPitch());
         EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), this.entity, false);
@@ -199,6 +200,7 @@ public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.e
 
         for (de.timesnake.library.entities.entity.extension.Mob subEntity : this.subEntities) {
             subEntity.setPersistent(true);
+            subEntity.setRemoveWhenFarAway(false);
             subEntity.setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
                     this.spawn.getYaw(), this.spawn.getPitch());
             EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), subEntity);
