@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -49,10 +49,10 @@ public class SplashBow extends SpecialWeapon implements Listener {
             List.of(new ShopPrice(12, ShopCurrency.SILVER), new ShopPrice(8, ShopCurrency.GOLD)), "+1 block",
             List.of(3, 4)));
     public static final LevelItem BOW = new LevelItem("Splash Bow", false, new ShopPrice(6, ShopCurrency.GOLD),
-            new ExItemStack(Material.BOW, Material.BOW.getMaxDurability() - 24)
+            new ExItemStack(Material.BOW).setDamage(Material.BOW.getMaxDurability() - 24)
                     .addExEnchantment(Enchantment.ARROW_INFINITE, 1).setDisplayName("§6Splash Bow")
                     .setLore("", DAMAGE_LEVELS.getBaseLevelLore(DAMAGE), RADIUS_LEVELS.getBaseLevelLore(RADIUS)),
-            new ExItemStack(Material.BOW, Material.BOW.getMaxDurability() - 24).enchant(),
+            new ExItemStack(Material.BOW).setDamage(Material.BOW.getMaxDurability() - 24).enchant(),
             List.of(DAMAGE_LEVELS, RADIUS_LEVELS));
     private static final String ARROW_NAME = "splashArrow";
     private static final String RADIUS_NAME = "radius";
