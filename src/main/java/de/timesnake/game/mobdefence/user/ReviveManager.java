@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -30,8 +30,8 @@ import de.timesnake.library.basic.util.Tuple;
 import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.entities.entity.bukkit.ExArmorStand;
 import de.timesnake.library.entities.entity.bukkit.ExPlayer;
+import de.timesnake.library.entities.wrapper.ExEntityPose;
 import de.timesnake.library.packets.util.packet.*;
-import de.timesnake.library.reflection.wrapper.ExEntityPose;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
