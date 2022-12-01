@@ -31,7 +31,7 @@ import de.timesnake.library.entities.pathfinder.*;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLocationSwell;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalSwell;
-import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
+import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;

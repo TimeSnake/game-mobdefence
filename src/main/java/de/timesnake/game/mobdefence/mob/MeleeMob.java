@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.library.entities.entity.extension.Mob;
-import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
+import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;

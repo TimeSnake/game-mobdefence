@@ -33,7 +33,7 @@ import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStroll;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalMeleeAttackVindicator;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
-import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
+import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
