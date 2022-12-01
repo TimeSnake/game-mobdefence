@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -28,9 +28,10 @@ import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.bukkit.Stray;
 import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalBowShoot;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.custom.*;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalSpawnArmy;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -58,11 +59,11 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
 
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1.3, breakBlock, BREAK_LEVEL));
         this.entity.addPathfinderGoal(2, breakBlock);
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalRandomStrollLand(1.3D));
-        this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(1.3D));
+        this.entity.addPathfinderGoal(4, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
         this.entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
@@ -92,11 +93,11 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
                     stray.addPathfinderGoal(2, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, breakBlock,
                             BREAK_LEVEL));
                     stray.addPathfinderGoal(2, breakBlock);
-                    stray.addPathfinderGoal(3, new ExCustomPathfinderGoalRandomStrollLand(0.9D));
-                    stray.addPathfinderGoal(4, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+                    stray.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.9D));
+                    stray.addPathfinderGoal(4, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
                     stray.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
-                    stray.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+                    stray.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
                     for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
                         stray.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
@@ -138,7 +139,7 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
 
         this.entity.setSlot(ExEnumItemSlot.MAIN_HAND,
                 new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_FIRE, 2)
-                        .addExEnchantment(Enchantment.ARROW_DAMAGE, 10)
+                        .addExEnchantment(Enchantment.ARROW_DAMAGE, 15)
                         .addExEnchantment(Enchantment.ARROW_KNOCKBACK, 6));
 
         this.entity.getBukkitAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);

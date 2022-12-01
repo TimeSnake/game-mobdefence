@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -29,10 +29,10 @@ import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExBlaze;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.LivingEntity;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBlazeFireball;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalHurtByTarget;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLookAtPlayer;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -70,10 +70,10 @@ public class Blaze extends BlockSpawner implements Listener {
         blaze.setPosition(location.getX(), location.getY(), location.getZ());
 
         blaze.addPathfinderGoal(1, new ExCustomPathfinderGoalBlazeFireball());
-        blaze.addPathfinderGoal(8, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        blaze.addPathfinderGoal(8, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
         blaze.addPathfinderGoal(8, new ExPathfinderGoalRandomLookaround());
 
-        blaze.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
+        blaze.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
 
         for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
             blaze.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));

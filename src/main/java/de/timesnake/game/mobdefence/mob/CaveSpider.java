@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -25,10 +25,9 @@ import de.timesnake.library.entities.entity.bukkit.ExCaveSpider;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLeapAtTarget;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.custom.*;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalSpiderMeleeAttack;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 
@@ -49,11 +48,11 @@ public class CaveSpider extends MobDefMob<ExCaveSpider> {
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1, null, BREAK_LEVEL));
         this.entity.addPathfinderGoal(3, new ExPathfinderGoalLeapAtTarget(0.4F));
         this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalSpiderMeleeAttack(1));
-        this.entity.addPathfinderGoal(5, new ExCustomPathfinderGoalRandomStrollLand(0.8D));
-        this.entity.addPathfinderGoal(6, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        this.entity.addPathfinderGoal(5, new ExPathfinderGoalRandomStrollLand(0.8D));
+        this.entity.addPathfinderGoal(6, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
         this.entity.addPathfinderGoal(6, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));

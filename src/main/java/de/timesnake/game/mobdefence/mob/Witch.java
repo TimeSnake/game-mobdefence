@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -26,10 +26,9 @@ import de.timesnake.library.entities.entity.bukkit.ExWitch;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalArrowAttack;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.custom.*;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
 import org.bukkit.World;
 
 public class Witch extends MobDefMob<ExWitch> {
@@ -53,24 +52,22 @@ public class Witch extends MobDefMob<ExWitch> {
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalFloat());
         this.entity.addPathfinderGoal(2, new ExPathfinderGoalArrowAttack(1.0D, 60, 10.0F));
-        this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalRandomStrollLand(1.0D));
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        this.entity.addPathfinderGoal(2, new ExPathfinderGoalRandomStrollLand(1.0D));
+        this.entity.addPathfinderGoal(3, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
         this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTargetWitch(entityClass, 10,
-                    true,
-                    false));
+            this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTargetWitch(entityClass, 10,
+                    true, false, null));
 
         }
         this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTargetWitch(entityClass, 10,
-                    true,
-                    false));
+            this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTargetWitch(entityClass, 10,
+                    true, false));
 
         }
 
