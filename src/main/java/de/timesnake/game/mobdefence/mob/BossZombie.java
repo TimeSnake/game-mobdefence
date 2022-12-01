@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -27,9 +27,10 @@ import de.timesnake.library.entities.entity.bukkit.ExZombie;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalZombieAttack;
-import de.timesnake.library.entities.pathfinder.custom.*;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalSpawnArmy;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -57,11 +58,11 @@ public class BossZombie extends MobDefMob<ExZombie> {
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1, breakBlock, BREAK_LEVEL));
 
         this.entity.addPathfinderGoal(2, breakBlock);
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalRandomStrollLand(0.8));
-        this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.8));
+        this.entity.addPathfinderGoal(4, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
         this.entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,

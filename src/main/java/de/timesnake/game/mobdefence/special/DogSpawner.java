@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,7 @@ import de.timesnake.library.entities.entity.bukkit.ExWolf;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.LivingEntity;
 import de.timesnake.library.entities.pathfinder.*;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalHurtByTarget;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLookAtPlayer;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalRandomStrollLand;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -99,14 +96,14 @@ public class DogSpawner extends EntitySpawner {
         entity.addPathfinderGoal(4, new ExPathfinderGoalLeapAtTarget(0.4F));
         entity.addPathfinderGoal(5, new ExPathfinderGoalMeleeAttack(1.0D));
         entity.addPathfinderGoal(6, new ExPathfinderGoalFollowOwner(1.0D, 10.0F, 2.0F, false));
-        entity.addPathfinderGoal(8, new ExCustomPathfinderGoalRandomStrollLand(1.0D));
-        entity.addPathfinderGoal(10, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        entity.addPathfinderGoal(8, new ExPathfinderGoalRandomStrollLand(1.0D));
+        entity.addPathfinderGoal(10, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
         entity.addPathfinderGoal(10, new ExPathfinderGoalRandomLookaround());
 
         entity.addPathfinderGoal(1, new ExPathfinderGoalOwnerHurtByTarget());
         entity.addPathfinderGoal(2, new ExPathfinderGoalOwnerHurtTarget());
 
-        entity.addPathfinderGoal(3, new ExCustomPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
+        entity.addPathfinderGoal(3, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
         for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
             entity.addPathfinderGoal(4, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, 10, true,
                     false));

@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,10 @@ import de.timesnake.library.entities.entity.bukkit.ExBee;
 import de.timesnake.library.entities.entity.bukkit.ExCreeper;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMeleeAttack;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.custom.*;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLocationSwell;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalSwell;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -90,10 +90,10 @@ public class Beeper extends MobDefMob<ExCreeper> {
 
         this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalSwell(3, 5));
         this.entity.addPathfinderGoal(4, new ExPathfinderGoalMeleeAttack(1.1D));
-        this.entity.addPathfinderGoal(6, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        this.entity.addPathfinderGoal(6, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
         this.entity.addPathfinderGoal(6, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
         this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class,
                 true,
                 true));

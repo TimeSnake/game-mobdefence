@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -26,11 +26,11 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.bukkit.*;
 import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMeleeAttack;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalZombieAttack;
-import de.timesnake.library.entities.pathfinder.custom.*;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalFollowEntity;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalSpawnArmy;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -58,11 +58,11 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
         this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1, breakBlock, BREAK_LEVEL));
 
         this.entity.addPathfinderGoal(2, breakBlock);
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalRandomStrollLand(1));
-        this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(1));
+        this.entity.addPathfinderGoal(4, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
         this.entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
-        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
@@ -94,7 +94,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
                         fish.addPathfinderGoal(3, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, null,
                                 BREAK_LEVEL));
 
-                        fish.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+                        fish.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
                         for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
                             fish.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
@@ -133,7 +133,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
                         mite.addPathfinderGoal(3, getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, null,
                                 BREAK_LEVEL));
 
-                        mite.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+                        mite.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
                         for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
                             mite.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
@@ -188,7 +188,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
             fish.addPathfinderGoal(2, new ExCustomPathfinderGoalFollowEntity(this.entity, 1.1f, 5, 20));
             fish.addPathfinderGoal(3, getCorePathfinder(this.getMapType(), 1, null, BREAK_LEVEL));
 
-            fish.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+            fish.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
             for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
                 fish.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
@@ -217,7 +217,7 @@ public class FollowerZombie extends ArmorMob<ExZombie> {
             mite.addPathfinderGoal(2, new ExCustomPathfinderGoalFollowEntity(this.entity, 1.1f, 5, 20));
             mite.addPathfinderGoal(3, getCorePathfinder(this.getMapType(), 1, null, BREAK_LEVEL));
 
-            mite.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+            mite.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
             for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
                 mite.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));

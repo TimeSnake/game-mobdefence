@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -25,10 +25,10 @@ import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.entities.entity.bukkit.ExSheep;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLookAtPlayer;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalPet;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalRandomStrollLand;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -83,8 +83,8 @@ public class SheepSpawner extends EntitySpawner {
 
         entity.addPathfinderGoal(0, new ExPathfinderGoalFloat());
         entity.addPathfinderGoal(1, new ExCustomPathfinderGoalPet(user.getPlayer(), 1.3, 4, 7));
-        entity.addPathfinderGoal(2, new ExCustomPathfinderGoalRandomStrollLand(1.1D));
-        entity.addPathfinderGoal(3, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        entity.addPathfinderGoal(2, new ExPathfinderGoalRandomStrollLand(1.1D));
+        entity.addPathfinderGoal(3, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 6.0F));
         entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
         entity.setCustomName(user.getName());

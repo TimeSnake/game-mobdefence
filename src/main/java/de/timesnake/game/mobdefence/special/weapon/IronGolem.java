@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -26,9 +26,9 @@ import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExIronGolem;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.LivingEntity;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMeleeAttack;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMoveTowardsTarget;
-import de.timesnake.library.entities.pathfinder.custom.*;
+import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLocation;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -63,10 +63,10 @@ public class IronGolem extends BlockSpawner implements Listener {
         golem.addPathfinderGoal(3, new ExCustomPathfinderGoalLocation(location.getX(), location.getY(),
                 location.getZ(), 1,
                 32, 2));
-        golem.addPathfinderGoal(7, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
-        golem.addPathfinderGoal(8, new ExCustomPathfinderGoalRandomLookaround());
+        golem.addPathfinderGoal(7, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 6.0F));
+        golem.addPathfinderGoal(8, new ExPathfinderGoalRandomLookaround());
 
-        golem.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
+        golem.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
 
         for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
             golem.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, 5, true, true));

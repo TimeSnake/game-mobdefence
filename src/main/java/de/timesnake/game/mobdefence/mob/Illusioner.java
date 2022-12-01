@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -27,8 +27,7 @@ import de.timesnake.library.entities.entity.bukkit.ExIllusioner;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalBowShoot;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
+import de.timesnake.library.entities.pathfinder.*;
 import de.timesnake.library.entities.pathfinder.custom.*;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Material;
@@ -55,11 +54,11 @@ public class Illusioner extends MobDefMob<ExIllusioner> {
         this.entity.addPathfinderGoal(5, new ExCustomPathfinderGoalIllagerIllusionerCastSpellBlindness());
         this.entity.addPathfinderGoal(6, new ExPathfinderGoalBowShoot(0.5D, 20, 15.0F));
         this.entity.addPathfinderGoal(7, getCorePathfinder(this.getMapType(), 1, breakBlock, BREAK_LEVEL));
-        this.entity.addPathfinderGoal(8, new ExCustomPathfinderGoalRandomStroll(0.6D));
-        this.entity.addPathfinderGoal(9, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
-        this.entity.addPathfinderGoal(10, new ExCustomPathfinderGoalLookAtPlayer(Mob.class));
+        this.entity.addPathfinderGoal(8, new ExPathfinderGoalRandomStroll(0.6D));
+        this.entity.addPathfinderGoal(9, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 3.0F, 1.0F));
+        this.entity.addPathfinderGoal(10, new ExPathfinderGoalLookAtPlayer(Mob.class, 8.0F));
 
-        this.entity.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(Monster.class));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
             this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));

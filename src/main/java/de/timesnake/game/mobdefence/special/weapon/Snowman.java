@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -28,12 +28,7 @@ import de.timesnake.game.mobdefence.special.BlockSpawner;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExSnowman;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalArrowAttack;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalHurtByTarget;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLookAtPlayer;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
+import de.timesnake.library.entities.pathfinder.*;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -77,14 +72,14 @@ public class Snowman extends BlockSpawner implements Listener {
         snowman.setSlot(ExEnumItemSlot.HEAD, null);
 
         snowman.addPathfinderGoal(1, new ExPathfinderGoalArrowAttack(0D, 1, 10.0F));
-        snowman.addPathfinderGoal(3, new ExCustomPathfinderGoalLookAtPlayer(HumanEntity.class));
+        snowman.addPathfinderGoal(3, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 6.0F));
         snowman.addPathfinderGoal(4, new ExPathfinderGoalRandomStrollLand(0, 0));
         snowman.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
-        snowman.addPathfinderGoal(1, new ExCustomPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES));
+        snowman.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
 
         for (Class<? extends de.timesnake.library.entities.entity.extension.LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
-            snowman.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true, false));
+            snowman.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass, true, false));
         }
 
         snowman.setPersistent(true);
