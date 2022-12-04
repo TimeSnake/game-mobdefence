@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -16,17 +16,17 @@
  * along with this program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.timesnake.game.mobdefence.kit;
+package de.timesnake.game.mobdefence.shop;
 
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryClickEvent;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 
-public class UserItemShop extends ItemShop {
+public class UserShop extends Shop {
 
     private MobDefUser user;
 
-    public UserItemShop(MobDefUser user, ItemShop shop) {
-        super(shop);
+    public UserShop(MobDefUser user, Shop.Builder builder) {
+        super(builder);
         this.user = user;
     }
 

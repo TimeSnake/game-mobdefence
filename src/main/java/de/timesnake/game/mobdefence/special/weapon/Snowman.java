@@ -19,11 +19,11 @@
 package de.timesnake.game.mobdefence.special.weapon;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
-import de.timesnake.game.mobdefence.kit.ItemTrade;
-import de.timesnake.game.mobdefence.kit.ShopCurrency;
-import de.timesnake.game.mobdefence.kit.ShopPrice;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.Trade;
 import de.timesnake.game.mobdefence.special.BlockSpawner;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExSnowman;
@@ -41,15 +41,14 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
-
 public class Snowman extends BlockSpawner implements Listener {
 
     public static final ExItemStack ITEM = new ExItemStack(Material.CARVED_PUMPKIN, "§6 4 Snowmen", "§7Place the " +
-            "block to spawn a snowman", "§c4 Snowmen");
+            "block to spawn a snowman", "§c4 Snowmen").immutable();
 
-    public static final ItemTrade SNOWMAN = new ItemTrade(false, new ShopPrice(8, ShopCurrency.GOLD),
-            List.of(Snowman.ITEM), Snowman.ITEM);
+    public static final Trade.Builder SNOWMAN = new Trade.Builder()
+            .price(new Price(8, Currency.GOLD))
+            .giveItems(Snowman.ITEM);
 
     public Snowman() {
         super(EntityType.SNOWMAN, ITEM, 1);

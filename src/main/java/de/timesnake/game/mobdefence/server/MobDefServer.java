@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -20,9 +20,9 @@ package de.timesnake.game.mobdefence.server;
 
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServer;
-import de.timesnake.game.mobdefence.kit.BaseShops;
 import de.timesnake.game.mobdefence.map.MobDefMap;
 import de.timesnake.game.mobdefence.mob.MobManager;
+import de.timesnake.game.mobdefence.shop.BaseShops;
 import de.timesnake.game.mobdefence.special.weapon.WeaponManager;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
@@ -37,8 +37,6 @@ public class MobDefServer extends LoungeBridgeServer {
 
     public static final StatType<Integer> MOB_KILLS = new IntegerStat("mob_kill", "Mob Kills",
             0, 10, 2, true, 0, 2);
-
-    private static final MobDefServerManager server = MobDefServerManager.getInstance();
 
     public static MobDefMap getMap() {
         return LoungeBridgeServer.getMap();
@@ -107,4 +105,6 @@ public class MobDefServer extends LoungeBridgeServer {
     public static boolean isDelayRunning() {
         return server.isDelayRunning();
     }
+
+    private static final MobDefServerManager server = MobDefServerManager.getInstance();
 }

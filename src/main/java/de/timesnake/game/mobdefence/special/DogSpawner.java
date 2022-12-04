@@ -20,8 +20,11 @@ package de.timesnake.game.mobdefence.special;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.entities.entity.bukkit.ExWolf;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
@@ -39,24 +42,42 @@ import java.util.List;
 
 public class DogSpawner extends EntitySpawner {
 
-    public static final ItemLevelType<?> AMOUNT_LEVELS = new ItemLevelType<>("Amount",
-            new ExItemStack(Material.WOLF_SPAWN_EGG), 1, 5, ItemLevel.getLoreNumberLevels("Amount", 1, 0, "Dogs", 2,
-            List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER), new ShopPrice(24,
-                    ShopCurrency.BRONZE), new ShopPrice(16, ShopCurrency.GOLD)), "+1 Dog", List.of(5, 6, 7, 8)));
-    public static final ItemLevelType<?> HEALTH_LEVELS = new ItemLevelType<>("Health",
-            new ExItemStack(Material.RED_DYE), 1, 5, ItemLevel.getLoreNumberLevels("Health", 2, 1, "❤", 2,
-            List.of(new ShopPrice(16, ShopCurrency.BRONZE), new ShopPrice(32, ShopCurrency.BRONZE),
-                    new ShopPrice(11, ShopCurrency.GOLD), new ShopPrice(22, ShopCurrency.SILVER)),
-            "+2.5 ❤", List.of(20, 25, 30, 35)));
-    private static final double BASE_HEALTH = 15;
-    public static final LevelItem LEVEL_ITEM = new LevelItem("§6Call Dogs", new ExItemStack(Material.BONE, "§6Call " +
-            "Dogs").setLore("", AMOUNT_LEVELS.getBaseLevelLore(4), HEALTH_LEVELS.getBaseLevelLore(BASE_HEALTH)), new ExItemStack(Material.BONE, "§6Call Dogs"),
-            List.of(AMOUNT_LEVELS, HEALTH_LEVELS));
+    public static final LevelType.Builder AMOUNT_LEVELS = new LevelType.Builder()
+            .name("Amount")
+            .display(new ExItemStack(Material.WOLF_SPAWN_EGG))
+            .baseLevel(1)
+            .levelDescription("+1 Dog")
+            .levelLoreLine(1)
+            .levelLoreName("Dogs")
+            .addLoreLvl(null, 4)
+            .addLoreLvl(new Price(12, Currency.BRONZE), 5)
+            .addLoreLvl(new Price(14, Currency.SILVER), 6)
+            .addLoreLvl(new Price(24, Currency.BRONZE), 7)
+            .addLoreLvl(new Price(16, Currency.GOLD), 8);
+
+    public static final LevelType.Builder HEALTH_LEVELS = new LevelType.Builder()
+            .name("Health")
+            .display(new ExItemStack(Material.RED_DYE))
+            .baseLevel(1)
+            .levelDescription("+2.5 ❤")
+            .levelLoreLine(2)
+            .levelLoreName("Health")
+            .addLoreLvl(null, 15)
+            .addLoreLvl(new Price(16, Currency.BRONZE), 20)
+            .addLoreLvl(new Price(32, Currency.BRONZE), 25)
+            .addLoreLvl(new Price(11, Currency.GOLD), 30)
+            .addLoreLvl(new Price(22, Currency.SILVER), 35);
+
+    public static final UpgradeableItem.Builder LEVEL_ITEM = new UpgradeableItem.Builder()
+            .name("Call Dogs")
+            .baseItem(new ExItemStack(Material.BONE, "§6Call Dogs"))
+            .addLvlType(AMOUNT_LEVELS)
+            .addLvlType(HEALTH_LEVELS);
 
     private static final int MAX = 4;
 
     public DogSpawner() {
-        super(LEVEL_ITEM.getItem(), 20 * 60);
+        super(LEVEL_ITEM.getBaseItem(), 20 * 60);
     }
 
     @Override
@@ -74,8 +95,8 @@ public class DogSpawner extends EntitySpawner {
             return new ArrayList<>();
         }
 
-        int amount = Integer.parseInt(AMOUNT_LEVELS.getValueFromLore(item.getLore()));
-        double health = 2 * Double.parseDouble(HEALTH_LEVELS.getValueFromLore(item.getLore()));
+        int amount = AMOUNT_LEVELS.getNumberFromLore(item, Integer::valueOf);
+        double health = 2 * HEALTH_LEVELS.getNumberFromLore(item, Double::valueOf);
 
         List<de.timesnake.library.entities.entity.extension.Entity> entities = new ArrayList<>();
         for (int i = 0; i < amount; i++) {

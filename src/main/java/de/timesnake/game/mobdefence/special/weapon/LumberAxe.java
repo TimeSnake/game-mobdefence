@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -20,13 +20,15 @@ package de.timesnake.game.mobdefence.special.weapon;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
-import de.timesnake.game.mobdefence.kit.*;
+import de.timesnake.game.mobdefence.kit.MobDefKit;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -35,57 +37,83 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
-
 public class LumberAxe extends SpecialWeapon implements Listener {
 
     private static final int ATTACK_SPEED = 6;
 
-    private static final ItemLevelType<?> TYPE = new ItemLevelType<>("Type", new ExItemStack(Material.ANVIL), 1, 3,
-            ItemLevel.getMaterialLevels(2, List.of(new ShopPrice(6, ShopCurrency.SILVER), new ShopPrice(32,
-                    ShopCurrency.BRONZE)), List.of("Diamond Axe", "Netherite Axe"), List.of(Material.DIAMOND_AXE,
-                    Material.NETHERITE_AXE)));
+    private static final ExItemStack ITEM = new ExItemStack(Material.IRON_AXE).unbreakable().immutable();
 
-    private static final ItemLevelType<?> SHARPNESS = new ItemLevelType<>("Sharpness",
-            new ExItemStack(Material.RED_DYE), 0, 12, ItemLevel.getEnchantmentLevels(1, List.of(new ShopPrice(4,
-                    ShopCurrency.SILVER), new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(4, ShopCurrency.GOLD),
-            new ShopPrice(19, ShopCurrency.BRONZE), new ShopPrice(12, ShopCurrency.SILVER), new ShopPrice(8,
-                    ShopCurrency.GOLD), new ShopPrice(27, ShopCurrency.BRONZE), new ShopPrice(16,
-                    ShopCurrency.SILVER), new ShopPrice(14, ShopCurrency.GOLD), new ShopPrice(51,
-                    ShopCurrency.BRONZE), new ShopPrice(56, ShopCurrency.SILVER), new ShopPrice(64,
-                    ShopCurrency.BRONZE)), List.of("+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+1 Sharpness",
-            "+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+1 Sharpness", "+2 Sharpness", "+2 Sharpness", "+2 " +
-                    "Sharpness", "+2 Sharpness"), Enchantment.DAMAGE_ALL, List.of(1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14,
-            16)));
+    private static final LevelType.Builder TYPE = new LevelType.Builder()
+            .name("Type")
+            .display(new ExItemStack(Material.ANVIL))
+            .baseLevel(1)
+            .addMaterialLvl(null, "Diamond Axe", Material.IRON_AXE)
+            .addMaterialLvl(new Price(6, Currency.SILVER), "Diamond Axe", Material.DIAMOND_AXE)
+            .addMaterialLvl(new Price(32, Currency.BRONZE), "Netherite Axe", Material.NETHERITE_AXE);
 
-    private static final ItemLevelType<?> KNOCKBACK = new ItemLevelType<>("Knockback",
-            new ExItemStack(Material.FEATHER), 0, 5, ItemLevel.getEnchantmentLevels(1, List.of(new ShopPrice(4,
-                            ShopCurrency.SILVER), new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(6,
-                            ShopCurrency.GOLD),
-                    new ShopPrice(32, ShopCurrency.BRONZE), new ShopPrice(29, ShopCurrency.SILVER)), "+1 Knockback",
-            Enchantment.KNOCKBACK, List.of(1, 2, 3, 4, 5)));
+    private static final LevelType.Builder SHARPNESS = new LevelType.Builder()
+            .name("Sharpness")
+            .display(new ExItemStack(Material.RED_DYE))
+            .baseLevel(0)
+            .levelEnchantment(Enchantment.DAMAGE_ALL)
+            .levelDescription("+1 Sharpness")
+            .levelItem(ITEM)
+            .addEnchantmentLvl(new Price(4, Currency.SILVER), 1)
+            .addEnchantmentLvl(new Price(12, Currency.BRONZE), 2)
+            .addEnchantmentLvl(new Price(4, Currency.GOLD), 3)
+            .addEnchantmentLvl(new Price(19, Currency.BRONZE), 4)
+            .addEnchantmentLvl(new Price(12, Currency.SILVER), 5)
+            .addEnchantmentLvl(new Price(8, Currency.GOLD), 6)
+            .addEnchantmentLvl(new Price(27, Currency.BRONZE), 7)
+            .addEnchantmentLvl(new Price(16, Currency.SILVER), 8)
+            .levelDescription("+2 Sharpness")
+            .addEnchantmentLvl(new Price(14, Currency.GOLD), 10)
+            .addEnchantmentLvl(new Price(51, Currency.BRONZE), 12)
+            .addEnchantmentLvl(new Price(56, Currency.SILVER), 14)
+            .addEnchantmentLvl(new Price(64, Currency.BRONZE), 16);
 
-    private static final ItemLevelType<?> ATTACK_SPEED_LEVELS = new ItemLevelType<>("Attack Speed",
-            new ExItemStack(Material.FEATHER), 1, 11, ItemLevel.getLoreNumberLevels("Attack Speed", 2, 0, "per " +
-            "second", 1, List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(7, ShopCurrency.GOLD),
-            new ShopPrice(16, ShopCurrency.SILVER), new ShopPrice(32, ShopCurrency.BRONZE), new ShopPrice(18,
-                    ShopCurrency.GOLD), new ShopPrice(64, ShopCurrency.BRONZE)), "+0.5 per second", List.of(8, 10, 12
-            , 14, 16, 18))) {
-        @Override
-        protected boolean levelUp(MobDefUser user, ItemLevel.LoreNumberLevel<Integer> level) {
-            AttributeInstance speed = user.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
-            speed.setBaseValue(level.getValue());
+    private static final LevelType.Builder KNOCKBACK = new LevelType.Builder()
+            .name("Knockback")
+            .display(new ExItemStack(Material.FEATHER))
+            .baseLevel(0)
+            .levelEnchantment(Enchantment.KNOCKBACK)
+            .levelDescription("+1 Knockback")
+            .levelItem(ITEM)
+            .addEnchantmentLvl(new Price(4, Currency.SILVER), 1)
+            .addEnchantmentLvl(new Price(12, Currency.BRONZE), 2)
+            .addEnchantmentLvl(new Price(6, Currency.GOLD), 3)
+            .addEnchantmentLvl(new Price(32, Currency.BRONZE), 4)
+            .addEnchantmentLvl(new Price(29, Currency.SILVER), 5);
 
-            return super.levelUp(user, level);
-        }
-    };
+    private static final LevelType.Builder SPEED_LEVELS = new LevelType.Builder()
+            .name("Attack Speed")
+            .display(new ExItemStack(Material.FEATHER))
+            .levelItem(ITEM)
+            .baseLevel(1)
+            .levelDescription("+0.5 per sec.")
+            .levelDecimalDigit(1)
+            .levelLoreLine(1)
+            .levelLoreName("Attack Speed")
+            .levelUnit("per sec.")
+            .addLoreLvl(null, 6, u -> u.setAttackSpeed(6))
+            .addLoreLvl(new Price(12, Currency.BRONZE), 8, u -> u.setAttackSpeed(8))
+            .addLoreLvl(new Price(7, Currency.GOLD), 10, u -> u.setAttackSpeed(10))
+            .addLoreLvl(new Price(16, Currency.SILVER), 12, u -> u.setAttackSpeed(12))
+            .addLoreLvl(new Price(32, Currency.BRONZE), 14, u -> u.setAttackSpeed(14))
+            .addLoreLvl(new Price(18, Currency.GOLD), 16, u -> u.setAttackSpeed(16))
+            .addLoreLvl(new Price(64, Currency.BRONZE), 18, u -> u.setAttackSpeed(18));
 
-    public static final LevelItem AXE = new LevelItem("§6Axe", new ExItemStack(Material.IRON_AXE).unbreakable().setLore("",
-            ATTACK_SPEED_LEVELS.getBaseLevelLore(ATTACK_SPEED)), new ExItemStack(Material.IRON_AXE), List.of(TYPE,
-            SHARPNESS, ATTACK_SPEED_LEVELS));
+    public static final UpgradeableItem.Builder AXE = new UpgradeableItem.Builder()
+            .name("§6Axe")
+            .display(ITEM.cloneWithId())
+            .baseItem(ITEM.cloneWithId())
+            .addLvlType(TYPE)
+            .addLvlType(SHARPNESS)
+            .addLvlType(KNOCKBACK)
+            .addLvlType(SPEED_LEVELS);
 
     public LumberAxe() {
-        super(AXE.getItem());
+        super(AXE.getBaseItem());
         Server.registerListener(this, GameMobDefence.getPlugin());
     }
 

@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -24,20 +24,23 @@ import de.timesnake.basic.bukkit.util.user.ExInventory;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryClickEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryClickListener;
+import de.timesnake.game.mobdefence.shop.Shop;
+import de.timesnake.game.mobdefence.shop.UserShop;
 import de.timesnake.game.mobdefence.user.MobDefUser;
+import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class KitShop implements UserInventoryClickListener, InventoryHolder {
 
-    private MobDefUser user;
-
     private final ExInventory inv;
-    private final Map<ExItemStack, ItemShop> shopsByItem = new HashMap<>();
+    private final Map<ExItemStack, Shop> shopsByItem = new HashMap<>();
+    private MobDefUser user;
 
     public KitShop(MobDefUser user) {
         this.user = user;
@@ -45,10 +48,21 @@ public class KitShop implements UserInventoryClickListener, InventoryHolder {
 
         this.inv = Server.createExInventory(9 * 6, ChatColor.WHITE + kit.getName() + " Shop", this);
 
-        for (ItemShop shop : kit.getShopInventories()) {
-            shop = shop.clone(user);
+        for (Supplier<Shop> shopSupplier : kit.getShopSuppliers()) {
+            Shop shop;
+            try {
+                shop = shopSupplier.get();
+            } catch (BuilderNotFullyInstantiatedException e) {
+                e.printStackTrace();
+                return;
+            }
+            if (shop instanceof UserShop) {
+                ((UserShop) shop).setUser(user);
+            }
             this.shopsByItem.put(shop.getDisplayItem(), shop);
             this.inv.setItemStack(shop.getSlot(), shop.getDisplayItem());
+
+            shop.getUpgradeables().forEach(u -> u.loadBaseForUser(user));
         }
 
         Server.getInventoryEventManager().addClickListener(this, this);
@@ -64,7 +78,7 @@ public class KitShop implements UserInventoryClickListener, InventoryHolder {
         }
 
         ExItemStack clickedItem = event.getClickedItem();
-        ItemShop shop = this.shopsByItem.get(clickedItem);
+        Shop shop = this.shopsByItem.get(clickedItem);
 
         if (shop == null) {
             return;
@@ -82,9 +96,9 @@ public class KitShop implements UserInventoryClickListener, InventoryHolder {
     public void setUser(MobDefUser user) {
         this.user = user;
 
-        for (ItemShop shop : this.shopsByItem.values()) {
-            if (shop instanceof UserItemShop) {
-                ((UserItemShop) shop).setUser(user);
+        for (Shop shop : this.shopsByItem.values()) {
+            if (shop instanceof UserShop) {
+                ((UserShop) shop).setUser(user);
             }
         }
     }

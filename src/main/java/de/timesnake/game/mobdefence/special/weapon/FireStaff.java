@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,12 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractListener;
-import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -37,51 +40,97 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class FireStaff extends InteractWeapon implements Listener, UserInventoryInteractListener {
-
-    private static final String NAME = "firestaff";
 
     public static final double SPEED = 1; // blocks per second
     public static final int FIRE_RATE = 1; // per second
     public static final int FIRE_RADIUS = 2; // blocks
     public static final int BURNING_TIME = 3; // in seconds
+    private static final String NAME = "firestaff";
 
-    private static final ItemLevelType<?> SPEED_LEVELS = new ItemLevelType<>("Speed",
-            new ExItemStack(Material.FEATHER), 1, 4, ItemLevel.getLoreNumberLevels("Speed", 1, 1, "", 2,
-            List.of(new ShopPrice(4, ShopCurrency.BRONZE), new ShopPrice(4, ShopCurrency.SILVER), new ShopPrice(4,
-                    ShopCurrency.GOLD)), "+0.2 Speed", List.of(1.2, 1.4, 1.6)));
+    private static final ExItemStack ITEM = new ExItemStack(Material.BLAZE_ROD, "§6Fire Staff")
+            .unbreakable().immutable();
 
-    private static final ItemLevelType<?> FIRE_RADIUS_LEVELS = new ItemLevelType<>("Fire Radius",
-            new ExItemStack(Material.TARGET), 1, 4, ItemLevel.getLoreNumberLevels("Fire Radius", 2, 1, "blocks", 2,
-            List.of(new ShopPrice(7, ShopCurrency.BRONZE), new ShopPrice(6, ShopCurrency.SILVER), new ShopPrice(5,
-                    ShopCurrency.GOLD)), "+0.5 Blocks", List.of(2.5, 3, 3.5)));
+    private static final LevelType.Builder SPEED_LEVELS = new LevelType.Builder()
+            .name("Speed")
+            .display(new ExItemStack(Material.FEATHER))
+            .baseLevel(1)
+            .levelDescription("+0.2 Speed")
+            .levelDecimalDigit(1)
+            .levelLoreLine(1)
+            .levelLoreName("Speed")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 2)
+            .addLoreLvl(new Price(4, Currency.BRONZE), 3)
+            .addLoreLvl(new Price(4, Currency.SILVER), 4)
+            .addLoreLvl(new Price(5, Currency.GOLD), 5);
 
-    private static final ItemLevelType<?> BURNING_TIME_LEVELS = new ItemLevelType<>("Burning Time",
-            new ExItemStack(Material.BLAZE_POWDER), 1, 4, ItemLevel.getLoreNumberLevels("Burning Time", 3, 0, "s", 2,
-            List.of(new ShopPrice(8, ShopCurrency.BRONZE), new ShopPrice(7, ShopCurrency.SILVER), new ShopPrice(6,
-                    ShopCurrency.GOLD)), "+1 Second", List.of(4, 5, 6)));
+    private static final LevelType.Builder FIRE_RADIUS_LEVELS = new LevelType.Builder()
+            .name("Fire Radius")
+            .display(new ExItemStack(Material.TARGET))
+            .baseLevel(1)
+            .levelDescription("+0.5 Blocks")
+            .levelDecimalDigit(1)
+            .levelUnit("blocks")
+            .levelLoreLine(2)
+            .levelLoreName("Fire Radius")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 2)
+            .addLoreLvl(new Price(7, Currency.BRONZE), 2.5)
+            .addLoreLvl(new Price(8, Currency.SILVER), 3)
+            .addLoreLvl(new Price(7, Currency.GOLD), 3.5)
+            .addLoreLvl(new Price(20, Currency.BRONZE), 4);
 
-    private static final ItemLevelType<?> FIRE_RATE_LEVELS = new ItemLevelType<>("Fire Rate",
-            new ExItemStack(Material.FIRE_CHARGE), 1, 4, ItemLevel.getLoreNumberLevels("Fire Rate", 4, 0, "per sec.",
-            2, List.of(new ShopPrice(6, ShopCurrency.BRONZE), new ShopPrice(6, ShopCurrency.SILVER), new ShopPrice(6,
-                    ShopCurrency.GOLD)), "+1 per second", List.of(2, 3, 4)));
+    private static final LevelType.Builder BURNING_TIME_LEVELS = new LevelType.Builder()
+            .name("Burning Time")
+            .display(new ExItemStack(Material.BLAZE_POWDER))
+            .baseLevel(1)
+            .levelDescription("+1 Second")
+            .levelDecimalDigit(0)
+            .levelUnit("s")
+            .levelLoreLine(3)
+            .levelLoreName("Burning Time")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 3)
+            .addLoreLvl(new Price(8, Currency.BRONZE), 4)
+            .addLoreLvl(new Price(7, Currency.SILVER), 5)
+            .addLoreLvl(new Price(9, Currency.GOLD), 6)
+            .addLoreLvl(new Price(18, Currency.SILVER), 7);
 
-    public static final LevelItem FIRE_STAFF = new LevelItem("Fire Staff", true, new ShopPrice(4,
-            ShopCurrency.SILVER), new ExItemStack(Material.BLAZE_ROD, "§6Fire Staff").setLore("",
-            SPEED_LEVELS.getBaseLevelLore(SPEED), FIRE_RADIUS_LEVELS.getBaseLevelLore(FIRE_RADIUS),
-            BURNING_TIME_LEVELS.getBaseLevelLore(BURNING_TIME), FIRE_RATE_LEVELS.getBaseLevelLore(FIRE_RATE)),
-            new ExItemStack(Material.BLAZE_ROD), List.of(SPEED_LEVELS, FIRE_RADIUS_LEVELS, BURNING_TIME_LEVELS,
-            FIRE_RATE_LEVELS));
+    private static final LevelType.Builder FIRE_RATE_LEVELS = new LevelType.Builder()
+            .name("Fire Rate")
+            .display(new ExItemStack(Material.FIRE_CHARGE))
+            .baseLevel(1)
+            .levelDescription("+1 per sec.")
+            .levelDecimalDigit(0)
+            .levelUnit("per sec.")
+            .levelLoreLine(4)
+            .levelLoreName("Fire Rate")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 1)
+            .addLoreLvl(new Price(6, Currency.BRONZE), 2)
+            .addLoreLvl(new Price(10, Currency.SILVER), 3)
+            .addLoreLvl(new Price(8, Currency.GOLD), 4)
+            .addLoreLvl(new Price(15, Currency.GOLD), 5);
+
+    public static final UpgradeableItem.Builder FIRE_STAFF = new UpgradeableItem.Builder()
+            .name("Fire Staff")
+            .display(new ExItemStack(Material.BLAZE_ROD, "§6Fire Staff"))
+            .price(new Price(4, Currency.SILVER))
+            .baseItem(ITEM.cloneWithId())
+            .addLvlType(SPEED_LEVELS)
+            .addLvlType(FIRE_RADIUS_LEVELS)
+            .addLvlType(BURNING_TIME_LEVELS)
+            .addLvlType(FIRE_RATE_LEVELS);
 
     private final Set<User> fireStaffCooldownUser = new HashSet<>();
 
     public FireStaff() {
-        super(FIRE_STAFF.getItem());
+        super(ITEM);
         Server.registerListener(this, GameMobDefence.getPlugin());
-        Server.getInventoryEventManager().addInteractListener(this, FIRE_STAFF.getItem());
+        Server.getInventoryEventManager().addInteractListener(this, ITEM);
     }
 
     @EventHandler
@@ -108,12 +157,10 @@ public class FireStaff extends InteractWeapon implements Listener, UserInventory
         if (!this.fireStaffCooldownUser.contains(user)) {
             this.fireStaffCooldownUser.add(user);
 
-            List<String> lore = item.getLore();
-
-            double speed = Double.parseDouble(SPEED_LEVELS.getValueFromLore(lore));
-            double radius = Double.parseDouble(FIRE_RADIUS_LEVELS.getValueFromLore(lore));
-            int burningTime = Integer.parseInt(BURNING_TIME_LEVELS.getValueFromLore(lore));
-            int fireRate = Integer.parseInt(FIRE_RATE_LEVELS.getValueFromLore(lore));
+            double speed = SPEED_LEVELS.getNumberFromLore(item, Double::valueOf);
+            double radius = FIRE_RADIUS_LEVELS.getNumberFromLore(item, Double::valueOf);
+            int burningTime = BURNING_TIME_LEVELS.getNumberFromLore(item, Integer::valueOf);
+            int fireRate = FIRE_RATE_LEVELS.getNumberFromLore(item, Integer::valueOf);
 
             Fireball fireball = user.getExWorld().spawn(user.getPlayer().getEyeLocation(), Fireball.class);
 

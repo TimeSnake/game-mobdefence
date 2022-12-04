@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -16,12 +16,12 @@
  * along with this program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.timesnake.game.mobdefence.kit;
+package de.timesnake.game.mobdefence.shop;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import org.bukkit.Material;
 
-public enum ShopCurrency {
+public enum Currency {
 
     BRONZE("Bronze", new ExItemStack(Material.BRICK, "§6Bronze")),
     SILVER("Silver", new ExItemStack(Material.IRON_INGOT, "§6Silver")),
@@ -31,7 +31,7 @@ public enum ShopCurrency {
     private final String name;
     private final ExItemStack item;
 
-    ShopCurrency(String name, ExItemStack item) {
+    Currency(String name, ExItemStack item) {
         this.name = name;
         this.item = item;
     }

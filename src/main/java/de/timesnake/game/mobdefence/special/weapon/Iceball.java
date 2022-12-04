@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,12 @@ import com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -40,46 +43,82 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Iceball extends SpecialWeapon implements Listener {
 
+    public static final ExItemStack ITEM = new ExItemStack(Material.SNOWBALL, "§6Ice Ball").immutable();
     private static final String NAME = "iceball";
     private static final String PIERCING_NAME = "piercing";
-
-    private static final double FIRE_RATE = 2; // per second
-    private static final double DAMAGE = 1.5;
-    private static final double SPEED = 2;
-
-    private static final ItemLevelType<?> SPEED_LEVELS = new ItemLevelType<>("Speed",
-            new ExItemStack(Material.FEATHER), 1, 5, ItemLevel.getLoreNumberLevels("Speed", 1, 0, "", 2,
-            List.of(new ShopPrice(1, ShopCurrency.GOLD), new ShopPrice(16, ShopCurrency.BRONZE), new ShopPrice(16,
-                    ShopCurrency.SILVER), new ShopPrice(8, ShopCurrency.GOLD)), "+0.5", List.of(1.5, 2, 2.5, 3)));
-
-    private static final ItemLevelType<?> DAMAGE_LEVELS = new ItemLevelType<>("Damage",
-            new ExItemStack(Material.RED_DYE), 1, 8, ItemLevel.getLoreNumberLevels("Damage", 2, 1, "❤", 2,
-            List.of(new ShopPrice(5, ShopCurrency.BRONZE), new ShopPrice(5, ShopCurrency.SILVER), new ShopPrice(5,
-                            ShopCurrency.GOLD), new ShopPrice(10, ShopCurrency.GOLD), new ShopPrice(16,
-                            ShopCurrency.SILVER),
-                    new ShopPrice(16, ShopCurrency.GOLD)), "+0.5 ❤", List.of(2, 2.5, 3, 3.5, 4, 4, 5)));
-
-    private static final ItemLevelType<?> PIERCING_LEVELS = new ItemLevelType<>("Piercing",
-            new ExItemStack(Material.TORCH), 0, 5, ItemLevel.getLoreNumberLevels("Piercing", 3, 0, "mobs", 1,
-            List.of(new ShopPrice(10, ShopCurrency.SILVER), new ShopPrice(11, ShopCurrency.GOLD), new ShopPrice(32,
-                    ShopCurrency.BRONZE), new ShopPrice(24, ShopCurrency.SILVER), new ShopPrice(16,
-                    ShopCurrency.GOLD)), "+1 mob", List.of(1, 2, 3, 4, 5)));
-
-    public static final ExItemStack ICEBALL = new ExItemStack(Material.SNOWBALL, "§6Ice Ball").setLore("",
-            SPEED_LEVELS.getBaseLevelLore(1), DAMAGE_LEVELS.getBaseLevelLore(1.5), PIERCING_LEVELS.getBaseLevelLore(0));
-
-    public static final LevelItem ITEM = new LevelItem("§6Iceball", ICEBALL, ICEBALL, List.of(SPEED_LEVELS,
-            PIERCING_LEVELS));
+    private static final LevelType.Builder SPEED_LEVELS = new LevelType.Builder()
+            .name("Speed")
+            .display(new ExItemStack(Material.FEATHER))
+            .baseLevel(1)
+            .levelDescription("+0.5 Speed")
+            .levelDecimalDigit(1)
+            .levelLoreLine(1)
+            .levelLoreName("Speed")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 2)
+            .addLoreLvl(new Price(1, Currency.GOLD), 2.5)
+            .addLoreLvl(new Price(14, Currency.BRONZE), 3)
+            .addLoreLvl(new Price(16, Currency.SILVER), 3.5)
+            .addLoreLvl(new Price(26, Currency.BRONZE), 4)
+            .addLoreLvl(new Price(13, Currency.GOLD), 4.5)
+            .addLoreLvl(new Price(33, Currency.BRONZE), 5)
+            .addLoreLvl(new Price(35, Currency.SILVER), 5.5)
+            .addLoreLvl(new Price(64, Currency.BRONZE), 6);
+    private static final LevelType.Builder DAMAGE_LEVELS = new LevelType.Builder()
+            .name("Damage")
+            .display(new ExItemStack(Material.RED_DYE))
+            .baseLevel(1)
+            .levelDescription("+0.5 ❤")
+            .levelDecimalDigit(1)
+            .levelUnit("❤")
+            .levelLoreLine(2)
+            .levelLoreName("Damage")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 2)
+            .addLoreLvl(new Price(2, Currency.GOLD), 2.5)
+            .addLoreLvl(new Price(15, Currency.BRONZE), 3)
+            .addLoreLvl(new Price(14, Currency.SILVER), 3.5)
+            .addLoreLvl(new Price(28, Currency.BRONZE), 4)
+            .addLoreLvl(new Price(15, Currency.GOLD), 4.5)
+            .addLoreLvl(new Price(35, Currency.BRONZE), 5)
+            .addLoreLvl(new Price(36, Currency.SILVER), 5.5)
+            .addLoreLvl(new Price(44, Currency.BRONZE), 6)
+            .addLoreLvl(new Price(23, Currency.GOLD), 6.5)
+            .addLoreLvl(new Price(42, Currency.SILVER), 7)
+            .addLoreLvl(new Price(34, Currency.GOLD), 7.5);
+    private static final LevelType.Builder PIERCING_LEVELS = new LevelType.Builder()
+            .name("Piercing")
+            .display(new ExItemStack(Material.FEATHER))
+            .baseLevel(1)
+            .levelDescription("+1 Mob")
+            .levelUnit("mobs")
+            .levelDecimalDigit(0)
+            .levelLoreLine(3)
+            .levelLoreName("Piercing")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 1)
+            .addLoreLvl(new Price(10, Currency.SILVER), 2)
+            .addLoreLvl(new Price(7, Currency.GOLD), 3)
+            .addLoreLvl(new Price(26, Currency.BRONZE), 4)
+            .addLoreLvl(new Price(24, Currency.SILVER), 5)
+            .addLoreLvl(new Price(14, Currency.GOLD), 6)
+            .addLoreLvl(new Price(33, Currency.BRONZE), 7);
+    public static final UpgradeableItem.Builder ICEBALL = new UpgradeableItem.Builder()
+            .name("Iceball")
+            .display(ITEM.cloneWithId())
+            .baseItem(ITEM.cloneWithId())
+            .addLvlType(SPEED_LEVELS)
+            .addLvlType(DAMAGE_LEVELS)
+            .addLvlType(PIERCING_LEVELS);
 
     private final Set<User> cooldownUsers = new HashSet<>();
 
     public Iceball() {
-        super(ICEBALL);
+        super(ITEM);
         Server.registerListener(this, GameMobDefence.getPlugin());
     }
 
@@ -88,7 +127,7 @@ public class Iceball extends SpecialWeapon implements Listener {
 
         ExItemStack item = new ExItemStack(e.getItemStack());
 
-        if (!item.equals(ICEBALL)) {
+        if (!item.equals(ITEM)) {
             return;
         }
 
@@ -100,9 +139,9 @@ public class Iceball extends SpecialWeapon implements Listener {
             return;
         }
 
-        double speed = Double.parseDouble(SPEED_LEVELS.getValueFromLore(item.getItemMeta().getLore()));
-        double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(item.getItemMeta().getLore()));
-        int piercing = Integer.parseInt(PIERCING_LEVELS.getValueFromLore(item.getItemMeta().getLore()));
+        double speed = SPEED_LEVELS.getNumberFromLore(item, Double::valueOf);
+        double damage = DAMAGE_LEVELS.getNumberFromLore(item, Double::valueOf);
+        int piercing = PIERCING_LEVELS.getNumberFromLore(item, Integer::parseInt);
 
         Snowball snowball = user.getExWorld().spawn(user.getPlayer().getEyeLocation().add(0, -0.2, 0), Snowball.class);
 

@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -61,11 +61,10 @@ public class MobDefUser extends GameUser {
 
         this.loadGameSideboard();
 
-        this.getPlayer().setMaxHealth(TeamHealth.MAX_HEALTH.getMaxHealth());
-
         MobDefServer.updateSideboardPlayers();
 
         this.setStatistic(Statistic.MOB_KILLS, 0);
+        this.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(TeamHealth.getMaxHealth());
     }
 
     public void startGame() {
@@ -87,7 +86,6 @@ public class MobDefUser extends GameUser {
 
     public void loadKit() {
         this.shop = ((MobDefKit) this.kit).getShop(this);
-
 
         if (this.kit.equals(MobDefKit.ALCHEMIST)) {
             Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0),

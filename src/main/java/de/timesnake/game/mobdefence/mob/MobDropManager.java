@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,10 @@
 package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.Server;
-import de.timesnake.game.mobdefence.kit.ShopCurrency;
-import de.timesnake.game.mobdefence.kit.ShopPrice;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.Price;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,16 +50,16 @@ public class MobDropManager implements Listener {
             }
 
             if (Math.random() < EMERALD_CHANCE / MobDefServer.getPlayerAmount()) {
-                e.getDrops().add(new ShopPrice(1, ShopCurrency.EMERALD).asItem());
+                e.getDrops().add(new Price(1, Currency.EMERALD).asItem());
             }
             if (Math.random() < GOLD_CHANCE) {
-                e.getDrops().add(new ShopPrice(1, ShopCurrency.GOLD).asItem());
+                e.getDrops().add(new Price(1, Currency.GOLD).asItem());
             }
             if (Math.random() < SILVER_CHANCE) {
-                e.getDrops().add(new ShopPrice(1, ShopCurrency.SILVER).asItem());
+                e.getDrops().add(new Price(1, Currency.SILVER).asItem());
             }
             if (Math.random() < BRONZE_CHANCE) {
-                e.getDrops().add(new ShopPrice(1, ShopCurrency.BRONZE).asItem());
+                e.getDrops().add(new Price(1, Currency.BRONZE).asItem());
             }
         }
     }
