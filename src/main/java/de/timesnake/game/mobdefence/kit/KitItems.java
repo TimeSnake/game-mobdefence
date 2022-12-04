@@ -326,13 +326,6 @@ public interface KitItems {
             .display(ARMOR)
             .addUpgradeable(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS, MELEE_ARMOR_BOOTS)
             .type(Shop.Builder.Type.USER);
-    Shop.Builder KNIGHT_ARMOR = new Shop.Builder()
-            .name("Armor")
-            .slot(14)
-            .display(ARMOR)
-            .addUpgradeable(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS, MELEE_ARMOR_BOOTS)
-            .addTrade(IRON_SKIN)
-            .type(Shop.Builder.Type.USER);
     ExItemStack RANGED_BASE_ARMOR_HELMET = new ExItemStack(Material.LEATHER_HELMET).setSlot(EquipmentSlot.HEAD).unbreakable();
     ExItemStack RANGED_BASE_ARMOR_CHESTPLATE = new ExItemStack(Material.LEATHER_CHESTPLATE).setSlot(EquipmentSlot.CHEST).unbreakable();
     ExItemStack RANGED_BASE_ARMOR_LEGGINGS = new ExItemStack(Material.LEATHER_LEGGINGS).setSlot(EquipmentSlot.LEGS).unbreakable();
@@ -488,6 +481,13 @@ public interface KitItems {
             .addTrade(PoisonArrow.TRADE)
             .type(Shop.Builder.Type.USER);
 
+    Shop.Builder KNIGHT_ARMOR = new Shop.Builder()
+            .name("Armor")
+            .slot(14)
+            .display(ARMOR)
+            .addUpgradeable(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS, MELEE_ARMOR_BOOTS)
+            .addTrade(IRON_SKIN)
+            .type(Shop.Builder.Type.USER);
     Shop.Builder ALCHEMIST_WEAPONS = new Shop.Builder()
             .name("Weapons")
             .slot(12)
