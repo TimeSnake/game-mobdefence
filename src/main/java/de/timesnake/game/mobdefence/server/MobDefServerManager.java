@@ -1,5 +1,5 @@
 /*
- * timesnake.game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -34,10 +34,14 @@ import de.timesnake.database.util.game.DbGame;
 import de.timesnake.database.util.game.DbMap;
 import de.timesnake.database.util.game.DbTmpGame;
 import de.timesnake.game.mobdefence.chat.Plugin;
-import de.timesnake.game.mobdefence.kit.*;
+import de.timesnake.game.mobdefence.kit.KitShopManager;
+import de.timesnake.game.mobdefence.kit.MobDefKit;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.map.MobDefMap;
 import de.timesnake.game.mobdefence.mob.MobManager;
+import de.timesnake.game.mobdefence.shop.BaseShops;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.special.weapon.WeaponManager;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
@@ -150,12 +154,6 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     @Override
-    @Deprecated
-    public void broadcastGameMessage(String message) {
-        Server.broadcastMessage(Plugin.MOB_DEFENCE, message);
-    }
-
-    @Override
     public void broadcastGameMessage(Component message) {
         Server.broadcastMessage(Plugin.MOB_DEFENCE, message);
     }
@@ -201,8 +199,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
         this.updateCoreHealthBar();
 
         if (this.playerAmount == 1) {
-            Server.getInGameUsers().iterator().next().addItem(new ShopPrice(32, ShopCurrency.BRONZE).asItem(),
-                    new ShopPrice(16, ShopCurrency.SILVER).asItem(), new ShopPrice(8, ShopCurrency.GOLD).asItem());
+            Server.getInGameUsers().iterator().next().addItem(new Price(32, Currency.BRONZE).asItem(),
+                    new Price(16, Currency.SILVER).asItem(), new Price(8, Currency.GOLD).asItem());
         }
 
         // start wave
@@ -264,9 +262,9 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
             }
             if (this.waveNumber > 0) {
                 user.addCoins(this.waveNumber * TIME_COINS_MULTIPLIER, true);
-                user.addItem(new ShopPrice((int) (8 * Math.sqrt(this.waveNumber)), ShopCurrency.BRONZE).asItem(),
-                        new ShopPrice((int) (4 * Math.sqrt(this.waveNumber)), ShopCurrency.SILVER).asItem(),
-                        new ShopPrice((int) (2 * Math.sqrt(this.waveNumber)), ShopCurrency.GOLD).asItem());
+                user.addItem(new Price((int) (8 * Math.sqrt(this.waveNumber)), Currency.BRONZE).asItem(),
+                        new Price((int) (4 * Math.sqrt(this.waveNumber)), Currency.SILVER).asItem(),
+                        new Price((int) (2 * Math.sqrt(this.waveNumber)), Currency.GOLD).asItem());
             }
         }
 

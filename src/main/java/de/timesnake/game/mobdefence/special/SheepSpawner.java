@@ -20,7 +20,10 @@ package de.timesnake.game.mobdefence.special;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.game.mobdefence.kit.*;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.entities.entity.bukkit.ExSheep;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
@@ -39,18 +42,28 @@ import java.util.List;
 
 public class SheepSpawner extends EntitySpawner {
 
-    public static final ItemLevelType<?> AMOUNT_LEVELS = new ItemLevelType<>("Amount",
-            new ExItemStack(Material.SHEEP_SPAWN_EGG), 1, 5, ItemLevel.getLoreNumberLevels("Amount", 1, 0, "Sheep", 2
-            , List.of(new ShopPrice(12, ShopCurrency.BRONZE), new ShopPrice(14, ShopCurrency.SILVER),
-                    new ShopPrice(24, ShopCurrency.BRONZE), new ShopPrice(16, ShopCurrency.GOLD)), "+1 Sheep",
-            List.of(5, 6, 7, 8)));
-    public static final LevelItem LEVEL_ITEM = new LevelItem("§6Herd Sheep", new ExItemStack(Material.WHEAT, "§6Herd " +
-            "Sheep").setLore("", AMOUNT_LEVELS.getBaseLevelLore(4)), new ExItemStack(Material.WHEAT, "§6Herd Sheep"),
-            List.of(AMOUNT_LEVELS));
+    public static final LevelType.Builder AMOUNT_LEVELS = new LevelType.Builder()
+            .name("Amount")
+            .display(new ExItemStack(Material.SHEEP_SPAWN_EGG))
+            .baseLevel(1)
+            .levelDescription("+1 Sheep")
+            .levelLoreLine(1)
+            .levelLoreName("Sheeps")
+            .addLoreLvl(null, 4)
+            .addLoreLvl(new Price(12, Currency.BRONZE), 5)
+            .addLoreLvl(new Price(14, Currency.SILVER), 6)
+            .addLoreLvl(new Price(24, Currency.BRONZE), 7)
+            .addLoreLvl(new Price(16, Currency.GOLD), 8);
+
+    public static final UpgradeableItem.Builder LEVEL_ITEM = new UpgradeableItem.Builder()
+            .name("§6Herd Sheep")
+            .baseItem(new ExItemStack(Material.WHEAT, "§6Herd Sheeps"))
+            .addLvlType(AMOUNT_LEVELS);
+
     private static final int MAX = 4;
 
     public SheepSpawner() {
-        super(LEVEL_ITEM.getItem(), 5 * 20);
+        super(LEVEL_ITEM.getBaseItem(), 5 * 20);
     }
 
     @Override
@@ -68,7 +81,7 @@ public class SheepSpawner extends EntitySpawner {
             return new ArrayList<>();
         }
 
-        int amount = Integer.parseInt(AMOUNT_LEVELS.getValueFromLore(item.getLore()));
+        int amount = AMOUNT_LEVELS.getNumberFromLore(item, Integer::valueOf);
 
         List<de.timesnake.library.entities.entity.extension.Entity> entities = new ArrayList<>();
         for (int i = 0; i < amount; i++) {

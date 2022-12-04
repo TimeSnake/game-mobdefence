@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -22,101 +22,76 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExInventory;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.Upgradeable;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.chat.ExTextColor;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+public class TeamHealth {
 
-public class TeamHealth extends Levelable<LevelType<Level<Integer>>> {
-
-    public static final int BASE_MAX_HEALTH = 8 * 2;
-
-    private static List<Level<Integer>> getHealthLevels(int start, List<ShopPrice> prices,
-                                                        List<Integer> maxHealthLimits) {
-        List<Level<Integer>> levels = new ArrayList<>();
-
-        Iterator<ShopPrice> priceIt = prices.listIterator();
-        Iterator<Integer> maxHealthIt = maxHealthLimits.listIterator();
-
-        for (int level = start; priceIt.hasNext() && maxHealthIt.hasNext(); level++) {
-            levels.add(new Level<>(level, priceIt.next(), "+1 ❤ Max Health", maxHealthIt.next()));
+    private static void updateHealth(MobDefUser user, int health) {
+        maxHealth = health * 2;
+        for (User gameUser : Server.getInOutGameUsers()) {
+            gameUser.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
         }
-        return levels;
+        MobDefServer.broadcastGameMessage(user.getChatNameComponent()
+                .append(Component.text(" leveled up max " + "health", ExTextColor.WARNING)));
     }
 
-    private int maxHealth = BASE_MAX_HEALTH;
-
-    protected TeamHealth(String name, ExItemStack displayItem, List<LevelType<Level<Integer>>> levelTypes) {
-        super(name, displayItem, levelTypes);
-    }
-
-    protected TeamHealth(TeamHealth levelable) {
-        super(levelable);
-    }
-
-    public void reset() {
-        this.maxHealth = BASE_MAX_HEALTH;
-    }
-
-    @Override
-    public LevelType<Level<Integer>> cloneLevelType(LevelType<Level<Integer>> levelType) {
-        return levelType;
-    }
-
-    @Override
-    public Levelable<LevelType<Level<Integer>>> clone() {
-        return new TeamHealth(this);
-    }
-
-    @Override
-    public void onLevelClick(MobDefUser user, ExInventory inv, ExItemStack item) {
-        LevelType<?> levelType = this.levelTypeByItemId.get(item.getId());
-
-        if (levelType == null) {
-            return;
-        }
-
-        levelType.tryLevelUp(user);
-
-        inv.setItemStack(levelType.getDisplayItem());
-    }    public static final TeamHealth MAX_HEALTH = new TeamHealth("Health", new ExItemStack(Material.NETHER_WART),
-            List.of(new LevelType<>("Max Health", new ExItemStack(Material.FIRE_CORAL_BLOCK), 1, 13,
-                    getHealthLevels(2, List.of(new ShopPrice(1, ShopCurrency.EMERALD), new ShopPrice(2,
-                            ShopCurrency.EMERALD), new ShopPrice(3, ShopCurrency.EMERALD), new ShopPrice(4,
-                            ShopCurrency.EMERALD), new ShopPrice(5, ShopCurrency.EMERALD), new ShopPrice(6,
-                            ShopCurrency.EMERALD), new ShopPrice(7, ShopCurrency.EMERALD), new ShopPrice(8,
-                            ShopCurrency.EMERALD), new ShopPrice(9, ShopCurrency.EMERALD), new ShopPrice(10,
-                            ShopCurrency.EMERALD), new ShopPrice(11, ShopCurrency.EMERALD), new ShopPrice(12,
-                            ShopCurrency.EMERALD)), List.of(9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20))) {
-                @Override
-                protected boolean levelUp(MobDefUser user, Level<Integer> level) {
-                    for (User gameUser : Server.getInOutGameUsers()) {
-                        gameUser.getPlayer().setMaxHealth(level.getValue() * 2);
-                    }
-
-                    MAX_HEALTH.setMaxHealth(level.getValue() * 2);
-
-                    MobDefServer.broadcastGameMessage(user.getChatNameComponent()
-                            .append(Component.text(" leveled up max " + "health", ExTextColor.WARNING)));
-                    return true;
-                }
-            }));
-
-    public int getMaxHealth() {
+    public static int getMaxHealth() {
         return maxHealth;
     }
 
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
+    private static int maxHealth;
+    public static final Upgradeable.Builder HEALTH = new Upgradeable.Builder() {
+        @Override
+        public Upgradeable build() {
+            this.checkBuild();
+            return new Upgradeable(this) {
+                @Override
+                public void onLevelClick(MobDefUser user, ExInventory inv, ExItemStack item) {
+                    LevelType levelType = this.levelType.get1(item);
+                    if (levelType == null) {
+                        return;
+                    }
+                    levelType.tryLevelUp(user);
+                    inv.setItemStack(levelType.getDisplayItem());
+                }
+            };
+        }
     }
-
-
+            .name("Health")
+            .display(new ExItemStack(Material.FIRE_CORAL_BLOCK))
+            .addLvlType(new LevelType.Builder()
+                    .name("Max Health")
+                    .display(new ExItemStack(Material.NETHER_WART))
+                    .baseLevel(1)
+                    .levelDescription("+1 ❤")
+                    .addLvl(null, (MobDefUser u) -> {
+                        maxHealth = 8 * 2;
+                        for (User gameUser : Server.getInOutGameUsers()) {
+                            gameUser.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(8 * 2);
+                            gameUser.setHealth(8 * 2);
+                        }
+                    })
+                    .addLvl(new Price(1, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 9))
+                    .addLvl(new Price(2, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 10))
+                    .addLvl(new Price(3, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 11))
+                    .addLvl(new Price(4, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 12))
+                    .addLvl(new Price(5, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 13))
+                    .addLvl(new Price(6, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 14))
+                    .addLvl(new Price(7, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 15))
+                    .addLvl(new Price(8, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 16))
+                    .addLvl(new Price(9, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 17))
+                    .addLvl(new Price(10, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 18))
+                    .addLvl(new Price(11, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 19))
+                    .addLvl(new Price(12, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 20)));
 
 
 }

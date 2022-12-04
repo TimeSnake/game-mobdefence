@@ -21,8 +21,11 @@ package de.timesnake.game.mobdefence.special.weapon;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
@@ -32,48 +35,70 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 
-import java.util.List;
-
 public class SplashBow extends SpecialWeapon implements Listener {
 
-    public static final int RADIUS = 2;
-    public static final double DAMAGE = 2;
-    public static final ItemLevelType<?> DAMAGE_LEVELS = new ItemLevelType<>("Damage",
-            new ExItemStack(Material.RED_DYE), 1, 7, ItemLevel.getLoreNumberLevels("Damage", 1, 1, "❤", 2,
-            List.of(new ShopPrice(8, ShopCurrency.BRONZE), new ShopPrice(8, ShopCurrency.SILVER), new ShopPrice(24,
-                            ShopCurrency.BRONZE), new ShopPrice(25, ShopCurrency.SILVER), new ShopPrice(7,
-                            ShopCurrency.GOLD)
-                    , new ShopPrice(14, ShopCurrency.GOLD)), "+0.5 ❤", List.of(2.5, 3, 3.5, 4, 4.5, 5)));
-    public static final ItemLevelType<?> RADIUS_LEVELS = new ItemLevelType<>("Radius",
-            new ExItemStack(Material.TARGET), 1, 3, ItemLevel.getLoreNumberLevels("Radius", 2, 0, "blocks", 2,
-            List.of(new ShopPrice(12, ShopCurrency.SILVER), new ShopPrice(8, ShopCurrency.GOLD)), "+1 block",
-            List.of(3, 4)));
-    public static final LevelItem BOW = new LevelItem("Splash Bow", false, new ShopPrice(6, ShopCurrency.GOLD),
-            new ExItemStack(Material.BOW).setDamage(Material.BOW.getMaxDurability() - 24)
-                    .addExEnchantment(Enchantment.ARROW_INFINITE, 1).setDisplayName("§6Splash Bow")
-                    .setLore("", DAMAGE_LEVELS.getBaseLevelLore(DAMAGE), RADIUS_LEVELS.getBaseLevelLore(RADIUS)),
-            new ExItemStack(Material.BOW).setDamage(Material.BOW.getMaxDurability() - 24).enchant(),
-            List.of(DAMAGE_LEVELS, RADIUS_LEVELS));
+    private static final ExItemStack ITEM = new ExItemStack(Material.BOW).setDamage(Material.BOW.getMaxDurability() - 24)
+            .addExEnchantment(Enchantment.ARROW_INFINITE, 1)
+            .setDisplayName("§6Splash Bow").immutable();
+
+    private static final LevelType.Builder DAMAGE_LEVELS = new LevelType.Builder()
+            .name("Damage")
+            .display(new ExItemStack(Material.RED_DYE))
+            .baseLevel(1)
+            .levelDescription("+0.5 ❤")
+            .levelUnit("❤")
+            .levelDecimalDigit(0)
+            .levelLoreLine(1)
+            .levelLoreName("Damage")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 2)
+            .addLoreLvl(new Price(8, Currency.BRONZE), 2.5)
+            .addLoreLvl(new Price(8, Currency.SILVER), 3)
+            .addLoreLvl(new Price(24, Currency.BRONZE), 3.5)
+            .addLoreLvl(new Price(25, Currency.SILVER), 4)
+            .addLoreLvl(new Price(7, Currency.GOLD), 4.5)
+            .addLoreLvl(new Price(14, Currency.GOLD), 5);
+
+
+    private static final LevelType.Builder RADIUS_LEVELS = new LevelType.Builder()
+            .name("Radius")
+            .display(new ExItemStack(Material.TARGET))
+            .baseLevel(1)
+            .levelDescription("+1 Block")
+            .levelDecimalDigit(1)
+            .levelUnit("blocks")
+            .levelLoreLine(2)
+            .levelLoreName("Radius")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 2)
+            .addLoreLvl(new Price(12, Currency.SILVER), 3)
+            .addLoreLvl(new Price(8, Currency.GOLD), 4);
+
+    public static final UpgradeableItem.Builder BOW = new UpgradeableItem.Builder()
+            .name("Splash Bow")
+            .price(new Price(6, Currency.GOLD))
+            .display(ITEM.cloneWithId())
+            .baseItem(ITEM.cloneWithId())
+            .addLvlType(DAMAGE_LEVELS)
+            .addLvlType(RADIUS_LEVELS);
+
     private static final String ARROW_NAME = "splashArrow";
     private static final String RADIUS_NAME = "radius";
 
     public SplashBow() {
-        super(BOW.getItem());
+        super(ITEM);
         Server.registerListener(this, GameMobDefence.getPlugin());
     }
 
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent e) {
-        if (!(e.getEntity() instanceof Arrow)) {
+        if (!(e.getEntity() instanceof Arrow arrow)) {
             return;
         }
 
         if (!(e.getEntity().getShooter() instanceof Player)) {
             return;
         }
-
-        Arrow arrow = ((Arrow) e.getEntity());
-        Player player = ((Player) arrow.getShooter());
 
         arrow.remove();
 
@@ -108,14 +133,14 @@ public class SplashBow extends SpecialWeapon implements Listener {
         User user = Server.getUser(((Player) e.getEntity()));
         ExItemStack item = new ExItemStack(e.getBow());
 
-        if (!item.equals(BOW.getItem())) {
+        if (!item.equals(BOW.getBaseItem())) {
             return;
         }
 
         e.setConsumeItem(false);
 
-        double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(item.getLore()));
-        int radius = Integer.parseInt(RADIUS_LEVELS.getValueFromLore(item.getLore()));
+        double damage = DAMAGE_LEVELS.getNumberFromLore(item, Double::valueOf);
+        int radius = RADIUS_LEVELS.getNumberFromLore(item, Integer::valueOf);
 
         arrow.setCustomName(ARROW_NAME + damage + RADIUS_NAME + radius);
         arrow.setCustomNameVisible(false);

@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -16,21 +16,21 @@
  * along with this program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.timesnake.game.mobdefence.kit;
+package de.timesnake.game.mobdefence.shop;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 
-public class ShopPrice {
+public class Price {
 
     private final int amount;
-    private final ShopCurrency currency;
+    private final Currency currency;
 
-    public ShopPrice(int amount, ShopCurrency currency) {
+    public Price(int amount, Currency currency) {
         this.amount = amount;
         this.currency = currency;
     }
 
-    public ShopCurrency getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 

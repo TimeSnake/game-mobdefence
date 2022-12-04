@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -24,13 +24,13 @@ import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.event.*;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
-import de.timesnake.game.mobdefence.kit.ShopCurrency;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightBlock;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.special.*;
 import de.timesnake.game.mobdefence.special.trap.TrapManager;
 import de.timesnake.library.basic.util.Status;
@@ -66,9 +66,9 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
     public static final ExItemStack DEBUG_TOOL = new ExItemStack(Material.BONE);
 
-    private static final List<Material> ALLOWED_DROPS = List.of(ShopCurrency.BRONZE.getItem().getType(),
-            ShopCurrency.SILVER.getItem().getType(), ShopCurrency.GOLD.getItem().getType(),
-            ShopCurrency.EMERALD.getItem().getType(), Material.COOKED_BEEF, MobDefKit.KELP.getType(),
+    private static final List<Material> ALLOWED_DROPS = List.of(Currency.BRONZE.getItem().getType(),
+            Currency.SILVER.getItem().getType(), Currency.GOLD.getItem().getType(),
+            Currency.EMERALD.getItem().getType(), Material.COOKED_BEEF, MobDefKit.KELP.getType(),
             Material.GOLDEN_APPLE, Material.OAK_FENCE, Material.OAK_PLANKS, Material.IRON_BARS,
             Material.COBBLESTONE_WALL, Material.OAK_SLAB);
 
@@ -132,9 +132,6 @@ public class UserManager implements Listener, UserInventoryInteractListener {
         this.potionGenerator.cancel();
         this.reviveManager.stop();
         this.resistanceAura.cancel();
-
-        TeamHealth.MAX_HEALTH.reset();
-
         this.trapManager.reset();
     }
 

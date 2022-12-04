@@ -19,11 +19,11 @@
 package de.timesnake.game.mobdefence.special.weapon;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
-import de.timesnake.game.mobdefence.kit.ItemTrade;
-import de.timesnake.game.mobdefence.kit.ShopCurrency;
-import de.timesnake.game.mobdefence.kit.ShopPrice;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.Trade;
 import de.timesnake.game.mobdefence.special.BlockSpawner;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExBlaze;
@@ -39,15 +39,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
 
-import java.util.List;
-
 public class Blaze extends BlockSpawner implements Listener {
 
     public static final ExItemStack ITEM = new ExItemStack(Material.MAGMA_BLOCK, "§6 3 Blazes", "§7Place the block to" +
-            " spawn a blaze", "§c3 Blazes");
+            " spawn a blaze", "§c3 Blazes").immutable();
 
-    public static final ItemTrade BLAZE = new ItemTrade(false, new ShopPrice(16, ShopCurrency.SILVER),
-            List.of(Blaze.ITEM), Blaze.ITEM);
+    public static final Trade.Builder BLAZE = new Trade.Builder()
+            .price(new Price(16, Currency.SILVER))
+            .giveItems(Blaze.ITEM);
 
     public Blaze() {
         super(EntityType.BLAZE, ITEM, 1);

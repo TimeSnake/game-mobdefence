@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -20,7 +20,9 @@ package de.timesnake.game.mobdefence.special.trap;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExBlock;
-import de.timesnake.game.mobdefence.kit.*;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.Trade;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -35,10 +37,11 @@ import java.util.List;
 
 public enum TrapMaker {
 
-    EXPLOSION(new IncreasingItemTrade(31, new ShopPrice(8, ShopCurrency.BRONZE), 1, 8,
-            List.of(new ExItemStack(Material.CRIMSON_BUTTON, "§6Explosion Trap").setLore("§fRadius: §73 blocks")),
-            new ExItemStack(Material.CRIMSON_BUTTON, "§6Explosion Trap"), "§fRadius: §73 blocks", "§7Explodes if 3 " +
-            "mobs are nearby")) {
+    EXPLOSION(new Trade.Builder()
+            .slot(31)
+            .price(new Price(8, Currency.BRONZE), 1, 8),
+            new ExItemStack(Material.CRIMSON_BUTTON, "§6Explosion Trap")
+                    .setLore("§fRadius: §73 blocks", "§7Explodes if 3 mobs are nearby")) {
         @Override
         public Trap newInstance(ExBlock block) {
             return new RangedTrap(block, 2, 3) {
@@ -51,10 +54,11 @@ public enum TrapMaker {
         }
     },
 
-    ARROW(new IncreasingItemTrade(32, new ShopPrice(3, ShopCurrency.SILVER), 1, 8,
-            List.of(new ExItemStack(Material.STONE_BUTTON, "§6Arrow Trap").setLore("§fRadius: §77 blocks")),
-            new ExItemStack(Material.STONE_BUTTON, "§6Arrow Trap"), "§fRadius: §77 blocks", "§fUses: §716", "§7Shoots" +
-            " against mobs")) {
+    ARROW(new Trade.Builder()
+            .slot(32)
+            .price(new Price(3, Currency.SILVER), 1, 8),
+            new ExItemStack(Material.STONE_BUTTON, "§6Arrow Trap")
+                    .setLore("§fRadius: §77 blocks", "§fUses: §716", "§7Shoots against mobs")) {
         @Override
         public Trap newInstance(ExBlock block) {
             return new MultipleRangedTrap(block, 7, 1, 16) {
@@ -77,10 +81,11 @@ public enum TrapMaker {
         }
     },
 
-    SLOWNESS(new IncreasingItemTrade(33, new ShopPrice(7, ShopCurrency.BRONZE), 1, 8,
-            List.of(new ExItemStack(Material.POLISHED_BLACKSTONE_BUTTON, "§6Slowness Trap").setLore("§fRadius: §75 " +
-                    "blocks")), new ExItemStack(Material.POLISHED_BLACKSTONE_BUTTON, "§6Slowness Trap"), "§fRadius: " +
-            "§75 blocks", "§fUses: §73", "§7Gives mobs slowness V for 20s")) {
+    SLOWNESS(new Trade.Builder()
+            .slot(33)
+            .price(new Price(7, Currency.BRONZE), 1, 8),
+            new ExItemStack(Material.POLISHED_BLACKSTONE_BUTTON, "§6Slowness Trap")
+                    .setLore("§fRadius: §75 blocks", "§fUses: §73", "§7Gives mobs slowness V for 20s")) {
         @Override
         public Trap newInstance(ExBlock block) {
             return new MultipleRangedTrap(block, 5, 2, 3) {
@@ -97,10 +102,11 @@ public enum TrapMaker {
         }
     },
 
-    POISON(new IncreasingItemTrade(34, new ShopPrice(7, ShopCurrency.BRONZE), 1, 8,
-            List.of(new ExItemStack(Material.WARPED_BUTTON, "§6Poison Trap").setLore("§fRadius: §74 blocks")),
-            new ExItemStack(Material.WARPED_BUTTON, "§6Poison Trap"), "§fRadius: §74 blocks", "§7Gives mobs poison " +
-            "III for 20s")) {
+    POISON(new Trade.Builder()
+            .slot(34)
+            .price(new Price(7, Currency.BRONZE), 1, 8),
+            new ExItemStack(Material.WARPED_BUTTON, "§6Poison Trap")
+                    .setLore("§fRadius: §74 blocks", "§7Gives mobs poison III for 20s")) {
         @Override
         public Trap newInstance(ExBlock block) {
             return new RangedTrap(block, 4, 4) {
@@ -118,8 +124,8 @@ public enum TrapMaker {
     };
 
 
-    public static List<ShopTrade> getShopTrades() {
-        List<ShopTrade> trades = new ArrayList<>();
+    public static List<Trade.Builder> getShopTrades() {
+        List<Trade.Builder> trades = new ArrayList<>();
 
         for (TrapMaker trapMaker : TrapMaker.values()) {
             trades.add(trapMaker.getTrade());
@@ -128,19 +134,21 @@ public enum TrapMaker {
     }
 
     private final ExItemStack item;
-    private final ItemTrade trade;
 
-    TrapMaker(ItemTrade trade) {
-        this.trade = trade;
-        this.item = trade.getSellingItems().iterator().next();
+    public Trade.Builder getTrade() {
+        return trade;
     }
+
+    private final Trade.Builder trade;
 
     public ExItemStack getItem() {
         return item;
     }
 
-    public ItemTrade getTrade() {
-        return trade;
+    TrapMaker(Trade.Builder trade, ExItemStack item) {
+        trade.giveItems(item);
+        this.trade = trade;
+        this.item = item;
     }
 
     public abstract Trap newInstance(ExBlock block);

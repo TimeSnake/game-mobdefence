@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -23,11 +23,11 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractListener;
-import de.timesnake.game.mobdefence.kit.ItemTrade;
-import de.timesnake.game.mobdefence.kit.ShopCurrency;
-import de.timesnake.game.mobdefence.kit.ShopPrice;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.Trade;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -41,14 +41,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.List;
-
 public class PoisonArrow extends SpecialWeapon implements UserInventoryInteractListener, Listener {
 
     public static final ExItemStack ITEM =
             ExItemStack.getPotion(Material.TIPPED_ARROW, 8, PotionType.POISON, false, false).setDisplayName("§6Poison Arrow");
-    public static final ItemTrade TRADE = new ItemTrade(3, false, new ShopPrice(5, ShopCurrency.BRONZE),
-            List.of(ITEM), ITEM);
+    public static final Trade.Builder TRADE = new Trade.Builder()
+            .giveItems(ITEM)
+            .price(new Price(5, Currency.BRONZE));
+
     private static final String NAME = "poison_arrow";
 
     public PoisonArrow() {

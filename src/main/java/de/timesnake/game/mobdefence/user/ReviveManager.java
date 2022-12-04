@@ -23,9 +23,12 @@ import de.timesnake.basic.bukkit.util.server.TimeTask;
 import de.timesnake.basic.bukkit.util.user.ExInventory;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.game.mobdefence.chat.Plugin;
-import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.Upgradeable;
 import de.timesnake.library.basic.util.Tuple;
 import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.entities.entity.bukkit.ExArmorStand;
@@ -39,51 +42,67 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class ReviveManager {
 
-    private static List<Level<Integer>> getTimeLevels(int start, String text, List<ShopPrice> prices,
-                                                      List<Integer> respawnTimes) {
-        List<Level<Integer>> levels = new ArrayList<>();
-
-        Iterator<ShopPrice> priceIt = prices.listIterator();
-        Iterator<Integer> timeIt = respawnTimes.listIterator();
-
-        for (int level = start; priceIt.hasNext() && timeIt.hasNext(); level++) {
-            levels.add(new Level<>(level, priceIt.next(), text, timeIt.next()));
-        }
-        return levels;
-    }
-
     private static final double RADIUS = 3;
-    private static final LevelType<Level<Integer>> RESPAWN_TIME_LEVELS = new LevelType<>("Respawn Time",
-            new ExItemStack(Material.PLAYER_HEAD), 1, 5, getTimeLevels(2, "-1s Revive Time", List.of(new ShopPrice(3,
-                    ShopCurrency.EMERALD), new ShopPrice(5, ShopCurrency.EMERALD), new ShopPrice(7,
-                    ShopCurrency.EMERALD),
-            new ShopPrice(9, ShopCurrency.EMERALD)), List.of(6, 5, 4, 3))) {
+
+    private static final BiConsumer<MobDefUser, Integer> RESPAWN = (u, i) -> MobDefServer.getMobDefUserManager().getReviveManager().setReviveRespawnTime(i);
+    private static final LevelType.Builder RESPAWN_TIME_LEVELS = new LevelType.Builder()
+            .name("Respawn Time")
+            .display(new ExItemStack(Material.PLAYER_HEAD))
+            .baseLevel(1)
+            .levelDescription("-1s Revive Time")
+            .addLvl(null, (MobDefUser u) -> RESPAWN.accept(u, 7))
+            .addLvl(new Price(3, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 6))
+            .addLvl(new Price(5, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 5))
+            .addLvl(new Price(7, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 4))
+            .addLvl(new Price(9, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 3));
+
+
+    private static final BiConsumer<MobDefUser, Integer> DESPAWN = (u, i) -> MobDefServer.getMobDefUserManager().getReviveManager().setReviveDespawnTime(i);
+    private static final LevelType.Builder DESPAWN_TIME_LEVELS = new LevelType.Builder()
+            .name("Despawn Time")
+            .display(new ExItemStack(Material.SKELETON_SKULL))
+            .baseLevel(1)
+            .levelDescription("+3s Despawn Time")
+            .addLvl(null, (MobDefUser u) -> DESPAWN.accept(u, 30))
+            .addLvl(new Price(2, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 33))
+            .addLvl(new Price(4, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 36))
+            .addLvl(new Price(6, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 39))
+            .addLvl(new Price(8, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 42))
+            .addLvl(new Price(10, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 45))
+            .addLvl(new Price(12, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 48))
+            .addLvl(new Price(14, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 51))
+            .addLvl(new Price(16, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 54))
+            .addLvl(new Price(18, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 57))
+            .addLvl(new Price(20, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 60));
+
+    public static final Upgradeable.Builder REVIVE = new Upgradeable.Builder() {
         @Override
-        protected boolean levelUp(MobDefUser user, Level<Integer> level) {
-            MobDefServer.getMobDefUserManager().getReviveManager().setReviveRespawnTime(level.getValue());
-            return true;
+        public Upgradeable build() {
+            this.checkBuild();
+            return new Upgradeable(this) {
+                @Override
+                public void onLevelClick(MobDefUser user, ExInventory inv, ExItemStack item) {
+                    LevelType levelType = this.levelType.get1(item);
+                    if (levelType == null) {
+                        return;
+                    }
+                    levelType.tryLevelUp(user);
+                    inv.setItemStack(levelType.getDisplayItem());
+                }
+            };
         }
-    };
-    private static final LevelType<Level<Integer>> DESPAWN_TIME_LEVELS = new LevelType<>("Despawn Time",
-            new ExItemStack(Material.SKELETON_SKULL), 1, 11, getTimeLevels(2, "+3s Despawn Time",
-            List.of(new ShopPrice(2, ShopCurrency.EMERALD), new ShopPrice(4, ShopCurrency.EMERALD), new ShopPrice(6,
-                    ShopCurrency.EMERALD), new ShopPrice(8, ShopCurrency.EMERALD), new ShopPrice(10,
-                    ShopCurrency.EMERALD), new ShopPrice(12, ShopCurrency.EMERALD), new ShopPrice(14,
-                    ShopCurrency.EMERALD), new ShopPrice(16, ShopCurrency.EMERALD), new ShopPrice(18,
-                    ShopCurrency.EMERALD), new ShopPrice(20, ShopCurrency.EMERALD), new ShopPrice(22,
-                    ShopCurrency.EMERALD)), List.of(33, 36, 39, 42, 45, 48, 51, 54, 57, 60))) {
-        @Override
-        protected boolean levelUp(MobDefUser user, Level<Integer> level) {
-            MobDefServer.getMobDefUserManager().getReviveManager().setReviveDespawnTime(level.getValue());
-            return true;
-        }
-    };
-    public static final Revive REVIVE = new Revive("Revive", new ExItemStack(Material.TOTEM_OF_UNDYING),
-            List.of(RESPAWN_TIME_LEVELS, DESPAWN_TIME_LEVELS));
+    }
+            .name("Revive")
+            .display(new ExItemStack(Material.TOTEM_OF_UNDYING))
+            .addLvlType(RESPAWN_TIME_LEVELS)
+            .addLvlType(DESPAWN_TIME_LEVELS);
+
     private final HashMap<MobDefUser, Location> deathLocationsByUser = new HashMap<>();
     private final Map<MobDefUser, BukkitTask> deadTasksByUser = new HashMap<>();
     private final Map<MobDefUser, ExArmorStand> displayEntitiesByUser = new HashMap<>();
@@ -228,40 +247,6 @@ public class ReviveManager {
 
     private void setReviveDespawnTime(int time) {
         this.reviveDespawnTime = time;
-    }
-
-    private static class Revive extends Levelable<LevelType<Level<Integer>>> {
-
-        protected Revive(String name, ExItemStack displayItem, List<LevelType<Level<Integer>>> levelTypes) {
-            super(name, displayItem, levelTypes);
-        }
-
-        protected Revive(Revive revive) {
-            super(revive);
-        }
-
-        @Override
-        public LevelType<Level<Integer>> cloneLevelType(LevelType<Level<Integer>> levelType) {
-            return levelType;
-        }
-
-        @Override
-        public Levelable<LevelType<Level<Integer>>> clone() {
-            return new Revive(this);
-        }
-
-        @Override
-        public void onLevelClick(MobDefUser user, ExInventory inv, ExItemStack item) {
-            LevelType<?> levelType = this.levelTypeByItemId.get(item.getId());
-
-            if (levelType == null) {
-                return;
-            }
-
-            levelType.tryLevelUp(user);
-
-            inv.setItemStack(levelType.getDisplayItem());
-        }
     }
 
     private class DyingProcess implements TimeTask {

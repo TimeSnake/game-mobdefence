@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -21,10 +21,10 @@ package de.timesnake.game.mobdefence.special.weapon;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.game.mobdefence.kit.LevelItem;
-import de.timesnake.game.mobdefence.kit.ShopCurrency;
-import de.timesnake.game.mobdefence.kit.ShopPrice;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
@@ -36,17 +36,19 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 
-import java.util.List;
-
 public class PotionBow extends SpecialWeapon implements Listener {
 
 
-    public static final LevelItem BOW = new LevelItem("Splash Bow", false, new ShopPrice(6, ShopCurrency.GOLD),
-            new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_INFINITE, 1).setUnbreakable(true).setDisplayName("§6Potion Bow"),
-            new ExItemStack(Material.BOW).enchant().setUnbreakable(true).setDisplayName("§6Potion Bow"), List.of());
+    public static final UpgradeableItem.Builder BOW = new UpgradeableItem.Builder()
+            .name("Splash Bow")
+            .price(new Price(6, Currency.GOLD))
+            .baseItem(new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_INFINITE, 1)
+                    .setUnbreakable(true)
+                    .setDisplayName("§6Potion Bow"))
+            .unlockedAtWave(5);
 
     public PotionBow() {
-        super(BOW.getItem());
+        super(BOW.getBaseItem());
         Server.registerListener(this, GameMobDefence.getPlugin());
     }
 
@@ -63,7 +65,7 @@ public class PotionBow extends SpecialWeapon implements Listener {
         User user = Server.getUser(((Player) e.getEntity()));
         ExItemStack item = new ExItemStack(e.getBow());
 
-        if (!item.equals(BOW.getItem())) {
+        if (!item.equals(BOW.getBaseItem())) {
             return;
         }
 

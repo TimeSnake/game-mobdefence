@@ -1,5 +1,5 @@
 /*
- * game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@ package de.timesnake.game.mobdefence.special.weapon;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.game.mobdefence.kit.*;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.game.mobdefence.special.weapon.bullet.BulletManager;
 import de.timesnake.game.mobdefence.special.weapon.bullet.PiercingBullet;
 import de.timesnake.game.mobdefence.special.weapon.bullet.TargetFinder;
@@ -33,67 +36,120 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ShulkerBullet;
 
-import java.util.List;
-
 public class Wand extends CooldownWeapon {
 
     private static final double FIRE_RATE = 2; // per second
     private static final double DAMAGE = 1.5;
     private static final double SPEED = 2;
 
-    private static final ItemLevelType<?> SPEED_LEVELS = new ItemLevelType<>("Speed",
-            new ExItemStack(Material.FEATHER), 1, 4, ItemLevel.getLoreNumberLevels("Speed", 1, 1, "", 2,
-            List.of(new ShopPrice(4, ShopCurrency.BRONZE), new ShopPrice(4, ShopCurrency.SILVER), new ShopPrice(4,
-                    ShopCurrency.GOLD)), "+0.2 Speed", List.of(2.4, 2.8, 3.2)));
+    private static final ExItemStack ITEM = new ExItemStack(Material.STICK, "§3Wand").enchant()
+            .immutable();
 
-    private static final ItemLevelType<?> DAMAGE_LEVELS = new ItemLevelType<>("Damage",
-            new ExItemStack(Material.RED_DYE), 1, 8, ItemLevel.getLoreNumberLevels("Damage", 2, 1, "❤", 2,
-            List.of(new ShopPrice(5, ShopCurrency.BRONZE), new ShopPrice(5, ShopCurrency.SILVER),
-                    new ShopPrice(5, ShopCurrency.GOLD), new ShopPrice(10, ShopCurrency.GOLD),
-                    new ShopPrice(16, ShopCurrency.SILVER), new ShopPrice(16, ShopCurrency.GOLD),
-                    new ShopPrice(32, ShopCurrency.SILVER)), "+0.5 ❤",
-            List.of(2, 2.5, 3, 3.5, 4, 4.5, 5)));
+    private static final LevelType.Builder SPEED_LEVELS = new LevelType.Builder()
+            .name("Speed")
+            .display(new ExItemStack(Material.FEATHER))
+            .baseLevel(1)
+            .levelDescription("+0.4 Speed")
+            .levelDecimalDigit(1)
+            .levelLoreLine(1)
+            .levelLoreName("Speed")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 2)
+            .addLoreLvl(new Price(4, Currency.BRONZE), 2.4)
+            .addLoreLvl(new Price(7, Currency.SILVER), 2.8)
+            .addLoreLvl(new Price(9, Currency.GOLD), 3.2);
 
-    private static final ItemLevelType<?> FIRE_RATE_LEVELS = new ItemLevelType<>("Fire Rate",
-            new ExItemStack(Material.FIRE_CHARGE), 1, 5, ItemLevel.getLoreNumberLevels("Fire Rate", 3, 0, "per sec.",
-            2, List.of(new ShopPrice(6, ShopCurrency.BRONZE), new ShopPrice(6, ShopCurrency.SILVER), new ShopPrice(6,
-                    ShopCurrency.GOLD), new ShopPrice(64, ShopCurrency.BRONZE)), "+1 per second", List.of(3, 4, 5, 6)));
+    private static final LevelType.Builder DAMAGE_LEVELS = new LevelType.Builder()
+            .name("Damage")
+            .display(new ExItemStack(Material.RED_DYE))
+            .baseLevel(1)
+            .levelDescription("+0.5 ❤")
+            .levelUnit("❤")
+            .levelDecimalDigit(1)
+            .levelLoreLine(2)
+            .levelLoreName("Damage")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 1.5)
+            .addLoreLvl(new Price(5, Currency.BRONZE), 2)
+            .addLoreLvl(new Price(5, Currency.SILVER), 2.5)
+            .addLoreLvl(new Price(5, Currency.GOLD), 3)
+            .addLoreLvl(new Price(10, Currency.GOLD), 3.5)
+            .addLoreLvl(new Price(16, Currency.SILVER), 4)
+            .addLoreLvl(new Price(16, Currency.GOLD), 4.5)
+            .addLoreLvl(new Price(32, Currency.SILVER), 5)
+            .addLoreLvl(new Price(64, Currency.BRONZE), 5.5)
+            .addLoreLvl(new Price(47, Currency.SILVER), 6);
 
-    private static final ItemLevelType<?> PIERCING_LEVELS = new ItemLevelType<>("Piercing",
-            new ExItemStack(Material.TORCH), 0, 6, ItemLevel.getLoreNumberLevels("Piercing", 4, 0, "mobs", 1,
-            List.of(new ShopPrice(10, ShopCurrency.SILVER), new ShopPrice(11, ShopCurrency.GOLD), new ShopPrice(32,
-                    ShopCurrency.BRONZE), new ShopPrice(24, ShopCurrency.SILVER), new ShopPrice(16,
-                    ShopCurrency.GOLD), new ShopPrice(64, ShopCurrency.BRONZE)), "+1 mob", List.of(1, 2, 3, 4, 5, 6)));
+    private static final LevelType.Builder FIRE_RATE_LEVELS = new LevelType.Builder()
+            .name("Fire Rate")
+            .display(new ExItemStack(Material.FIRE_CHARGE))
+            .baseLevel(1)
+            .levelDescription("+1 per sec.")
+            .levelDecimalDigit(0)
+            .levelUnit("per sec.")
+            .levelLoreLine(3)
+            .levelLoreName("Fire Rate")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 2)
+            .addLoreLvl(new Price(6, Currency.BRONZE), 3)
+            .addLoreLvl(new Price(6, Currency.SILVER), 4)
+            .addLoreLvl(new Price(6, Currency.GOLD), 5)
+            .addLoreLvl(new Price(64, Currency.BRONZE), 6);
 
-    private static final ItemLevelType<?> MULTISHOT_LEVELS = new ItemLevelType<>("Multishot",
-            new ExItemStack(Material.SOUL_TORCH), 0, 2, ItemLevel.getLoreNumberLevels("Multishot", 4, 0, "bullets", 1
-            , List.of(new ShopPrice(32, ShopCurrency.BRONZE), new ShopPrice(16, ShopCurrency.GOLD)), "+1 bullet",
-            List.of(2, 3)));
-    public static final LevelItem WAND = new LevelItem("Wand",
-            new ExItemStack(Material.STICK, "§3Wand").enchant().setLore("", SPEED_LEVELS.getBaseLevelLore(SPEED),
-                    DAMAGE_LEVELS.getBaseLevelLore(DAMAGE), FIRE_RATE_LEVELS.getBaseLevelLore(FIRE_RATE)),
-            new ExItemStack(Material.STICK).enchant(), List.of(SPEED_LEVELS, DAMAGE_LEVELS, FIRE_RATE_LEVELS,
-            PIERCING_LEVELS, MULTISHOT_LEVELS));
+    private static final LevelType.Builder PIERCING_LEVELS = new LevelType.Builder()
+            .name("Piercing")
+            .display(new ExItemStack(Material.SOUL_TORCH))
+            .baseLevel(0)
+            .levelDescription("+1 Mob")
+            .levelDecimalDigit(0)
+            .levelLoreLine(4)
+            .levelUnit("mobs")
+            .levelLoreName("Piercing")
+            .levelItem(ITEM)
+            .addLoreLvl(new Price(10, Currency.SILVER), 1)
+            .addLoreLvl(new Price(11, Currency.GOLD), 2)
+            .addLoreLvl(new Price(32, Currency.BRONZE), 3)
+            .addLoreLvl(new Price(24, Currency.SILVER), 4)
+            .addLoreLvl(new Price(16, Currency.GOLD), 5)
+            .addLoreLvl(new Price(64, Currency.BRONZE), 6);
 
-    static {
-        PIERCING_LEVELS.setConflictingTypes(List.of(MULTISHOT_LEVELS));
-        MULTISHOT_LEVELS.setConflictingTypes(List.of(PIERCING_LEVELS));
-    }
+    private static final LevelType.Builder MULTISHOT_LEVELS = new LevelType.Builder()
+            .name("Multishot")
+            .display(new ExItemStack(Material.TORCH))
+            .baseLevel(1)
+            .levelDescription("+1 Bullet")
+            .levelDecimalDigit(0)
+            .levelLoreLine(4)
+            .levelUnit("bullets")
+            .levelLoreName("Multishot")
+            .levelItem(ITEM)
+            .addLoreLvl(null, 1)
+            .addLoreLvl(new Price(32, Currency.BRONZE), 2)
+            .addLoreLvl(new Price(16, Currency.GOLD), 3);
+
+    public static final UpgradeableItem.Builder WAND = new UpgradeableItem.Builder()
+            .name("Wand")
+            .display(ITEM.cloneWithId())
+            .baseItem(ITEM.cloneWithId())
+            .addLvlType(SPEED_LEVELS)
+            .addLvlType(DAMAGE_LEVELS)
+            .addLvlType(FIRE_RATE_LEVELS)
+            .addLvlType(MULTISHOT_LEVELS)
+            .addLvlType(PIERCING_LEVELS)
+            .addConflictToLvlType(MULTISHOT_LEVELS, PIERCING_LEVELS);
 
     public Wand() {
-        super(WAND.getItem());
+        super(ITEM);
     }
 
 
     @Override
     public void onInteract(ExItemStack wand, MobDefUser user) {
-        List<String> lore = wand.getLore();
-
-        double speed = Double.parseDouble(SPEED_LEVELS.getValueFromLore(lore));
-        double damage = Double.parseDouble(DAMAGE_LEVELS.getValueFromLore(lore));
+        double speed = SPEED_LEVELS.getNumberFromLore(wand, Double::valueOf);
+        double damage = DAMAGE_LEVELS.getNumberFromLore(wand, Double::valueOf);
 
         int piercing = 0;
-        String piercingString = PIERCING_LEVELS.getValueFromLore(lore);
+        String piercingString = PIERCING_LEVELS.getNumberFromLore(wand);
         if (piercingString != null) {
             try {
                 piercing = Integer.parseInt(piercingString);
@@ -102,7 +158,7 @@ public class Wand extends CooldownWeapon {
         }
 
         int multiShot = 1;
-        String multiShotString = MULTISHOT_LEVELS.getValueFromLore(lore);
+        String multiShotString = MULTISHOT_LEVELS.getNumberFromLore(wand);
         if (multiShotString != null) {
             try {
                 multiShot = Integer.parseInt(multiShotString);
@@ -123,7 +179,7 @@ public class Wand extends CooldownWeapon {
 
     @Override
     public int getCooldown(ExItemStack item) {
-        return (int) (1 / Double.parseDouble(FIRE_RATE_LEVELS.getValueFromLore(item.getLore())) * 20);
+        return (int) (1 / FIRE_RATE_LEVELS.getNumberFromLore(item, Double::valueOf) * 20);
     }
 
     private static class WandBullet extends PiercingBullet {
