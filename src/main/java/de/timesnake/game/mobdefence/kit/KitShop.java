@@ -19,7 +19,6 @@
 package de.timesnake.game.mobdefence.kit;
 
 import de.timesnake.basic.bukkit.util.Server;
-import de.timesnake.basic.bukkit.util.chat.ChatColor;
 import de.timesnake.basic.bukkit.util.user.ExInventory;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryClickEvent;
@@ -28,6 +27,7 @@ import de.timesnake.game.mobdefence.shop.Shop;
 import de.timesnake.game.mobdefence.shop.UserShop;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
+import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +46,7 @@ public class KitShop implements UserInventoryClickListener, InventoryHolder {
         this.user = user;
         MobDefKit kit = ((MobDefKit) user.getKit());
 
-        this.inv = Server.createExInventory(9 * 6, ChatColor.WHITE + kit.getName() + " Shop", this);
+        this.inv = new ExInventory(9 * 6, Component.text(kit.getName() + " Shop"), this);
 
         for (Supplier<Shop> shopSupplier : kit.getShopSuppliers()) {
             Shop shop;
