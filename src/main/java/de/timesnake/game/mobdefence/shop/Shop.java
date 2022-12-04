@@ -59,7 +59,7 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
         List<Upgradeable> upgradeables = builder.upgradeableBuilders.stream().map(Upgradeable.Builder::build).toList();
 
         if (this.getTrades().isEmpty()) {
-            this.inv = Server.createExInventory(upgradeables.size() * 9 + 18, this.name, this);
+            this.inv = new ExInventory(upgradeables.size() * 9 + 18, Component.text(this.name), this);
 
             int itemSlot = 10;
             for (Upgradeable levelItem : upgradeables) {
@@ -68,14 +68,14 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
                 itemSlot += 9;
             }
         } else if (upgradeables.isEmpty()) {
-            this.inv = Server.createExInventory(this.getTrades().stream()
-                    .max(Comparator.comparingInt(Trade::getSlot)).get().getSlot() + 9, this.name, this);
+            this.inv = new ExInventory(this.getTrades().stream()
+                    .max(Comparator.comparingInt(Trade::getSlot)).get().getSlot() + 9, Component.text(this.name), this);
 
             for (Trade trade : this.getTrades()) {
                 this.inv.setItemStack(trade.getSlot(), trade.getDisplayItem());
             }
         } else {
-            this.inv = Server.createExInventory(54, this.name, this);
+            this.inv = new ExInventory(54, Component.text(this.name), this);
 
             int itemSlot = upgradeables.size() < 3 ? 10 : 1;
 
