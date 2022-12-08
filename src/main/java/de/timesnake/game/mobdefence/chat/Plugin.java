@@ -1,5 +1,5 @@
 /*
- * timesnake.game-mobdefence.main
+ * workspace.game-mobdefence.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@ import de.timesnake.library.basic.util.LogHelper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Plugin extends de.timesnake.basic.loungebridge.util.chat.Plugin {
+public class Plugin extends de.timesnake.basic.game.util.user.Plugin {
 
     public static final Plugin MOB_DEFENCE = new Plugin("MobDefence", "GMD", LogHelper.getLogger("MobDefence", Level.INFO));
 

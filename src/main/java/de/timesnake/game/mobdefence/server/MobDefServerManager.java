@@ -22,8 +22,9 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Tablist;
-import de.timesnake.basic.game.util.Map;
-import de.timesnake.basic.game.util.TmpGame;
+import de.timesnake.basic.bukkit.util.world.ExLocation;
+import de.timesnake.basic.game.util.game.Map;
+import de.timesnake.basic.game.util.game.TmpGame;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
 import de.timesnake.basic.loungebridge.util.server.TablistManager;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
@@ -352,7 +353,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     @Override
-    public org.bukkit.Location getSpectatorSpawn() {
+    public ExLocation getSpectatorSpawn() {
         return ((MobDefMap) this.getMap()).getUserSpawn();
     }
 
