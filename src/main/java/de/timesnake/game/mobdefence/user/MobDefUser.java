@@ -19,7 +19,7 @@
 package de.timesnake.game.mobdefence.user;
 
 import de.timesnake.basic.bukkit.util.Server;
-import de.timesnake.basic.bukkit.util.user.User;
+import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.game.mobdefence.kit.KitShop;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
@@ -35,6 +35,8 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MobDefUser extends GameUser {
 
@@ -126,57 +128,42 @@ public class MobDefUser extends GameUser {
         this.setGameMode(GameMode.CREATIVE);
     }
 
-    @Override
     public void rejoinGame() {
-        if (this.getStatus().equals(Status.User.SPECTATOR)) {
-            return;
+        ExLocation respawnLocation;
+
+        if (this.deadBody != null) {
+            respawnLocation = ExLocation.fromLocation(this.deadBody.getLocation());
+            this.deadBody = null;
+        } else {
+            respawnLocation = MobDefServer.getMap().getUserSpawn();
         }
 
-        super.rejoinGame();
+        this.leaveSpectator(respawnLocation, Status.User.IN_GAME);
+    }
+
+    @Override
+    public void rejoinGame(@Nullable ExLocation location, @NotNull Status.User newStatus) {
+        super.rejoinGame(location, newStatus);
 
         this.alive = true;
         this.beingRevivedUser = null;
-
-        this.setDefault();
-        this.setStatus(Status.User.IN_GAME);
-
-        MobDefServer.getGameTablist().addEntry(this);
-
-        for (User user : Server.getUsers()) {
-            user.showUser(this);
-
-            if (user.getStatus().equals(Status.User.OUT_GAME) || user.getStatus().equals(Status.User.SPECTATOR)) {
-                this.hideUser(user);
-            }
-        }
-
-        MobDefServer.getSpectatorChat().removeWriter(this);
-        MobDefServer.getSpectatorChat().removeListener(this);
-        MobDefServer.getGlobalChat().addWriter(this);
-
-        this.setGameMode(GameMode.SURVIVAL);
 
         if (this.kit.equals(MobDefKit.ALCHEMIST)) {
             Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0),
                     GameMobDefence.getPlugin());
         }
 
-        if (this.deadBody != null) {
-            this.teleport(this.deadBody.getLocation());
-            this.deadBody = null;
-
-            this.getPlayer().setInvulnerable(true);
-            Server.runTaskLaterSynchrony(() -> this.getPlayer().setInvulnerable(false), 3 * 20,
-                    GameMobDefence.getPlugin());
-        } else {
-            this.teleport(MobDefServer.getMap().getUserSpawn());
-        }
-
-        this.getInventory().setContents(this.invItems);
-
         MobDefServer.updateSideboardPlayers();
 
-        this.loadGameSideboard();
+        this.setInvulnerable(true);
+        Server.runTaskLaterSynchrony(() -> this.getPlayer().setInvulnerable(false), 2 * 20,
+                GameMobDefence.getPlugin());
+    }
+
+    @Override
+    public void setRejoinInventory() {
+        super.setRejoinInventory();
+        this.getInventory().setContents(this.invItems);
     }
 
     public void loadGameSideboard() {

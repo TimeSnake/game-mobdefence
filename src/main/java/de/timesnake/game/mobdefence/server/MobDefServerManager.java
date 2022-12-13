@@ -25,6 +25,7 @@ import de.timesnake.basic.bukkit.util.user.scoreboard.Tablist;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.game.util.game.Map;
 import de.timesnake.basic.game.util.game.TmpGame;
+import de.timesnake.basic.game.util.user.SpectatorManager;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
 import de.timesnake.basic.loungebridge.util.server.TablistManager;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
@@ -140,6 +141,16 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
             @Override
             public Map loadMap(DbMap dbMap, boolean loadWorld) {
                 return new MobDefMap(dbMap);
+            }
+        };
+    }
+
+    @Override
+    protected SpectatorManager loadSpectatorManager() {
+        return new de.timesnake.basic.loungebridge.core.main.SpectatorManager() {
+            @Override
+            public GameMode getReJoinGameMode() {
+                return GameMode.SURVIVAL;
             }
         };
     }
