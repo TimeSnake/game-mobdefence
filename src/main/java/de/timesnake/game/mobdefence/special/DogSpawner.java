@@ -70,6 +70,7 @@ public class DogSpawner extends EntitySpawner {
 
     public static final UpgradeableItem.Builder LEVEL_ITEM = new UpgradeableItem.Builder()
             .name("Call Dogs")
+            .display(new ExItemStack(Material.BONE, "§6Dogs"))
             .baseItem(new ExItemStack(Material.BONE, "§6Call Dogs"))
             .addLvlType(AMOUNT_LEVELS)
             .addLvlType(HEALTH_LEVELS);

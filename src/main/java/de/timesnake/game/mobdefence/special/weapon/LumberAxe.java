@@ -39,8 +39,6 @@ import org.bukkit.potion.PotionEffectType;
 
 public class LumberAxe extends SpecialWeapon implements Listener {
 
-    private static final int ATTACK_SPEED = 6;
-
     private static final ExItemStack ITEM = new ExItemStack(Material.IRON_AXE).unbreakable().immutable();
 
     private static final LevelType.Builder TYPE = new LevelType.Builder()
