@@ -55,7 +55,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 
 import java.util.ArrayList;
@@ -137,22 +136,9 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
     @EventHandler
     public void onUserDeath(UserDeathEvent e) {
-        if (!(e.getUser() instanceof MobDefUser)) {
-            return;
-        }
-
         e.setAutoRespawn(true);
 
         User user = e.getUser();
-
-        if (MobDefServer.getAliveUsers().size() <= 1) {
-            ((MobDefUser) user).joinSpectator();
-            MobDefServer.stopGame();
-        }
-
-        if (!(user instanceof MobDefUser)) {
-            return;
-        }
 
         if (user.getStatus().equals(Status.User.IN_GAME)) {
             ((MobDefUser) user).saveInventory();
@@ -160,17 +146,18 @@ public class UserManager implements Listener, UserInventoryInteractListener {
     }
 
     @EventHandler
-    public void onPlayerRespawn(PlayerRespawnEvent e) {
+    public void onPlayerRespawn(UserRespawnEvent e) {
         e.setRespawnLocation(MobDefServer.getMap().getUserSpawn());
 
-        User user = Server.getUser(e.getPlayer());
+        MobDefUser user = (MobDefUser) e.getUser();
 
-        if (!(user instanceof MobDefUser)) {
-            return;
+        // if last player died, stop game
+        if (MobDefServer.getAliveUsers().size() <= 1) {
+            MobDefServer.stopGame();
         }
 
         if (user.getStatus().equals(Status.User.IN_GAME)) {
-            ((MobDefUser) user).joinSpectator();
+            user.joinSpectator();
         }
     }
 

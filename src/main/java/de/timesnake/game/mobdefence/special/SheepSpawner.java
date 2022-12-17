@@ -57,6 +57,7 @@ public class SheepSpawner extends EntitySpawner {
 
     public static final UpgradeableItem.Builder LEVEL_ITEM = new UpgradeableItem.Builder()
             .name("§6Herd Sheep")
+            .display(new ExItemStack(Material.WHEAT, "§6Sheeps"))
             .baseItem(new ExItemStack(Material.WHEAT, "§6Herd Sheeps"))
             .addLvlType(AMOUNT_LEVELS);
 
