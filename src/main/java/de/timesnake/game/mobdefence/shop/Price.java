@@ -8,6 +8,22 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 
 public class Price {
 
+    public static Price bronze(int amount) {
+        return new Price(amount, Currency.BRONZE);
+    }
+
+    public static Price silver(int amount) {
+        return new Price(amount, Currency.SILVER);
+    }
+
+    public static Price gold(int amount) {
+        return new Price(amount, Currency.GOLD);
+    }
+
+    public static Price emerald(int amount) {
+        return new Price(amount, Currency.EMERALD);
+    }
+
     private final int amount;
     private final Currency currency;
 

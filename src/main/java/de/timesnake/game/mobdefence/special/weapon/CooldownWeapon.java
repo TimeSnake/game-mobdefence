@@ -9,7 +9,6 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractEvent;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.user.MobDefUser;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,11 +31,16 @@ public abstract class CooldownWeapon extends InteractWeapon {
 
         this.cooldownUsers.add(user);
 
-        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user), this.getCooldown(event.getClickedItem()),
+        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user),
+                this.getCooldown(event.getClickedItem()),
                 GameMobDefence.getPlugin());
 
         super.onUserInventoryInteract(event);
     }
 
     public abstract int getCooldown(ExItemStack item);
+
+    public void cancelAll() {
+        this.cooldownUsers.clear();
+    }
 }

@@ -27,25 +27,15 @@ import org.bukkit.event.Listener;
 
 public class Blaze extends BlockSpawner implements Listener {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.MAGMA_BLOCK, "§6 3 Blazes", "§7Place the block to" +
-            " spawn a blaze", "§c3 Blazes").immutable();
+    public static final ExItemStack ITEM = new ExItemStack(Material.MAGMA_BLOCK, "§6Blaze",
+            "§7Place the block to spawn a blaze").immutable();
 
     public static final Trade.Builder BLAZE = new Trade.Builder()
             .price(new Price(16, Currency.SILVER))
-            .giveItems(Blaze.ITEM);
+            .giveItems(Blaze.ITEM.cloneWithId().asQuantity(3));
 
     public Blaze() {
         super(EntityType.BLAZE, ITEM, 1);
-    }
-
-    @Override
-    public int getAmountFromString(String s) {
-        return Integer.parseInt(s.replace("§c", "").replace(" Blazes", ""));
-    }
-
-    @Override
-    public String parseAmountToString(int amount) {
-        return "§c" + amount + " Blazes";
     }
 
     @Override
@@ -58,10 +48,12 @@ public class Blaze extends BlockSpawner implements Listener {
         blaze.addPathfinderGoal(8, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
         blaze.addPathfinderGoal(8, new ExPathfinderGoalRandomLookaround());
 
-        blaze.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
+        blaze.addPathfinderGoal(1,
+                new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
 
         for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
-            blaze.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
+            blaze.addPathfinderGoal(2,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
         blaze.setPersistent(true);

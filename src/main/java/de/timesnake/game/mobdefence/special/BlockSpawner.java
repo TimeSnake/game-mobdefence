@@ -18,8 +18,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import java.util.List;
-
 public abstract class BlockSpawner extends SpecialWeapon implements Listener {
 
     protected final EntityType entityType;
@@ -34,20 +32,7 @@ public abstract class BlockSpawner extends SpecialWeapon implements Listener {
         Server.registerListener(this, GameMobDefence.getPlugin());
     }
 
-    public int getLeftEntities(ExItemStack item) {
-        return this.getAmountFromString(item.getLore().get(this.loreLine));
-    }
-
-    public void updateItem(ExItemStack item, int left) {
-        List<String> lore = item.getLore();
-        lore.add(this.loreLine, this.parseAmountToString(left));
-    }
-
     public abstract void spawnEntities(Location location);
-
-    public abstract int getAmountFromString(String s);
-
-    public abstract String parseAmountToString(int amount);
 
     @EventHandler
     public void onBlockPlace(UserBlockPlaceEvent e) {
@@ -61,20 +46,17 @@ public abstract class BlockSpawner extends SpecialWeapon implements Listener {
 
         this.spawnEntities(e.getBlock().getLocation());
 
-        int left = this.getLeftEntities(item) - 1;
-
-        if (left > 0) {
-            this.updateItem(item, left);
-            user.getInventory().setItem(e.getHand(), item);
+        if (item.getAmount() > 1) {
+            user.setItem(e.getHand(), item.asQuantity(item.getAmount() - 1));
         } else {
             user.getInventory().setItem(e.getHand(), null);
         }
-
     }
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if (!(e.getDamager() instanceof Player) && !(e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)) {
+        if (!(e.getDamager() instanceof Player) && !(e.getDamager() instanceof Projectile
+                && ((Projectile) e.getDamager()).getShooter() instanceof Player)) {
             return;
         }
 

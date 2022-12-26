@@ -14,7 +14,12 @@ import de.timesnake.game.mobdefence.special.BlockSpawner;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExSnowman;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalArrowAttack;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalNearestAttackableTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
 import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,25 +34,15 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Snowman extends BlockSpawner implements Listener {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.CARVED_PUMPKIN, "§6 4 Snowmen", "§7Place the " +
-            "block to spawn a snowman", "§c4 Snowmen").immutable();
+    public static final ExItemStack ITEM = new ExItemStack(Material.CARVED_PUMPKIN,
+            "§6Snowmen", "§7Place the block to spawn a snowman").immutable();
 
     public static final Trade.Builder SNOWMAN = new Trade.Builder()
             .price(new Price(8, Currency.GOLD))
-            .giveItems(Snowman.ITEM);
+            .giveItems(Snowman.ITEM.cloneWithId().asQuantity(4));
 
     public Snowman() {
         super(EntityType.SNOWMAN, ITEM, 1);
-    }
-
-    @Override
-    public int getAmountFromString(String s) {
-        return Integer.parseInt(s.replace("§c", "").replace(" Snowmen", ""));
-    }
-
-    @Override
-    public String parseAmountToString(int amount) {
-        return "§c" + amount + " Snowmen";
     }
 
     @Override
@@ -61,10 +56,12 @@ public class Snowman extends BlockSpawner implements Listener {
         snowman.addPathfinderGoal(4, new ExPathfinderGoalRandomStrollLand(0, 0));
         snowman.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
 
-        snowman.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
+        snowman.addPathfinderGoal(1,
+                new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
 
-        for (Class<? extends de.timesnake.library.entities.entity.extension.LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
-            snowman.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTarget(entityClass, true, false));
+        for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
+            snowman.addPathfinderGoal(2,
+                    new ExPathfinderGoalNearestAttackableTarget(entityClass, true, false));
         }
 
         snowman.setPersistent(true);

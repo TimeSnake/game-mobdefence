@@ -11,13 +11,12 @@ import de.timesnake.game.mobdefence.shop.Shop;
 import de.timesnake.game.mobdefence.special.PotionGenerator;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.MobTracker;
+import java.util.List;
+import java.util.function.Supplier;
 import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
-
-import java.util.List;
-import java.util.function.Supplier;
 
 public class MobDefKit extends Kit implements KitItems {
 
@@ -31,14 +30,16 @@ public class MobDefKit extends Kit implements KitItems {
                     () -> MobDefServer.getBaseShops().getTeamShop()));
     public static final MobDefKit LUMBERJACK = new MobDefKit(5, "Lumberjack", Material.IRON_AXE,
             List.of("§fWeapon: §7Axe", "§fArmor: §7Strong", "", "§7Speed and Strength Potions",
-                    "§7Regeneration effect after mob kill", "§7Sheep as distraction", "§7Dogs as companions"),
+                    "§7Regeneration effect after mob kill", "§7Sheep as distraction",
+                    "§7Dogs as companions"),
             List.of(MobDefKit.BEEF, MobTracker.TRACKER),
             List.of(LUMBERJACK_WEAPONS, LUMBERJACK_ARMOR,
                     () -> MobDefServer.getBaseShops().getBasicShop(),
                     () -> MobDefServer.getBaseShops().getBlockShop(),
                     () -> MobDefServer.getBaseShops().getTeamShop()));
     public static final MobDefKit ALCHEMIST = new MobDefKit(3, "Alchemist", Material.BLAZE_POWDER,
-            List.of("§fWeapons: §7Fire Hoe, Fire Staff, Iceball", "§fArmor: §7Weak", "", "§7Resistant against fire",
+            List.of("§fWeapons: §7Fire Hoe, Fire Staff, Iceball", "§fArmor: §7Weak", "",
+                    "§7Resistant against fire",
                     "§7Defence Snowmen, Blazes"),
             List.of(MobDefKit.BEEF, MobTracker.TRACKER),
             List.of(ALCHEMIST_WEAPONS, RANGED_ARMOR,
@@ -60,7 +61,8 @@ public class MobDefKit extends Kit implements KitItems {
                     () -> MobDefServer.getBaseShops().getBasicShop(),
                     () -> MobDefServer.getBaseShops().getBlockShop(),
                     () -> MobDefServer.getBaseShops().getTeamShop()));
-    public static final MobDefKit[] KITS = new MobDefKit[]{KNIGHT, ARCHER, ALCHEMIST, WIZARD, LUMBERJACK};
+    public static final MobDefKit[] KITS = new MobDefKit[]{KNIGHT, ARCHER, ALCHEMIST, WIZARD,
+            LUMBERJACK};
 
     static {
         BLOCK_ITEM_BY_TYPE.put(Material.OAK_FENCE, OAK_FENCE_ITEM.cloneWithId().asOne());
@@ -68,13 +70,14 @@ public class MobDefKit extends Kit implements KitItems {
         BLOCK_ITEM_BY_TYPE.put(Material.OAK_PLANKS, OAK_PLANKS_ITEM.cloneWithId().asOne());
         BLOCK_ITEM_BY_TYPE.put(Material.OAK_SLAB, OAK_SLAB_ITEM.cloneWithId().asOne());
         BLOCK_ITEM_BY_TYPE.put(Material.IRON_BARS, IRON_BARS_ITEM.cloneWithId().asOne());
-        BLOCK_ITEM_BY_TYPE.put(Material.COBBLESTONE_WALL, COBBLESTONE_WALL_ITEM.cloneWithId().asOne());
+        BLOCK_ITEM_BY_TYPE.put(Material.COBBLESTONE_WALL,
+                COBBLESTONE_WALL_ITEM.cloneWithId().asOne());
     }
 
     public final List<Supplier<Shop>> shopSuppliers;
 
     public MobDefKit(Integer id, String name, Material material, List<String> description,
-                     List<ItemStack> items, List<Supplier<Shop>> shopSuppliers) {
+            List<ItemStack> items, List<Supplier<Shop>> shopSuppliers) {
         super(id, name, material, description, items);
         this.shopSuppliers = shopSuppliers;
     }
