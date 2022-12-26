@@ -34,7 +34,7 @@ public class TeamHealth {
         return maxHealth;
     }
 
-    private static int maxHealth;
+    private static int maxHealth = 8 * 2;
     public static final Upgradeable.Builder HEALTH = new Upgradeable.Builder() {
         @Override
         public Upgradeable build() {
@@ -61,6 +61,7 @@ public class TeamHealth {
                     .levelDescription("+1 ❤")
                     .addLvl(null, (MobDefUser u) -> {
                         maxHealth = 8 * 2;
+                        System.out.println("update");
                         for (User gameUser : Server.getInOutGameUsers()) {
                             gameUser.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(8 * 2);
                             gameUser.setHealth(8 * 2);

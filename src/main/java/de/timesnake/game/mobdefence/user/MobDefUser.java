@@ -41,7 +41,7 @@ public class MobDefUser extends GameUser {
     @Override
     public void joinGame() {
         this.teleport(MobDefServer.getMap().getUserSpawn());
-        this.lockLocation(true);
+        this.lockLocation();
         this.setBossBar(MobDefServer.getCoreHealthBar());
         this.setGameMode(GameMode.SURVIVAL);
 
@@ -53,10 +53,11 @@ public class MobDefUser extends GameUser {
 
         this.setStatistic(Statistic.MOB_KILLS, 0);
         this.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(TeamHealth.getMaxHealth());
+        this.heal();
     }
 
     public void startGame() {
-        this.lockLocation(false);
+        this.unlockLocation();
     }
 
     @Override
@@ -102,7 +103,7 @@ public class MobDefUser extends GameUser {
     public void joinSpectator() {
         this.alive = false;
 
-        if (this.getStatus().equals(Status.User.IN_GAME) || this.getStatus().equals(Status.User.OUT_GAME)) {
+        if (this.getStatus().equals(Status.User.IN_GAME)) {
             this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager().addDeadUser(this,
                     this.getLocation());
         }
@@ -114,7 +115,7 @@ public class MobDefUser extends GameUser {
         this.setGameMode(GameMode.CREATIVE);
     }
 
-    public void rejoinGame() {
+    public void leaveSpectatorAndRejoin() {
         ExLocation respawnLocation;
 
         if (this.deadBody != null) {
@@ -124,7 +125,7 @@ public class MobDefUser extends GameUser {
             respawnLocation = MobDefServer.getMap().getUserSpawn();
         }
 
-        this.leaveSpectator(respawnLocation, Status.User.IN_GAME);
+        this.leaveSpectatorAndRejoin(respawnLocation, Status.User.IN_GAME);
     }
 
     @Override
@@ -140,6 +141,9 @@ public class MobDefUser extends GameUser {
         }
 
         MobDefServer.updateSideboardPlayers();
+
+        this.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(TeamHealth.getMaxHealth());
+        this.heal();
 
         this.setInvulnerable(true);
         Server.runTaskLaterSynchrony(() -> this.getPlayer().setInvulnerable(false), 2 * 20,

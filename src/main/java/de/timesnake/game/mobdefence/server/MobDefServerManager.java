@@ -39,22 +39,32 @@ import de.timesnake.library.basic.util.TimeCoins;
 import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.basic.util.statistics.StatType;
 import de.timesnake.library.entities.EntityManager;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 import net.kyori.adventure.text.Component;
-import org.bukkit.*;
+import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
+import org.bukkit.GameRule;
+import org.bukkit.Instrument;
+import org.bukkit.Note;
+import org.bukkit.Sound;
+import org.bukkit.Statistic;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
 
 public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> implements Listener {
 
@@ -197,8 +207,10 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
         this.updateCoreHealthBar();
 
         if (this.playerAmount == 1) {
-            Server.getInGameUsers().iterator().next().addItem(new Price(32, Currency.BRONZE).asItem(),
-                    new Price(16, Currency.SILVER).asItem(), new Price(8, Currency.GOLD).asItem());
+            Server.getInGameUsers().iterator().next()
+                    .addItem(new Price(32, Currency.BRONZE).asItem(),
+                            new Price(16, Currency.SILVER).asItem(),
+                            new Price(8, Currency.GOLD).asItem());
         }
 
         // start wave
@@ -212,7 +224,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
         }
 
         if (!((MobDefUser) user).isAlive() && ((MobDefUser) user).getDeadBody() != null) {
-            this.getMobDefUserManager().getReviveManager().removeDyingUser(((MobDefUser) user), true);
+            this.getMobDefUserManager().getReviveManager()
+                    .removeDyingUser(((MobDefUser) user), true);
         }
     }
 
@@ -256,11 +269,12 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
         for (User user : Server.getInOutGameUsers()) {
             if (!((MobDefUser) user).isAlive()) {
-                ((MobDefUser) user).rejoinGame();
+                ((MobDefUser) user).leaveSpectatorAndRejoin();
             }
             if (this.waveNumber > 0) {
                 user.addCoins(this.waveNumber * TIME_COINS_MULTIPLIER, true);
-                user.addItem(new Price((int) (8 * Math.sqrt(this.waveNumber)), Currency.BRONZE).asItem(),
+                user.addItem(
+                        new Price((int) (8 * Math.sqrt(this.waveNumber)), Currency.BRONZE).asItem(),
                         new Price((int) (4 * Math.sqrt(this.waveNumber)), Currency.SILVER).asItem(),
                         new Price((int) (2 * Math.sqrt(this.waveNumber)), Currency.GOLD).asItem());
             }
@@ -310,7 +324,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
         if (this.waveNumber == 13) {
             this.getMap().getWorld().setGameRule(GameRule.NATURAL_REGENERATION, false);
-            this.broadcastGameMessage(Component.text("No more natural regeneration", ExTextColor.WARNING));
+            this.broadcastGameMessage(
+                    Component.text("No more natural regeneration", ExTextColor.WARNING));
         }
 
         Server.broadcastSound(Sound.ITEM_GOAT_HORN_SOUND_2, 2);
@@ -371,8 +386,10 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
     @EventHandler
     public void onEntityByEntityDamage(EntityDamageByEntityEvent e) {
-        if (this.coreEntity != null && e.getEntity().getUniqueId().equals(this.coreEntity.getUniqueId())) {
-            if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)) {
+        if (this.coreEntity != null && e.getEntity().getUniqueId()
+                .equals(this.coreEntity.getUniqueId())) {
+            if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile
+                    && ((Projectile) e.getDamager()).getShooter() instanceof Player)) {
                 e.setDamage(0);
                 e.setCancelled(true);
                 return;
@@ -400,7 +417,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
     public void updateCoreHealthBar() {
         this.coreHealthBar.setProgress(this.coreHealth / coreMaxHealth);
-        this.coreHealthBar.setTitle("§c§lHealth: §c" + ((int) this.coreHealth) + "/" + ((int) this.coreMaxHealth));
+        this.coreHealthBar.setTitle(
+                "§c§lHealth: §c" + ((int) this.coreHealth) + "/" + ((int) this.coreMaxHealth));
     }
 
     public void updateSideboardDelay() {

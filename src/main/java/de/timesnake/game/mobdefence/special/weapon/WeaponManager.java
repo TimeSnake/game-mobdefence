@@ -10,9 +10,8 @@ import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.special.DogSpawner;
 import de.timesnake.game.mobdefence.special.SheepSpawner;
 import de.timesnake.game.mobdefence.special.weapon.bullet.BulletManager;
-import org.bukkit.event.Listener;
-
 import java.util.HashMap;
+import org.bukkit.event.Listener;
 
 public class WeaponManager implements Listener {
 
@@ -45,6 +44,7 @@ public class WeaponManager implements Listener {
         this.addWeapon(new SwingSword());
         this.addWeapon(new PotionBow());
         this.addWeapon(this.iceballGenerator);
+        this.addWeapon(new SafeSphere());
 
         Server.registerListener(this, GameMobDefence.getPlugin());
     }

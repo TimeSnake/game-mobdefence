@@ -4,27 +4,49 @@
 
 package de.timesnake.game.mobdefence.kit;
 
+import static de.timesnake.game.mobdefence.shop.Currency.BRONZE;
+import static de.timesnake.game.mobdefence.shop.Currency.GOLD;
+import static de.timesnake.game.mobdefence.shop.Currency.SILVER;
+
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.game.mobdefence.server.MobDefServer;
-import de.timesnake.game.mobdefence.shop.*;
+import de.timesnake.game.mobdefence.shop.Currency;
+import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.Shop;
+import de.timesnake.game.mobdefence.shop.Trade;
+import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.game.mobdefence.special.DogSpawner;
 import de.timesnake.game.mobdefence.special.SheepSpawner;
-import de.timesnake.game.mobdefence.special.weapon.*;
+import de.timesnake.game.mobdefence.special.weapon.Blaze;
+import de.timesnake.game.mobdefence.special.weapon.BoomerangAxe;
+import de.timesnake.game.mobdefence.special.weapon.Bow;
+import de.timesnake.game.mobdefence.special.weapon.FireHoe;
+import de.timesnake.game.mobdefence.special.weapon.FireStaff;
+import de.timesnake.game.mobdefence.special.weapon.Iceball;
+import de.timesnake.game.mobdefence.special.weapon.IronGolem;
+import de.timesnake.game.mobdefence.special.weapon.LumberAxe;
+import de.timesnake.game.mobdefence.special.weapon.PoisonArrow;
+import de.timesnake.game.mobdefence.special.weapon.RocketCrossBow;
+import de.timesnake.game.mobdefence.special.weapon.SafeSphere;
+import de.timesnake.game.mobdefence.special.weapon.Snowman;
+import de.timesnake.game.mobdefence.special.weapon.SplashBow;
+import de.timesnake.game.mobdefence.special.weapon.SwingSword;
+import de.timesnake.game.mobdefence.special.weapon.Sword;
+import de.timesnake.game.mobdefence.special.weapon.Wand;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
-import static de.timesnake.game.mobdefence.shop.Currency.*;
-
 public interface KitItems {
 
-    String[] BLOCK_INFO = {"§7Can be destroyed by attackers", "§cCan only be placed 3 block up in the air"};
+    String[] BLOCK_INFO = {"§7Can be destroyed by attackers",
+            "§cCan only be placed 3 block up in the air"};
 
     Map<Material, ExItemStack> BLOCK_ITEM_BY_TYPE = new HashMap<>();
 
@@ -151,14 +173,15 @@ public interface KitItems {
             .slot(37);
 
     Trade.Builder INSTANT_HEAL = new Trade.Builder()
-            .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.INSTANT_HEAL, false, true)
+            .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.INSTANT_HEAL, false,
+                            true)
                     .setDisplayName("§6Instant Heal"))
             .price(new Price(6, BRONZE), 1, 32)
             .slot(38);
 
     Trade.Builder IRON_GOLEM = new Trade.Builder()
-            .giveItems(IronGolem.ITEM)
-            .price(new Price(12, SILVER), 1, 8)
+            .giveItems(IronGolem.ITEM.cloneWithId().asQuantity(4))
+            .price(new Price(12, SILVER), 1, 4)
             .slot(37);
 
     Trade.Builder REGEN = new Trade.Builder()
@@ -214,10 +237,14 @@ public interface KitItems {
                     .addEnchantmentLvl(new Price(16, GOLD), 9)
                     .addEnchantmentLvl(new Price(64, BRONZE), 10);
 
-    ExItemStack MELEE_BASE_ARMOR_HELMET = new ExItemStack(Material.LEATHER_HELMET).setSlot(EquipmentSlot.HEAD).unbreakable();
-    ExItemStack MELEE_BASE_ARMOR_CHESTPLATE = new ExItemStack(Material.LEATHER_CHESTPLATE).setSlot(EquipmentSlot.CHEST).unbreakable();
-    ExItemStack MELEE_BASE_ARMOR_LEGGINGS = new ExItemStack(Material.LEATHER_LEGGINGS).setSlot(EquipmentSlot.LEGS).unbreakable();
-    ExItemStack MELEE_BASE_ARMOR_BOOTS = new ExItemStack(Material.LEATHER_BOOTS).setSlot(EquipmentSlot.FEET).unbreakable();
+    ExItemStack MELEE_BASE_ARMOR_HELMET = new ExItemStack(Material.LEATHER_HELMET).setSlot(
+            EquipmentSlot.HEAD).unbreakable();
+    ExItemStack MELEE_BASE_ARMOR_CHESTPLATE = new ExItemStack(Material.LEATHER_CHESTPLATE).setSlot(
+            EquipmentSlot.CHEST).unbreakable();
+    ExItemStack MELEE_BASE_ARMOR_LEGGINGS = new ExItemStack(Material.LEATHER_LEGGINGS).setSlot(
+            EquipmentSlot.LEGS).unbreakable();
+    ExItemStack MELEE_BASE_ARMOR_BOOTS = new ExItemStack(Material.LEATHER_BOOTS).setSlot(
+            EquipmentSlot.FEET).unbreakable();
 
     LevelType.Builder MELEE_ARMOR_HELMET_TYPE = new LevelType.Builder()
             .name("Type")
@@ -246,10 +273,12 @@ public interface KitItems {
             .baseLevel(1)
             .levelItem(MELEE_BASE_ARMOR_CHESTPLATE)
             .addMaterialLvl(null, null, Material.LEATHER_CHESTPLATE)
-            .addMaterialLvl(new Price(6, BRONZE), "Chainmail Chestplate", Material.CHAINMAIL_CHESTPLATE)
+            .addMaterialLvl(new Price(6, BRONZE), "Chainmail Chestplate",
+                    Material.CHAINMAIL_CHESTPLATE)
             .addMaterialLvl(new Price(11, SILVER), "Iron Chestplate", Material.IRON_CHESTPLATE)
             .addMaterialLvl(new Price(8, GOLD), "Diamond Chestplate", Material.DIAMOND_CHESTPLATE)
-            .addMaterialLvl(new Price(22, GOLD), "Netherite Chestplate", Material.NETHERITE_CHESTPLATE);
+            .addMaterialLvl(new Price(22, GOLD), "Netherite Chestplate",
+                    Material.NETHERITE_CHESTPLATE);
     UpgradeableItem.Builder MELEE_ARMOR_CHESTPLATE = new UpgradeableItem.Builder()
             .name("Chestplate")
             .display(ARMOR_CHESTPLATE)
@@ -310,12 +339,17 @@ public interface KitItems {
             .name("Armor")
             .slot(14)
             .display(ARMOR)
-            .addUpgradeable(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS, MELEE_ARMOR_BOOTS)
+            .addUpgradeable(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS,
+                    MELEE_ARMOR_BOOTS)
             .type(Shop.Builder.Type.USER);
-    ExItemStack RANGED_BASE_ARMOR_HELMET = new ExItemStack(Material.LEATHER_HELMET).setSlot(EquipmentSlot.HEAD).unbreakable();
-    ExItemStack RANGED_BASE_ARMOR_CHESTPLATE = new ExItemStack(Material.LEATHER_CHESTPLATE).setSlot(EquipmentSlot.CHEST).unbreakable();
-    ExItemStack RANGED_BASE_ARMOR_LEGGINGS = new ExItemStack(Material.LEATHER_LEGGINGS).setSlot(EquipmentSlot.LEGS).unbreakable();
-    ExItemStack RANGED_BASE_ARMOR_BOOTS = new ExItemStack(Material.LEATHER_BOOTS).setSlot(EquipmentSlot.FEET).unbreakable();
+    ExItemStack RANGED_BASE_ARMOR_HELMET = new ExItemStack(Material.LEATHER_HELMET).setSlot(
+            EquipmentSlot.HEAD).unbreakable();
+    ExItemStack RANGED_BASE_ARMOR_CHESTPLATE = new ExItemStack(Material.LEATHER_CHESTPLATE).setSlot(
+            EquipmentSlot.CHEST).unbreakable();
+    ExItemStack RANGED_BASE_ARMOR_LEGGINGS = new ExItemStack(Material.LEATHER_LEGGINGS).setSlot(
+            EquipmentSlot.LEGS).unbreakable();
+    ExItemStack RANGED_BASE_ARMOR_BOOTS = new ExItemStack(Material.LEATHER_BOOTS).setSlot(
+            EquipmentSlot.FEET).unbreakable();
     LevelType.Builder RANGED_ARMOR_HELMET_TYPE = new LevelType.Builder()
             .name("Type")
             .display(new ExItemStack(Material.ANVIL))
@@ -344,7 +378,8 @@ public interface KitItems {
             .levelItem(RANGED_BASE_ARMOR_CHESTPLATE)
             .addMaterialLvl(null, null, Material.LEATHER_CHESTPLATE)
             .addMaterialLvl(new Price(6, SILVER), "Golden Chestplate", Material.GOLDEN_CHESTPLATE)
-            .addMaterialLvl(new Price(24, BRONZE), "Chainmail Chestplate", Material.CHAINMAIL_CHESTPLATE)
+            .addMaterialLvl(new Price(24, BRONZE), "Chainmail Chestplate",
+                    Material.CHAINMAIL_CHESTPLATE)
             .addMaterialLvl(new Price(12, SILVER), "Iron Chestplate", Material.IRON_CHESTPLATE)
             .addMaterialLvl(new Price(18, GOLD), "Diamond Chestplate", Material.DIAMOND_CHESTPLATE);
     UpgradeableItem.Builder RANGED_ARMOR_CHESTPLATE = new UpgradeableItem.Builder()
@@ -367,7 +402,8 @@ public interface KitItems {
             .levelItem(RANGED_BASE_ARMOR_LEGGINGS)
             .addMaterialLvl(null, null, Material.LEATHER_LEGGINGS)
             .addMaterialLvl(new Price(5, SILVER), "Golden Leggings", Material.GOLDEN_LEGGINGS)
-            .addMaterialLvl(new Price(10, SILVER), "Chainmail Leggings", Material.CHAINMAIL_LEGGINGS)
+            .addMaterialLvl(new Price(10, SILVER), "Chainmail Leggings",
+                    Material.CHAINMAIL_LEGGINGS)
             .addMaterialLvl(new Price(16, GOLD), "Iron Leggings", Material.IRON_LEGGINGS);
     UpgradeableItem.Builder RANGED_ARMOR_LEGGINGS = new UpgradeableItem.Builder()
             .name("Leggings")
@@ -409,7 +445,8 @@ public interface KitItems {
             .name("Armor")
             .display(ARMOR)
             .slot(14)
-            .addUpgradeable(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS, RANGED_ARMOR_BOOTS)
+            .addUpgradeable(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS,
+                    RANGED_ARMOR_BOOTS)
             .type(Shop.Builder.Type.USER);
     Trade.Builder FIRE_GOLD_SWORD = new Trade.Builder()
             .giveItems(new ExItemStack(Material.GOLDEN_SWORD)
@@ -417,17 +454,20 @@ public interface KitItems {
                     .addExEnchantment(Enchantment.FIRE_ASPECT, 2))
             .price(new Price(2, Currency.SILVER));
     Trade.Builder ALCHEMIST_SPEED = new Trade.Builder()
-            .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.SPEED, false, true))
+            .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.SPEED, false,
+                    true))
             .price(new Price(4, BRONZE));
     Trade.Builder WIZARD_REGEN = new Trade.Builder()
             .giveItems(ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 2, "§6Regeneration",
                     PotionEffectType.REGENERATION, 10 * 20, 2))
             .price(new Price(4, BRONZE));
     Trade.Builder LUMBER_SPEED = new Trade.Builder()
-            .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.SPEED, false, true))
+            .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.SPEED, false,
+                    true))
             .price(new Price(4, BRONZE));
     Trade.Builder LUMBER_STRENGTH = new Trade.Builder()
-            .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Strength", PotionType.STRENGTH, false, true))
+            .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Strength", PotionType.STRENGTH,
+                    false, true))
             .price(new Price(3, SILVER));
     Trade.Builder LUMBER_REGENERATION = new Trade.Builder()
             .giveItems(ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 2, "§6Regeneration",
@@ -448,7 +488,8 @@ public interface KitItems {
             .name("Weapons")
             .slot(12)
             .display(WEAPONS)
-            .addUpgradeable(LumberAxe.AXE, BoomerangAxe.BOOMERANG_AXE, SheepSpawner.LEVEL_ITEM, DogSpawner.LEVEL_ITEM)
+            .addUpgradeable(LumberAxe.AXE, BoomerangAxe.BOOMERANG_AXE, SheepSpawner.LEVEL_ITEM,
+                    DogSpawner.LEVEL_ITEM)
             .addTrade(LUMBER_SPEED, LUMBER_STRENGTH, LUMBER_REGENERATION)
             .type(Shop.Builder.Type.USER);
     Shop.Builder WIZARD_WEAPONS = new Shop.Builder()
@@ -456,6 +497,7 @@ public interface KitItems {
             .slot(12)
             .display(WEAPONS)
             .addUpgradeable(Wand.WAND)
+            .addUpgradeable(SafeSphere.SAFE_SPHERE)
             .addTrade(WIZARD_REGEN, IRON_SKIN)
             .type(Shop.Builder.Type.USER);
 
@@ -471,7 +513,8 @@ public interface KitItems {
             .name("Armor")
             .slot(14)
             .display(ARMOR)
-            .addUpgradeable(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS, MELEE_ARMOR_BOOTS)
+            .addUpgradeable(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS,
+                    MELEE_ARMOR_BOOTS)
             .addTrade(IRON_SKIN)
             .type(Shop.Builder.Type.USER);
     Shop.Builder ALCHEMIST_WEAPONS = new Shop.Builder()
