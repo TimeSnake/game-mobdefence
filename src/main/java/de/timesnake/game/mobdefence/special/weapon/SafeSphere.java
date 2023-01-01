@@ -28,7 +28,7 @@ public class SafeSphere extends ReloadableWeapon {
 
     private static final double RADIUS = 3;
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.PURPLE_DYE)
+    public static final ExItemStack ITEM = new ExItemStack(Material.SHIELD)
             .setDisplayName("§6Safe Sphere")
             .setLore("§7Creates a safe sphere,", "§7which mobs can not enter.")
             .setDropable(false)
@@ -38,7 +38,7 @@ public class SafeSphere extends ReloadableWeapon {
             .name("Cooldown")
             .display(new ExItemStack(Material.FEATHER))
             .baseLevel(1)
-            .levelLoreLine(1)
+            .levelLoreLine(3)
             .levelDecimalDigit(0)
             .levelLoreName("Cooldown")
             .levelUnit("s")
@@ -55,7 +55,7 @@ public class SafeSphere extends ReloadableWeapon {
             .name("Duration")
             .display(new ExItemStack(Material.CLOCK))
             .baseLevel(1)
-            .levelLoreLine(2)
+            .levelLoreLine(4)
             .levelDecimalDigit(0)
             .levelLoreName("Duration")
             .levelUnit("s")
@@ -105,7 +105,7 @@ public class SafeSphere extends ReloadableWeapon {
     private void createSphere(MobDefUser user, int duration) {
         Location location = user.getLocation();
         this.taskByUser.put(user, Server.runTaskTimerSynchrony(i -> {
-            this.spawnParticles(location);
+            //this.spawnParticles(location);
             this.knockbackMobs(location);
         }, duration, true, 10, 10, GameMobDefence.getPlugin()));
     }

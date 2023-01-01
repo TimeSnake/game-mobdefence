@@ -27,10 +27,11 @@ import org.bukkit.event.Listener;
 public class IronGolem extends BlockSpawner implements Listener {
 
     public static final ExItemStack ITEM = new ExItemStack(Material.IRON_BLOCK, "§6Iron Golem",
-            "§7Place a block to spawn a golem", "§7The golem tries to hold his position");
+            "§7Place a block to spawn a golem", "§7The golem tries to hold his position")
+            .immutable();
 
     public IronGolem() {
-        super(EntityType.IRON_GOLEM, ITEM, 3);
+        super(EntityType.IRON_GOLEM, ITEM);
     }
 
     @Override

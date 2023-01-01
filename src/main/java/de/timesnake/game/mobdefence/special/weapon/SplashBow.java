@@ -23,7 +23,8 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 
 public class SplashBow extends SpecialWeapon implements Listener {
 
-    private static final ExItemStack ITEM = new ExItemStack(Material.BOW).setDamage(Material.BOW.getMaxDurability() - 24)
+    private static final ExItemStack ITEM = new ExItemStack(Material.BOW).setDamage(
+                    Material.BOW.getMaxDurability() - 24)
             .addExEnchantment(Enchantment.ARROW_INFINITE, 1)
             .setDisplayName("§6Splash Bow").immutable();
 
@@ -51,7 +52,7 @@ public class SplashBow extends SpecialWeapon implements Listener {
             .display(new ExItemStack(Material.TARGET))
             .baseLevel(1)
             .levelDescription("+1 Block")
-            .levelDecimalDigit(1)
+            .levelDecimalDigit(0)
             .levelUnit("blocks")
             .levelLoreLine(2)
             .levelLoreName("Radius")
@@ -131,6 +132,7 @@ public class SplashBow extends SpecialWeapon implements Listener {
         arrow.setCustomName(ARROW_NAME + damage + RADIUS_NAME + radius);
         arrow.setCustomNameVisible(false);
 
-        Server.runTaskLaterSynchrony(() -> user.addItem(e.getConsumable()), 1, GameMobDefence.getPlugin());
+        Server.runTaskLaterSynchrony(() -> user.addItem(e.getConsumable()), 1,
+                GameMobDefence.getPlugin());
     }
 }
