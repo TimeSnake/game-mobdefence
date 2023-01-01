@@ -53,7 +53,8 @@ public class SheepSpawner extends EntitySpawner {
     }
 
     @Override
-    public List<? extends de.timesnake.library.entities.entity.extension.Entity> getEntities(User user, ExItemStack item) {
+    public List<? extends de.timesnake.library.entities.entity.extension.Entity> getEntities(
+            User user, ExItemStack item) {
 
         int sheep = 0;
         for (Entity s : user.getExWorld().getEntitiesByClasses(Sheep.class)) {

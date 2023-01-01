@@ -39,8 +39,10 @@ public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.e
             List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class,
                     org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class,
                     org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class,
-                    org.bukkit.entity.Vindicator.class, Vex.class, Silverfish.class, Endermite.class,
-                    org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class, Stray.class);
+                    org.bukkit.entity.Vindicator.class, Vex.class, Silverfish.class,
+                    Endermite.class,
+                    org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class,
+                    Stray.class);
 
     public static final List<Class<? extends LivingEntity>> ATTACKER_ENTTIY_ENTITY_CLASSES =
             List.of(de.timesnake.library.entities.entity.bukkit.Zombie.class,
@@ -60,9 +62,12 @@ public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.e
                     org.bukkit.entity.Vindicator.class, org.bukkit.entity.Creeper.class,
                     org.bukkit.entity.CaveSpider.class, Stray.class);
 
-    public static final List<EntityType> ATTACKER_ENTITY_TYPES = List.of(EntityType.ZOMBIE, EntityType.SKELETON,
-            EntityType.BLAZE, EntityType.MAGMA_CUBE, EntityType.ILLUSIONER, EntityType.WITCH, EntityType.PILLAGER,
-            EntityType.EVOKER, EntityType.VINDICATOR, EntityType.VEX, EntityType.SILVERFISH, EntityType.ENDERMITE,
+    public static final List<EntityType> ATTACKER_ENTITY_TYPES = List.of(EntityType.ZOMBIE,
+            EntityType.SKELETON,
+            EntityType.BLAZE, EntityType.MAGMA_CUBE, EntityType.ILLUSIONER, EntityType.WITCH,
+            EntityType.PILLAGER,
+            EntityType.EVOKER, EntityType.VINDICATOR, EntityType.VEX, EntityType.SILVERFISH,
+            EntityType.ENDERMITE,
             EntityType.CREEPER, EntityType.CAVE_SPIDER, EntityType.STRAY);
 
     public static final List<Class<? extends de.timesnake.library.entities.entity.extension.Mob>> FIRST_DEFENDER_CLASSES =
@@ -72,7 +77,8 @@ public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.e
             List.of(IronGolem.class, Villager.class, Wolf.class, Snowman.class, Blaze.class);
 
     public static final List<Class<? extends LivingEntity>> DEFENDER_CLASSES =
-            List.of(Sheep.class, HumanEntity.class, IronGolem.class, Villager.class, Wolf.class, Snowman.class, Blaze.class);
+            List.of(Sheep.class, HumanEntity.class, IronGolem.class, Villager.class, Wolf.class,
+                    Snowman.class, Blaze.class);
 
     public static final List<EntityType> DEFENDER_TYPES = List.of(EntityType.SHEEP,
             EntityType.PLAYER, EntityType.IRON_GOLEM, EntityType.VILLAGER, EntityType.WOLF,
@@ -87,14 +93,15 @@ public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.e
     }
 
     static ExPathfinderGoal getCorePathfinder(HeightMapManager.MapType mapType, double speed,
-                                              ExPathfinderGoal breakPathfinder, int breakLevel) {
+            ExPathfinderGoal breakPathfinder, int breakLevel) {
 
-        return new ExHeightPathfinder(MobDefServer.getMap().getHeightMapManager().getMap(mapType), 3, speed, 32, 0,
+        return new ExHeightPathfinder(MobDefServer.getMap().getHeightMapManager().getMap(mapType),
+                3, speed, 32, 0,
                 breakPathfinder, breakLevel);
     }
 
     static ExCustomPathfinderGoalBreakBlock getBreakPathfinder(double speed, boolean ignoreTarget,
-                                                               Collection<Material> breakable) {
+            Collection<Material> breakable) {
         return new ExCustomPathfinderGoalBreakBlock(speed, ignoreTarget,
                 (block) -> MobDefServer.getMap().getHeightMapManager().updateMaps(), breakable);
     }
@@ -156,7 +163,8 @@ public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.e
     protected M entity;
     protected List<? extends de.timesnake.library.entities.entity.extension.Mob> subEntities = new ArrayList<>();
 
-    MobDefMob(Type type, HeightMapManager.MapType mapType, int wave, ExLocation spawn, int currentWave) {
+    MobDefMob(Type type, HeightMapManager.MapType mapType, int wave, ExLocation spawn,
+            int currentWave) {
         this.type = type;
         this.mapType = mapType;
         this.wave = wave;
@@ -189,14 +197,16 @@ public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.e
         this.entity.setRemoveWhenFarAway(false);
         this.entity.setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
                 this.spawn.getYaw(), this.spawn.getPitch());
-        EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), this.entity, false);
+        EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), this.entity,
+                false);
 
         this.entity.setMaxNoDamageTicks(1);
 
         for (de.timesnake.library.entities.entity.extension.Mob subEntity : this.subEntities) {
             subEntity.setPersistent(true);
             subEntity.setRemoveWhenFarAway(false);
-            subEntity.setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1, this.spawn.getZ(),
+            subEntity.setPositionRotation(this.spawn.getX(), this.spawn.getY() + 1,
+                    this.spawn.getZ(),
                     this.spawn.getYaw(), this.spawn.getPitch());
             EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), subEntity);
         }

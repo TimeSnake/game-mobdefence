@@ -46,13 +46,15 @@ public class MobGroup {
                     new MobTypeGroup(MobDefMob.Type.BREAKER, 0),
                     new MobTypeGroup(MobDefMob.Type.OTHER, 1));
 
-            while (mobTypeGroups.stream().mapToInt(MobTypeGroup::getAmount).reduce(0, Integer::sum) < amount) {
+            while (mobTypeGroups.stream().mapToInt(MobTypeGroup::getAmount).reduce(0, Integer::sum)
+                    < amount) {
                 mobTypeGroups.get(random.nextInt(3)).increaseAmount();
             }
         }
 
         for (MobTypeGroup typeGroup : mobTypeGroups) {
-            List<MobDefMob<?>> mobs = this.mobsByType.computeIfAbsent(typeGroup.getType(), v -> new ArrayList<>());
+            List<MobDefMob<?>> mobs = this.mobsByType.computeIfAbsent(typeGroup.getType(),
+                    v -> new ArrayList<>());
 
             for (int j = 0; j < typeGroup.getAmount(); j++) {
                 MobDefMob<?> mob = MobDefMob.getRandomMob(wave, typeGroup.getType(), spawn);
@@ -67,17 +69,20 @@ public class MobGroup {
         this.wave = 0;
 
         for (MobDefMob<?> mob : mobs) {
-            List<MobDefMob<?>> mobTypeList = this.mobsByType.computeIfAbsent(mob.getType(), v -> new ArrayList<>());
+            List<MobDefMob<?>> mobTypeList = this.mobsByType.computeIfAbsent(mob.getType(),
+                    v -> new ArrayList<>());
             mobTypeList.add(mob);
         }
     }
 
     public int size() {
-        return this.mobsByType.values().stream().flatMapToInt((mobs -> IntStream.of(mobs.size()))).sum();
+        return this.mobsByType.values().stream().flatMapToInt((mobs -> IntStream.of(mobs.size())))
+                .sum();
     }
 
     public void run() {
-        this.task = Server.runTaskLaterSynchrony(this::spawn, this.maxDelay * 20, GameMobDefence.getPlugin());
+        this.task = Server.runTaskLaterSynchrony(this::spawn, this.maxDelay * 20,
+                GameMobDefence.getPlugin());
     }
 
     public void spawn() {
@@ -101,7 +106,8 @@ public class MobGroup {
                     if (type.isCompressable()) {
                         int size = this.mobsByType.get(type).size();
                         for (int i = 0; i < size; i += 5) {
-                            MobDefMob<?> compressed = MobDefMob.getCompressedMob(this.wave, type.getCompressed(),
+                            MobDefMob<?> compressed = MobDefMob.getCompressedMob(this.wave,
+                                    type.getCompressed(),
                                     this.spawn);
                             compressed.spawn();
                         }
@@ -128,6 +134,7 @@ public class MobGroup {
     }
 
     private static class MobTypeGroup {
+
         private final MobDefMob.Type type;
         private int amount;
 

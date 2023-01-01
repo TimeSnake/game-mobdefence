@@ -19,14 +19,16 @@ public abstract class PiercingBullet extends Bullet {
 
     private int piercing;
 
-    public PiercingBullet(User shooter, Location start, TargetFinder targetFinder, double speed, Double damage,
-                          int piercing) {
+    public PiercingBullet(User shooter, Location start, TargetFinder targetFinder, double speed,
+            Double damage,
+            int piercing) {
         super(shooter, start, targetFinder, speed, damage);
         this.piercing = piercing;
     }
 
-    public PiercingBullet(User shooter, Location start, TargetFinder targetFinder, double speed, Double damage,
-                          int piercing, Collection<LivingEntity> hitTargets) {
+    public PiercingBullet(User shooter, Location start, TargetFinder targetFinder, double speed,
+            Double damage,
+            int piercing, Collection<LivingEntity> hitTargets) {
         super(shooter, start, targetFinder, speed, damage);
         this.piercing = piercing;
         this.hitTargets = hitTargets;
@@ -36,13 +38,17 @@ public abstract class PiercingBullet extends Bullet {
     public void shootOnNextTarget(boolean first) {
         LivingEntity previousTarget = this.target;
         super.shootOnNextTarget(first);
-        Server.runTaskLaterSynchrony(() -> this.hitTargets.remove(previousTarget), 20, GameMobDefence.getPlugin());
+        Server.runTaskLaterSynchrony(() -> this.hitTargets.remove(previousTarget), 20,
+                GameMobDefence.getPlugin());
     }
 
     @Override
     protected LivingEntity nextTarget() {
-        LivingEntity nextTarget = this.targetFinder.nextTarget(this.hitTargets, this.entity.getLocation());
-        if (nextTarget != null) this.hitTargets.add(nextTarget);
+        LivingEntity nextTarget = this.targetFinder.nextTarget(this.hitTargets,
+                this.entity.getLocation());
+        if (nextTarget != null) {
+            this.hitTargets.add(nextTarget);
+        }
         return nextTarget;
     }
 

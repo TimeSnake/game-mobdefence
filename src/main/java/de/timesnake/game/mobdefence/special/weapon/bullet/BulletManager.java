@@ -53,7 +53,8 @@ public class BulletManager implements Listener {
             return;
         }
 
-        if (e.getHitEntity() == null || !MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getHitEntity().getType())) {
+        if (e.getHitEntity() == null || !MobDefMob.ATTACKER_ENTITY_TYPES.contains(
+                e.getHitEntity().getType())) {
             e.setCancelled(true);
             return;
         }

@@ -35,28 +35,34 @@ public class Pillager extends MobDefMob<ExPillager> {
     public void spawn() {
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.3, false, BlockCheck.BREAKABLE_MATERIALS);
+        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.3, false,
+                BlockCheck.BREAKABLE_MATERIALS);
 
         this.entity = new ExPillager(world, false, false);
         this.entity.setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.CROSSBOW));
 
         this.entity.addPathfinderGoal(0, new ExPathfinderGoalFloat());
         this.entity.addPathfinderGoal(3, new ExPathfinderGoalCrossbowAttack(1.0, 15.0F));
-        this.entity.addPathfinderGoal(4, getCorePathfinder(this.getMapType(), 0.7, breakBlock, BREAK_LEVEL));
+        this.entity.addPathfinderGoal(4,
+                getCorePathfinder(this.getMapType(), 0.7, breakBlock, BREAK_LEVEL));
         this.entity.addPathfinderGoal(4, breakBlock);
         this.entity.addPathfinderGoal(8, new ExPathfinderGoalRandomStroll(0.6));
-        this.entity.addPathfinderGoal(9, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 3.0F, 1.0F));
+        this.entity.addPathfinderGoal(9,
+                new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 3.0F, 1.0F));
         this.entity.addPathfinderGoal(10, new ExPathfinderGoalLookAtPlayer(Mob.class, 8.0F));
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(2,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
+        this.entity.addPathfinderGoal(3,
+                new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(3,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
         if (this.currentWave > 20) {
@@ -69,8 +75,8 @@ public class Pillager extends MobDefMob<ExPillager> {
             this.entity.setHealth(40);
         }
 
-        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobManager.MOB_DAMAGE_MULTIPLIER);
-
+        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(
+                2 + (this.currentWave - this.wave) / 5. * MobManager.MOB_DAMAGE_MULTIPLIER);
 
         super.spawn();
     }

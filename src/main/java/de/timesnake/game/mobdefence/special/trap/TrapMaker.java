@@ -32,7 +32,8 @@ public enum TrapMaker {
             return new RangedTrap(block, 2, 3) {
                 @Override
                 public boolean trigger(Collection<LivingEntity> entities) {
-                    this.getLocation().getWorld().createExplosion(this.getLocation(), 4, false, false);
+                    this.getLocation().getWorld()
+                            .createExplosion(this.getLocation(), 4, false, false);
                     return super.trigger(entities);
                 }
             };
@@ -51,11 +52,13 @@ public enum TrapMaker {
                 public boolean trigger(Collection<LivingEntity> entities) {
 
                     for (LivingEntity entity : entities) {
-                        this.getLocation().getWorld().playSound(this.getLocation(), Sound.ENTITY_ARROW_SHOOT, 2, 1);
+                        this.getLocation().getWorld()
+                                .playSound(this.getLocation(), Sound.ENTITY_ARROW_SHOOT, 2, 1);
                         Location eyeLoc = entity.getEyeLocation();
                         Location loc = this.getLocation();
                         Vector vec =
-                                new Vector(eyeLoc.getX(), eyeLoc.getY(), eyeLoc.getZ()).subtract(new Vector(loc.getX(), loc.getY(), loc.getZ()));
+                                new Vector(eyeLoc.getX(), eyeLoc.getY(), eyeLoc.getZ()).subtract(
+                                        new Vector(loc.getX(), loc.getY(), loc.getZ()));
 
                         loc.getWorld().spawnArrow(loc, vec, 5, 1);
                     }
@@ -70,13 +73,15 @@ public enum TrapMaker {
             .slot(33)
             .price(new Price(7, Currency.BRONZE), 1, 8),
             new ExItemStack(Material.POLISHED_BLACKSTONE_BUTTON, "§6Slowness Trap")
-                    .setLore("§fRadius: §75 blocks", "§fUses: §73", "§7Gives mobs slowness V for 20s")) {
+                    .setLore("§fRadius: §75 blocks", "§fUses: §73",
+                            "§7Gives mobs slowness V for 20s")) {
         @Override
         public Trap newInstance(ExBlock block) {
             return new MultipleRangedTrap(block, 5, 2, 3) {
                 @Override
                 public boolean trigger(Collection<LivingEntity> entities) {
-                    this.getLocation().getWorld().playSound(this.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 2, 1);
+                    this.getLocation().getWorld()
+                            .playSound(this.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 2, 1);
                     for (LivingEntity entity : entities) {
                         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 20, 4));
                     }
@@ -97,9 +102,11 @@ public enum TrapMaker {
             return new RangedTrap(block, 4, 4) {
                 @Override
                 public boolean trigger(Collection<LivingEntity> entities) {
-                    this.getLocation().getWorld().playSound(this.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 2, 1);
+                    this.getLocation().getWorld()
+                            .playSound(this.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 2, 1);
                     for (LivingEntity entity : entities) {
-                        entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 * 20, 3));
+                        entity.addPotionEffect(
+                                new PotionEffect(PotionEffectType.POISON, 20 * 20, 3));
                     }
 
                     return super.trigger(entities);

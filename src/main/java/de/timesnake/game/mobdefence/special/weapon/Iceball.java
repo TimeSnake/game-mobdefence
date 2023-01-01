@@ -32,7 +32,8 @@ import org.bukkit.util.Vector;
 
 public class Iceball extends SpecialWeapon implements Listener {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.SNOWBALL, "§6Ice Ball").immutable();
+    public static final ExItemStack ITEM = new ExItemStack(Material.SNOWBALL,
+            "§6Ice Ball").immutable();
     private static final String NAME = "iceball";
     private static final String PIERCING_NAME = "piercing";
     private static final LevelType.Builder SPEED_LEVELS = new LevelType.Builder()
@@ -128,7 +129,8 @@ public class Iceball extends SpecialWeapon implements Listener {
         double damage = DAMAGE_LEVELS.getNumberFromLore(item, Double::valueOf);
         int piercing = PIERCING_LEVELS.getNumberFromLore(item, Integer::parseInt);
 
-        Snowball snowball = user.getExWorld().spawn(user.getPlayer().getEyeLocation().add(0, -0.2, 0), Snowball.class);
+        Snowball snowball = user.getExWorld()
+                .spawn(user.getPlayer().getEyeLocation().add(0, -0.2, 0), Snowball.class);
 
         snowball.setCustomName(NAME + damage + PIERCING_NAME + piercing);
         snowball.setCustomNameVisible(false);
@@ -137,7 +139,8 @@ public class Iceball extends SpecialWeapon implements Listener {
         snowball.setVelocity(user.getLocation().getDirection().normalize().multiply(speed));
 
         this.cooldownUsers.add(user);
-        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user), 5, GameMobDefence.getPlugin());
+        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user), 5,
+                GameMobDefence.getPlugin());
     }
 
     @EventHandler
@@ -178,7 +181,8 @@ public class Iceball extends SpecialWeapon implements Listener {
         Vector snowballVector = snowball.getVelocity();
 
         final double magnitude =
-                Math.sqrt(Math.pow(snowballVector.getX(), 2) + Math.pow(snowballVector.getY(), 2) + Math.pow(snowballVector.getZ(), 2));
+                Math.sqrt(Math.pow(snowballVector.getX(), 2) + Math.pow(snowballVector.getY(), 2)
+                        + Math.pow(snowballVector.getZ(), 2));
 
         if (magnitude < 0.2) {
             return;
@@ -186,7 +190,8 @@ public class Iceball extends SpecialWeapon implements Listener {
 
         Location hitLoc = snowball.getLocation();
 
-        BlockIterator b = new BlockIterator(hitLoc.getWorld(), hitLoc.toVector(), snowballVector, 0, 3);
+        BlockIterator b = new BlockIterator(hitLoc.getWorld(), hitLoc.toVector(), snowballVector, 0,
+                3);
 
         Block blockBefore = snowball.getLocation().getBlock();
         Block nextBlock = b.next();
@@ -205,7 +210,8 @@ public class Iceball extends SpecialWeapon implements Listener {
                 blockFace = BlockFace.UP;
             }
 
-            Vector hitPlain = new Vector(blockFace.getModX(), blockFace.getModY(), blockFace.getModZ());
+            Vector hitPlain = new Vector(blockFace.getModX(), blockFace.getModY(),
+                    blockFace.getModZ());
 
             double dotProduct = snowballVector.dot(hitPlain);
             Vector u = hitPlain.multiply(dotProduct).multiply(2.0);
@@ -213,7 +219,8 @@ public class Iceball extends SpecialWeapon implements Listener {
             float speed = (float) magnitude;
             speed *= 0.6F;
 
-            Snowball newSnowball = snowball.getWorld().spawn(snowball.getLocation(), Snowball.class);
+            Snowball newSnowball = snowball.getWorld()
+                    .spawn(snowball.getLocation(), Snowball.class);
             newSnowball.setVelocity(snowballVector.subtract(u).normalize().multiply(speed));
             newSnowball.setCustomName(NAME + damage + PIERCING_NAME + piercing);
             newSnowball.setCustomNameVisible(false);

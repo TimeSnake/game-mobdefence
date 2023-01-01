@@ -21,8 +21,10 @@ public class BaseShops {
             .name("Blocks")
             .slot(31)
             .display(new ExItemStack(Material.OAK_FENCE))
-            .addTrade(MobDefKit.OAK_FENCE, MobDefKit.OAK_FENCE_GATE, MobDefKit.OAK_PLANKS, MobDefKit.OAK_SLAB,
-                    MobDefKit.IRON_BARS, MobDefKit.COBBLESTONE_WALL, MobDefKit.STONE_AXE, MobDefKit.IRON_PICKAXE)
+            .addTrade(MobDefKit.OAK_FENCE, MobDefKit.OAK_FENCE_GATE, MobDefKit.OAK_PLANKS,
+                    MobDefKit.OAK_SLAB,
+                    MobDefKit.IRON_BARS, MobDefKit.COBBLESTONE_WALL, MobDefKit.STONE_AXE,
+                    MobDefKit.IRON_PICKAXE)
             .addTrade(TrapMaker.getShopTrades().toArray(Trade.Builder[]::new))
             .type(Shop.Builder.Type.TEAM);
 
@@ -30,8 +32,10 @@ public class BaseShops {
             .name("Basics")
             .slot(29)
             .display(new ExItemStack(Material.COOKED_BEEF))
-            .addTrade(MobDefKit.APPLE, MobDefKit.COOKED_BEEF, MobDefKit.PUMPKIN_PIE, MobDefKit.DRIED_KELP,
-                    MobDefKit.GOLDEN_APPLE, MobDefKit.GOLDEN_CARROT, MobDefKit.MILK, WaterBottle.WATER,
+            .addTrade(MobDefKit.APPLE, MobDefKit.COOKED_BEEF, MobDefKit.PUMPKIN_PIE,
+                    MobDefKit.DRIED_KELP,
+                    MobDefKit.GOLDEN_APPLE, MobDefKit.GOLDEN_CARROT, MobDefKit.MILK,
+                    WaterBottle.WATER,
                     MobDefKit.SPEED, MobDefKit.INSTANT_HEAL, MobDefKit.ENDER_PEARL)
             .type(Shop.Builder.Type.TEAM);
 
@@ -43,7 +47,8 @@ public class BaseShops {
             .addTrade(MobDefKit.IRON_GOLEM, MobDefKit.REGEN)
             .type(Shop.Builder.Type.TEAM);
 
-    private static final List<Shop.Builder> SHOP_BUILDERS = List.of(BLOCK_SHOP, BASIC_SHOP, TEAM_SHOP);
+    private static final List<Shop.Builder> SHOP_BUILDERS = List.of(BLOCK_SHOP, BASIC_SHOP,
+            TEAM_SHOP);
 
     private final HashMap<String, Shop> shopsByName = new HashMap<>();
 

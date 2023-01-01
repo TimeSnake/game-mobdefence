@@ -36,7 +36,8 @@ public class FireHoe extends CooldownWeapon implements Listener {
     public static final int COOLDOWN = 7;
     public static final int FIRE_WIND_COOLDOWN = 40;
 
-    private static final ExItemStack ITEM = new ExItemStack(Material.GOLDEN_HOE, "§6Frozen Fire Hoe")
+    private static final ExItemStack ITEM = new ExItemStack(Material.GOLDEN_HOE,
+            "§6Frozen Fire Hoe")
             .immutable();
 
     private static final LevelType.Builder DAMAGE_LEVELS = new LevelType.Builder()
@@ -136,13 +137,15 @@ public class FireHoe extends CooldownWeapon implements Listener {
         entity.setFireTicks(burningTime * 20);
         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 3, slowness - 1));
 
-        Server.runTaskLaterSynchrony(() -> cooldownUsers.remove(user), COOLDOWN, GameMobDefence.getPlugin());
+        Server.runTaskLaterSynchrony(() -> cooldownUsers.remove(user), COOLDOWN,
+                GameMobDefence.getPlugin());
     }
 
     @Override
     public void onInteract(ExItemStack item, MobDefUser user) {
         Location loc =
-                user.getLocation().add(0, 1.5, 0).add(user.getLocation().getDirection().normalize().multiply(0.3));
+                user.getLocation().add(0, 1.5, 0)
+                        .add(user.getLocation().getDirection().normalize().multiply(0.3));
         World world = loc.getWorld();
 
         for (double angle = -Math.PI / 10; angle < Math.PI / 9; angle += Math.PI * 0.05) {
@@ -150,7 +153,8 @@ public class FireHoe extends CooldownWeapon implements Listener {
             double x = vec.getX();
             double z = vec.getZ();
 
-            world.spawnParticle(Particle.FLAME, loc.getX(), loc.getY(), loc.getZ(), 2, x, 0, z, 0, null);
+            world.spawnParticle(Particle.FLAME, loc.getX(), loc.getY(), loc.getZ(), 2, x, 0, z, 0,
+                    null);
         }
 
         for (LivingEntity entity : user.getLocation().getNearbyLivingEntities(5,

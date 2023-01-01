@@ -103,9 +103,10 @@ public class TrapManager implements Listener {
                 ExLocation loc = entry.getKey();
                 RangedTrap trap = entry.getValue();
 
-                Collection<LivingEntity> entities = ((Collection) loc.getWorld().getNearbyEntities(loc,
-                        trap.getRange(), 1, trap.getRange(),
-                        (e) -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType())));
+                Collection<LivingEntity> entities = ((Collection) loc.getWorld()
+                        .getNearbyEntities(loc,
+                                trap.getRange(), 1, trap.getRange(),
+                                (e) -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType())));
 
                 if (entities.size() >= trap.getMobAmount()) {
                     if (trap.trigger(entities)) {
@@ -129,7 +130,8 @@ public class TrapManager implements Listener {
             return;
         }
 
-        if (e.getEntityType().equals(EntityType.PLAYER) || !(e.getEntity() instanceof LivingEntity)) {
+        if (e.getEntityType().equals(EntityType.PLAYER)
+                || !(e.getEntity() instanceof LivingEntity)) {
             return;
         }
 

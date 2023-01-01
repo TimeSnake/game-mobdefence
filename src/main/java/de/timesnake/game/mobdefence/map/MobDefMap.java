@@ -45,9 +45,11 @@ public class MobDefMap extends Map implements ResetableMap {
         this.getWorld().restrict(ExWorld.Restriction.ENTITY_BLOCK_BREAK, true);
         this.getWorld().restrict(ExWorld.Restriction.BLOCK_BURN_UP, true);
 
-        for (int stageNumber = 0; stageNumber <= map.getLastLocationNumber(); stageNumber += STAGE_LOC_SIZE) {
+        for (int stageNumber = 0; stageNumber <= map.getLastLocationNumber();
+                stageNumber += STAGE_LOC_SIZE) {
             Server.printText(Plugin.MOB_DEFENCE, "Loading stage " + stageNumber + " ...");
-            MobDefStage stage = new MobDefStage(stageNumber, this.getCoreLocation(), super.getLocationsById());
+            MobDefStage stage = new MobDefStage(stageNumber, this.getCoreLocation(),
+                    super.getLocationsById());
             Server.printText(Plugin.MOB_DEFENCE, "Loaded stage" + stageNumber);
             this.stages.put(stageNumber, stage);
         }
@@ -87,7 +89,8 @@ public class MobDefMap extends Map implements ResetableMap {
         this.current.getHeightMapManager().stopHeightMapUpdater();
     }
 
-    public HeightBlock getHeightBlockByLocation(HeightMapManager.MapType type, ExLocation location) {
+    public HeightBlock getHeightBlockByLocation(HeightMapManager.MapType type,
+            ExLocation location) {
         return this.current.getHeightMapManager().getMap(type).getHeightBlock(location);
     }
 

@@ -76,11 +76,13 @@ public class DogSpawner extends EntitySpawner {
     }
 
     @Override
-    public List<de.timesnake.library.entities.entity.extension.Entity> getEntities(User user, ExItemStack item) {
+    public List<de.timesnake.library.entities.entity.extension.Entity> getEntities(User user,
+            ExItemStack item) {
 
         int dogs = 0;
         for (Entity wolf : user.getWorld().getEntitiesByClasses(Wolf.class)) {
-            if (wolf instanceof Wolf && ((Wolf) wolf).getOwnerUniqueId() != null && ((Wolf) wolf).getOwnerUniqueId().equals(user.getUniqueId())) {
+            if (wolf instanceof Wolf && ((Wolf) wolf).getOwnerUniqueId() != null
+                    && ((Wolf) wolf).getOwnerUniqueId().equals(user.getUniqueId())) {
                 dogs++;
             }
         }
@@ -119,12 +121,13 @@ public class DogSpawner extends EntitySpawner {
         entity.addPathfinderGoal(1, new ExPathfinderGoalOwnerHurtByTarget());
         entity.addPathfinderGoal(2, new ExPathfinderGoalOwnerHurtTarget());
 
-        entity.addPathfinderGoal(3, new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
+        entity.addPathfinderGoal(3,
+                new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
         for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
-            entity.addPathfinderGoal(4, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, 10, true,
-                    false));
+            entity.addPathfinderGoal(4,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, 10, true,
+                            false));
         }
-
 
         entity.setMaxHealth(health);
         entity.setHealth(health);

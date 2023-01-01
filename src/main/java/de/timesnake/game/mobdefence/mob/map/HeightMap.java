@@ -55,7 +55,6 @@ public class HeightMap {
             current = current.getExBlock().getLocation().add(0, 1, 0);
         }
 
-
         HeightBlock block;
         this.readLock.lock();
         try {
@@ -80,12 +79,14 @@ public class HeightMap {
         for (int x = 0; x <= radius; x++) {
             for (int y = 0; y <= radius; y++) {
                 for (int z = 0; z <= radius; z++) {
-                    HeightBlock block = this.getHeightBlock(current.getLocation().clone().add(x, y, z));
+                    HeightBlock block = this.getHeightBlock(
+                            current.getLocation().clone().add(x, y, z));
                     if (block == null) {
                         continue;
                     }
 
-                    if (block.getLevel() == current.getLevel() || (lowerLevel && block.getLevel() < current.getLevel())) {
+                    if (block.getLevel() == current.getLevel() || (lowerLevel
+                            && block.getLevel() < current.getLevel())) {
                         blocks.add(block);
                     }
                 }
@@ -155,9 +156,9 @@ public class HeightMap {
                     for (HeightBlock center : heightBlockCenters) {
 
                         // get blocks, which have a path to the center
-                        Map<Block, Integer> pathBlocks = this.getReachableByBlocks(center.getLocation().getBlock(),
+                        Map<Block, Integer> pathBlocks = this.getReachableByBlocks(
+                                center.getLocation().getBlock(),
                                 blockArea);
-
 
                         for (Map.Entry<Block, Integer> entry : pathBlocks.entrySet()) {
                             int delta = entry.getValue();
@@ -172,7 +173,8 @@ public class HeightMap {
                                 continue;
                             }
 
-                            HeightBlock block = new HeightBlock(level + delta, pathBlockLoc, center);
+                            HeightBlock block = new HeightBlock(level + delta, pathBlockLoc,
+                                    center);
 
                             // add as new center
                             blocksByHeight.get(level + delta).add(block);
@@ -280,13 +282,20 @@ public class HeightMap {
 
     private enum BlockArea {
 
-        STRAIGHT(List.of(new Vector(-1, 0, 0), new Vector(1, 0, 0), new Vector(0, 0, -1), new Vector(0, 0, 1))),
-        DIAGONAL(List.of(new Vector(-1, 0, -1), new Vector(-1, 0, 1), new Vector(1, 0, -1), new Vector(1, 0, 1),
-                new Vector(-1, -1, 0), new Vector(-1, 1, 0), new Vector(1, -1, 0), new Vector(1, 1, 0),
-                new Vector(0, -1, -1), new Vector(0, -1, 1), new Vector(0, 1, -1), new Vector(0, 1, 1))),
-        DOUBLE_DIAGONAL(List.of(new Vector(-1, -1, -1), new Vector(-1, -1, 1), new Vector(-1, 1, -1), new Vector(-1,
-                        1, 1),
-                new Vector(1, -1, -1), new Vector(1, -1, 1), new Vector(1, 1, -1), new Vector(1, 1, 1)));
+        STRAIGHT(List.of(new Vector(-1, 0, 0), new Vector(1, 0, 0), new Vector(0, 0, -1),
+                new Vector(0, 0, 1))),
+        DIAGONAL(List.of(new Vector(-1, 0, -1), new Vector(-1, 0, 1), new Vector(1, 0, -1),
+                new Vector(1, 0, 1),
+                new Vector(-1, -1, 0), new Vector(-1, 1, 0), new Vector(1, -1, 0),
+                new Vector(1, 1, 0),
+                new Vector(0, -1, -1), new Vector(0, -1, 1), new Vector(0, 1, -1),
+                new Vector(0, 1, 1))),
+        DOUBLE_DIAGONAL(
+                List.of(new Vector(-1, -1, -1), new Vector(-1, -1, 1), new Vector(-1, 1, -1),
+                        new Vector(-1,
+                                1, 1),
+                        new Vector(1, -1, -1), new Vector(1, -1, 1), new Vector(1, 1, -1),
+                        new Vector(1, 1, 1)));
 
         private final List<Vector> vectors;
 
