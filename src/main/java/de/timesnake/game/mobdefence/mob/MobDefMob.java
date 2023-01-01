@@ -10,14 +10,11 @@ import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.Blaze;
-import de.timesnake.library.entities.entity.bukkit.Endermite;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.bukkit.IronGolem;
 import de.timesnake.library.entities.entity.bukkit.Sheep;
-import de.timesnake.library.entities.entity.bukkit.Silverfish;
 import de.timesnake.library.entities.entity.bukkit.Snowman;
 import de.timesnake.library.entities.entity.bukkit.Stray;
-import de.timesnake.library.entities.entity.bukkit.Vex;
 import de.timesnake.library.entities.entity.bukkit.Villager;
 import de.timesnake.library.entities.entity.bukkit.Wolf;
 import de.timesnake.library.entities.entity.extension.LivingEntity;
@@ -35,16 +32,7 @@ public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.e
 
     public static final int BREAK_LEVEL = 16;
 
-    public static final List<Class<? extends Monster>> ATTACKER_ENTITY_CLASSES =
-            List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class,
-                    org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class,
-                    org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class,
-                    org.bukkit.entity.Vindicator.class, Vex.class, Silverfish.class,
-                    Endermite.class,
-                    org.bukkit.entity.Creeper.class, org.bukkit.entity.CaveSpider.class,
-                    Stray.class);
-
-    public static final List<Class<? extends LivingEntity>> ATTACKER_ENTTIY_ENTITY_CLASSES =
+    public static final List<Class<? extends LivingEntity>> ATTACKER_ENTITY_CLASSES =
             List.of(de.timesnake.library.entities.entity.bukkit.Zombie.class,
                     de.timesnake.library.entities.entity.bukkit.Skeleton.class,
                     de.timesnake.library.entities.entity.extension.Illager.class,
@@ -53,7 +41,8 @@ public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.e
                     de.timesnake.library.entities.entity.bukkit.Endermite.class,
                     de.timesnake.library.entities.entity.bukkit.Creeper.class,
                     de.timesnake.library.entities.entity.bukkit.CaveSpider.class,
-                    de.timesnake.library.entities.entity.bukkit.Stray.class);
+                    de.timesnake.library.entities.entity.bukkit.Stray.class,
+                    de.timesnake.library.entities.entity.bukkit.Witch.class);
 
     public static final List<Class<? extends Monster>> ATTACKER_ENTITY_COUNT_CLASSES =
             List.of(org.bukkit.entity.Zombie.class, org.bukkit.entity.Skeleton.class,

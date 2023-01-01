@@ -103,9 +103,14 @@ public class MobDefUser extends GameUser {
     public void joinSpectator() {
         this.alive = false;
 
-        if (this.getStatus().equals(Status.User.IN_GAME)) {
-            this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager().addDeadUser(this,
-                    this.getLocation());
+        if (this.getStatus().equals(Status.User.IN_GAME) && MobDefServer.isGameRunning()) {
+            if (MobDefServer.isDelayRunning()) {
+                this.rejoinGame(this.getExLocation(), Status.User.IN_GAME);
+            } else {
+                this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager()
+                        .addDeadUser(this,
+                                this.getLocation());
+            }
         }
 
         super.joinSpectator();

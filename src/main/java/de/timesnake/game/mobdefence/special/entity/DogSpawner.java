@@ -2,7 +2,7 @@
  * Copyright (C) 2023 timesnake
  */
 
-package de.timesnake.game.mobdefence.special;
+package de.timesnake.game.mobdefence.special.entity;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
@@ -123,7 +123,7 @@ public class DogSpawner extends EntitySpawner {
 
         entity.addPathfinderGoal(3,
                 new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
-        for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
+        for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTITY_CLASSES) {
             entity.addPathfinderGoal(4,
                     new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, 10, true,
                             false));

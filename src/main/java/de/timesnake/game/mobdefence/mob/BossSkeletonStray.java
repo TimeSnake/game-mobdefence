@@ -14,6 +14,7 @@ import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.bukkit.Stray;
 import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.entities.entity.extension.Monster;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalAvoidTarget;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalBowShoot;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
@@ -46,28 +47,30 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
         ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false,
                 BlockCheck.BREAKABLE_MATERIALS);
 
-        this.entity.addPathfinderGoal(2,
+        this.entity.addPathfinderGoal(3,
                 getCorePathfinder(this.getMapType(), 1.3, breakBlock, BREAK_LEVEL));
-        this.entity.addPathfinderGoal(2, breakBlock);
-        this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(1.3D));
-        this.entity.addPathfinderGoal(4, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
-        this.entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
+        this.entity.addPathfinderGoal(3, breakBlock);
+        this.entity.addPathfinderGoal(3,
+                new ExPathfinderGoalAvoidTarget(HumanEntity.class, 5, 1.1, 1.3));
+        this.entity.addPathfinderGoal(4, new ExPathfinderGoalRandomStrollLand(1.3D));
+        this.entity.addPathfinderGoal(5, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
+        this.entity.addPathfinderGoal(5, new ExPathfinderGoalRandomLookaround());
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2,
+            this.entity.addPathfinderGoal(1,
                     new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
-        this.entity.addPathfinderGoal(3,
+        this.entity.addPathfinderGoal(2,
                 new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
         for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(3,
+            this.entity.addPathfinderGoal(2,
                     new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 5, 30.0F));
+        this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 2, 30.0F));
 
         this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalSpawnArmy(Stray.class, 3,
                 10 * 20) {
@@ -87,6 +90,8 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
                             getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, breakBlock,
                                     BREAK_LEVEL));
                     stray.addPathfinderGoal(2, breakBlock);
+                    stray.addPathfinderGoal(3,
+                            new ExPathfinderGoalAvoidTarget(HumanEntity.class, 5, 1.1, 1.1));
                     stray.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.9D));
                     stray.addPathfinderGoal(4,
                             new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
