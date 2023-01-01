@@ -90,7 +90,8 @@ public class Bow extends SpecialWeapon implements UserInventoryInteractListener,
 
     @Override
     public void onUserInventoryInteract(UserInventoryInteractEvent event) {
-        if (!(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK))) {
+        if (!(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction()
+                .equals(Action.RIGHT_CLICK_BLOCK))) {
             return;
         }
 
@@ -112,16 +113,19 @@ public class Bow extends SpecialWeapon implements UserInventoryInteractListener,
 
         user.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
 
-        Arrow arrow = user.getPlayer().getWorld().spawnArrow(user.getPlayer().getEyeLocation().add(0, -0.2, 0),
-                user.getPlayer().getLocation().getDirection(),
-                event.getClickedItem().getEnchantmentLevel(Enchantment.ARROW_DAMAGE) + 2, 1);
+        Arrow arrow = user.getPlayer().getWorld()
+                .spawnArrow(user.getPlayer().getEyeLocation().add(0, -0.2, 0),
+                        user.getPlayer().getLocation().getDirection(),
+                        event.getClickedItem().getEnchantmentLevel(Enchantment.ARROW_DAMAGE) + 2,
+                        1);
 
         if (event.getClickedItem().getEnchantmentLevel(Enchantment.ARROW_FIRE) > 0) {
             arrow.setFireTicks(Integer.MAX_VALUE);
         }
 
         arrow.setShooter(user.getPlayer());
-        arrow.setDamage(event.getClickedItem().getEnchantmentLevel(Enchantment.ARROW_DAMAGE) + 1.3f);
+        arrow.setDamage(
+                event.getClickedItem().getEnchantmentLevel(Enchantment.ARROW_DAMAGE) + 1.3f);
 
         this.cooldownUser.add(user);
 

@@ -37,9 +37,11 @@ public class Witch extends MobDefMob<ExWitch> {
 
         this.entity.clearPathfinderGoals();
 
-        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.2, false, BlockCheck.BREAKABLE_MATERIALS);
+        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.2, false,
+                BlockCheck.BREAKABLE_MATERIALS);
 
-        this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1.5, breakBlock, BREAK_LEVEL));
+        this.entity.addPathfinderGoal(2,
+                getCorePathfinder(this.getMapType(), 1.5, breakBlock, BREAK_LEVEL));
         this.entity.addPathfinderGoal(2, breakBlock);
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalFloat());
@@ -51,15 +53,18 @@ public class Witch extends MobDefMob<ExWitch> {
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTargetWitch(entityClass, 10,
-                    true, false, null));
+            this.entity.addPathfinderGoal(2,
+                    new ExPathfinderGoalNearestAttackableTargetWitch(entityClass, 10,
+                            true, false, null));
 
         }
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
+        this.entity.addPathfinderGoal(3,
+                new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExPathfinderGoalNearestAttackableTargetWitch(entityClass, 10,
-                    true, false));
+            this.entity.addPathfinderGoal(2,
+                    new ExPathfinderGoalNearestAttackableTargetWitch(entityClass, 10,
+                            true, false));
 
         }
 

@@ -129,7 +129,8 @@ public class FireStaff extends InteractWeapon implements Listener, UserInventory
             double radius = Double.parseDouble(nameParts[0]);
             int burningTime = Integer.parseInt(nameParts[1]);
 
-            for (Entity entity : e.getEntity().getLocation().getNearbyEntitiesByType(LivingEntity.class, radius)) {
+            for (Entity entity : e.getEntity().getLocation()
+                    .getNearbyEntitiesByType(LivingEntity.class, radius)) {
                 if (MobDefMob.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
                     entity.setFireTicks(burningTime * 20);
                 }
@@ -147,7 +148,8 @@ public class FireStaff extends InteractWeapon implements Listener, UserInventory
             int burningTime = BURNING_TIME_LEVELS.getNumberFromLore(item, Integer::valueOf);
             int fireRate = FIRE_RATE_LEVELS.getNumberFromLore(item, Integer::valueOf);
 
-            Fireball fireball = user.getExWorld().spawn(user.getPlayer().getEyeLocation(), Fireball.class);
+            Fireball fireball = user.getExWorld()
+                    .spawn(user.getPlayer().getEyeLocation(), Fireball.class);
 
             fireball.setVelocity(user.getLocation().getDirection().normalize().multiply(speed));
             fireball.setDirection(user.getLocation().getDirection());
@@ -156,7 +158,8 @@ public class FireStaff extends InteractWeapon implements Listener, UserInventory
             fireball.setCustomName(radius + NAME + burningTime);
             fireball.setCustomNameVisible(false);
 
-            Server.runTaskLaterSynchrony(() -> this.fireStaffCooldownUser.remove(user), (int) ((1d / fireRate) * 20),
+            Server.runTaskLaterSynchrony(() -> this.fireStaffCooldownUser.remove(user),
+                    (int) ((1d / fireRate) * 20),
                     GameMobDefence.getPlugin());
         }
     }

@@ -46,7 +46,8 @@ public class Beeper extends MobDefMob<ExCreeper> {
         for (int i = 0; i < 6; i++) {
             ExBee bee = new ExBee(location.getWorld(), true, false);
             bee.setPosition(location.getX(), location.getY() + 1.5, location.getZ());
-            bee.setTarget(((CraftPlayer) player).getHandle(), EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY,
+            bee.setTarget(((CraftPlayer) player).getHandle(),
+                    EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY,
                     true);
             EntityManager.spawnEntity(location.getWorld(), bee);
         }
@@ -71,11 +72,14 @@ public class Beeper extends MobDefMob<ExCreeper> {
         this.entity.addPathfinderGoal(2, swell);
 
         if (this.currentWave > 10) {
-            this.entity.addPathfinderGoal(2, getCorePathfinder(HeightMapManager.MapType.WALL_FINDER, 1.4, swell, 5));
+            this.entity.addPathfinderGoal(2,
+                    getCorePathfinder(HeightMapManager.MapType.WALL_FINDER, 1.4, swell, 5));
         } else if (this.currentWave > 5) {
-            this.entity.addPathfinderGoal(2, getCorePathfinder(HeightMapManager.MapType.WALL_FINDER, 1.3, swell, 5));
+            this.entity.addPathfinderGoal(2,
+                    getCorePathfinder(HeightMapManager.MapType.WALL_FINDER, 1.3, swell, 5));
         } else {
-            this.entity.addPathfinderGoal(2, getCorePathfinder(HeightMapManager.MapType.WALL_FINDER, 1.2, swell, 5));
+            this.entity.addPathfinderGoal(2,
+                    getCorePathfinder(HeightMapManager.MapType.WALL_FINDER, 1.2, swell, 5));
         }
 
         this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalSwell(3, 5));
@@ -84,9 +88,10 @@ public class Beeper extends MobDefMob<ExCreeper> {
         this.entity.addPathfinderGoal(6, new ExPathfinderGoalRandomLookaround());
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
-        this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class,
-                true,
-                true));
+        this.entity.addPathfinderGoal(2,
+                new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class,
+                        true,
+                        true));
 
         if (this.currentWave > 10) {
             this.entity.setMaxHealth(60);

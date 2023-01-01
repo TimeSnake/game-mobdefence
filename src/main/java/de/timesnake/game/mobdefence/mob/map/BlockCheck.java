@@ -58,20 +58,23 @@ public abstract class BlockCheck {
             Location startLoc = start.getLocation();
             Location finishLoc = finish.getLocation();
 
-            if (!WALKABLE_IN.isTagged(startLoc.getBlock().getType()) || !WALKABLE_IN.isTagged(startLoc.clone().add(0,
-                    1, 0).getBlock().getType())) {
+            if (!WALKABLE_IN.isTagged(startLoc.getBlock().getType()) || !WALKABLE_IN.isTagged(
+                    startLoc.clone().add(0,
+                            1, 0).getBlock().getType())) {
                 return -1;
             }
 
             while (heightDelta > 0) {
-                if (!WALKABLE_IN.isTagged(finishLoc.add(0, heightDelta + 1, 0).getBlock().getType())) {
+                if (!WALKABLE_IN.isTagged(
+                        finishLoc.add(0, heightDelta + 1, 0).getBlock().getType())) {
                     return -1;
                 }
                 heightDelta--;
             }
 
             while (heightDelta < 0) {
-                if (!WALKABLE_IN.isTagged(startLoc.add(0, -heightDelta + 1, 0).getBlock().getType())) {
+                if (!WALKABLE_IN.isTagged(
+                        startLoc.add(0, -heightDelta + 1, 0).getBlock().getType())) {
                     return -1;
                 }
                 heightDelta++;
@@ -114,19 +117,21 @@ public abstract class BlockCheck {
                 return -1;
             }
 
-            if (WALKABLE_IN.isTagged(finish.getType()) && WALKABLE_IN.isTagged(finish.getLocation().add(0, 1, 0).getBlock().getType())) {
+            if (WALKABLE_IN.isTagged(finish.getType()) && WALKABLE_IN.isTagged(
+                    finish.getLocation().add(0, 1, 0).getBlock().getType())) {
                 return 5;
             }
 
-            if (WALKABLE_IN.isTagged(start.getType()) && WALKABLE_IN.isTagged(start.getLocation().add(0, 1, 0).getBlock().getType())) {
+            if (WALKABLE_IN.isTagged(start.getType()) && WALKABLE_IN.isTagged(
+                    start.getLocation().add(0, 1, 0).getBlock().getType())) {
                 return 5;
             }
-
 
             return -1;
         }
     };
-    public static final Set<Material> NORMAL_BREAKABLE_MATERIALS = Set.of(Material.OAK_PLANKS, Material.OAK_SLAB,
+    public static final Set<Material> NORMAL_BREAKABLE_MATERIALS = Set.of(Material.OAK_PLANKS,
+            Material.OAK_SLAB,
             Material.IRON_BARS);
     public static final Tag<Material> NORMAL_BREAKABLE = new Tag<>() {
         @Override
@@ -144,7 +149,8 @@ public abstract class BlockCheck {
             return new NamespacedKey(GameMobDefence.getPlugin(), "normal_breakable");
         }
     };
-    public static final Set<Material> HIGH_BREAKABLE_MATERIALS = Set.of(Material.OAK_FENCE, Material.OAK_FENCE_GATE,
+    public static final Set<Material> HIGH_BREAKABLE_MATERIALS = Set.of(Material.OAK_FENCE,
+            Material.OAK_FENCE_GATE,
             Material.COBBLESTONE_WALL);
     public static final Tag<Material> HIGH_BREAKABLE = new Tag<>() {
         @Override
@@ -218,7 +224,8 @@ public abstract class BlockCheck {
         WALKABLE_IN_MATERIALS.addAll(Tag.RAILS.getValues());
         WALKABLE_IN_MATERIALS.add(Material.SNOW);
         WALKABLE_IN_MATERIALS.add(Material.TRIPWIRE);
-        WALKABLE_IN_MATERIALS.addAll(List.of(Material.GRASS, Material.TALL_GRASS, Material.ARMOR_STAND));
+        WALKABLE_IN_MATERIALS.addAll(
+                List.of(Material.GRASS, Material.TALL_GRASS, Material.ARMOR_STAND));
     }
 
     ;
@@ -279,9 +286,11 @@ public abstract class BlockCheck {
             Material finishUpType = finish.getLocation().add(0, 2, 0).getBlock().getType();
 
             boolean startFenceWall =
-                    !breakable.isTagged(startDownType) && (Tag.FENCES.isTagged(startDownType) || Tag.WALLS.isTagged(startDownType));
+                    !breakable.isTagged(startDownType) && (Tag.FENCES.isTagged(startDownType)
+                            || Tag.WALLS.isTagged(startDownType));
             boolean finishFenceWall =
-                    !breakable.isTagged(finishDownType) && (Tag.FENCES.isTagged(finishDownType) || Tag.WALLS.isTagged(finishDownType));
+                    !breakable.isTagged(finishDownType) && (Tag.FENCES.isTagged(finishDownType)
+                            || Tag.WALLS.isTagged(finishDownType));
 
             if (heightDelta < 0 && finishFenceWall) {
                 return -1;
@@ -330,17 +339,18 @@ public abstract class BlockCheck {
             if (heightDelta == 1) {
                 costs += (int) (startBlock.getType().getHardness() * this.multiplier);
                 costs += ((int) (upperBlock.getType().getHardness() * this.multiplier));
-                costs += ((int) (startLoc.clone().add(0, 2, 0).getBlock().getType().getHardness() * this.multiplier));
+                costs += ((int) (startLoc.clone().add(0, 2, 0).getBlock().getType().getHardness()
+                        * this.multiplier));
                 return costs;
             }
 
             if (heightDelta == -1) {
                 costs += (int) (startBlock.getType().getHardness() * this.multiplier);
                 costs += ((int) (upperBlock.getType().getHardness() * this.multiplier));
-                costs += ((int) (finishLoc.clone().add(0, 2, 0).getBlock().getType().getHardness() * this.multiplier));
+                costs += ((int) (finishLoc.clone().add(0, 2, 0).getBlock().getType().getHardness()
+                        * this.multiplier));
                 return costs;
             }
-
 
             return 1;
         }
@@ -377,26 +387,33 @@ public abstract class BlockCheck {
                 Material zBlockUpType = zBlock.getLocation().add(0, 1, 0).getBlock().getType();
                 Material zBlockDownType = zBlock.getLocation().add(0, -1, 0).getBlock().getType();
 
-
                 int xBreakableEmpty =
-                        (this.breakable.isTagged(xBlockType) ? this.cost : 0) + (WALKABLE_IN.isTagged(xBlockType) ?
-                                1 : 0);
+                        (this.breakable.isTagged(xBlockType) ? this.cost : 0) + (
+                                WALKABLE_IN.isTagged(xBlockType) ?
+                                        1 : 0);
 
                 int upperXBreakableEmpty =
-                        (this.breakable.isTagged(xBlockUpType) ? this.cost : 0) + (WALKABLE_IN.isTagged(xBlockUpType) ? 1 : 0);
+                        (this.breakable.isTagged(xBlockUpType) ? this.cost : 0) + (
+                                WALKABLE_IN.isTagged(xBlockUpType) ? 1 : 0);
 
                 int zBreakableEmpty =
-                        (this.breakable.isTagged(zBlockType) ? this.cost : 0) + (WALKABLE_IN.isTagged(zBlock.getType()) ? 1 : 0);
+                        (this.breakable.isTagged(zBlockType) ? this.cost : 0) + (
+                                WALKABLE_IN.isTagged(zBlock.getType()) ? 1 : 0);
 
                 int upperZBreakableEmpty =
-                        (this.breakable.isTagged(zBlockUpType) ? this.cost : 0) + (WALKABLE_IN.isTagged(zBlockUpType) ? 1 : 0);
+                        (this.breakable.isTagged(zBlockUpType) ? this.cost : 0) + (
+                                WALKABLE_IN.isTagged(zBlockUpType) ? 1 : 0);
 
                 boolean startFinishEmptyTripleUp =
-                        !WALKABLE_IN.isTagged(start.getLocation().add(0, 2, 0).getBlock().getType()) && !WALKABLE_IN.isTagged(finish.getLocation().add(0, 2, 0).getBlock().getType());
+                        !WALKABLE_IN.isTagged(start.getLocation().add(0, 2, 0).getBlock().getType())
+                                && !WALKABLE_IN.isTagged(
+                                finish.getLocation().add(0, 2, 0).getBlock().getType());
 
                 if (upperXBreakableEmpty > 0 && xBreakableEmpty > 0) {
                     if (Tag.FENCES.isTagged(xBlockDownType) || Tag.WALLS.isTagged(xBlockDownType)) {
-                        if (WALKABLE_IN.isTagged(xBlock.getLocation().add(0, 2, 0).getBlock().getType()) && startFinishEmptyTripleUp) {
+                        if (WALKABLE_IN.isTagged(
+                                xBlock.getLocation().add(0, 2, 0).getBlock().getType())
+                                && startFinishEmptyTripleUp) {
                             return upperXBreakableEmpty + xBreakableEmpty;
                         }
                     } else {
@@ -406,7 +423,9 @@ public abstract class BlockCheck {
 
                 if (upperZBreakableEmpty > 0 && zBreakableEmpty > 0) {
                     if (Tag.FENCES.isTagged(zBlockDownType) || Tag.WALLS.isTagged(zBlockDownType)) {
-                        if (WALKABLE_IN.isTagged(zBlock.getLocation().add(0, 2, 0).getBlock().getType()) && startFinishEmptyTripleUp) {
+                        if (WALKABLE_IN.isTagged(
+                                zBlock.getLocation().add(0, 2, 0).getBlock().getType())
+                                && startFinishEmptyTripleUp) {
                             return upperZBreakableEmpty + zBreakableEmpty;
                         }
                     } else {

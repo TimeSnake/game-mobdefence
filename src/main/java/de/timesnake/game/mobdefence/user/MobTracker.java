@@ -18,7 +18,8 @@ import org.bukkit.entity.Entity;
 
 public class MobTracker implements UserInventoryInteractListener {
 
-    public static final ExItemStack TRACKER = new ExItemStack(Material.COMPASS, "§6Mob Tracker").setSlot(8);
+    public static final ExItemStack TRACKER = new ExItemStack(Material.COMPASS,
+            "§6Mob Tracker").setSlot(8);
 
     public MobTracker() {
         Server.getInventoryEventManager().addInteractListener(this, TRACKER);

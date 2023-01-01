@@ -56,13 +56,14 @@ public abstract class Level<V> {
         private final ExItemStack item;
 
         protected ItemLevel(ExItemStack item, int level, Price price, String description,
-                            Function<ExItemStack, ExItemStack> value) {
+                Function<ExItemStack, ExItemStack> value) {
             super(level, price, description, value);
             this.item = item;
         }
 
-        protected ItemLevel(ExItemStack item, int level, int unlockWave, Price price, String description,
-                            Function<ExItemStack, ExItemStack> value) {
+        protected ItemLevel(ExItemStack item, int level, int unlockWave, Price price,
+                String description,
+                Function<ExItemStack, ExItemStack> value) {
             super(level, unlockWave, price, description, value);
             this.item = item;
         }
@@ -70,9 +71,13 @@ public abstract class Level<V> {
         @Override
         public void run(MobDefUser user) {
             ExItemStack userItem = user.getItem(this.item);
-            if (userItem == null) return;
+            if (userItem == null) {
+                return;
+            }
             ExItemStack leveledItem = this.apply(userItem);
-            if (leveledItem == null) return;
+            if (leveledItem == null) {
+                return;
+            }
             user.replaceExItemStack(userItem, leveledItem);
         }
 
@@ -90,8 +95,9 @@ public abstract class Level<V> {
         private final int loreLine;
         private final int multiplier;
 
-        public LoreNumberLevel(ExItemStack item, String name, int loreLine, int decimal, String unit, int level, Price price,
-                               String description, T value) {
+        public LoreNumberLevel(ExItemStack item, String name, int loreLine, int decimal,
+                String unit, int level, Price price,
+                String description, T value) {
             super(level, price, description, value);
             this.item = item;
             this.name = name;
@@ -104,7 +110,9 @@ public abstract class Level<V> {
         @Override
         public void run(MobDefUser user) {
             ExItemStack userItem = user.getItem(this.item);
-            if (userItem == null) return;
+            if (userItem == null) {
+                return;
+            }
             this.apply(userItem);
             user.replaceExItemStack(userItem, userItem);
         }
@@ -133,9 +141,13 @@ public abstract class Level<V> {
         }
 
         public String getValueFromLore(List<String> lore) {
-            if (lore.size() <= loreLine) return null;
+            if (lore.size() <= loreLine) {
+                return null;
+            }
             String text = lore.get(this.loreLine);
-            if (text == null) return null;
+            if (text == null) {
+                return null;
+            }
             return text.replaceAll(this.loreName, "").replaceAll(" " + this.unit, "");
         }
     }

@@ -52,7 +52,8 @@ public abstract class EntitySpawner extends SpecialWeapon implements UserInvento
 
         this.cooldownUsers.add(user);
 
-        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user), this.cooldown, GameMobDefence.getPlugin());
+        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user), this.cooldown,
+                GameMobDefence.getPlugin());
     }
 
     public abstract List<? extends Entity> getEntities(User user, ExItemStack item);

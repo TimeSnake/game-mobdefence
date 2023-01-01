@@ -115,7 +115,8 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
 
         ArmorStand stand = user.getExWorld().spawn(startLoc, ArmorStand.class);
 
-        final org.bukkit.util.Vector startVec = user.getLocation().getDirection().normalize().multiply(speed);
+        final org.bukkit.util.Vector startVec = user.getLocation().getDirection().normalize()
+                .multiply(speed);
 
         Vector vec = startVec.clone();
 
@@ -145,7 +146,8 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
                 vec.multiply(-1);
             }
 
-            if (!BlockCheck.WALKABLE_IN.isTagged(stand.getEyeLocation().add(vec).getBlock().getType())) {
+            if (!BlockCheck.WALKABLE_IN.isTagged(
+                    stand.getEyeLocation().add(vec).getBlock().getType())) {
                 if (counter.get() >= 1) {
                     this.dropBoomerang(stand);
                     return;

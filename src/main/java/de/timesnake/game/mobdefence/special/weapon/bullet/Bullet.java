@@ -28,7 +28,8 @@ public abstract class Bullet implements Listener {
 
     protected BukkitTask entityFollowTask;
 
-    public Bullet(User shooter, Location start, TargetFinder targetFinder, double speed, Double damage) {
+    public Bullet(User shooter, Location start, TargetFinder targetFinder, double speed,
+            Double damage) {
         this.shooter = shooter;
         this.targetFinder = targetFinder;
         this.speed = speed;
@@ -50,18 +51,17 @@ public abstract class Bullet implements Listener {
             this.target = this.nextTarget();
         }
 
-
         if (this.target == null) {
             this.remove();
             return;
         }
 
-
         this.entity = this.spawn(this.entity.getLocation());
 
         this.entityFollowTask = Server.runTaskTimerSynchrony(() -> {
             Vector vec =
-                    this.target.getLocation().add(0, 1, 0).toVector().subtract(this.entity.getLocation().toVector()).normalize();
+                    this.target.getLocation().add(0, 1, 0).toVector()
+                            .subtract(this.entity.getLocation().toVector()).normalize();
             this.entity.setVelocity(vec.multiply(this.speed));
         }, 0, 2, GameMobDefence.getPlugin());
     }

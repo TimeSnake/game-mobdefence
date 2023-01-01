@@ -31,7 +31,8 @@ public class MobDefStage {
         int stageIndex = number * MobDefMap.STAGE_LOC_SIZE;
 
         int i = 0;
-        for (int index = stageIndex + MobDefMap.MOB_SPAWN_START_INDEX; index < (number + 1) * MobDefMap.STAGE_LOC_SIZE; index++) {
+        for (int index = stageIndex + MobDefMap.MOB_SPAWN_START_INDEX;
+                index < (number + 1) * MobDefMap.STAGE_LOC_SIZE; index++) {
 
             int priority = (index - stageIndex) / 10;
 

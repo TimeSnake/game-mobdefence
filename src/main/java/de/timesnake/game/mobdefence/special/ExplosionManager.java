@@ -43,7 +43,9 @@ public class ExplosionManager implements Listener {
     public void onEntityExplode(EntityExplodeEvent e) {
         if (e.getEntityType().equals(EntityType.CREEPER)) {
             e.setYield(0);
-            e.blockList().removeIf(block -> block.getY() < e.getLocation().getY() || !EXPLODEABLE.contains(block.getType()));
+            e.blockList().removeIf(
+                    block -> block.getY() < e.getLocation().getY() || !EXPLODEABLE.contains(
+                            block.getType()));
 
             MobDefServer.getMap().getHeightMapManager().updateMaps();
         }
@@ -53,7 +55,8 @@ public class ExplosionManager implements Listener {
     public void onBlockDrop(BlockDropItemEvent e) {
         Material type = e.getBlock().getType();
 
-        if (!(BlockCheck.NORMAL_BREAKABLE.isTagged(type) || BlockCheck.HIGH_BREAKABLE.isTagged(type) || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
+        if (!(BlockCheck.NORMAL_BREAKABLE.isTagged(type) || BlockCheck.HIGH_BREAKABLE.isTagged(type)
+                || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
             e.setCancelled(true);
         }
     }

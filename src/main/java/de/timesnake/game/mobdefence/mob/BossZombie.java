@@ -41,10 +41,12 @@ public class BossZombie extends MobDefMob<ExZombie> {
 
         this.entity = new ExZombie(world, false, false);
 
-        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.8, false, BlockCheck.BREAKABLE_MATERIALS);
+        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.8, false,
+                BlockCheck.BREAKABLE_MATERIALS);
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalZombieAttack(1.1, false));
-        this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1, breakBlock, BREAK_LEVEL));
+        this.entity.addPathfinderGoal(2,
+                getCorePathfinder(this.getMapType(), 1, breakBlock, BREAK_LEVEL));
 
         this.entity.addPathfinderGoal(2, breakBlock);
         this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.8));
@@ -54,17 +56,21 @@ public class BossZombie extends MobDefMob<ExZombie> {
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
-                    true, 16D));
+            this.entity.addPathfinderGoal(2,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
+                            true, 16D));
         }
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
+        this.entity.addPathfinderGoal(3,
+                new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
         for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
-                    true, 16D));
+            this.entity.addPathfinderGoal(3,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
+                            true, 16D));
         }
 
-        this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalSpawnArmy(de.timesnake.library.entities.entity.bukkit.Zombie.class, 4, 10 * 20) {
+        this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalSpawnArmy(
+                de.timesnake.library.entities.entity.bukkit.Zombie.class, 4, 10 * 20) {
             @Override
             public List<? extends Mob> getArmee(Mob entity) {
                 List<ExZombie> zombies = new ArrayList<>();
@@ -95,7 +101,8 @@ public class BossZombie extends MobDefMob<ExZombie> {
         this.entity.getBukkitAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
         this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(5);
         this.entity.getBukkitAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(5);
-        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(Math.sqrt(this.currentWave) * 6);
+        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+                .setBaseValue(Math.sqrt(this.currentWave) * 6);
         this.entity.getBukkitAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS).setBaseValue(0.2);
 
         this.entity.setMaxHealth(this.currentWave * 100);

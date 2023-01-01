@@ -69,7 +69,8 @@ public class LevelType {
         }
 
         if (nextLevel == null) {
-            this.displayItem.setLore("§fLevel: §2" + this.level, "", "§7Next Level: §cmax level reached", "");
+            this.displayItem.setLore("§fLevel: §2" + this.level, "",
+                    "§7Next Level: §cmax level reached", "");
         } else {
             if (this.conflictingTypes.size() > 0) {
                 this.displayItem.setLore("§7Level: §2" + this.level, "",
@@ -125,7 +126,8 @@ public class LevelType {
         }
 
         if (this.level == this.maxLevel) {
-            user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Max level reached", ExTextColor.WARNING));
+            user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                    Component.text("Max level reached", ExTextColor.WARNING));
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return false;
         }
@@ -133,7 +135,8 @@ public class LevelType {
         Level<?> nextLevel = this.levels.get(this.level + 1);
 
         if (nextLevel == null) {
-            user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Nothing to level up", ExTextColor.WARNING));
+            user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                    Component.text("Nothing to level up", ExTextColor.WARNING));
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return false;
         }
@@ -147,7 +150,8 @@ public class LevelType {
         }
 
         if (!user.containsAtLeast(nextLevel.getPrice().asItem())) {
-            user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Not enough money", ExTextColor.WARNING));
+            user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                    Component.text("Not enough money", ExTextColor.WARNING));
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return false;
         }
@@ -268,7 +272,8 @@ public class LevelType {
             return this.addLvl(price, this.currentDescription, function);
         }
 
-        public Builder addLvl(Price price, String description, Function<ExItemStack, ExItemStack> function) {
+        public Builder addLvl(Price price, String description,
+                Function<ExItemStack, ExItemStack> function) {
             this.levels.add(new Level.ItemLevel(this.currentLevelItemStack, ++this.levelCounter,
                     price, description, function));
             return this;
@@ -278,7 +283,8 @@ public class LevelType {
             if (this.currentEnchantment == null) {
                 throw new BuilderNotFullyInstantiatedException("enchantment type is not set");
             }
-            return this.addLvl(price, (ExItemStack i) -> i.addExEnchantment(this.currentEnchantment, level));
+            return this.addLvl(price,
+                    (ExItemStack i) -> i.addExEnchantment(this.currentEnchantment, level));
         }
 
         public Builder addMaterialLvl(Price price, String description, Material material) {
@@ -286,27 +292,33 @@ public class LevelType {
         }
 
         public <N extends Number> Builder addLoreLvl(Price price, N number) {
-            return this.addLoreLvl(price, this.currentDescription, this.currentLoreName, this.currentLoreLine,
+            return this.addLoreLvl(price, this.currentDescription, this.currentLoreName,
+                    this.currentLoreLine,
                     this.currentDecimalDigits, this.currentUnit, number);
         }
 
-        public <N extends Number> Builder addLoreLvl(Price price, String description, String loreName,
-                                                     int loreLine, int decimalDigits, String unit, N number) {
-            this.levels.add(new Level.LoreNumberLevel<>(this.currentLevelItemStack, loreName, loreLine,
-                    decimalDigits, unit, ++this.levelCounter, price, description, number));
+        public <N extends Number> Builder addLoreLvl(Price price, String description,
+                String loreName,
+                int loreLine, int decimalDigits, String unit, N number) {
+            this.levels.add(
+                    new Level.LoreNumberLevel<>(this.currentLevelItemStack, loreName, loreLine,
+                            decimalDigits, unit, ++this.levelCounter, price, description, number));
             return this;
         }
 
-        public <N extends Number> Builder addLoreLvl(Price price, N number, Consumer<MobDefUser> consumer) {
-            this.levels.add(new Level.LoreNumberLevel<>(this.currentLevelItemStack, this.currentLoreName,
-                    this.currentLoreLine, this.currentDecimalDigits, this.currentUnit, ++this.levelCounter, price,
-                    this.currentDescription, number) {
-                @Override
-                public void run(MobDefUser user) {
-                    super.run(user);
-                    consumer.accept(user);
-                }
-            });
+        public <N extends Number> Builder addLoreLvl(Price price, N number,
+                Consumer<MobDefUser> consumer) {
+            this.levels.add(
+                    new Level.LoreNumberLevel<>(this.currentLevelItemStack, this.currentLoreName,
+                            this.currentLoreLine, this.currentDecimalDigits, this.currentUnit,
+                            ++this.levelCounter, price,
+                            this.currentDescription, number) {
+                        @Override
+                        public void run(MobDefUser user) {
+                            super.run(user);
+                            consumer.accept(user);
+                        }
+                    });
             return this;
         }
 
@@ -339,7 +351,8 @@ public class LevelType {
             cloned.displayItem = displayItem != null ? displayItem.cloneWithId() : null;
             cloned.baseLevel = baseLevel;
             cloned.levelCounter = levelCounter;
-            cloned.currentLevelItemStack = currentLevelItemStack != null ? currentLevelItemStack.cloneWithId() : null;
+            cloned.currentLevelItemStack =
+                    currentLevelItemStack != null ? currentLevelItemStack.cloneWithId() : null;
             cloned.currentDescription = currentDescription;
             cloned.currentEnchantment = currentEnchantment;
             cloned.currentLoreName = currentLoreName;
@@ -349,7 +362,8 @@ public class LevelType {
             return cloned;
         }
 
-        public <V extends Number> V getNumberFromLore(ExItemStack item, Function<String, V> valueParser) {
+        public <V extends Number> V getNumberFromLore(ExItemStack item,
+                Function<String, V> valueParser) {
             return valueParser.apply(this.getNumberFromLore(item));
         }
 

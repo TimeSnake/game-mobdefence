@@ -41,23 +41,31 @@ public class Zombie extends MeleeMob<ExZombie> {
 
         this.entity = new ExZombie(world, false, false);
 
-        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false, BlockCheck.BREAKABLE_MATERIALS);
+        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false,
+                BlockCheck.BREAKABLE_MATERIALS);
 
         double speed;
-        if (this.currentWave > 13) speed = 1.3;
-        else if (this.currentWave > 10) speed = 1.2;
-        else if (this.currentWave > 5) speed = 1.1;
-        else speed = 1;
+        if (this.currentWave > 13) {
+            speed = 1.3;
+        } else if (this.currentWave > 10) {
+            speed = 1.2;
+        } else if (this.currentWave > 5) {
+            speed = 1.1;
+        } else {
+            speed = 1;
+        }
 
         double random = Math.random();
 
         if (random < RUNNER_CHANCE) {
-            this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), speed + 0.2, breakBlock,
-                    BREAK_LEVEL));
+            this.entity.addPathfinderGoal(2,
+                    getCorePathfinder(this.getMapType(), speed + 0.2, breakBlock,
+                            BREAK_LEVEL));
             this.entity.addPathfinderGoal(3, new ExPathfinderGoalZombieAttack(speed + 0.2, false));
         } else {
             this.entity.addPathfinderGoal(1, new ExPathfinderGoalZombieAttack(speed, false));
-            this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), speed, breakBlock, BREAK_LEVEL));
+            this.entity.addPathfinderGoal(2,
+                    getCorePathfinder(this.getMapType(), speed, breakBlock, BREAK_LEVEL));
         }
 
         this.entity.addPathfinderGoal(2, breakBlock);
@@ -68,16 +76,19 @@ public class Zombie extends MeleeMob<ExZombie> {
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
-                    true, 16D));
+            this.entity.addPathfinderGoal(2,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
+                            true, 16D));
         }
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class,
-                true,
-                true, 1D));
+        this.entity.addPathfinderGoal(3,
+                new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class,
+                        true,
+                        true, 1D));
 
         for (Class<? extends Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
-                    true, 16D));
+            this.entity.addPathfinderGoal(3,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, true,
+                            true, 16D));
         }
 
         if (this.currentWave > 11) {
@@ -88,7 +99,8 @@ public class Zombie extends MeleeMob<ExZombie> {
             this.entity.setHealth(40);
         }
 
-        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2 + this.currentWave / 5. * MobManager.MOB_DAMAGE_MULTIPLIER);
+        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+                .setBaseValue(2 + this.currentWave / 5. * MobManager.MOB_DAMAGE_MULTIPLIER);
 
     }
 }

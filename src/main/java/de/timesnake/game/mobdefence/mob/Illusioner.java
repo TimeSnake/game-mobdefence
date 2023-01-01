@@ -38,33 +38,42 @@ public class Illusioner extends MobDefMob<ExIllusioner> {
     public void spawn() {
         World world = MobDefServer.getMap().getWorld().getBukkitWorld();
 
-        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false, BlockCheck.BREAKABLE_MATERIALS);
+        ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false,
+                BlockCheck.BREAKABLE_MATERIALS);
 
         this.entity = new ExIllusioner(world, false, false);
 
         this.entity.addPathfinderGoal(0, new ExPathfinderGoalFloat());
         this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalIllagerWizardNoneSpell());
-        this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalIllagerIllusionerCastSpellDisapear());
-        this.entity.addPathfinderGoal(5, new ExCustomPathfinderGoalIllagerIllusionerCastSpellBlindness());
+        this.entity.addPathfinderGoal(4,
+                new ExCustomPathfinderGoalIllagerIllusionerCastSpellDisapear());
+        this.entity.addPathfinderGoal(5,
+                new ExCustomPathfinderGoalIllagerIllusionerCastSpellBlindness());
         this.entity.addPathfinderGoal(6, new ExPathfinderGoalBowShoot(0.5D, 20, 15.0F));
-        this.entity.addPathfinderGoal(7, getCorePathfinder(this.getMapType(), 1, breakBlock, BREAK_LEVEL));
+        this.entity.addPathfinderGoal(7,
+                getCorePathfinder(this.getMapType(), 1, breakBlock, BREAK_LEVEL));
         this.entity.addPathfinderGoal(8, new ExPathfinderGoalRandomStroll(0.6D));
-        this.entity.addPathfinderGoal(9, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 3.0F, 1.0F));
+        this.entity.addPathfinderGoal(9,
+                new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 3.0F, 1.0F));
         this.entity.addPathfinderGoal(10, new ExPathfinderGoalLookAtPlayer(Mob.class, 8.0F));
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(2,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
+        this.entity.addPathfinderGoal(3,
+                new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(3,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
         this.entity.setSlot(ExEnumItemSlot.MAIN_HAND,
-                new ExItemStack(Material.CROSSBOW).addExEnchantment(Enchantment.QUICK_CHARGE, 3).addExEnchantment(Enchantment.ARROW_DAMAGE, 2));
+                new ExItemStack(Material.CROSSBOW).addExEnchantment(Enchantment.QUICK_CHARGE, 3)
+                        .addExEnchantment(Enchantment.ARROW_DAMAGE, 2));
 
         this.entity.setMaxHealth(80);
         this.entity.setHealth(80);

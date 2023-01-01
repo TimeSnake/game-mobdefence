@@ -34,7 +34,8 @@ import org.bukkit.util.Vector;
 
 public class RocketCrossBow extends SpecialWeapon implements Listener {
 
-    private static final ExItemStack ITEM = new ExItemStack(Material.CROSSBOW).enchant().unbreakable()
+    private static final ExItemStack ITEM = new ExItemStack(Material.CROSSBOW).enchant()
+            .unbreakable()
             .setLore("§cAim on block or entity to target nearby entities")
             .addExEnchantment(Enchantment.ARROW_INFINITE, 1)
             .immutable();
@@ -112,7 +113,6 @@ public class RocketCrossBow extends SpecialWeapon implements Listener {
         e.setCancelled(true);
         e.setConsumeItem(false);
 
-
         int multiShot = MULTISHOT_LEVELS.getNumberFromLore(item, Integer::valueOf);
         int damage = DAMAGE_LEVELS.getNumberFromLore(item, Integer::valueOf);
         // int piercing = Integer.parseInt(PIERCING_LEVELS_LEVELS.getValueFromLore(item.getLore()));
@@ -132,8 +132,9 @@ public class RocketCrossBow extends SpecialWeapon implements Listener {
     private static class FollowerArrow extends PiercingBullet {
 
         public FollowerArrow(User user, double speed, Double damage, int piercing,
-                             Collection<LivingEntity> hitTargets) {
-            super(user, user.getEyeLocation().add(0, -0.5, 0), TargetFinder.NEAREST_ATTACKER, speed, damage, piercing
+                Collection<LivingEntity> hitTargets) {
+            super(user, user.getEyeLocation().add(0, -0.5, 0), TargetFinder.NEAREST_ATTACKER, speed,
+                    damage, piercing
                     , hitTargets);
         }
 

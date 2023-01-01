@@ -36,7 +36,8 @@ public class CaveSpider extends MobDefMob<ExCaveSpider> {
         this.entity = new ExCaveSpider(world, false, false);
 
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalFloat());
-        this.entity.addPathfinderGoal(2, getCorePathfinder(this.getMapType(), 1, null, BREAK_LEVEL));
+        this.entity.addPathfinderGoal(2,
+                getCorePathfinder(this.getMapType(), 1, null, BREAK_LEVEL));
         this.entity.addPathfinderGoal(3, new ExPathfinderGoalLeapAtTarget(0.4F));
         this.entity.addPathfinderGoal(4, new ExCustomPathfinderGoalSpiderMeleeAttack(1));
         this.entity.addPathfinderGoal(5, new ExPathfinderGoalRandomStrollLand(0.8D));
@@ -46,12 +47,15 @@ public class CaveSpider extends MobDefMob<ExCaveSpider> {
         this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(2,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
-        this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
+        this.entity.addPathfinderGoal(3,
+                new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
 
         for (Class<? extends Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
+            this.entity.addPathfinderGoal(3,
+                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }
 
         if (this.currentWave > 13) {
@@ -62,7 +66,8 @@ public class CaveSpider extends MobDefMob<ExCaveSpider> {
             this.entity.setHealth(20);
         }
 
-        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobManager.MOB_DAMAGE_MULTIPLIER);
+        this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(
+                2 + (this.currentWave - this.wave) / 5. * MobManager.MOB_DAMAGE_MULTIPLIER);
 
         super.spawn();
     }

@@ -69,9 +69,12 @@ public class HeightMapManager implements Listener {
 
     public enum MapType {
         NORMAL(List.of(BlockCheck.WALK_IN, new BlockCheck.HighBlockBreak(MobDefMob.BREAK_LEVEL,
-                BlockCheck.HIGH_BREAKABLE, BlockCheck.NORMAL_BREAKABLE)), List.of(BlockCheck.ON_SOLID_1H),
-                List.of(new BlockCheck.DiagonalBlocked(MobDefMob.BREAK_LEVEL, BlockCheck.HIGH_BREAKABLE,
-                        BlockCheck.NORMAL_BREAKABLE)), List.of(new BlockCheck.FloorFenceWallBlocked())),
+                BlockCheck.HIGH_BREAKABLE, BlockCheck.NORMAL_BREAKABLE)),
+                List.of(BlockCheck.ON_SOLID_1H),
+                List.of(new BlockCheck.DiagonalBlocked(MobDefMob.BREAK_LEVEL,
+                        BlockCheck.HIGH_BREAKABLE,
+                        BlockCheck.NORMAL_BREAKABLE)),
+                List.of(new BlockCheck.FloorFenceWallBlocked())),
 
         /*SMALL(List.of(BlockCheck.WALK_IN_SMALL),
                 List.of(BlockCheck.ON_SOLID_1H)),

@@ -67,7 +67,8 @@ public class UserManager implements Listener, UserInventoryInteractListener {
             Material.GOLDEN_APPLE, Material.OAK_FENCE, Material.OAK_PLANKS, Material.IRON_BARS,
             Material.COBBLESTONE_WALL, Material.OAK_SLAB);
 
-    private static final List<Material> REMOVED_DROPS = List.of(Material.GLASS_BOTTLE, Material.BUCKET);
+    private static final List<Material> REMOVED_DROPS = List.of(Material.GLASS_BOTTLE,
+            Material.BUCKET);
 
     private static final double BLOCK_VILLAGER_DISTANCE = 3;
 
@@ -171,7 +172,8 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
         Material type = e.getBlock().getType();
 
-        if (!(BlockCheck.NORMAL_BREAKABLE.isTagged(type) || BlockCheck.HIGH_BREAKABLE.isTagged(type) || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
+        if (!(BlockCheck.NORMAL_BREAKABLE.isTagged(type) || BlockCheck.HIGH_BREAKABLE.isTagged(type)
+                || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
             e.setCancelled(true);
         } else {
             ExItemStack item = MobDefKit.BLOCK_ITEM_BY_TYPE.get(type);
@@ -181,7 +183,8 @@ public class UserManager implements Listener, UserInventoryInteractListener {
             }
 
             e.setDropItems(false);
-            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation().add(0.5, 0, 0.5), item);
+            e.getBlock().getWorld()
+                    .dropItemNaturally(e.getBlock().getLocation().add(0.5, 0, 0.5), item);
         }
     }
 
@@ -196,14 +199,17 @@ public class UserManager implements Listener, UserInventoryInteractListener {
             return;
         }
 
-        if (!BlockCheck.NORMAL_BREAKABLE.isTagged(type) && !BlockCheck.HIGH_BREAKABLE.isTagged(type) && !TrapManager.TRAP_MATERIALS.contains(type) && !type.equals(Material.LADDER)) {
+        if (!BlockCheck.NORMAL_BREAKABLE.isTagged(type) && !BlockCheck.HIGH_BREAKABLE.isTagged(type)
+                && !TrapManager.TRAP_MATERIALS.contains(type) && !type.equals(Material.LADDER)) {
             e.setCancelled(true);
             return;
         }
 
-        if (MobDefServer.getMap().getCoreLocation().distanceSquared(blockPlaced.getLocation()) < BLOCK_VILLAGER_DISTANCE * BLOCK_VILLAGER_DISTANCE) {
+        if (MobDefServer.getMap().getCoreLocation().distanceSquared(blockPlaced.getLocation())
+                < BLOCK_VILLAGER_DISTANCE * BLOCK_VILLAGER_DISTANCE) {
             e.setCancelled(true);
-            e.getUser().sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("You can not place a block here", ExTextColor.WARNING));
+            e.getUser().sendPluginMessage(Plugin.MOB_DEFENCE,
+                    Component.text("You can not place a block here", ExTextColor.WARNING));
             return;
         }
 
@@ -225,7 +231,8 @@ public class UserManager implements Listener, UserInventoryInteractListener {
                 blockPlaced.getWorld().spawnFallingBlock(blockPlaced.getLocation().add(0.5, 0, 0.5),
                         blockPlaced.getBlockData());
 
-                Server.runTaskLaterSynchrony(() -> blockPlaced.setType(Material.AIR), 1, GameMobDefence.getPlugin());
+                Server.runTaskLaterSynchrony(() -> blockPlaced.setType(Material.AIR), 1,
+                        GameMobDefence.getPlugin());
             }, 1, GameMobDefence.getPlugin());
 
         }
@@ -254,14 +261,16 @@ public class UserManager implements Listener, UserInventoryInteractListener {
             }
         }
 
-        if (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player) {
+        if (e.getDamager() instanceof Projectile
+                && ((Projectile) e.getDamager()).getShooter() instanceof Player) {
             if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
                 e.setCancelled(true);
                 e.setDamage(0);
             }
         }
 
-        if (e.getDamager().getType().equals(EntityType.CREEPER) && MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
+        if (e.getDamager().getType().equals(EntityType.CREEPER)
+                && MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
             e.setDamage(0);
             e.setCancelled(true);
         }
@@ -269,7 +278,8 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
     @EventHandler
     public void onEntityDamageByBlock(EntityDamageByBlockEvent e) {
-        if (e.getDamager() == null && (e.getEntityType().equals(EntityType.PLAYER) || e.getEntityType().equals(EntityType.VILLAGER))) {
+        if (e.getDamager() == null && (e.getEntityType().equals(EntityType.PLAYER)
+                || e.getEntityType().equals(EntityType.VILLAGER))) {
             e.setDamage(0);
             e.setCancelled(true);
 
@@ -311,7 +321,8 @@ public class UserManager implements Listener, UserInventoryInteractListener {
 
         InventoryAction action = e.getAction();
 
-        if (action.equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) && e.getView().getTopInventory().equals(((MobDefUser) user).getShop().getInventory())) {
+        if (action.equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) && e.getView().getTopInventory()
+                .equals(((MobDefUser) user).getShop().getInventory())) {
             e.setResult(Event.Result.DENY);
             e.setCancelled(true);
         }
@@ -352,13 +363,17 @@ public class UserManager implements Listener, UserInventoryInteractListener {
         if (item.equals(DEBUG_TOOL)) {
             if (user.getPlayer().isSneaking()) {
                 HeightBlock block =
-                        MobDefServer.getMap().getHeightMapManager().getMap(HeightMapManager.MapType.WALL_FINDER).getHeightBlock(user.getExLocation());
+                        MobDefServer.getMap().getHeightMapManager()
+                                .getMap(HeightMapManager.MapType.WALL_FINDER)
+                                .getHeightBlock(user.getExLocation());
                 this.sendHeightLevel(user, block);
                 return;
             }
 
             HeightBlock block =
-                    MobDefServer.getMap().getHeightMapManager().getMap(HeightMapManager.MapType.NORMAL).getHeightBlock(user.getExLocation());
+                    MobDefServer.getMap().getHeightMapManager()
+                            .getMap(HeightMapManager.MapType.NORMAL)
+                            .getHeightBlock(user.getExLocation());
             this.sendHeightLevel(user, block);
         } else if (MobDefKit.KELP.equals(item)) {
             event.setCancelled(true);
@@ -401,11 +416,15 @@ public class UserManager implements Listener, UserInventoryInteractListener {
             HeightBlock next = block.getNext();
             if (next != null) {
                 Location loc = next.getLocation();
-                user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Next: ", ExTextColor.PERSONAL)
-                        .append(Component.text(loc.getX() + " " + loc.getY() + " " + loc.getZ(), ExTextColor.VALUE)));
+                user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                        Component.text("Next: ", ExTextColor.PERSONAL)
+                                .append(Component.text(
+                                        loc.getX() + " " + loc.getY() + " " + loc.getZ(),
+                                        ExTextColor.VALUE)));
             } else {
-                user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Next:", ExTextColor.PERSONAL)
-                        .append(Component.text(" null", ExTextColor.VALUE)));
+                user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                        Component.text("Next:", ExTextColor.PERSONAL)
+                                .append(Component.text(" null", ExTextColor.VALUE)));
             }
         }
     }
