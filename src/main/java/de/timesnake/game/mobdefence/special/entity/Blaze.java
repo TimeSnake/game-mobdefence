@@ -2,7 +2,7 @@
  * Copyright (C) 2023 timesnake
  */
 
-package de.timesnake.game.mobdefence.special.weapon;
+package de.timesnake.game.mobdefence.special.entity;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
@@ -10,7 +10,6 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.Trade;
-import de.timesnake.game.mobdefence.special.BlockSpawner;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExBlaze;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
@@ -51,7 +50,7 @@ public class Blaze extends BlockSpawner implements Listener {
         blaze.addPathfinderGoal(1,
                 new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
 
-        for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
+        for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTITY_CLASSES) {
             blaze.addPathfinderGoal(2,
                     new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
         }

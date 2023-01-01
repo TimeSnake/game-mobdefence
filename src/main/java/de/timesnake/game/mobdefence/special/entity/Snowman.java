@@ -2,7 +2,7 @@
  * Copyright (C) 2023 timesnake
  */
 
-package de.timesnake.game.mobdefence.special.weapon;
+package de.timesnake.game.mobdefence.special.entity;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
@@ -10,7 +10,6 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.Trade;
-import de.timesnake.game.mobdefence.special.BlockSpawner;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExSnowman;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
@@ -59,7 +58,7 @@ public class Snowman extends BlockSpawner implements Listener {
         snowman.addPathfinderGoal(1,
                 new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
 
-        for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTTIY_ENTITY_CLASSES) {
+        for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTITY_CLASSES) {
             snowman.addPathfinderGoal(2,
                     new ExPathfinderGoalNearestAttackableTarget(entityClass, true, false));
         }

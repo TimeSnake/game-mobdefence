@@ -13,6 +13,7 @@ import de.timesnake.library.entities.entity.bukkit.ExSkeleton;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.entities.entity.extension.Monster;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalAvoidTarget;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalBowShoot;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
@@ -50,6 +51,8 @@ public class Skeleton extends ArmorMob<ExSkeleton> {
         this.entity.addPathfinderGoal(2,
                 getCorePathfinder(this.getMapType(), 1, breakBlock, BREAK_LEVEL));
         this.entity.addPathfinderGoal(2, breakBlock);
+        this.entity.addPathfinderGoal(2,
+                new ExPathfinderGoalAvoidTarget(HumanEntity.class, 5, 1, 1));
         this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.9D));
         this.entity.addPathfinderGoal(4, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
         this.entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
