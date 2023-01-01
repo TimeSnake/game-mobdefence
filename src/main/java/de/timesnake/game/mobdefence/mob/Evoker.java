@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.mob;
@@ -12,8 +12,16 @@ import de.timesnake.library.entities.entity.bukkit.ExEvoker;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.*;
-import de.timesnake.library.entities.pathfinder.custom.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalAvoidTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStroll;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalEvokerCastSpellFangs;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalEvokerCastSpellVex;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalEvokerCastSpellWololo;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
 import org.bukkit.World;
 
 public class Evoker extends MobDefMob<ExEvoker> {

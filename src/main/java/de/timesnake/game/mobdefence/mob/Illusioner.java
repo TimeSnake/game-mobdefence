@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.mob;
@@ -13,8 +13,16 @@ import de.timesnake.library.entities.entity.bukkit.ExIllusioner;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.*;
-import de.timesnake.library.entities.pathfinder.custom.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalBowShoot;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStroll;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalIllagerIllusionerCastSpellBlindness;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalIllagerIllusionerCastSpellDisapear;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalIllagerWizardNoneSpell;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
 import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
 import org.bukkit.Material;
 import org.bukkit.World;

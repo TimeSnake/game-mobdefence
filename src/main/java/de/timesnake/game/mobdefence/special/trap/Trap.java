@@ -1,15 +1,14 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special.trap;
 
 import de.timesnake.basic.bukkit.util.world.ExBlock;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
+import java.util.Collection;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
-
-import java.util.Collection;
 
 public abstract class Trap {
 

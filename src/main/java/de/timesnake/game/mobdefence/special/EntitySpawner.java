@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special;
@@ -14,12 +14,11 @@ import de.timesnake.game.mobdefence.special.weapon.SpecialWeapon;
 import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.extension.Entity;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Location;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Location;
 
 public abstract class EntitySpawner extends SpecialWeapon implements UserInventoryInteractListener {
 

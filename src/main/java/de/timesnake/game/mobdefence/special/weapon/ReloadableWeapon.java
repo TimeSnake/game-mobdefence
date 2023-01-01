@@ -1,19 +1,5 @@
 /*
- * workspace.game-mobdefence.main
- * Copyright (C) 2022 timesnake
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special.weapon;
@@ -41,7 +27,7 @@ public abstract class ReloadableWeapon extends CooldownWeapon {
                 .damageItem()
                 .delay(this.getCooldown(item));
 
-        this.reloadableItemByUser.put(user, new ReloadableItem(builder) {
+        ReloadableItem reloadableItem = new ReloadableItem(builder) {
             @Override
             public void reloaded() {
                 super.reloaded();
@@ -55,7 +41,11 @@ public abstract class ReloadableWeapon extends CooldownWeapon {
                 ReloadableWeapon.this.update((MobDefUser) this.user, this.item,
                         this.currentDelaySec);
             }
-        });
+        };
+
+        reloadableItem.reload();
+
+        this.reloadableItemByUser.put(user, reloadableItem);
     }
 
     public void update(MobDefUser user, ExItemStack item, int delay) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.map;
@@ -13,9 +13,8 @@ import de.timesnake.database.util.game.DbMap;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.mob.map.HeightBlock;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import org.bukkit.GameRule;
-
 import java.util.HashMap;
+import org.bukkit.GameRule;
 
 public class MobDefMap extends Map implements ResetableMap {
 

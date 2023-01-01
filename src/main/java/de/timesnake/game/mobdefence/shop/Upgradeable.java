@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.shop;
@@ -9,13 +9,19 @@ import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import de.timesnake.library.basic.util.MultiKeyMap;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import org.bukkit.Material;
-
-import java.util.*;
 
 public abstract class Upgradeable {
 
-    public static final ExItemStack PLACEHOLDER = new ExItemStack(Material.GRAY_STAINED_GLASS_PANE, "")
+    public static final ExItemStack PLACEHOLDER = new ExItemStack(Material.GRAY_STAINED_GLASS_PANE,
+            "")
             .setMoveable(false).setDropable(false).immutable();
 
     protected final String name;
@@ -29,7 +35,8 @@ public abstract class Upgradeable {
         this.displayItem = builder.displayItem.cloneWithId();
         this.displayItem.setDisplayName("§c" + this.name);
 
-        for (LevelType levelType : builder.levelTypeBuilders.stream().map(LevelType.Builder::build).toList()) {
+        for (LevelType levelType : builder.levelTypeBuilders.stream().map(LevelType.Builder::build)
+                .toList()) {
             levelType.setConflictingTypes(builder.conflictingTypes.get(levelType.getName()));
             this.levelType.put(levelType.getDisplayItem(), levelType.getName(), levelType);
         }
@@ -48,13 +55,14 @@ public abstract class Upgradeable {
         inv.setItemStack(slot++, this.getDisplayItem());
         inv.setItemStack(slot++, PLACEHOLDER);
 
-        for (Iterator<LevelType> iterator = this.levelType.values().iterator(); slot % 9 != 8; slot++) {
+        for (Iterator<LevelType> iterator = this.levelType.values().iterator(); slot % 9 != 8;
+                slot++) {
             if (iterator.hasNext()) {
                 LevelType levelType = iterator.next();
                 inv.setItemStack(slot, levelType.getDisplayItem());
                 levelType.getDisplayItem().setSlot(slot);
+                inv.setItemStack(slot, levelType.getDisplayItem());
             }
-            inv.setItemStack(slot, PLACEHOLDER);
 
         }
     }
@@ -111,9 +119,12 @@ public abstract class Upgradeable {
             }
         }
 
-        public Builder addConflictToLvlType(LevelType.Builder levelTypeBuilder1, LevelType.Builder levelTypeBuilder2) {
-            this.conflictingTypes.computeIfAbsent(levelTypeBuilder1.name, k -> new HashSet<>()).add(levelTypeBuilder2.name);
-            this.conflictingTypes.computeIfAbsent(levelTypeBuilder2.name, k -> new HashSet<>()).add(levelTypeBuilder1.name);
+        public Builder addConflictToLvlType(LevelType.Builder levelTypeBuilder1,
+                LevelType.Builder levelTypeBuilder2) {
+            this.conflictingTypes.computeIfAbsent(levelTypeBuilder1.name, k -> new HashSet<>())
+                    .add(levelTypeBuilder2.name);
+            this.conflictingTypes.computeIfAbsent(levelTypeBuilder2.name, k -> new HashSet<>())
+                    .add(levelTypeBuilder1.name);
             return this;
         }
 

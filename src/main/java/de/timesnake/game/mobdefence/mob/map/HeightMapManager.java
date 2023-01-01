@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.mob.map;
@@ -9,13 +9,12 @@ import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.map.MobDefMap;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
-import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitTask;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitTask;
 
 public class HeightMapManager implements Listener {
 

@@ -1,13 +1,12 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special.trap;
 
 import de.timesnake.basic.bukkit.util.world.ExBlock;
-import org.bukkit.entity.LivingEntity;
-
 import java.util.Collection;
+import org.bukkit.entity.LivingEntity;
 
 public abstract class MultipleRangedTrap extends RangedTrap {
 

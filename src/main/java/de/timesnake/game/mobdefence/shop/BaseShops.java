@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.shop;
@@ -11,10 +11,9 @@ import de.timesnake.game.mobdefence.special.trap.TrapMaker;
 import de.timesnake.game.mobdefence.special.weapon.WaterBottle;
 import de.timesnake.game.mobdefence.user.ReviveManager;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
-import org.bukkit.Material;
-
 import java.util.HashMap;
 import java.util.List;
+import org.bukkit.Material;
 
 public class BaseShops {
 

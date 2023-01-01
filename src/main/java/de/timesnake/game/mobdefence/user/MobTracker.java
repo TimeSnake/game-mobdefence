@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.user;
@@ -11,11 +11,10 @@ import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserInventoryInteractListener;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.basic.util.chat.ExTextColor;
+import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-
-import java.util.Collection;
 
 public class MobTracker implements UserInventoryInteractListener {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special;
@@ -18,13 +18,12 @@ import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalPet;
+import java.util.ArrayList;
+import java.util.List;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Sheep;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SheepSpawner extends EntitySpawner {
 
