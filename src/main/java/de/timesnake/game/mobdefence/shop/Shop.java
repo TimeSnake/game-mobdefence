@@ -13,15 +13,19 @@ import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import de.timesnake.library.basic.util.chat.ExTextColor;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.*;
-import java.util.function.Supplier;
 
 public class Shop implements UserInventoryClickListener, InventoryHolder {
 
@@ -42,10 +46,12 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
                 .map(Trade.Builder::build)
                 .forEach(t -> this.tradesByDisplayItem.put(t.getDisplayItem(), t));
 
-        List<Upgradeable> upgradeables = builder.upgradeableBuilders.stream().map(Upgradeable.Builder::build).toList();
+        List<Upgradeable> upgradeables = builder.upgradeableBuilders.stream()
+                .map(Upgradeable.Builder::build).toList();
 
         if (this.getTrades().isEmpty()) {
-            this.inv = new ExInventory(upgradeables.size() * 9 + 18, Component.text(this.name), this);
+            this.inv = new ExInventory(upgradeables.size() * 9 + 18, Component.text(this.name),
+                    this);
 
             int itemSlot = 10;
             for (Upgradeable levelItem : upgradeables) {
@@ -55,7 +61,8 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
             }
         } else if (upgradeables.isEmpty()) {
             this.inv = new ExInventory(this.getTrades().stream()
-                    .max(Comparator.comparingInt(Trade::getSlot)).get().getSlot() + 9, Component.text(this.name), this);
+                    .max(Comparator.comparingInt(Trade::getSlot)).get().getSlot() + 9,
+                    Component.text(this.name), this);
 
             for (Trade trade : this.getTrades()) {
                 this.inv.setItemStack(trade.getSlot(), trade.getDisplayItem());
@@ -74,6 +81,7 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
             itemSlot = itemSlot < 4 * 9 ? itemSlot + 18 : itemSlot + 9;
 
             for (Trade trade : this.getTrades()) {
+                trade.getDisplayItem().setSlot(itemSlot);
                 this.inv.setItemStack(itemSlot, trade.getDisplayItem());
                 itemSlot++;
             }
@@ -129,13 +137,15 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
         }
 
         if (!trade.isRebuyable() && trade.isBought()) {
-            user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("You already bought this item", ExTextColor.WARNING));
+            user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                    Component.text("You already bought this item", ExTextColor.WARNING));
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return;
         }
 
         if (!user.containsAtLeast(trade.getPrice().asItem())) {
-            user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Not enough money", ExTextColor.WARNING));
+            user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                    Component.text("Not enough money", ExTextColor.WARNING));
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return;
         }

@@ -22,13 +22,10 @@ public abstract class BlockSpawner extends SpecialWeapon implements Listener {
 
     protected final EntityType entityType;
 
-    protected final int loreLine;
 
-
-    public BlockSpawner(EntityType type, ExItemStack item, int loreLine) {
+    public BlockSpawner(EntityType type, ExItemStack item) {
         super(item);
         this.entityType = type;
-        this.loreLine = loreLine;
         Server.registerListener(this, GameMobDefence.getPlugin());
     }
 

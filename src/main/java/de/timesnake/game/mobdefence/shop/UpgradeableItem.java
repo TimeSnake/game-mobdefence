@@ -11,12 +11,11 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import de.timesnake.library.basic.util.chat.ExTextColor;
+import java.util.LinkedList;
+import java.util.List;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class UpgradeableItem extends Upgradeable {
 
@@ -78,19 +77,22 @@ public class UpgradeableItem extends Upgradeable {
             if (levelType == null && this.getDisplayItem().equals(item)) {
 
                 if (MobDefServer.getWaveNumber() < this.unlockedAtWave) {
-                    user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("This item is locked until wave ", ExTextColor.WARNING)
-                            .append(Component.text(this.unlockedAtWave, ExTextColor.VALUE))
-                            .append(Component.text(" is completed", ExTextColor.WARNING)));
+                    user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                            Component.text("This item is locked until wave ", ExTextColor.WARNING)
+                                    .append(Component.text(this.unlockedAtWave,
+                                            ExTextColor.VALUE)));
                     return;
                 }
 
                 if (this.bought && this.rebuyable) {
-                    user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("You already bought this item", ExTextColor.WARNING));
+                    user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                            Component.text("You already bought this item", ExTextColor.WARNING));
                     return;
                 }
 
                 if (!user.containsAtLeast(this.buyPrice.asItem())) {
-                    user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Not enough money", ExTextColor.WARNING));
+                    user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                            Component.text("Not enough money", ExTextColor.WARNING));
                     user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
                     return;
                 }
@@ -105,7 +107,8 @@ public class UpgradeableItem extends Upgradeable {
             }
 
             if (!this.bought) {
-                user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("You must buy this item before", ExTextColor.WARNING));
+                user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                        Component.text("You must buy this item before", ExTextColor.WARNING));
                 user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
                 return;
             }
@@ -118,8 +121,9 @@ public class UpgradeableItem extends Upgradeable {
         LevelType conflictingType = this.isConflicting(levelType);
 
         if (conflictingType != null) {
-            user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Conflicting with ", ExTextColor.WARNING)
-                    .append(Component.text(conflictingType.getName(), ExTextColor.VALUE)));
+            user.sendPluginMessage(Plugin.MOB_DEFENCE,
+                    Component.text("Conflicting with ", ExTextColor.WARNING)
+                            .append(Component.text(conflictingType.getName(), ExTextColor.VALUE)));
             user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
             return;
         }
@@ -168,7 +172,8 @@ public class UpgradeableItem extends Upgradeable {
         }
 
         @Override
-        public Builder addConflictToLvlType(LevelType.Builder levelTypeBuilder1, LevelType.Builder levelTypeBuilder2) {
+        public Builder addConflictToLvlType(LevelType.Builder levelTypeBuilder1,
+                LevelType.Builder levelTypeBuilder2) {
             return (Builder) super.addConflictToLvlType(levelTypeBuilder1, levelTypeBuilder2);
         }
 

@@ -180,9 +180,9 @@ public interface KitItems {
             .slot(38);
 
     Trade.Builder IRON_GOLEM = new Trade.Builder()
-            .giveItems(IronGolem.ITEM.cloneWithId().asQuantity(4))
+            .giveItems(IronGolem.ITEM.cloneWithId())
             .price(new Price(12, SILVER), 1, 4)
-            .slot(37);
+            .slot(38);
 
     Trade.Builder REGEN = new Trade.Builder()
             .display(new ExItemStack(Material.BEACON, "§cVillager Regeneration"))

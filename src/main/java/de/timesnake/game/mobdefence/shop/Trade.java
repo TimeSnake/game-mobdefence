@@ -8,8 +8,11 @@ import de.timesnake.basic.bukkit.util.user.ExInventory;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class Trade {
@@ -35,7 +38,8 @@ public class Trade {
 
         this.displayItem.setDisplayName("§6" + this.displayItem.getItemMeta().getDisplayName());
 
-        this.description = Arrays.asList(builder.description != null ? builder.description : new String[0]);
+        this.description = Arrays.asList(
+                builder.description != null ? builder.description : new String[0]);
 
         this.giveConsumer = builder.giveConsumer;
 
@@ -165,7 +169,9 @@ public class Trade {
         }
 
         public Builder giveItems(List<ExItemStack> items) {
-            if (items.isEmpty()) return this;
+            if (items.isEmpty()) {
+                return this;
+            }
             if (this.giveConsumer != null) {
                 this.giveConsumer = u -> {
                     this.giveConsumer.accept(u);
@@ -175,7 +181,7 @@ public class Trade {
                 this.giveConsumer = u -> items.forEach(i -> u.addItem(i.cloneWithId()));
             }
             if (this.displayItem == null) {
-                this.displayItem = items.get(0);
+                this.displayItem = items.get(0).cloneWithId();
             }
             return this;
         }
