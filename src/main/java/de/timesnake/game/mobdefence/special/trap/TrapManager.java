@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special.trap;
@@ -11,6 +11,12 @@ import de.timesnake.basic.bukkit.util.world.ExBlock;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.entity.EntityType;
@@ -19,8 +25,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.util.*;
 
 public class TrapManager implements Listener {
 

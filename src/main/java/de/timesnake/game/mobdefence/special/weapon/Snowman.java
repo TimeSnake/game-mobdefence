@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special.weapon;
@@ -42,7 +42,7 @@ public class Snowman extends BlockSpawner implements Listener {
             .giveItems(Snowman.ITEM.cloneWithId().asQuantity(4));
 
     public Snowman() {
-        super(EntityType.SNOWMAN, ITEM, 1);
+        super(EntityType.SNOWMAN, ITEM);
     }
 
     @Override

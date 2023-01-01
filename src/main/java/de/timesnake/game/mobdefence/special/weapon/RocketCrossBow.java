@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special.weapon;
@@ -16,6 +16,8 @@ import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.game.mobdefence.special.weapon.bullet.BulletManager;
 import de.timesnake.game.mobdefence.special.weapon.bullet.PiercingBullet;
 import de.timesnake.game.mobdefence.special.weapon.bullet.TargetFinder;
+import java.util.Collection;
+import java.util.HashSet;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -29,9 +31,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-
-import java.util.Collection;
-import java.util.HashSet;
 
 public class RocketCrossBow extends SpecialWeapon implements Listener {
 

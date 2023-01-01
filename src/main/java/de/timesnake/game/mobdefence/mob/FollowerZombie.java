@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.mob;
@@ -9,22 +9,32 @@ import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
-import de.timesnake.library.entities.entity.bukkit.*;
+import de.timesnake.library.entities.entity.bukkit.Endermite;
+import de.timesnake.library.entities.entity.bukkit.ExEndermite;
+import de.timesnake.library.entities.entity.bukkit.ExSilverfish;
+import de.timesnake.library.entities.entity.bukkit.ExZombie;
+import de.timesnake.library.entities.entity.bukkit.HumanEntity;
+import de.timesnake.library.entities.entity.bukkit.Silverfish;
 import de.timesnake.library.entities.entity.extension.Mob;
 import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMeleeAttack;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalZombieAttack;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalFollowEntity;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalSpawnArmy;
 import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FollowerZombie extends ArmorMob<ExZombie> {
 

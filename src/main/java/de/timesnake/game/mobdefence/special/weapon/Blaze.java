@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special.weapon;
@@ -35,7 +35,7 @@ public class Blaze extends BlockSpawner implements Listener {
             .giveItems(Blaze.ITEM.cloneWithId().asQuantity(3));
 
     public Blaze() {
-        super(EntityType.BLAZE, ITEM, 1);
+        super(EntityType.BLAZE, ITEM);
     }
 
     @Override

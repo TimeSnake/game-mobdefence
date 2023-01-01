@@ -1,12 +1,11 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.shop;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.game.mobdefence.user.MobDefUser;
-
 import java.util.List;
 import java.util.function.Function;
 

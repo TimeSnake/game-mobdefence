@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special.weapon.bullet;
@@ -8,11 +8,10 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.special.weapon.WeaponTargetType;
-import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
-
 import java.util.Collection;
 import java.util.HashSet;
+import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
 
 public abstract class PiercingBullet extends Bullet {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.server;
@@ -14,10 +14,9 @@ import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
 import de.timesnake.library.basic.util.statistics.IntegerStat;
 import de.timesnake.library.basic.util.statistics.StatType;
+import java.util.Collection;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.LivingEntity;
-
-import java.util.Collection;
 
 public class MobDefServer extends LoungeBridgeServer {
 

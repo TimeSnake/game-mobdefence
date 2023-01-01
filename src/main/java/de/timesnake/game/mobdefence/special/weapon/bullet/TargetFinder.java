@@ -1,14 +1,13 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special.weapon.bullet;
 
 import de.timesnake.game.mobdefence.mob.MobDefMob;
+import java.util.Collection;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
-
-import java.util.Collection;
 
 @FunctionalInterface
 public interface TargetFinder {

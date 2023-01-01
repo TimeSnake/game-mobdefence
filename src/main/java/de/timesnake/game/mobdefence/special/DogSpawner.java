@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special;
@@ -15,16 +15,24 @@ import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.entities.entity.bukkit.ExWolf;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.LivingEntity;
-import de.timesnake.library.entities.pathfinder.*;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFollowOwner;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLeapAtTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMeleeAttack;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalOwnerHurtByTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalOwnerHurtTarget;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
+import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
+import java.util.ArrayList;
+import java.util.List;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Wolf;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DogSpawner extends EntitySpawner {
 

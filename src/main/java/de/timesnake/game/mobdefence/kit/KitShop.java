@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.kit;
@@ -13,14 +13,13 @@ import de.timesnake.game.mobdefence.shop.Shop;
 import de.timesnake.game.mobdefence.shop.UserShop;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 
 public class KitShop implements UserInventoryClickListener, InventoryHolder {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 timesnake
+ * Copyright (C) 2023 timesnake
  */
 
 package de.timesnake.game.mobdefence.special.weapon;
@@ -14,6 +14,8 @@ import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.UpgradeableItem;
+import java.util.HashSet;
+import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,9 +29,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class Iceball extends SpecialWeapon implements Listener {
 
