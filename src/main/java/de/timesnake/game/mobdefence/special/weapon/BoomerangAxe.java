@@ -109,7 +109,7 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
     public void onInteract(ExItemStack item, MobDefUser user) {
         double speed = SPEED_LEVELS.getNumberFromLore(item, Double::valueOf);
         double damage = DAMAGE_LEVELS.getNumberFromLore(item, Double::valueOf);
-        int maxDistance = DAMAGE_LEVELS.getNumberFromLore(item, Integer::valueOf);
+        int maxDistance = DISTANCE_LEVELS.getNumberFromLore(item, Integer::valueOf);
 
         final Location startLoc = user.getLocation().clone().add(0, -0.35, 0);
 
