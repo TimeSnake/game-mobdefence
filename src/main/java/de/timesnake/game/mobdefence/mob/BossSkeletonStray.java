@@ -143,7 +143,7 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
 
         this.entity.setSlot(ExEnumItemSlot.MAIN_HAND,
                 new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_FIRE, 2)
-                        .addExEnchantment(Enchantment.ARROW_DAMAGE, 15)
+                        .addExEnchantment(Enchantment.ARROW_DAMAGE, 12)
                         .addExEnchantment(Enchantment.ARROW_KNOCKBACK, 6));
 
         this.entity.getBukkitAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
