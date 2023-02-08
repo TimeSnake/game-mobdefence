@@ -35,6 +35,21 @@ public class ExplosionManager implements Listener {
         EXPLODEABLE.addAll(Tag.WALLS.getValues());
     }
 
+    public static final List<Material> HARD_BREAKABLE = new ArrayList<>();
+
+    static {
+        HARD_BREAKABLE.addAll(BlockCheck.NORMAL_BREAKABLE_MATERIALS);
+        HARD_BREAKABLE.addAll(BlockCheck.HIGH_BREAKABLE_MATERIALS);
+        HARD_BREAKABLE.addAll(Tag.STONE_BRICKS.getValues());
+        HARD_BREAKABLE.addAll(Tag.FENCES.getValues());
+        HARD_BREAKABLE.addAll(Tag.WOODEN_TRAPDOORS.getValues());
+        HARD_BREAKABLE.addAll(Tag.WOODEN_DOORS.getValues());
+        HARD_BREAKABLE.addAll(Tag.WOODEN_SLABS.getValues());
+        HARD_BREAKABLE.addAll(Tag.PLANKS.getValues());
+        HARD_BREAKABLE.addAll(Tag.WALLS.getValues());
+    }
+
+
     public ExplosionManager() {
         Server.registerListener(this, GameMobDefence.getPlugin());
     }

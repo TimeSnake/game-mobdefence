@@ -55,15 +55,11 @@ public abstract class Upgradeable {
         inv.setItemStack(slot++, this.getDisplayItem());
         inv.setItemStack(slot++, PLACEHOLDER);
 
-        for (Iterator<LevelType> iterator = this.levelType.values().iterator(); slot % 9 != 8;
-                slot++) {
-            if (iterator.hasNext()) {
-                LevelType levelType = iterator.next();
-                inv.setItemStack(slot, levelType.getDisplayItem());
-                levelType.getDisplayItem().setSlot(slot);
-                inv.setItemStack(slot, levelType.getDisplayItem());
-            }
-
+        for (Iterator<LevelType> iterator = this.levelType.values().iterator();
+                slot % 9 != 8 && iterator.hasNext(); slot++) {
+            LevelType levelType = iterator.next();
+            levelType.getDisplayItem().setSlot(slot);
+            inv.setItemStack(slot, levelType.getDisplayItem());
         }
     }
 

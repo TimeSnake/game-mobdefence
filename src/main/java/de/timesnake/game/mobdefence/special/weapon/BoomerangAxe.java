@@ -91,9 +91,9 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
 
     public static final UpgradeableItem.Builder BOOMERANG_AXE = new UpgradeableItem.Builder()
             .name("Boomerang Axe")
-            .display(new ExItemStack(Material.IRON_AXE, "§6Boomerang Axe"))
+            .display(AXE.cloneWithId())
             .price(new Price(4, Currency.GOLD))
-            .baseItem(new ExItemStack(Material.IRON_AXE, "§6Boomerang Axe"))
+            .baseItem(AXE.cloneWithId())
             .addLvlType(SPEED_LEVELS)
             .addLvlType(DAMAGE_LEVELS)
             .addLvlType(DISTANCE_LEVELS);
@@ -132,6 +132,8 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
 
         AtomicInteger counter = new AtomicInteger();
 
+        AtomicInteger damageCounter = new AtomicInteger();
+
         this.tasks.put(stand, Server.runTaskTimerSynchrony(() -> {
             Location loc = stand.getLocation();
 
@@ -157,9 +159,11 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
                 counter.getAndIncrement();
             }
 
-            for (LivingEntity entity : loc.getNearbyLivingEntities(1, 2)) {
-                if (MobDefMob.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
-                    entity.damage(damage * 2, user.getPlayer());
+            if (damageCounter.get() % 2 == 0) {
+                for (LivingEntity entity : loc.getNearbyLivingEntities(1, 2)) {
+                    if (MobDefMob.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
+                        entity.damage(damage * 2, user.getPlayer());
+                    }
                 }
             }
 
@@ -168,6 +172,7 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
             rotation.updateAndGet(v -> v + 30);
             stand.setRotation(rotation.get(), 0);
 
+            damageCounter.getAndIncrement();
         }, 0, 1, GameMobDefence.getPlugin()));
     }
 

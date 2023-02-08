@@ -10,7 +10,6 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.bukkit.ExCreeper;
 import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
 import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMeleeAttack;
@@ -35,8 +34,7 @@ public class Creeper extends MobDefMob<ExCreeper> {
 
         ExCustomPathfinderGoalLocationSwell swell = new ExCustomPathfinderGoalLocationSwell(4, 7);
 
-        this.entity.addPathfinderGoal(1, new ExPathfinderGoalFloat());
-        this.entity.addPathfinderGoal(2, swell);
+        this.entity.addPathfinderGoal(1, swell);
 
         if (this.currentWave > 10) {
             this.entity.addPathfinderGoal(2,
@@ -61,8 +59,8 @@ public class Creeper extends MobDefMob<ExCreeper> {
                         true));
 
         if (this.currentWave > 10) {
-            this.entity.setMaxHealth(60);
-            this.entity.setHealth(60);
+            this.entity.setMaxHealth(this.currentWave * 10);
+            this.entity.setHealth(this.currentWave * 10);
         } else if (this.currentWave > 5) {
             this.entity.setMaxHealth(40);
             this.entity.setHealth(40);

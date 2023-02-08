@@ -7,6 +7,7 @@ package de.timesnake.game.mobdefence.map;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
+import de.timesnake.basic.bukkit.util.world.ExWorld.Restriction;
 import de.timesnake.basic.game.util.game.Map;
 import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
@@ -14,7 +15,9 @@ import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.mob.map.HeightBlock;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import java.util.HashMap;
+import java.util.List;
 import org.bukkit.GameRule;
+import org.bukkit.Material;
 
 public class MobDefMap extends Map implements ResetableMap {
 
@@ -44,6 +47,8 @@ public class MobDefMap extends Map implements ResetableMap {
         this.getWorld().setExceptService(true);
         this.getWorld().restrict(ExWorld.Restriction.ENTITY_BLOCK_BREAK, true);
         this.getWorld().restrict(ExWorld.Restriction.BLOCK_BURN_UP, true);
+        this.getWorld().restrict(Restriction.OPEN_INVENTORIES, List.of(Material.CHEST,
+                Material.TRAPPED_CHEST, Material.DISPENSER, Material.DROPPER, Material.HOPPER));
 
         for (int stageNumber = 0; stageNumber <= map.getLastLocationNumber();
                 stageNumber += STAGE_LOC_SIZE) {

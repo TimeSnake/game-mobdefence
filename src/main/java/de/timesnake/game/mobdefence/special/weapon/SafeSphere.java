@@ -4,12 +4,10 @@
 
 package de.timesnake.game.mobdefence.special.weapon;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
+import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
@@ -17,10 +15,8 @@ import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.game.mobdefence.shop.UpgradeableItem.Builder;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import java.util.HashMap;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -69,7 +65,7 @@ public class SafeSphere extends ReloadableWeapon {
             .addLoreLvl(Price.silver(59), 9);
 
     public static final UpgradeableItem.Builder SAFE_SPHERE = new Builder()
-            .name("$6Save Sphere")
+            .name("Save Sphere")
             .baseItem(ITEM)
             .price(new Price(32, Currency.SILVER))
             .unlockedAtWave(7)
@@ -87,12 +83,11 @@ public class SafeSphere extends ReloadableWeapon {
     @Override
     public void update(MobDefUser user, ExItemStack item, int delay) {
         super.update(user, item, delay);
-        this.spawnParticles(user.getLocation());
     }
 
     @Override
     public int getCooldown(ExItemStack item) {
-        return COOLDOWN.getNumberFromLore(item, Integer::valueOf) * 20;
+        return COOLDOWN.getNumberFromLore(item, Integer::valueOf);
     }
 
     @Override
@@ -104,35 +99,16 @@ public class SafeSphere extends ReloadableWeapon {
 
     private void createSphere(MobDefUser user, int duration) {
         Location location = user.getLocation();
-        this.taskByUser.put(user, Server.runTaskTimerSynchrony(i -> {
-            //this.spawnParticles(location);
-            this.knockbackMobs(location);
-        }, duration, true, 10, 10, GameMobDefence.getPlugin()));
-    }
-
-    private void spawnParticles(Location center) {
-        double p = 0;
-        while (p <= 2 * Math.PI) {
-            p += Math.PI / 10;
-            for (double t = 0; t <= 360; t += Math.PI / 40) {
-                double x = RADIUS * cos(t) * sin(p);
-                double y = RADIUS * cos(p) + 1.5;
-                double z = RADIUS * sin(t) * sin(p);
-                Location location = center.clone().add(x, y, z);
-
-                Particle.DustOptions dust = new Particle.DustOptions(Color.PURPLE, 2);
-                location.getWorld()
-                        .spawnParticle(Particle.REDSTONE, location.getX(), location.getY(),
-                                location.getZ(), 8, 0, 0, 0, 1, dust);
-            }
-
-        }
+        this.taskByUser.put(user, Server.runTaskTimerSynchrony(i -> this.knockbackMobs(location),
+                duration, true, 10, 10, GameMobDefence.getPlugin()));
     }
 
     private void knockbackMobs(Location location) {
         for (LivingEntity entity : location.getNearbyLivingEntities(RADIUS)) {
-            entity.setVelocity(
-                    entity.getLocation().toVector().subtract(location.toVector()).normalize());
+            if (MobDefMob.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
+                entity.setVelocity(entity.getLocation().toVector()
+                        .subtract(location.toVector()).normalize().multiply(1.5));
+            }
         }
     }
 

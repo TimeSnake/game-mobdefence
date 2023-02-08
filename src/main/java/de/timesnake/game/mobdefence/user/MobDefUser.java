@@ -145,6 +145,8 @@ public class MobDefUser extends GameUser {
                     GameMobDefence.getPlugin());
         }
 
+        this.loadGameSideboard();
+
         MobDefServer.updateSideboardPlayers();
 
         this.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(TeamHealth.getMaxHealth());

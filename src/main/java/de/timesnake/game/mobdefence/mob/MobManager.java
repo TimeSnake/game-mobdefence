@@ -43,8 +43,6 @@ public class MobManager implements Listener {
 
     public static final double MOB_DAMAGE_MULTIPLIER = 1;
 
-    public static final int MOB_TO_COMPRESSED_RATIO = 5;
-
     private final LinkedList<MobGroup> mobGroups = new LinkedList<>();
 
     private final Random random = new Random();

@@ -277,7 +277,8 @@ public class ReviveManager {
                 user.getBeingRevivedUser().sendPluginMessage(Plugin.MOB_DEFENCE,
                         Component.text("Reviving ", ExTextColor.PERSONAL)
                                 .append(user.getChatNameComponent())
-                                .append(Component.text(", " + this.reviveTime + "s",
+                                .append(Component.text(
+                                        ", " + (reviveRespawnTime - reviveTime) + "s",
                                         ExTextColor.PERSONAL)));
 
                 entity.setCustomName("§2Revived in " + (reviveRespawnTime - reviveTime) + "s");

@@ -50,6 +50,7 @@ import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -401,6 +402,15 @@ public class UserManager implements Listener, UserInventoryInteractListener {
         if (e.getBlock().getType().equals(Material.SNOW)) {
             e.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onCraft(CraftItemEvent e) {
+        if (Server.getUser(((Player) e.getWhoClicked())).isService()) {
+            return;
+        }
+
+        e.setCancelled(true);
     }
 
     private void sendHeightLevel(User user, HeightBlock block) {
