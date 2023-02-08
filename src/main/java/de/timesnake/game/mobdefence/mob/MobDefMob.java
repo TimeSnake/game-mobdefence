@@ -14,7 +14,6 @@ import de.timesnake.library.entities.entity.bukkit.HumanEntity;
 import de.timesnake.library.entities.entity.bukkit.IronGolem;
 import de.timesnake.library.entities.entity.bukkit.Sheep;
 import de.timesnake.library.entities.entity.bukkit.Snowman;
-import de.timesnake.library.entities.entity.bukkit.Stray;
 import de.timesnake.library.entities.entity.bukkit.Villager;
 import de.timesnake.library.entities.entity.bukkit.Wolf;
 import de.timesnake.library.entities.entity.extension.LivingEntity;
@@ -49,7 +48,7 @@ public abstract class MobDefMob<M extends de.timesnake.library.entities.entity.e
                     org.bukkit.entity.Illusioner.class, org.bukkit.entity.Witch.class,
                     org.bukkit.entity.Pillager.class, org.bukkit.entity.Evoker.class,
                     org.bukkit.entity.Vindicator.class, org.bukkit.entity.Creeper.class,
-                    org.bukkit.entity.CaveSpider.class, Stray.class);
+                    org.bukkit.entity.CaveSpider.class, org.bukkit.entity.Stray.class);
 
     public static final List<EntityType> ATTACKER_ENTITY_TYPES = List.of(EntityType.ZOMBIE,
             EntityType.SKELETON,

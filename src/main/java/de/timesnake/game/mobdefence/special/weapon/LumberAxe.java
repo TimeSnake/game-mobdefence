@@ -25,15 +25,17 @@ import org.bukkit.potion.PotionEffectType;
 
 public class LumberAxe extends SpecialWeapon implements Listener {
 
-    private static final ExItemStack ITEM = new ExItemStack(Material.IRON_AXE).unbreakable().immutable();
+    private static final ExItemStack ITEM = new ExItemStack(Material.IRON_AXE).unbreakable()
+            .immutable();
 
     private static final LevelType.Builder TYPE = new LevelType.Builder()
             .name("Type")
             .display(new ExItemStack(Material.ANVIL))
             .baseLevel(1)
-            .addMaterialLvl(null, "Diamond Axe", Material.IRON_AXE)
+            .addMaterialLvl(null, "Iron Axe", Material.IRON_AXE)
             .addMaterialLvl(new Price(6, Currency.SILVER), "Diamond Axe", Material.DIAMOND_AXE)
-            .addMaterialLvl(new Price(32, Currency.BRONZE), "Netherite Axe", Material.NETHERITE_AXE);
+            .addMaterialLvl(new Price(32, Currency.BRONZE), "Netherite Axe",
+                    Material.NETHERITE_AXE);
 
     private static final LevelType.Builder SHARPNESS = new LevelType.Builder()
             .name("Sharpness")

@@ -165,6 +165,7 @@ public class LevelType {
         user.playNote(Instrument.STICKS, Note.natural(1, Note.Tone.C));
 
         this.updateDescription();
+        user.updateInventory();
 
         return true;
     }
@@ -184,7 +185,7 @@ public class LevelType {
 
     public static class Builder {
 
-        private final List<Level<?>> levels = new LinkedList<>();
+        private final LinkedList<Level<?>> levels = new LinkedList<>();
         String name;
         private ExItemStack displayItem;
         private int baseLevel;
@@ -255,7 +256,7 @@ public class LevelType {
         }
 
         public Builder addLvl(Price price, String description, Consumer<MobDefUser> consumer) {
-            this.levels.add(new Level<>(++this.levelCounter, price, description, consumer) {
+            this.levels.addLast(new Level<>(++this.levelCounter, price, description, consumer) {
                 @Override
                 public void run(MobDefUser user) {
                     consumer.accept(user);
@@ -274,7 +275,7 @@ public class LevelType {
 
         public Builder addLvl(Price price, String description,
                 Function<ExItemStack, ExItemStack> function) {
-            this.levels.add(new Level.ItemLevel(this.currentLevelItemStack, ++this.levelCounter,
+            this.levels.addLast(new Level.ItemLevel(this.currentLevelItemStack, ++this.levelCounter,
                     price, description, function));
             return this;
         }
@@ -300,7 +301,7 @@ public class LevelType {
         public <N extends Number> Builder addLoreLvl(Price price, String description,
                 String loreName,
                 int loreLine, int decimalDigits, String unit, N number) {
-            this.levels.add(
+            this.levels.addLast(
                     new Level.LoreNumberLevel<>(this.currentLevelItemStack, loreName, loreLine,
                             decimalDigits, unit, ++this.levelCounter, price, description, number));
             return this;
@@ -308,7 +309,7 @@ public class LevelType {
 
         public <N extends Number> Builder addLoreLvl(Price price, N number,
                 Consumer<MobDefUser> consumer) {
-            this.levels.add(
+            this.levels.addLast(
                     new Level.LoreNumberLevel<>(this.currentLevelItemStack, this.currentLoreName,
                             this.currentLoreLine, this.currentDecimalDigits, this.currentUnit,
                             ++this.levelCounter, price,
