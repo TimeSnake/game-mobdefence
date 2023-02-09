@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MobDefCmd implements CommandListener {
 
-    private Code.Permission perm;
+    private Code perm;
 
     @Override
     public void onCommand(Sender sender, ExCommand<Sender, Argument> cmd,
@@ -39,6 +39,6 @@ public class MobDefCmd implements CommandListener {
 
     @Override
     public void loadCodes(Plugin plugin) {
-        this.perm = plugin.createPermssionCode("mob", "game.mobdef.nextwave");
+        this.perm = plugin.createPermssionCode("game.mobdef.nextwave");
     }
 }

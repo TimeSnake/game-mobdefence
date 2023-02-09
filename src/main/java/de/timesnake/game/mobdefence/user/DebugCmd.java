@@ -18,7 +18,7 @@ import java.util.List;
 
 public class DebugCmd implements CommandListener {
 
-    private Code.Permission perm;
+    private Code perm;
 
     @Override
     public void onCommand(Sender sender, ExCommand<Sender, Argument> cmd,
@@ -55,6 +55,6 @@ public class DebugCmd implements CommandListener {
 
     @Override
     public void loadCodes(Plugin plugin) {
-        this.perm = plugin.createPermssionCode("mob", "game.mobdef.debug");
+        this.perm = plugin.createPermssionCode("game.mobdef.debug");
     }
 }
