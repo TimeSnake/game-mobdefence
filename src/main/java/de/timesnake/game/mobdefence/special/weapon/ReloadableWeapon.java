@@ -4,9 +4,9 @@
 
 package de.timesnake.game.mobdefence.special.weapon;
 
-import de.timesnake.basic.bukkit.util.user.ExItemStack;
-import de.timesnake.basic.bukkit.util.user.ReloadableItem;
-import de.timesnake.basic.bukkit.util.user.ReloadableItem.Builder;
+import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
+import de.timesnake.basic.bukkit.util.user.inventory.ReloadableItem;
+import de.timesnake.basic.bukkit.util.user.inventory.ReloadableItem.Builder;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import java.util.HashMap;
 

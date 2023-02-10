@@ -6,7 +6,7 @@ package de.timesnake.game.mobdefence.shop;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.basic.bukkit.util.user.event.UserInventoryClickEvent;
+import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryClickEvent;
 
 public class TeamShop extends Shop {
 

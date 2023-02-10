@@ -4,7 +4,7 @@
 
 package de.timesnake.game.mobdefence.shop;
 
-import de.timesnake.basic.bukkit.util.user.ExItemStack;
+import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
 import de.timesnake.game.mobdefence.special.TeamHealth;
 import de.timesnake.game.mobdefence.special.trap.TrapMaker;
