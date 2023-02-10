@@ -4,7 +4,7 @@
 
 package de.timesnake.game.mobdefence.kit;
 
-import de.timesnake.basic.bukkit.util.user.ExItemStack;
+import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.loungebridge.util.user.Kit;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Shop;

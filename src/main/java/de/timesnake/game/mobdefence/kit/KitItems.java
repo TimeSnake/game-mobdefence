@@ -8,7 +8,7 @@ import static de.timesnake.game.mobdefence.shop.Currency.BRONZE;
 import static de.timesnake.game.mobdefence.shop.Currency.GOLD;
 import static de.timesnake.game.mobdefence.shop.Currency.SILVER;
 
-import de.timesnake.basic.bukkit.util.user.ExItemStack;
+import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;

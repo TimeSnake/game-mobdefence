@@ -4,7 +4,7 @@
 
 package de.timesnake.game.mobdefence.special.weapon;
 
-import de.timesnake.basic.bukkit.util.user.ExItemStack;
+import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 
