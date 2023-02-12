@@ -31,7 +31,7 @@ import de.timesnake.game.mobdefence.special.PotionGenerator;
 import de.timesnake.game.mobdefence.special.ResistanceAura;
 import de.timesnake.game.mobdefence.special.trap.TrapManager;
 import de.timesnake.library.basic.util.Status;
-import de.timesnake.library.basic.util.chat.ExTextColor;
+import de.timesnake.library.chat.ExTextColor;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
 import java.util.ArrayList;
 import java.util.Collection;
