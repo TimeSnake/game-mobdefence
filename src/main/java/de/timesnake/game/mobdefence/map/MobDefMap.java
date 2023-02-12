@@ -43,6 +43,7 @@ public class MobDefMap extends Map implements ResetableMap {
         this.getWorld().setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
         this.getWorld().restrict(ExWorld.Restriction.FIRE_SPREAD, true);
         this.getWorld().restrict(ExWorld.Restriction.ENTITY_EXPLODE, false);
+        this.getWorld().restrict(Restriction.CRAFTING, true);
         this.getWorld().setAutoSave(false);
         this.getWorld().setExceptService(true);
         this.getWorld().restrict(ExWorld.Restriction.ENTITY_BLOCK_BREAK, true);
