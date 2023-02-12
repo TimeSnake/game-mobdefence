@@ -15,7 +15,7 @@ import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.Upgradeable;
 import de.timesnake.library.basic.util.Tuple;
-import de.timesnake.library.basic.util.chat.ExTextColor;
+import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.basic.util.server.Task;
 import de.timesnake.library.entities.entity.bukkit.ExArmorStand;
 import de.timesnake.library.entities.entity.bukkit.ExPlayer;

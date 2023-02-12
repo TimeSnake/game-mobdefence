@@ -36,7 +36,7 @@ import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.basic.util.TimeCoins;
-import de.timesnake.library.basic.util.chat.ExTextColor;
+import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.basic.util.statistics.StatType;
 import de.timesnake.library.entities.EntityManager;
 import java.util.ArrayList;

@@ -12,7 +12,7 @@ import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryClickListener;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
-import de.timesnake.library.basic.util.chat.ExTextColor;
+import de.timesnake.library.chat.ExTextColor;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;

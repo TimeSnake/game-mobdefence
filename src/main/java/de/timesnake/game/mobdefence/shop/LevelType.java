@@ -9,7 +9,7 @@ import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
-import de.timesnake.library.basic.util.chat.ExTextColor;
+import de.timesnake.library.chat.ExTextColor;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
