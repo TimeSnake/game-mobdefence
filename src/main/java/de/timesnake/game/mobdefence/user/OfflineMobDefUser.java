@@ -7,6 +7,7 @@ package de.timesnake.game.mobdefence.user;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.basic.loungebridge.util.user.OfflineUser;
 import de.timesnake.game.mobdefence.kit.KitShop;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 
 public class OfflineMobDefUser extends OfflineUser {
 
@@ -27,6 +28,6 @@ public class OfflineMobDefUser extends OfflineUser {
         ((MobDefUser) user).setShop(this.shop);
         ((MobDefUser) user).setAlive(this.alive);
 
-        ((MobDefUser) user).loadGameSideboard();
+        user.setSideboard(MobDefServer.getGameSideboard());
     }
 }
