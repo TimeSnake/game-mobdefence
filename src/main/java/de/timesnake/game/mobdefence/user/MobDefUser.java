@@ -47,8 +47,6 @@ public class MobDefUser extends GameUser {
 
         this.alive = true;
 
-        this.loadGameSideboard();
-
         MobDefServer.updateSideboardPlayers();
 
         this.setStatistic(Statistic.MOB_KILLS, 0);
@@ -145,8 +143,6 @@ public class MobDefUser extends GameUser {
                     GameMobDefence.getPlugin());
         }
 
-        this.loadGameSideboard();
-
         MobDefServer.updateSideboardPlayers();
 
         this.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(TeamHealth.getMaxHealth());
@@ -161,10 +157,6 @@ public class MobDefUser extends GameUser {
     public void setRejoinInventory() {
         super.setRejoinInventory();
         this.getInventory().setContents(this.invItems);
-    }
-
-    public void loadGameSideboard() {
-        this.setSideboard(MobDefServer.getSideboard());
     }
 
     public boolean isAlive() {

@@ -6,6 +6,9 @@ package de.timesnake.game.mobdefence.server;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
+import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboard;
+import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboard.LineId;
+import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboardBuilder;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Tablist;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
@@ -36,8 +39,8 @@ import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.basic.util.TimeCoins;
-import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.basic.util.statistics.StatType;
+import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.entities.EntityManager;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,6 +71,9 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> implements Listener {
 
+    public static final LineId<Integer> WAVE_LINE = LineId.of("wave", "§c§lWave", false,
+            Object::toString);
+
     public static final double CORE_HEALTH_MULTIPLIER = 400; // in half hearts
     public static final float TIME_COINS_MULTIPLIER = 1.5f * TimeCoins.MULTIPLIER;
     public static final int WAVE_DELAY = 80; // in seconds
@@ -77,13 +83,12 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     private static final boolean DEBUG = false;
-    private boolean running;
     private Integer playerAmount; // set at game start
     private double coreMaxHealth;
     private LivingEntity coreEntity;
     private BossBar coreHealthBar;
     private double coreHealth;
-    private Sideboard sideboard;
+    private ExSideboard sideboard;
     private Integer delay;
     private boolean delayIsRunning = false;
     private BukkitTask delayTask;
@@ -107,13 +112,13 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
         this.coreHealthBar = Server.createBossBar("§c§lHealth", BarColor.RED, BarStyle.SOLID);
         this.coreHealthBar.setProgress(1);
 
-        this.sideboard = Server.getScoreboardManager().registerSideboard("mobdef",
-                "§6§l" + this.getGame().getDisplayName());
-        this.sideboard.setScore(4, "§3§lWave");
+        this.sideboard = Server.getScoreboardManager().registerExSideboard(new ExSideboardBuilder()
+                .name("mobdef")
+                .title("§6§l" + this.getGame().getDisplayName())
+                .lineSpacer()
+                .addLine(WAVE_LINE)
+                .addLine(LineId.PLAYERS));
         this.updateSideboardWave();
-        this.sideboard.setScore(2, "§f-------------");
-        this.sideboard.setScore(1, "§9§lPlayers");
-        this.updateSideboardPlayers();
     }
 
     @Override
@@ -129,6 +134,11 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     @Override
     public GameUser loadUser(Player player) {
         return new MobDefUser(player);
+    }
+
+    @Override
+    public Sideboard getGameSideboard() {
+        return this.sideboard;
     }
 
     @Override
@@ -154,16 +164,6 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     @Override
     public Plugin getGamePlugin() {
         return Plugin.MOB_DEFENCE;
-    }
-
-    @Override
-    public boolean isGameRunning() {
-        return this.running;
-    }
-
-    @Override
-    public void broadcastGameMessage(Component message) {
-        Server.broadcastMessage(Plugin.MOB_DEFENCE, message);
     }
 
     @Override
@@ -434,11 +434,11 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     public void updateSideboardPlayers() {
-        this.sideboard.setScore(0, this.getAliveUsers().size() + " §7alive");
+        this.sideboard.updateScore(LineId.PLAYERS, this.getAliveUsers().size());
     }
 
     public void updateSideboardWave() {
-        this.sideboard.setScore(3, String.valueOf(this.waveNumber));
+        this.sideboard.updateScore(WAVE_LINE, this.waveNumber);
     }
 
     public Integer getPlayerAmount() {
@@ -457,7 +457,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
         return waveNumber;
     }
 
-    public Sideboard getSideboard() {
+    public ExSideboard getSideboard() {
         return sideboard;
     }
 
