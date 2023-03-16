@@ -5,9 +5,9 @@
 package de.timesnake.game.mobdefence.special;
 
 import de.timesnake.basic.bukkit.util.Server;
+import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.inventory.ExInventory;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
-import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
@@ -61,7 +61,6 @@ public class TeamHealth {
                     .levelDescription("+1 ❤")
                     .addLvl(null, (MobDefUser u) -> {
                         maxHealth = 8 * 2;
-                        System.out.println("update");
                         for (User gameUser : Server.getInOutGameUsers()) {
                             gameUser.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(8 * 2);
                             gameUser.setHealth(8 * 2);
@@ -78,7 +77,8 @@ public class TeamHealth {
                     .addLvl(new Price(9, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 17))
                     .addLvl(new Price(10, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 18))
                     .addLvl(new Price(11, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 19))
-                    .addLvl(new Price(12, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 20)));
+                    .addLvl(new Price(12, Currency.EMERALD),
+                            (MobDefUser u) -> updateHealth(u, 20)));
 
 
 }

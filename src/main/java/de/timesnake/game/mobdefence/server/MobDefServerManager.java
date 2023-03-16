@@ -240,6 +240,11 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     @Override
+    public boolean isOutGameRejoiningAllowed() {
+        return true;
+    }
+
+    @Override
     public void onGameUserRejoin(GameUser user) {
         if (user.getStatus().equals(Status.User.OUT_GAME)) {
             user.joinSpectator();
