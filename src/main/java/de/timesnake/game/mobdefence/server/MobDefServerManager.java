@@ -37,6 +37,7 @@ import de.timesnake.game.mobdefence.special.weapon.WeaponManager;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
+import de.timesnake.library.basic.util.Loggers;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.basic.util.TimeCoins;
 import de.timesnake.library.basic.util.statistics.StatType;
@@ -173,11 +174,11 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
                 entity.remove();
             }
         }
-        Server.printText(Plugin.MOB_DEFENCE, "Cleared living entities");
+        Loggers.GAME.info("Cleared living entities");
 
         this.coreEntity = this.mobManager.createCoreEntity();
         EntityManager.spawnEntity(this.getMap().getWorld().getBukkitWorld(), this.coreEntity);
-        Server.printText(Plugin.MOB_DEFENCE, "Spawned core entity");
+        Loggers.GAME.info("Spawned core entity");
 
         ((MobDefMap) this.getMap()).getHeightMapManager().resetMaps();
         ((MobDefMap) this.getMap()).getHeightMapManager().updateMaps();

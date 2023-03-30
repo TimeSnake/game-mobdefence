@@ -5,9 +5,9 @@
 package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.Server;
-import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.library.basic.util.Loggers;
 import de.timesnake.library.entities.entity.bukkit.ExVillager;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLocation;
 import java.util.ArrayList;
@@ -156,7 +156,7 @@ public class MobManager implements Listener {
         double players = MobDefServer.getPlayerAmount();
         double playerSqrt = Math.sqrt(players);
 
-        Server.printText(Plugin.MOB_DEFENCE, "Spawning wave " + wave + " ...");
+        Loggers.GAME.info("Spawning wave " + wave + " ...");
         this.mobGroups.clear();
 
         int totalMobAmount =
@@ -218,7 +218,7 @@ public class MobManager implements Listener {
                             this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize,
                             delay));
 
-            Server.printText(Plugin.MOB_DEFENCE, "Bosses: " + bossGroup.size());
+            Loggers.GAME.info("Bosses: " + bossGroup.size());
         }
 
         if (wave % 5 == 1 && wave > 5) {
@@ -242,15 +242,14 @@ public class MobManager implements Listener {
                             this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize,
                             delay));
 
-            Server.printText(Plugin.MOB_DEFENCE, "Bosses: " + bossGroup.size());
+            Loggers.GAME.info("Bosses: " + bossGroup.size());
         }
 
         for (MobGroup mobGroup : mobGroups) {
             mobGroup.run();
         }
 
-        Server.printText(Plugin.MOB_DEFENCE,
-                "Mobs: " + mobAmount + " in " + groupAmount + " groups and bosses");
+        Loggers.GAME.info("Mobs: " + mobAmount + " in " + groupAmount + " groups and bosses");
 
     }
 
