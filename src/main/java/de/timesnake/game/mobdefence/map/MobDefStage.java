@@ -4,10 +4,9 @@
 
 package de.timesnake.game.mobdefence.map;
 
-import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
-import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
+import de.timesnake.library.basic.util.Loggers;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class MobDefStage {
             }
 
             this.spawnsByIndex.put(i, new MobSpawn(priority, loc));
-            Server.printText(Plugin.MOB_DEFENCE, "Loaded spawn " + index + " with index " + i);
+            Loggers.GAME.info("Loaded spawn " + index + " with index " + i);
 
             this.chanceSum += 10 - priority;
 

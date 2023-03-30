@@ -4,16 +4,15 @@
 
 package de.timesnake.game.mobdefence.map;
 
-import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.basic.bukkit.util.world.ExWorld.Restriction;
 import de.timesnake.basic.game.util.game.Map;
 import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
-import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.mob.map.HeightBlock;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
+import de.timesnake.library.basic.util.Loggers;
 import java.util.HashMap;
 import java.util.List;
 import org.bukkit.GameRule;
@@ -49,14 +48,15 @@ public class MobDefMap extends Map implements ResetableMap {
         this.getWorld().restrict(ExWorld.Restriction.ENTITY_BLOCK_BREAK, true);
         this.getWorld().restrict(ExWorld.Restriction.BLOCK_BURN_UP, true);
         this.getWorld().restrict(Restriction.OPEN_INVENTORIES, List.of(Material.CHEST,
-                Material.TRAPPED_CHEST, Material.DISPENSER, Material.DROPPER, Material.HOPPER));
+                Material.TRAPPED_CHEST, Material.DISPENSER, Material.DROPPER, Material.HOPPER,
+                Material.BARREL));
 
         for (int stageNumber = 0; stageNumber <= map.getLastLocationNumber();
                 stageNumber += STAGE_LOC_SIZE) {
-            Server.printText(Plugin.MOB_DEFENCE, "Loading stage " + stageNumber + " ...");
+            Loggers.GAME.info("Loading stage " + stageNumber + " ...");
             MobDefStage stage = new MobDefStage(stageNumber, this.getCoreLocation(),
                     super.getLocationsById());
-            Server.printText(Plugin.MOB_DEFENCE, "Loaded stage" + stageNumber);
+            Loggers.GAME.info("Loaded stage" + stageNumber);
             this.stages.put(stageNumber, stage);
         }
         this.current = this.stages.get(0);
