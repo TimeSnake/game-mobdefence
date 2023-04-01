@@ -39,7 +39,9 @@ public class MobDefUser extends GameUser {
     }
 
     @Override
-    public void joinGame() {
+    public void onGameJoin() {
+        super.onGameJoin();
+
         this.teleport(MobDefServer.getMap().getUserSpawn());
         this.lockLocation();
         this.setBossBar(MobDefServer.getCoreHealthBar());
