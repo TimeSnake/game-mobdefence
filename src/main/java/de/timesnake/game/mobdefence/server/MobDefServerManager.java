@@ -123,7 +123,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     @Override
-    public TablistManager loadTablistManager() {
+    public TablistManager initTablistManager() {
         return new TablistManager() {
             @Override
             public void loadTablist(Tablist.Type type) {
@@ -153,7 +153,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     @Override
-    protected SpectatorManager loadSpectatorManager() {
+    protected SpectatorManager initSpectatorManager() {
         return new de.timesnake.basic.loungebridge.core.main.SpectatorManager() {
             @Override
             public GameMode getReJoinGameMode() {
