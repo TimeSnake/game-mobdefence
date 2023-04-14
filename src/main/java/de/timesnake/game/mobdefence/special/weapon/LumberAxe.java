@@ -32,6 +32,7 @@ public class LumberAxe extends SpecialWeapon implements Listener {
             .name("Type")
             .display(new ExItemStack(Material.ANVIL))
             .baseLevel(1)
+            .levelItem(ITEM)
             .addMaterialLvl(null, "Iron Axe", Material.IRON_AXE)
             .addMaterialLvl(new Price(6, Currency.SILVER), "Diamond Axe", Material.DIAMOND_AXE)
             .addMaterialLvl(new Price(32, Currency.BRONZE), "Netherite Axe",
