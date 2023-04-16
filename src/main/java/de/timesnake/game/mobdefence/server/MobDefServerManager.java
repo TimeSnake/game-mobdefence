@@ -13,20 +13,19 @@ import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Tablist;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.game.util.game.Map;
-import de.timesnake.basic.game.util.game.TmpGame;
 import de.timesnake.basic.game.util.user.SpectatorManager;
+import de.timesnake.basic.loungebridge.util.game.TmpGame;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
 import de.timesnake.basic.loungebridge.util.server.TablistManager;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
-import de.timesnake.basic.loungebridge.util.user.Kit;
-import de.timesnake.basic.loungebridge.util.user.KitNotDefinedException;
+import de.timesnake.basic.loungebridge.util.user.KitManager;
 import de.timesnake.basic.loungebridge.util.user.OfflineUser;
 import de.timesnake.database.util.game.DbGame;
 import de.timesnake.database.util.game.DbMap;
 import de.timesnake.database.util.game.DbTmpGame;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.KitShopManager;
-import de.timesnake.game.mobdefence.kit.MobDefKit;
+import de.timesnake.game.mobdefence.kit.MobDefKitManager;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.map.MobDefMap;
 import de.timesnake.game.mobdefence.mob.MobManager;
@@ -148,6 +147,11 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
             @Override
             public Map loadMap(DbMap dbMap, boolean loadWorld) {
                 return new MobDefMap(dbMap);
+            }
+
+            @Override
+            public KitManager<?> loadKitManager() {
+                return new MobDefKitManager();
             }
         };
     }
@@ -373,21 +377,6 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     @Override
     public ExLocation getSpectatorSpawn() {
         return ((MobDefMap) this.getMap()).getUserSpawn();
-    }
-
-    @Override
-    public Kit getKit(int index) throws KitNotDefinedException {
-        for (MobDefKit kit : MobDefKit.KITS) {
-            if (kit.getId().equals(index)) {
-                return kit;
-            }
-        }
-        throw new KitNotDefinedException(index);
-    }
-
-    @Override
-    public Kit[] getKits() {
-        return MobDefKit.KITS;
     }
 
     @EventHandler

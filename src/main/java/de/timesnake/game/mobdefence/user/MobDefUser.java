@@ -61,8 +61,8 @@ public class MobDefUser extends GameUser {
     }
 
     @Override
-    public boolean setKitItems() {
-        boolean loaded = super.setKitItems();
+    public boolean applyKit() {
+        boolean loaded = super.applyKit();
 
         if (!loaded) {
             return false;
