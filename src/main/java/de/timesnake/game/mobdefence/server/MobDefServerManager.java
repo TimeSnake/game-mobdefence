@@ -17,6 +17,8 @@ import de.timesnake.basic.game.util.user.SpectatorManager;
 import de.timesnake.basic.loungebridge.util.game.TmpGame;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
 import de.timesnake.basic.loungebridge.util.server.TablistManager;
+import de.timesnake.basic.loungebridge.util.tool.listener.GameUserDeathListener;
+import de.timesnake.basic.loungebridge.util.tool.listener.GameUserRespawnListener;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.basic.loungebridge.util.user.KitManager;
 import de.timesnake.basic.loungebridge.util.user.OfflineUser;
@@ -119,6 +121,28 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
                 .addLine(WAVE_LINE)
                 .addLine(LineId.PLAYERS));
         this.updateSideboardWave();
+    }
+
+    @Override
+    public void loadTools() {
+        super.loadTools();
+
+        this.getToolManager().add((GameUserDeathListener) (e, user) -> {
+            e.setAutoRespawn(true);
+            if (user.getStatus().equals(Status.User.IN_GAME)) {
+                ((MobDefUser) user).saveInventory();
+            }
+        });
+
+        this.getToolManager().add((GameUserRespawnListener) user -> {
+            if (MobDefServer.getAliveUsers().size() <= 1) {
+                MobDefServer.stopGame();
+            }
+            if (user.getStatus().equals(Status.User.IN_GAME)) {
+                user.joinSpectator();
+            }
+            return MobDefServer.getMap().getUserSpawn();
+        });
     }
 
     @Override
