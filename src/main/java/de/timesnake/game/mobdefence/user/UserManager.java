@@ -5,16 +5,12 @@
 package de.timesnake.game.mobdefence.user;
 
 import de.timesnake.basic.bukkit.util.Server;
-import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.event.UserBlockBreakEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserBlockPlaceEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserDamageByUserEvent;
-import de.timesnake.basic.bukkit.util.user.event.UserDeathEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserDropItemEvent;
-import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryInteractEvent;
-import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryInteractListener;
-import de.timesnake.basic.bukkit.util.user.event.UserRespawnEvent;
+import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
@@ -26,15 +22,11 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.special.CoreRegeneration;
 import de.timesnake.game.mobdefence.special.ExplosionManager;
-import de.timesnake.game.mobdefence.special.ItemGenerator;
 import de.timesnake.game.mobdefence.special.PotionGenerator;
 import de.timesnake.game.mobdefence.special.ResistanceAura;
 import de.timesnake.game.mobdefence.special.trap.TrapManager;
-import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.chat.ExTextColor;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -50,17 +42,33 @@ import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 
-public class UserManager implements Listener, UserInventoryInteractListener {
+public class UserManager implements Listener {
 
-    public static final ExItemStack DEBUG_TOOL = new ExItemStack(Material.BONE);
+    public static final ExItemStack DEBUG_TOOL = new ExItemStack(Material.BONE)
+            .onInteract(e -> {
+                User user = e.getUser();
+
+                if (user.getPlayer().isSneaking()) {
+                    HeightBlock block =
+                            MobDefServer.getMap().getHeightMapManager()
+                                    .getMap(HeightMapManager.MapType.WALL_FINDER)
+                                    .getHeightBlock(user.getExLocation());
+                    sendHeightLevel(user, block);
+                    return;
+                }
+
+                HeightBlock block =
+                        MobDefServer.getMap().getHeightMapManager()
+                                .getMap(HeightMapManager.MapType.NORMAL)
+                                .getHeightBlock(user.getExLocation());
+                sendHeightLevel(user, block);
+            });
 
     private static final List<Material> ALLOWED_DROPS = List.of(Currency.BRONZE.getItem().getType(),
             Currency.SILVER.getItem().getType(), Currency.GOLD.getItem().getType(),
@@ -72,8 +80,6 @@ public class UserManager implements Listener, UserInventoryInteractListener {
             Material.BUCKET);
 
     private static final double BLOCK_VILLAGER_DISTANCE = 3;
-
-    private final Collection<ItemGenerator> itemGenerators = new ArrayList<>();
 
     private final CoreRegeneration coreRegeneration;
     private final ResistanceAura resistanceAura;
@@ -108,13 +114,9 @@ public class UserManager implements Listener, UserInventoryInteractListener {
         this.trapManager = new TrapManager();
 
         Server.registerListener(this, GameMobDefence.getPlugin());
-        Server.getInventoryEventManager().addInteractListener(this, DEBUG_TOOL, MobDefKit.KELP);
     }
 
     public void runTasks() {
-        for (ItemGenerator generator : this.itemGenerators) {
-            generator.run();
-        }
         this.potionGenerator.run();
         this.reviveManager.run();
         this.resistanceAura.run();
@@ -122,41 +124,11 @@ public class UserManager implements Listener, UserInventoryInteractListener {
     }
 
     public void cancelTasks() {
-        for (ItemGenerator generator : this.itemGenerators) {
-            generator.cancel();
-        }
         this.coreRegeneration.cancel();
         this.potionGenerator.cancel();
         this.reviveManager.stop();
         this.resistanceAura.cancel();
         this.trapManager.reset();
-    }
-
-    @EventHandler
-    public void onUserDeath(UserDeathEvent e) {
-        e.setAutoRespawn(true);
-
-        User user = e.getUser();
-
-        if (user.getStatus().equals(Status.User.IN_GAME)) {
-            ((MobDefUser) user).saveInventory();
-        }
-    }
-
-    @EventHandler
-    public void onPlayerRespawn(UserRespawnEvent e) {
-        e.setRespawnLocation(MobDefServer.getMap().getUserSpawn());
-
-        MobDefUser user = (MobDefUser) e.getUser();
-
-        // if last player died, stop game
-        if (MobDefServer.getAliveUsers().size() <= 1) {
-            MobDefServer.stopGame();
-        }
-
-        if (user.getStatus().equals(Status.User.IN_GAME)) {
-            user.joinSpectator();
-        }
     }
 
     @EventHandler
@@ -236,14 +208,6 @@ public class UserManager implements Listener, UserInventoryInteractListener {
                         GameMobDefence.getPlugin());
             }, 1, GameMobDefence.getPlugin());
 
-        }
-    }
-
-    @EventHandler
-    public void onInventoryOpen(InventoryOpenEvent e) {
-        if (e.getView().getTopInventory().getHolder() instanceof Block) {
-            e.setCancelled(true);
-            e.getPlayer().closeInventory();
         }
     }
 
@@ -330,12 +294,6 @@ public class UserManager implements Listener, UserInventoryInteractListener {
     }
 
     @EventHandler
-    public void onUserDamageByUser(UserDamageByUserEvent e) {
-        e.setCancelDamage(true);
-        e.setCancelled(true);
-    }
-
-    @EventHandler
     public void onPlayerPickUpArrow(PlayerPickupArrowEvent e) {
         e.getArrow().remove();
         e.setCancelled(true);
@@ -356,40 +314,6 @@ public class UserManager implements Listener, UserInventoryInteractListener {
         e.setCancelled(true);
     }
 
-    @Override
-    public void onUserInventoryInteract(UserInventoryInteractEvent event) {
-        User user = event.getUser();
-        ExItemStack item = event.getClickedItem();
-
-        if (item.equals(DEBUG_TOOL)) {
-            if (user.getPlayer().isSneaking()) {
-                HeightBlock block =
-                        MobDefServer.getMap().getHeightMapManager()
-                                .getMap(HeightMapManager.MapType.WALL_FINDER)
-                                .getHeightBlock(user.getExLocation());
-                this.sendHeightLevel(user, block);
-                return;
-            }
-
-            HeightBlock block =
-                    MobDefServer.getMap().getHeightMapManager()
-                            .getMap(HeightMapManager.MapType.NORMAL)
-                            .getHeightBlock(user.getExLocation());
-            this.sendHeightLevel(user, block);
-        } else if (MobDefKit.KELP.equals(item)) {
-            event.setCancelled(true);
-
-            if (user.getPlayer().getFoodLevel() == 20) {
-                return;
-            }
-
-            user.removeCertainItemStack(MobDefKit.KELP.cloneWithId().asOne());
-            double food = user.getPlayer().getFoodLevel();
-            user.getPlayer().setFoodLevel(food <= 19 ? ((int) (food + 1)) : 20);
-            user.getPlayer().setSaturation(3);
-        }
-    }
-
     @EventHandler
     public void onBlockForm(EntityBlockFormEvent e) {
         if (e.getNewState().getType().equals(Material.SNOW)) {
@@ -398,22 +322,13 @@ public class UserManager implements Listener, UserInventoryInteractListener {
     }
 
     @EventHandler
-    public void onBlockPlace(EntityChangeBlockEvent e) {
+    public void onEntityChangeBlock(EntityChangeBlockEvent e) {
         if (e.getBlock().getType().equals(Material.SNOW)) {
             e.setCancelled(true);
         }
     }
 
-    @EventHandler
-    public void onCraft(CraftItemEvent e) {
-        if (Server.getUser(((Player) e.getWhoClicked())).isService()) {
-            return;
-        }
-
-        e.setCancelled(true);
-    }
-
-    private void sendHeightLevel(User user, HeightBlock block) {
+    private static void sendHeightLevel(User user, HeightBlock block) {
         String level;
         if (block != null) {
             level = String.valueOf(block.getLevel());

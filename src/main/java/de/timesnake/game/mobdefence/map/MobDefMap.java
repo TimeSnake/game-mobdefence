@@ -47,9 +47,8 @@ public class MobDefMap extends Map implements ResetableMap {
         this.getWorld().setExceptService(true);
         this.getWorld().restrict(ExWorld.Restriction.ENTITY_BLOCK_BREAK, true);
         this.getWorld().restrict(ExWorld.Restriction.BLOCK_BURN_UP, true);
-        this.getWorld().restrict(Restriction.OPEN_INVENTORIES, List.of(Material.CHEST,
-                Material.TRAPPED_CHEST, Material.DISPENSER, Material.DROPPER, Material.HOPPER,
-                Material.BARREL));
+        this.getWorld().restrict(Restriction.OPEN_INVENTORIES, List.of(Material.AIR));
+        this.getWorld().restrict(Restriction.CRAFTING, true);
 
         for (int stageNumber = 0; stageNumber <= map.getLastLocationNumber();
                 stageNumber += STAGE_LOC_SIZE) {

@@ -8,6 +8,7 @@ import static de.timesnake.game.mobdefence.shop.Currency.BRONZE;
 import static de.timesnake.game.mobdefence.shop.Currency.GOLD;
 import static de.timesnake.game.mobdefence.shop.Currency.SILVER;
 
+import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
@@ -139,7 +140,21 @@ public interface KitItems {
             .slot(19);
 
     ExItemStack KELP = new ExItemStack(Material.DRIED_KELP, 8, "§6Dried Kelp")
-            .setLore("§7Healthy Fast Food");
+            .setLore("§7Healthy Fast Food")
+            .onInteract(e -> {
+                User user = e.getUser();
+
+                e.setCancelled(true);
+
+                if (user.getPlayer().getFoodLevel() == 20) {
+                    return;
+                }
+
+                user.removeCertainItemStack(MobDefKit.KELP.cloneWithId().asOne());
+                double food = user.getPlayer().getFoodLevel();
+                user.getPlayer().setFoodLevel(food <= 19 ? ((int) (food + 1)) : 20);
+                user.getPlayer().setSaturation(3);
+            });
 
     Trade.Builder DRIED_KELP = new Trade.Builder()
             .giveItems(KELP)
