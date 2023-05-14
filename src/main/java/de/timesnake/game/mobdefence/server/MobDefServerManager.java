@@ -214,20 +214,20 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
         for (ItemFrame frame : this.getMap().getWorld().getEntitiesByClass(ItemFrame.class)) {
             frame.setFixed(true);
         }
-    }
 
-    @Override
-    public void onGamePrepare() {
         this.waveNumber = 0;
-        this.userManager.runTasks();
+        this.updateSideboardWave();
+
         this.getMap().getWorld().setDifficulty(Difficulty.EASY);
         this.getMap().getWorld().setGameRule(GameRule.NATURAL_REGENERATION, true);
-        this.updateSideboardWave();
     }
 
     @Override
     public void onGameStart() {
         this.running = true;
+
+        this.userManager.runTasks();
+
         this.playerAmount = Server.getInGameUsers().size();
         for (User user : Server.getInGameUsers()) {
             ((MobDefUser) user).startGame();
