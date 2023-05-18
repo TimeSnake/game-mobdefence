@@ -5,8 +5,8 @@
 package de.timesnake.game.mobdefence.special.weapon;
 
 import de.timesnake.basic.bukkit.util.Server;
-import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.User;
+import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
@@ -25,67 +25,68 @@ import org.bukkit.inventory.meta.PotionMeta;
 public class PotionBow extends SpecialWeapon implements Listener {
 
 
-    public static final UpgradeableItem.Builder BOW = new UpgradeableItem.Builder()
-            .name("Splash Bow")
-            .price(new Price(6, Currency.GOLD))
-            .baseItem(new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_INFINITE, 1)
-                    .setUnbreakable(true)
-                    .setDisplayName("§6Potion Bow"))
-            .unlockedAtWave(5);
+  public static final UpgradeableItem.Builder BOW = new UpgradeableItem.Builder()
+      .name("Splash Bow")
+      .price(new Price(6, Currency.GOLD))
+      .baseItem(new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_INFINITE, 1)
+          .setUnbreakable(true)
+          .setDisplayName("§6Potion Bow"))
+      .unlockedAtWave(5);
 
-    public PotionBow() {
-        super(BOW.getBaseItem());
-        Server.registerListener(this, GameMobDefence.getPlugin());
+  public PotionBow() {
+    super(BOW.getBaseItem());
+    Server.registerListener(this, GameMobDefence.getPlugin());
+  }
+
+  @EventHandler
+  public void onEntityShootBow(EntityShootBowEvent e) {
+    if (!(e.getProjectile() instanceof Arrow arrow)) {
+      return;
     }
 
-    @EventHandler
-    public void onEntityShootBow(EntityShootBowEvent e) {
-        if (!(e.getProjectile() instanceof Arrow arrow)) {
-            return;
-        }
-
-        if (!(e.getEntity() instanceof Player)) {
-            return;
-        }
-
-        User user = Server.getUser(((Player) e.getEntity()));
-        ExItemStack item = new ExItemStack(e.getBow());
-
-        if (!item.equals(BOW.getBaseItem())) {
-            return;
-        }
-
-        ItemStack potionItem = this.getNearestPotion(user);
-
-        if (potionItem == null) {
-            e.setCancelled(true);
-            e.setConsumeItem(false);
-            return;
-        }
-
-        ThrownPotion potion = arrow.getWorld().spawn(arrow.getLocation(), ThrownPotion.class);
-
-        potion.setVelocity(arrow.getVelocity());
-        potion.setItem(potionItem);
-        potion.setPotionMeta(((PotionMeta) potionItem.getItemMeta()));
-        potion.setShooter(user.getPlayer());
-
-        Server.runTaskLaterSynchrony(() -> user.addItem(e.getConsumable()), 1, GameMobDefence.getPlugin());
+    if (!(e.getEntity() instanceof Player)) {
+      return;
     }
 
-    private ItemStack getNearestPotion(User user) {
-        if (user.getInventory().getItemInOffHand().getType().equals(Material.LINGERING_POTION)
-                || user.getInventory().getItemInOffHand().getType().equals(Material.SPLASH_POTION)) {
-            return user.getInventory().getItemInOffHand();
-        }
+    User user = Server.getUser(((Player) e.getEntity()));
+    ExItemStack item = new ExItemStack(e.getBow());
 
-        for (ItemStack item : user.getInventory()) {
-            if (item.getType().equals(Material.LINGERING_POTION)
-                    || item.getType().equals(Material.SPLASH_POTION)) {
-                return item;
-            }
-        }
-
-        return null;
+    if (!item.equals(BOW.getBaseItem())) {
+      return;
     }
+
+    ItemStack potionItem = this.getNearestPotion(user);
+
+    if (potionItem == null) {
+      e.setCancelled(true);
+      e.setConsumeItem(false);
+      return;
+    }
+
+    ThrownPotion potion = arrow.getWorld().spawn(arrow.getLocation(), ThrownPotion.class);
+
+    potion.setVelocity(arrow.getVelocity());
+    potion.setItem(potionItem);
+    potion.setPotionMeta(((PotionMeta) potionItem.getItemMeta()));
+    potion.setShooter(user.getPlayer());
+
+    Server.runTaskLaterSynchrony(() -> user.addItem(e.getConsumable()), 1,
+        GameMobDefence.getPlugin());
+  }
+
+  private ItemStack getNearestPotion(User user) {
+    if (user.getInventory().getItemInOffHand().getType().equals(Material.LINGERING_POTION)
+        || user.getInventory().getItemInOffHand().getType().equals(Material.SPLASH_POTION)) {
+      return user.getInventory().getItemInOffHand();
+    }
+
+    for (ItemStack item : user.getInventory()) {
+      if (item.getType().equals(Material.LINGERING_POTION)
+          || item.getType().equals(Material.SPLASH_POTION)) {
+        return item;
+      }
+    }
+
+    return null;
+  }
 }

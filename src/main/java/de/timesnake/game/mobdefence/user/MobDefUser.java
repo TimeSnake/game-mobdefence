@@ -26,171 +26,171 @@ import org.jetbrains.annotations.Nullable;
 
 public class MobDefUser extends GameUser {
 
-    private boolean alive;
-    private ItemStack[] invItems;
+  private boolean alive;
+  private ItemStack[] invItems;
 
-    private KitShop shop;
+  private KitShop shop;
 
-    private ExPlayer deadBody;
-    private MobDefUser beingRevivedUser = null;
+  private ExPlayer deadBody;
+  private MobDefUser beingRevivedUser = null;
 
-    public MobDefUser(Player player) {
-        super(player);
+  public MobDefUser(Player player) {
+    super(player);
+  }
+
+  @Override
+  public void onGameJoin() {
+    super.onGameJoin();
+
+    this.teleport(MobDefServer.getMap().getUserSpawn());
+    this.lockLocation();
+    this.setBossBar(MobDefServer.getCoreHealthBar());
+    this.setGameMode(GameMode.SURVIVAL);
+
+    this.alive = true;
+
+    MobDefServer.updateSideboardPlayers();
+
+    this.setStatistic(Statistic.MOB_KILLS, 0);
+    this.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(TeamHealth.getMaxHealth());
+    this.heal();
+  }
+
+  public void startGame() {
+    this.unlockLocation();
+  }
+
+  @Override
+  public boolean applyKit() {
+    boolean loaded = super.applyKit();
+
+    if (!loaded) {
+      return false;
     }
 
-    @Override
-    public void onGameJoin() {
-        super.onGameJoin();
+    this.loadKit();
 
-        this.teleport(MobDefServer.getMap().getUserSpawn());
-        this.lockLocation();
-        this.setBossBar(MobDefServer.getCoreHealthBar());
-        this.setGameMode(GameMode.SURVIVAL);
+    return true;
+  }
 
-        this.alive = true;
+  public void loadKit() {
+    this.shop = ((MobDefKit) this.kit).getShop(this);
 
-        MobDefServer.updateSideboardPlayers();
-
-        this.setStatistic(Statistic.MOB_KILLS, 0);
-        this.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(TeamHealth.getMaxHealth());
-        this.heal();
+    if (this.kit.equals(MobDefKit.ALCHEMIST)) {
+      Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0),
+          GameMobDefence.getPlugin());
+      this.setAttackSpeed(4);
+    } else if (this.kit.equals(MobDefKit.KNIGHT)) {
+      this.setPvpMode(true);
+    } else {
+      this.setPvpMode(false);
     }
 
-    public void startGame() {
-        this.unlockLocation();
+    if (this.kit.equals(MobDefKit.LUMBERJACK)) {
+      AttributeInstance speed = this.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
+      AttributeInstance damage = this.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+
+      speed.setBaseValue(6);
+      damage.setBaseValue(2);
+    }
+  }
+
+  public void saveInventory() {
+    this.invItems = this.getInventory().getContents();
+  }
+
+  @Override
+  public void joinSpectator() {
+    this.alive = false;
+
+    if (this.getStatus().equals(Status.User.IN_GAME) && MobDefServer.isGameRunning()) {
+      if (MobDefServer.isDelayRunning()) {
+        this.rejoinGame(this.getExLocation(), Status.User.IN_GAME);
+      } else {
+        this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager()
+            .addDeadUser(this,
+                this.getLocation());
+      }
     }
 
-    @Override
-    public boolean applyKit() {
-        boolean loaded = super.applyKit();
+    super.joinSpectator();
 
-        if (!loaded) {
-            return false;
-        }
+    MobDefServer.updateSideboardPlayers();
 
-        this.loadKit();
+    this.setGameMode(GameMode.CREATIVE);
+  }
 
-        return true;
+  public void leaveSpectatorAndRejoin() {
+    ExLocation respawnLocation;
+
+    if (this.deadBody != null) {
+      respawnLocation = ExLocation.fromLocation(this.deadBody.getLocation());
+      this.deadBody = null;
+    } else {
+      respawnLocation = MobDefServer.getMap().getUserSpawn();
     }
 
-    public void loadKit() {
-        this.shop = ((MobDefKit) this.kit).getShop(this);
+    this.leaveSpectatorAndRejoin(respawnLocation, Status.User.IN_GAME);
+  }
 
-        if (this.kit.equals(MobDefKit.ALCHEMIST)) {
-            Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0),
-                    GameMobDefence.getPlugin());
-            this.setAttackSpeed(4);
-        } else if (this.kit.equals(MobDefKit.KNIGHT)) {
-            this.setPvpMode(true);
-        } else {
-            this.setPvpMode(false);
-        }
+  @Override
+  public void rejoinGame(@Nullable ExLocation location, @NotNull Status.User newStatus) {
+    super.rejoinGame(location, newStatus);
 
-        if (this.kit.equals(MobDefKit.LUMBERJACK)) {
-            AttributeInstance speed = this.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
-            AttributeInstance damage = this.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+    this.alive = true;
+    this.beingRevivedUser = null;
 
-            speed.setBaseValue(6);
-            damage.setBaseValue(2);
-        }
+    if (this.kit.equals(MobDefKit.ALCHEMIST)) {
+      Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0),
+          GameMobDefence.getPlugin());
     }
 
-    public void saveInventory() {
-        this.invItems = this.getInventory().getContents();
-    }
+    MobDefServer.updateSideboardPlayers();
 
-    @Override
-    public void joinSpectator() {
-        this.alive = false;
+    this.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(TeamHealth.getMaxHealth());
+    this.heal();
 
-        if (this.getStatus().equals(Status.User.IN_GAME) && MobDefServer.isGameRunning()) {
-            if (MobDefServer.isDelayRunning()) {
-                this.rejoinGame(this.getExLocation(), Status.User.IN_GAME);
-            } else {
-                this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager()
-                        .addDeadUser(this,
-                                this.getLocation());
-            }
-        }
+    this.setInvulnerable(true);
+    Server.runTaskLaterSynchrony(() -> this.getPlayer().setInvulnerable(false), 2 * 20,
+        GameMobDefence.getPlugin());
+  }
 
-        super.joinSpectator();
+  @Override
+  public void setRejoinInventory() {
+    super.setRejoinInventory();
+    this.getInventory().setContents(this.invItems);
+  }
 
-        MobDefServer.updateSideboardPlayers();
+  public boolean isAlive() {
+    return this.alive;
+  }
 
-        this.setGameMode(GameMode.CREATIVE);
-    }
+  public void setAlive(boolean alive) {
+    this.alive = alive;
+  }
 
-    public void leaveSpectatorAndRejoin() {
-        ExLocation respawnLocation;
+  public KitShop getShop() {
+    return shop;
+  }
 
-        if (this.deadBody != null) {
-            respawnLocation = ExLocation.fromLocation(this.deadBody.getLocation());
-            this.deadBody = null;
-        } else {
-            respawnLocation = MobDefServer.getMap().getUserSpawn();
-        }
+  public void setShop(KitShop shop) {
+    this.shop = shop;
+    this.shop.setUser(this);
+  }
 
-        this.leaveSpectatorAndRejoin(respawnLocation, Status.User.IN_GAME);
-    }
+  public boolean isBeingRevived() {
+    return this.beingRevivedUser != null;
+  }
 
-    @Override
-    public void rejoinGame(@Nullable ExLocation location, @NotNull Status.User newStatus) {
-        super.rejoinGame(location, newStatus);
+  public MobDefUser getBeingRevivedUser() {
+    return this.beingRevivedUser;
+  }
 
-        this.alive = true;
-        this.beingRevivedUser = null;
+  public void setBeingRevivedUser(MobDefUser user) {
+    this.beingRevivedUser = user;
+  }
 
-        if (this.kit.equals(MobDefKit.ALCHEMIST)) {
-            Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0),
-                    GameMobDefence.getPlugin());
-        }
-
-        MobDefServer.updateSideboardPlayers();
-
-        this.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(TeamHealth.getMaxHealth());
-        this.heal();
-
-        this.setInvulnerable(true);
-        Server.runTaskLaterSynchrony(() -> this.getPlayer().setInvulnerable(false), 2 * 20,
-                GameMobDefence.getPlugin());
-    }
-
-    @Override
-    public void setRejoinInventory() {
-        super.setRejoinInventory();
-        this.getInventory().setContents(this.invItems);
-    }
-
-    public boolean isAlive() {
-        return this.alive;
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
-    public KitShop getShop() {
-        return shop;
-    }
-
-    public void setShop(KitShop shop) {
-        this.shop = shop;
-        this.shop.setUser(this);
-    }
-
-    public boolean isBeingRevived() {
-        return this.beingRevivedUser != null;
-    }
-
-    public MobDefUser getBeingRevivedUser() {
-        return this.beingRevivedUser;
-    }
-
-    public void setBeingRevivedUser(MobDefUser user) {
-        this.beingRevivedUser = user;
-    }
-
-    public ExPlayer getDeadBody() {
-        return deadBody;
-    }
+  public ExPlayer getDeadBody() {
+    return deadBody;
+  }
 }

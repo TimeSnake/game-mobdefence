@@ -10,15 +10,15 @@ import java.util.List;
 
 public class MobDefKitManager extends KitManager<MobDefKit> {
 
-    public static final List<MobDefKit> KITS = List.of(MobDefKit.KNIGHT, MobDefKit.ARCHER,
-            MobDefKit.ALCHEMIST, MobDefKit.WIZARD, MobDefKit.LUMBERJACK);
+  public static final List<MobDefKit> KITS = List.of(MobDefKit.KNIGHT, MobDefKit.ARCHER,
+      MobDefKit.ALCHEMIST, MobDefKit.WIZARD, MobDefKit.LUMBERJACK);
 
-    public MobDefKitManager() {
-        super(false);
-    }
+  public MobDefKitManager() {
+    super(false);
+  }
 
-    @Override
-    public Collection<MobDefKit> getKits() {
-        return KITS;
-    }
+  @Override
+  public Collection<MobDefKit> getKits() {
+    return KITS;
+  }
 }

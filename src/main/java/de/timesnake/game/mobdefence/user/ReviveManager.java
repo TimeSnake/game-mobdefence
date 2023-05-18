@@ -15,8 +15,8 @@ import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.Upgradeable;
 import de.timesnake.library.basic.util.Tuple;
-import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.basic.util.server.Task;
+import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.entities.entity.bukkit.ExArmorStand;
 import de.timesnake.library.entities.entity.bukkit.ExPlayer;
 import de.timesnake.library.entities.wrapper.ExEntityPose;
@@ -36,275 +36,275 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class ReviveManager {
 
-    private static final double RADIUS = 3;
+  private static final double RADIUS = 3;
 
-    private static final BiConsumer<MobDefUser, Integer> RESPAWN = (u, i) -> MobDefServer.getMobDefUserManager()
-            .getReviveManager().setReviveRespawnTime(i);
-    private static final LevelType.Builder RESPAWN_TIME_LEVELS = new LevelType.Builder()
-            .name("Respawn Time")
-            .display(new ExItemStack(Material.PLAYER_HEAD))
-            .baseLevel(1)
-            .levelDescription("-1s Revive Time")
-            .addLvl(null, (MobDefUser u) -> RESPAWN.accept(u, 7))
-            .addLvl(new Price(3, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 6))
-            .addLvl(new Price(5, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 5))
-            .addLvl(new Price(7, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 4))
-            .addLvl(new Price(9, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 3));
+  private static final BiConsumer<MobDefUser, Integer> RESPAWN = (u, i) -> MobDefServer.getMobDefUserManager()
+      .getReviveManager().setReviveRespawnTime(i);
+  private static final LevelType.Builder RESPAWN_TIME_LEVELS = new LevelType.Builder()
+      .name("Respawn Time")
+      .display(new ExItemStack(Material.PLAYER_HEAD))
+      .baseLevel(1)
+      .levelDescription("-1s Revive Time")
+      .addLvl(null, (MobDefUser u) -> RESPAWN.accept(u, 7))
+      .addLvl(new Price(3, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 6))
+      .addLvl(new Price(5, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 5))
+      .addLvl(new Price(7, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 4))
+      .addLvl(new Price(9, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 3));
 
 
-    private static final BiConsumer<MobDefUser, Integer> DESPAWN = (u, i) -> MobDefServer.getMobDefUserManager()
-            .getReviveManager().setReviveDespawnTime(i);
-    private static final LevelType.Builder DESPAWN_TIME_LEVELS = new LevelType.Builder()
-            .name("Despawn Time")
-            .display(new ExItemStack(Material.SKELETON_SKULL))
-            .baseLevel(1)
-            .levelDescription("+3s Despawn Time")
-            .addLvl(null, (MobDefUser u) -> DESPAWN.accept(u, 30))
-            .addLvl(new Price(2, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 33))
-            .addLvl(new Price(4, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 36))
-            .addLvl(new Price(6, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 39))
-            .addLvl(new Price(8, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 42))
-            .addLvl(new Price(10, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 45))
-            .addLvl(new Price(12, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 48))
-            .addLvl(new Price(14, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 51))
-            .addLvl(new Price(16, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 54))
-            .addLvl(new Price(18, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 57))
-            .addLvl(new Price(20, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 60));
+  private static final BiConsumer<MobDefUser, Integer> DESPAWN = (u, i) -> MobDefServer.getMobDefUserManager()
+      .getReviveManager().setReviveDespawnTime(i);
+  private static final LevelType.Builder DESPAWN_TIME_LEVELS = new LevelType.Builder()
+      .name("Despawn Time")
+      .display(new ExItemStack(Material.SKELETON_SKULL))
+      .baseLevel(1)
+      .levelDescription("+3s Despawn Time")
+      .addLvl(null, (MobDefUser u) -> DESPAWN.accept(u, 30))
+      .addLvl(new Price(2, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 33))
+      .addLvl(new Price(4, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 36))
+      .addLvl(new Price(6, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 39))
+      .addLvl(new Price(8, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 42))
+      .addLvl(new Price(10, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 45))
+      .addLvl(new Price(12, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 48))
+      .addLvl(new Price(14, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 51))
+      .addLvl(new Price(16, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 54))
+      .addLvl(new Price(18, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 57))
+      .addLvl(new Price(20, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 60));
 
-    public static final Upgradeable.Builder REVIVE = new Upgradeable.Builder() {
+  public static final Upgradeable.Builder REVIVE = new Upgradeable.Builder() {
+    @Override
+    public Upgradeable build() {
+      this.checkBuild();
+      return new Upgradeable(this) {
         @Override
-        public Upgradeable build() {
-            this.checkBuild();
-            return new Upgradeable(this) {
-                @Override
-                public void onLevelClick(MobDefUser user, ExInventory inv, ExItemStack item) {
-                    LevelType levelType = this.levelType.get1(item);
-                    if (levelType == null) {
-                        return;
-                    }
-                    levelType.tryLevelUp(user);
-                    inv.setItemStack(levelType.getDisplayItem());
-                }
-            };
+        public void onLevelClick(MobDefUser user, ExInventory inv, ExItemStack item) {
+          LevelType levelType = this.levelType.get1(item);
+          if (levelType == null) {
+            return;
+          }
+          levelType.tryLevelUp(user);
+          inv.setItemStack(levelType.getDisplayItem());
         }
+      };
     }
-            .name("Revive")
-            .display(new ExItemStack(Material.TOTEM_OF_UNDYING))
-            .addLvlType(RESPAWN_TIME_LEVELS)
-            .addLvlType(DESPAWN_TIME_LEVELS);
+  }
+      .name("Revive")
+      .display(new ExItemStack(Material.TOTEM_OF_UNDYING))
+      .addLvlType(RESPAWN_TIME_LEVELS)
+      .addLvlType(DESPAWN_TIME_LEVELS);
 
-    private final HashMap<MobDefUser, Location> deathLocationsByUser = new HashMap<>();
-    private final Map<MobDefUser, BukkitTask> deadTasksByUser = new HashMap<>();
-    private final Map<MobDefUser, ExArmorStand> displayEntitiesByUser = new HashMap<>();
-    private int reviveRespawnTime = 7;
-    private int reviveDespawnTime = 30;
-    private BukkitTask revivingCheckTask;
+  private final HashMap<MobDefUser, Location> deathLocationsByUser = new HashMap<>();
+  private final Map<MobDefUser, BukkitTask> deadTasksByUser = new HashMap<>();
+  private final Map<MobDefUser, ExArmorStand> displayEntitiesByUser = new HashMap<>();
+  private int reviveRespawnTime = 7;
+  private int reviveDespawnTime = 30;
+  private BukkitTask revivingCheckTask;
 
-    public ExPlayer addDeadUser(MobDefUser user, Location location) {
-        this.deathLocationsByUser.put(user, location);
+  public ExPlayer addDeadUser(MobDefUser user, Location location) {
+    this.deathLocationsByUser.put(user, location);
 
-        ExPlayer deadBody = new ExPlayer(user.getExWorld().getBukkitWorld(), user.getName());
+    ExPlayer deadBody = new ExPlayer(user.getExWorld().getBukkitWorld(), user.getName());
 
-        Tuple<String, String> textures = user.asExPlayer().getTextureValueSiganture();
+    Tuple<String, String> textures = user.asExPlayer().getTextureValueSiganture();
 
-        deadBody.setTextures(textures.getA(), textures.getB());
+    deadBody.setTextures(textures.getA(), textures.getB());
 
-        Location loc = user.getLocation();
-        deadBody.setPositionRotation(loc.getX(), loc.getY() + 0.2, loc.getZ(), 120, 0);
-        deadBody.setNoGravity(true);
-        deadBody.setCustomName(user.getName());
-        deadBody.setCustomNameVisible(true);
+    Location loc = user.getLocation();
+    deadBody.setPositionRotation(loc.getX(), loc.getY() + 0.2, loc.getZ(), 120, 0);
+    deadBody.setNoGravity(true);
+    deadBody.setCustomName(user.getName());
+    deadBody.setCustomNameVisible(true);
 
-        deadBody.setPose(ExEntityPose.SLEEPING);
+    deadBody.setPose(ExEntityPose.SLEEPING);
 
-        Server.broadcastPacket(
-                ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.ADD_PLAYER,
-                        deadBody));
-        Server.broadcastPacket(ExPacketPlayOutSpawnNamedEntity.wrap(deadBody));
-        Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(deadBody,
-                ExPacketPlayOutEntityMetadata.DataType.UPDATE));
+    Server.broadcastPacket(
+        ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.ADD_PLAYER,
+            deadBody));
+    Server.broadcastPacket(ExPacketPlayOutSpawnNamedEntity.wrap(deadBody));
+    Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(deadBody,
+        ExPacketPlayOutEntityMetadata.DataType.UPDATE));
 
-        Server.runTaskLaterSynchrony(() -> Server.broadcastPacket(
-                ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.REMOVE_PLAYER,
-                        deadBody)), 3, GameMobDefence.getPlugin());
+    Server.runTaskLaterSynchrony(() -> Server.broadcastPacket(
+        ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.REMOVE_PLAYER,
+            deadBody)), 3, GameMobDefence.getPlugin());
 
-        this.startDying(user, deadBody);
+    this.startDying(user, deadBody);
 
-        return deadBody;
+    return deadBody;
+  }
+
+  private void startDying(MobDefUser user, ExPlayer deadBody) {
+
+    ExArmorStand stand = new ExArmorStand(user.getExWorld().getBukkitWorld());
+
+    stand.setCustomName("§cDead in 30s");
+    stand.setCustomNameVisible(true);
+    stand.setSmall(true);
+    stand.setInvulnerable(true);
+    stand.setInvisible(true);
+    stand.setNoGravity(true);
+
+    Location loc = deadBody.getLocation();
+    stand.setPosition(loc.getX(), loc.getY() - 1.1, loc.getZ());
+
+    this.displayEntitiesByUser.put(user, stand);
+
+    Server.broadcastPacket(ExPacketPlayOutSpawnEntity.wrap(stand));
+    Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(stand,
+        ExPacketPlayOutEntityMetadata.DataType.UPDATE));
+
+    this.deadTasksByUser.put(user,
+        Server.runTaskTimerAsynchrony(new DyingProcess(user, this.reviveDespawnTime),
+            0, 20, GameMobDefence.getPlugin()));
+  }
+
+  public void run() {
+    this.revivingCheckTask = Server.runTaskTimerSynchrony(() -> {
+      for (Map.Entry<MobDefUser, Location> entry : this.deathLocationsByUser.entrySet()) {
+
+        MobDefUser reviving = null;
+
+        for (MobDefUser user : MobDefServer.getAliveUsers()) {
+          if (entry.getValue().distanceSquared(user.getLocation()) <= RADIUS) {
+            if (!entry.getKey().isBeingRevived()) {
+              this.reviveUser(user, entry.getKey());
+            }
+            reviving = user;
+            break;
+          }
+        }
+
+        entry.getKey().setBeingRevivedUser(reviving);
+
+      }
+    }, 0, 20, GameMobDefence.getPlugin());
+  }
+
+  public void stop() {
+    if (this.revivingCheckTask != null) {
+      this.revivingCheckTask.cancel();
+    }
+    this.clear();
+  }
+
+  public void clear() {
+    for (Map.Entry<MobDefUser, BukkitTask> entry : this.deadTasksByUser.entrySet()) {
+      entry.getValue().cancel();
+      ReviveManager.this.removeDyingUser(entry.getKey(), false);
     }
 
-    private void startDying(MobDefUser user, ExPlayer deadBody) {
+    this.deathLocationsByUser.clear();
+    this.displayEntitiesByUser.clear();
+    this.deadTasksByUser.clear();
+  }
 
-        ExArmorStand stand = new ExArmorStand(user.getExWorld().getBukkitWorld());
-
-        stand.setCustomName("§cDead in 30s");
-        stand.setCustomNameVisible(true);
-        stand.setSmall(true);
-        stand.setInvulnerable(true);
-        stand.setInvisible(true);
-        stand.setNoGravity(true);
-
-        Location loc = deadBody.getLocation();
-        stand.setPosition(loc.getX(), loc.getY() - 1.1, loc.getZ());
-
-        this.displayEntitiesByUser.put(user, stand);
-
-        Server.broadcastPacket(ExPacketPlayOutSpawnEntity.wrap(stand));
-        Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(stand,
-                ExPacketPlayOutEntityMetadata.DataType.UPDATE));
-
-        this.deadTasksByUser.put(user,
-                Server.runTaskTimerAsynchrony(new DyingProcess(user, this.reviveDespawnTime),
-                        0, 20, GameMobDefence.getPlugin()));
+  private void reviveUser(MobDefUser user, MobDefUser deadUser) {
+    if (deadUser.isBeingRevived()) {
+      return;
     }
 
+    ExPlayer deadBody = deadUser.getDeadBody();
+
+    if (deadBody == null) {
+      return;
+    }
+
+    deadUser.setBeingRevivedUser(user);
+  }
+
+  public void removeDyingUser(MobDefUser user, boolean removeFromList) {
+    if (removeFromList) {
+      ReviveManager.this.deadTasksByUser.remove(user).cancel();
+    } else {
+      ReviveManager.this.deadTasksByUser.get(user).cancel();
+    }
+
+    Server.broadcastPacket(
+        ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.REMOVE_PLAYER,
+            user.getDeadBody()));
+    Server.broadcastPacket(ExPacketPlayOutEntityDestroy.wrap(user.getDeadBody()));
+    Server.broadcastPacket(
+        ExPacketPlayOutEntityDestroy.wrap(this.displayEntitiesByUser.remove(user)));
+
+    Server.runTaskSynchrony(() -> {
+      if (user.getDeadBody() != null) {
+        user.getDeadBody().kill();
+      }
+    }, GameMobDefence.getPlugin());
+
+    if (removeFromList) {
+      this.deathLocationsByUser.remove(user);
+    }
+  }
+
+  private void setReviveRespawnTime(int time) {
+    this.reviveRespawnTime = time;
+  }
+
+  private void setReviveDespawnTime(int time) {
+    this.reviveDespawnTime = time;
+  }
+
+  private class DyingProcess implements Task {
+
+    private final MobDefUser user;
+    private int reviveTime;
+    private int despawnTime;
+
+    DyingProcess(MobDefUser user, int despawnTime) {
+      this.user = user;
+      this.despawnTime = despawnTime;
+      this.reviveTime = 0;
+    }
+
+    @Override
     public void run() {
-        this.revivingCheckTask = Server.runTaskTimerSynchrony(() -> {
-            for (Map.Entry<MobDefUser, Location> entry : this.deathLocationsByUser.entrySet()) {
 
-                MobDefUser reviving = null;
+      ExArmorStand entity = ReviveManager.this.displayEntitiesByUser.get(user);
 
-                for (MobDefUser user : MobDefServer.getAliveUsers()) {
-                    if (entry.getValue().distanceSquared(user.getLocation()) <= RADIUS) {
-                        if (!entry.getKey().isBeingRevived()) {
-                            this.reviveUser(user, entry.getKey());
-                        }
-                        reviving = user;
-                        break;
-                    }
-                }
-
-                entry.getKey().setBeingRevivedUser(reviving);
-
-            }
-        }, 0, 20, GameMobDefence.getPlugin());
-    }
-
-    public void stop() {
-        if (this.revivingCheckTask != null) {
-            this.revivingCheckTask.cancel();
-        }
-        this.clear();
-    }
-
-    public void clear() {
-        for (Map.Entry<MobDefUser, BukkitTask> entry : this.deadTasksByUser.entrySet()) {
-            entry.getValue().cancel();
-            ReviveManager.this.removeDyingUser(entry.getKey(), false);
+      if (user.isBeingRevived()) {
+        if (reviveTime == ReviveManager.this.reviveRespawnTime) {
+          MobDefServer.broadcastGameMessage(user.getChatNameComponent()
+              .append(Component.text(" was revived by ", ExTextColor.WARNING))
+              .append(user.getBeingRevivedUser().getChatNameComponent()));
+          ReviveManager.this.removeDyingUser(user, true);
+          Server.runTaskSynchrony(user::leaveSpectatorAndRejoin,
+              GameMobDefence.getPlugin());
+          return;
         }
 
-        this.deathLocationsByUser.clear();
-        this.displayEntitiesByUser.clear();
-        this.deadTasksByUser.clear();
-    }
+        user.getBeingRevivedUser().playSound(Sound.ENTITY_PLAYER_LEVELUP, 2);
+        user.getBeingRevivedUser().sendPluginMessage(Plugin.MOB_DEFENCE,
+            Component.text("Reviving ", ExTextColor.PERSONAL)
+                .append(user.getChatNameComponent())
+                .append(Component.text(
+                    ", " + (reviveRespawnTime - reviveTime) + "s",
+                    ExTextColor.PERSONAL)));
 
-    private void reviveUser(MobDefUser user, MobDefUser deadUser) {
-        if (deadUser.isBeingRevived()) {
-            return;
+        entity.setCustomName("§2Revived in " + (reviveRespawnTime - reviveTime) + "s");
+
+        reviveTime++;
+      } else {
+        this.reviveTime = 0;
+
+        if (this.despawnTime <= 0) {
+          MobDefServer.broadcastGameMessage(user.getChatNameComponent()
+              .append(Component.text(" is now resting in pieces",
+                  ExTextColor.WARNING)));
+          ReviveManager.this.removeDyingUser(user, true);
+          return;
         }
 
-        ExPlayer deadBody = deadUser.getDeadBody();
+        entity.setCustomName("§cDead in " + this.despawnTime + "s");
 
-        if (deadBody == null) {
-            return;
-        }
+      }
 
-        deadUser.setBeingRevivedUser(user);
+      this.despawnTime--;
+
+      Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(entity,
+          ExPacketPlayOutEntityMetadata.DataType.UPDATE));
+
     }
-
-    public void removeDyingUser(MobDefUser user, boolean removeFromList) {
-        if (removeFromList) {
-            ReviveManager.this.deadTasksByUser.remove(user).cancel();
-        } else {
-            ReviveManager.this.deadTasksByUser.get(user).cancel();
-        }
-
-        Server.broadcastPacket(
-                ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.REMOVE_PLAYER,
-                        user.getDeadBody()));
-        Server.broadcastPacket(ExPacketPlayOutEntityDestroy.wrap(user.getDeadBody()));
-        Server.broadcastPacket(
-                ExPacketPlayOutEntityDestroy.wrap(this.displayEntitiesByUser.remove(user)));
-
-        Server.runTaskSynchrony(() -> {
-            if (user.getDeadBody() != null) {
-                user.getDeadBody().kill();
-            }
-        }, GameMobDefence.getPlugin());
-
-        if (removeFromList) {
-            this.deathLocationsByUser.remove(user);
-        }
-    }
-
-    private void setReviveRespawnTime(int time) {
-        this.reviveRespawnTime = time;
-    }
-
-    private void setReviveDespawnTime(int time) {
-        this.reviveDespawnTime = time;
-    }
-
-    private class DyingProcess implements Task {
-
-        private final MobDefUser user;
-        private int reviveTime;
-        private int despawnTime;
-
-        DyingProcess(MobDefUser user, int despawnTime) {
-            this.user = user;
-            this.despawnTime = despawnTime;
-            this.reviveTime = 0;
-        }
-
-        @Override
-        public void run() {
-
-            ExArmorStand entity = ReviveManager.this.displayEntitiesByUser.get(user);
-
-            if (user.isBeingRevived()) {
-                if (reviveTime == ReviveManager.this.reviveRespawnTime) {
-                    MobDefServer.broadcastGameMessage(user.getChatNameComponent()
-                            .append(Component.text(" was revived by ", ExTextColor.WARNING))
-                            .append(user.getBeingRevivedUser().getChatNameComponent()));
-                    ReviveManager.this.removeDyingUser(user, true);
-                    Server.runTaskSynchrony(user::leaveSpectatorAndRejoin,
-                            GameMobDefence.getPlugin());
-                    return;
-                }
-
-                user.getBeingRevivedUser().playSound(Sound.ENTITY_PLAYER_LEVELUP, 2);
-                user.getBeingRevivedUser().sendPluginMessage(Plugin.MOB_DEFENCE,
-                        Component.text("Reviving ", ExTextColor.PERSONAL)
-                                .append(user.getChatNameComponent())
-                                .append(Component.text(
-                                        ", " + (reviveRespawnTime - reviveTime) + "s",
-                                        ExTextColor.PERSONAL)));
-
-                entity.setCustomName("§2Revived in " + (reviveRespawnTime - reviveTime) + "s");
-
-                reviveTime++;
-            } else {
-                this.reviveTime = 0;
-
-                if (this.despawnTime <= 0) {
-                    MobDefServer.broadcastGameMessage(user.getChatNameComponent()
-                            .append(Component.text(" is now resting in pieces",
-                                    ExTextColor.WARNING)));
-                    ReviveManager.this.removeDyingUser(user, true);
-                    return;
-                }
-
-                entity.setCustomName("§cDead in " + this.despawnTime + "s");
-
-            }
-
-            this.despawnTime--;
-
-            Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(entity,
-                    ExPacketPlayOutEntityMetadata.DataType.UPDATE));
-
-        }
-    }
+  }
 
 }

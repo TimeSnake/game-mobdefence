@@ -14,33 +14,33 @@ import java.util.Set;
 
 public abstract class CooldownWeapon extends InteractWeapon {
 
-    private final Set<MobDefUser> cooldownUsers = new HashSet<>();
+  private final Set<MobDefUser> cooldownUsers = new HashSet<>();
 
-    public CooldownWeapon(ExItemStack item) {
-        super(item);
+  public CooldownWeapon(ExItemStack item) {
+    super(item);
+  }
+
+  @Override
+  public void onUserInventoryInteract(UserInventoryInteractEvent event) {
+    MobDefUser user = ((MobDefUser) event.getUser());
+
+    if (this.cooldownUsers.contains(user)) {
+      event.setCancelled(true);
+      return;
     }
 
-    @Override
-    public void onUserInventoryInteract(UserInventoryInteractEvent event) {
-        MobDefUser user = ((MobDefUser) event.getUser());
+    this.cooldownUsers.add(user);
 
-        if (this.cooldownUsers.contains(user)) {
-            event.setCancelled(true);
-            return;
-        }
+    Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user),
+        this.getCooldown(event.getClickedItem()),
+        GameMobDefence.getPlugin());
 
-        this.cooldownUsers.add(user);
+    super.onUserInventoryInteract(event);
+  }
 
-        Server.runTaskLaterSynchrony(() -> this.cooldownUsers.remove(user),
-                this.getCooldown(event.getClickedItem()),
-                GameMobDefence.getPlugin());
+  public abstract int getCooldown(ExItemStack item);
 
-        super.onUserInventoryInteract(event);
-    }
-
-    public abstract int getCooldown(ExItemStack item);
-
-    public void cancelAll() {
-        this.cooldownUsers.clear();
-    }
+  public void cancelAll() {
+    this.cooldownUsers.clear();
+  }
 }

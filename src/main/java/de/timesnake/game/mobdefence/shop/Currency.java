@@ -9,26 +9,26 @@ import org.bukkit.Material;
 
 public enum Currency {
 
-    BRONZE("Bronze", new ExItemStack(Material.BRICK, "§6Bronze")),
-    SILVER("Silver", new ExItemStack(Material.IRON_INGOT, "§6Silver")),
-    GOLD("Gold", new ExItemStack(Material.GOLD_INGOT, "§6Gold")),
-    EMERALD("Emerald", new ExItemStack(Material.EMERALD, "§6Emerald"));
+  BRONZE("Bronze", new ExItemStack(Material.BRICK, "§6Bronze")),
+  SILVER("Silver", new ExItemStack(Material.IRON_INGOT, "§6Silver")),
+  GOLD("Gold", new ExItemStack(Material.GOLD_INGOT, "§6Gold")),
+  EMERALD("Emerald", new ExItemStack(Material.EMERALD, "§6Emerald"));
 
-    private final String name;
-    private final ExItemStack item;
+  private final String name;
+  private final ExItemStack item;
 
-    Currency(String name, ExItemStack item) {
-        this.name = name;
-        this.item = item;
-    }
+  Currency(String name, ExItemStack item) {
+    this.name = name;
+    this.item = item;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public ExItemStack getItem() {
-        return item;
-    }
+  public ExItemStack getItem() {
+    return item;
+  }
 
 
 }

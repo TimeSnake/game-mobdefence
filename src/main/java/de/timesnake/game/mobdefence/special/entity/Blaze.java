@@ -26,40 +26,40 @@ import org.bukkit.event.Listener;
 
 public class Blaze extends BlockSpawner implements Listener {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.MAGMA_BLOCK, "§6Blaze",
-            "§7Place the block to spawn a blaze").immutable();
+  public static final ExItemStack ITEM = new ExItemStack(Material.MAGMA_BLOCK, "§6Blaze",
+      "§7Place the block to spawn a blaze").immutable();
 
-    public static final Trade.Builder BLAZE = new Trade.Builder()
-            .price(new Price(16, Currency.SILVER))
-            .giveItems(Blaze.ITEM.cloneWithId().asQuantity(3));
+  public static final Trade.Builder BLAZE = new Trade.Builder()
+      .price(new Price(16, Currency.SILVER))
+      .giveItems(Blaze.ITEM.cloneWithId().asQuantity(3));
 
-    public Blaze() {
-        super(EntityType.BLAZE, ITEM);
+  public Blaze() {
+    super(EntityType.BLAZE, ITEM);
+  }
+
+  @Override
+  public void spawnEntities(Location location) {
+    ExBlaze blaze = new ExBlaze(location.getWorld(), false, false);
+
+    blaze.setPosition(location.getX(), location.getY(), location.getZ());
+
+    blaze.addPathfinderGoal(1, new ExCustomPathfinderGoalBlazeFireball());
+    blaze.addPathfinderGoal(8, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
+    blaze.addPathfinderGoal(8, new ExPathfinderGoalRandomLookaround());
+
+    blaze.addPathfinderGoal(1,
+        new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
+
+    for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTITY_CLASSES) {
+      blaze.addPathfinderGoal(2,
+          new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
     }
 
-    @Override
-    public void spawnEntities(Location location) {
-        ExBlaze blaze = new ExBlaze(location.getWorld(), false, false);
+    blaze.setPersistent(true);
 
-        blaze.setPosition(location.getX(), location.getY(), location.getZ());
+    blaze.setMaxHealth(40);
+    blaze.setHealth(40);
 
-        blaze.addPathfinderGoal(1, new ExCustomPathfinderGoalBlazeFireball());
-        blaze.addPathfinderGoal(8, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
-        blaze.addPathfinderGoal(8, new ExPathfinderGoalRandomLookaround());
-
-        blaze.addPathfinderGoal(1,
-                new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
-
-        for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTITY_CLASSES) {
-            blaze.addPathfinderGoal(2,
-                    new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
-        }
-
-        blaze.setPersistent(true);
-
-        blaze.setMaxHealth(40);
-        blaze.setHealth(40);
-
-        EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), blaze);
-    }
+    EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), blaze);
+  }
 }

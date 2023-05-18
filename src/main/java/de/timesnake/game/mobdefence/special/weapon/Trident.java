@@ -10,9 +10,10 @@ import org.bukkit.enchantments.Enchantment;
 
 public class Trident extends SpecialWeapon {
 
-    public static final ExItemStack ITEM = new ExItemStack(Material.TRIDENT).addExEnchantment(Enchantment.LOYALTY, 3);
+  public static final ExItemStack ITEM = new ExItemStack(Material.TRIDENT).addExEnchantment(
+      Enchantment.LOYALTY, 3);
 
-    public Trident() {
-        super(ITEM);
-    }
+  public Trident() {
+    super(ITEM);
+  }
 }

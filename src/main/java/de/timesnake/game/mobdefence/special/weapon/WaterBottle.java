@@ -21,37 +21,37 @@ import org.bukkit.potion.PotionType;
 
 public class WaterBottle extends SpecialWeapon implements Listener {
 
-    public static final ExItemStack ITEM =
-            ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.WATER, false, false)
-                    .setDisplayName("§6Water Bottle").setLore("§7Extinguish players").hideAll();
+  public static final ExItemStack ITEM =
+      ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.WATER, false, false)
+          .setDisplayName("§6Water Bottle").setLore("§7Extinguish players").hideAll();
 
-    public static final Trade.Builder WATER = new Trade.Builder()
-            .slot(23)
-            .giveItems(ITEM)
-            .description("Extinguish players")
-            .price(new Price(3, Currency.BRONZE));
+  public static final Trade.Builder WATER = new Trade.Builder()
+      .slot(23)
+      .giveItems(ITEM)
+      .description("Extinguish players")
+      .price(new Price(3, Currency.BRONZE));
 
-    private static final double RADIUS = 3;
+  private static final double RADIUS = 3;
 
-    public WaterBottle() {
-        super(ITEM);
-        Server.registerListener(this, GameMobDefence.getPlugin());
+  public WaterBottle() {
+    super(ITEM);
+    Server.registerListener(this, GameMobDefence.getPlugin());
+  }
+
+  @EventHandler
+  public void onProjectileHit(ProjectileHitEvent e) {
+    if (!(e.getEntity() instanceof ThrownPotion)) {
+      return;
     }
 
-    @EventHandler
-    public void onProjectileHit(ProjectileHitEvent e) {
-        if (!(e.getEntity() instanceof ThrownPotion)) {
-            return;
-        }
-
-        if (!((ThrownPotion) e.getEntity()).getEffects().isEmpty()) {
-            return;
-        }
-
-        Location loc = e.getEntity().getLocation();
-
-        for (Player player : loc.getNearbyPlayers(RADIUS)) {
-            player.setFireTicks(0);
-        }
+    if (!((ThrownPotion) e.getEntity()).getEffects().isEmpty()) {
+      return;
     }
+
+    Location loc = e.getEntity().getLocation();
+
+    for (Player player : loc.getNearbyPlayers(RADIUS)) {
+      player.setFireTicks(0);
+    }
+  }
 }

@@ -11,23 +11,23 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 
 public class OfflineMobDefUser extends OfflineUser {
 
-    private final boolean alive;
-    private final KitShop shop;
+  private final boolean alive;
+  private final KitShop shop;
 
-    public OfflineMobDefUser(MobDefUser user) {
-        super(user);
-        this.alive = user.isAlive();
-        this.shop = user.getShop();
-    }
+  public OfflineMobDefUser(MobDefUser user) {
+    super(user);
+    this.alive = user.isAlive();
+    this.shop = user.getShop();
+  }
 
-    @Override
-    public void loadInto(GameUser user) {
-        super.loadInto(user);
-        ((MobDefUser) user).loadKit();
+  @Override
+  public void loadInto(GameUser user) {
+    super.loadInto(user);
+    ((MobDefUser) user).loadKit();
 
-        ((MobDefUser) user).setShop(this.shop);
-        ((MobDefUser) user).setAlive(this.alive);
+    ((MobDefUser) user).setShop(this.shop);
+    ((MobDefUser) user).setAlive(this.alive);
 
-        user.setSideboard(MobDefServer.getGameSideboard());
-    }
+    user.setSideboard(MobDefServer.getGameSideboard());
+  }
 }

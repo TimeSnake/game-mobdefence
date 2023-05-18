@@ -18,58 +18,58 @@ import org.bukkit.util.Vector;
 
 public class BulletManager implements Listener {
 
-    private final HashMap<Entity, Bullet> bulletByEntity = new HashMap<>();
+  private final HashMap<Entity, Bullet> bulletByEntity = new HashMap<>();
 
-    public BulletManager() {
-        Server.registerListener(this, GameMobDefence.getPlugin());
+  public BulletManager() {
+    Server.registerListener(this, GameMobDefence.getPlugin());
+  }
+
+  public void shootBullet(Bullet bullet, Vector velocity) {
+    bullet.getEntity().setPersistent(true);
+
+    if (velocity != null) {
+      bullet.getEntity().setVelocity(velocity);
     }
 
-    public void shootBullet(Bullet bullet, Vector velocity) {
-        bullet.getEntity().setPersistent(true);
+    this.bulletByEntity.put(bullet.getEntity(), bullet);
+    bullet.shootOnNextTarget(true);
+  }
 
-        if (velocity != null) {
-            bullet.getEntity().setVelocity(velocity);
-        }
+  public void removeBullet(Bullet bullet) {
+    this.bulletByEntity.remove(bullet.getEntity());
+  }
 
-        this.bulletByEntity.put(bullet.getEntity(), bullet);
-        bullet.shootOnNextTarget(true);
+  @EventHandler
+  public void onBulletHit(ProjectileHitEvent e) {
+    Bullet bullet = this.bulletByEntity.get(e.getEntity());
+
+    if (bullet == null) {
+      return;
     }
 
-    public void removeBullet(Bullet bullet) {
-        this.bulletByEntity.remove(bullet.getEntity());
+    if (e.getHitBlock() != null) {
+      e.setCancelled(true);
+      bullet.remove();
+      return;
     }
 
-    @EventHandler
-    public void onBulletHit(ProjectileHitEvent e) {
-        Bullet bullet = this.bulletByEntity.get(e.getEntity());
-
-        if (bullet == null) {
-            return;
-        }
-
-        if (e.getHitBlock() != null) {
-            e.setCancelled(true);
-            bullet.remove();
-            return;
-        }
-
-        if (e.getHitEntity() == null || !MobDefMob.ATTACKER_ENTITY_TYPES.contains(
-                e.getHitEntity().getType())) {
-            e.setCancelled(true);
-            return;
-        }
-
-        LivingEntity entity = (LivingEntity) e.getHitEntity();
-
-        e.setCancelled(true);
-
-        WeaponTargetType targetType = bullet.onHit(entity);
-
-        switch (targetType) {
-            case DESTROY -> bullet.remove();
-            case ENTITY -> bullet.shootOnNextTarget(false);
-            case RETURN -> bullet.returnToSender();
-        }
+    if (e.getHitEntity() == null || !MobDefMob.ATTACKER_ENTITY_TYPES.contains(
+        e.getHitEntity().getType())) {
+      e.setCancelled(true);
+      return;
     }
+
+    LivingEntity entity = (LivingEntity) e.getHitEntity();
+
+    e.setCancelled(true);
+
+    WeaponTargetType targetType = bullet.onHit(entity);
+
+    switch (targetType) {
+      case DESTROY -> bullet.remove();
+      case ENTITY -> bullet.shootOnNextTarget(false);
+      case RETURN -> bullet.returnToSender();
+    }
+  }
 
 }
