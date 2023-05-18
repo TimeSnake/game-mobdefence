@@ -12,13 +12,13 @@ import org.bukkit.event.Listener;
 
 public class SpecialManager implements Listener {
 
-    public SpecialManager() {
-        Server.registerListener(this, GameMobDefence.getPlugin());
-    }
+  public SpecialManager() {
+    Server.registerListener(this, GameMobDefence.getPlugin());
+  }
 
 
-    @EventHandler
-    public void onEntityMove(EntityMoveEvent e) {
-    }
+  @EventHandler
+  public void onEntityMove(EntityMoveEvent e) {
+  }
 
 }

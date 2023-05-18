@@ -10,15 +10,15 @@ import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryClickEvent;
 
 public class TeamShop extends Shop {
 
-    public TeamShop(Shop.Builder builder) {
-        super(builder);
-    }
+  public TeamShop(Shop.Builder builder) {
+    super(builder);
+  }
 
-    @Override
-    public void onUserInventoryClick(UserInventoryClickEvent event) {
-        super.onUserInventoryClick(event);
-        for (User user : Server.getInGameUsers()) {
-            user.updateInventory();
-        }
+  @Override
+  public void onUserInventoryClick(UserInventoryClickEvent event) {
+    super.onUserInventoryClick(event);
+    for (User user : Server.getInGameUsers()) {
+      user.updateInventory();
     }
+  }
 }

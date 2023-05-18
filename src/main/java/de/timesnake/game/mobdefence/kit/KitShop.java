@@ -23,69 +23,69 @@ import org.jetbrains.annotations.NotNull;
 
 public class KitShop implements UserInventoryClickListener, InventoryHolder {
 
-    private final ExInventory inv;
-    private final Map<ExItemStack, Shop> shopsByItem = new HashMap<>();
-    private MobDefUser user;
+  private final ExInventory inv;
+  private final Map<ExItemStack, Shop> shopsByItem = new HashMap<>();
+  private MobDefUser user;
 
-    public KitShop(MobDefUser user) {
-        this.user = user;
-        MobDefKit kit = ((MobDefKit) user.getKit());
+  public KitShop(MobDefUser user) {
+    this.user = user;
+    MobDefKit kit = ((MobDefKit) user.getKit());
 
-        this.inv = new ExInventory(9 * 6, Component.text(kit.getName() + " Shop"), this);
+    this.inv = new ExInventory(9 * 6, Component.text(kit.getName() + " Shop"), this);
 
-        for (Supplier<Shop> shopSupplier : kit.getShopSuppliers()) {
-            Shop shop;
-            try {
-                shop = shopSupplier.get();
-            } catch (BuilderNotFullyInstantiatedException e) {
-                e.printStackTrace();
-                return;
-            }
-            if (shop instanceof UserShop) {
-                ((UserShop) shop).setUser(user);
-            }
-            this.shopsByItem.put(shop.getDisplayItem(), shop);
-            this.inv.setItemStack(shop.getSlot(), shop.getDisplayItem());
+    for (Supplier<Shop> shopSupplier : kit.getShopSuppliers()) {
+      Shop shop;
+      try {
+        shop = shopSupplier.get();
+      } catch (BuilderNotFullyInstantiatedException e) {
+        e.printStackTrace();
+        return;
+      }
+      if (shop instanceof UserShop) {
+        ((UserShop) shop).setUser(user);
+      }
+      this.shopsByItem.put(shop.getDisplayItem(), shop);
+      this.inv.setItemStack(shop.getSlot(), shop.getDisplayItem());
 
-            shop.getUpgradeables().forEach(u -> u.loadBaseForUser(user));
-        }
-
-        Server.getInventoryEventManager().addClickListener(this, this);
+      shop.getUpgradeables().forEach(u -> u.loadBaseForUser(user));
     }
 
-    @Override
-    public void onUserInventoryClick(UserInventoryClickEvent event) {
+    Server.getInventoryEventManager().addClickListener(this, this);
+  }
 
-        event.setCancelled(true);
+  @Override
+  public void onUserInventoryClick(UserInventoryClickEvent event) {
 
-        if (!this.user.equals(event.getUser())) {
-            return;
-        }
+    event.setCancelled(true);
 
-        ExItemStack clickedItem = event.getClickedItem();
-        Shop shop = this.shopsByItem.get(clickedItem);
-
-        if (shop == null) {
-            return;
-        }
-
-        user.openInventory(shop.getInventory());
-
+    if (!this.user.equals(event.getUser())) {
+      return;
     }
 
-    @Override
-    public @NotNull Inventory getInventory() {
-        return this.inv.getInventory();
+    ExItemStack clickedItem = event.getClickedItem();
+    Shop shop = this.shopsByItem.get(clickedItem);
+
+    if (shop == null) {
+      return;
     }
 
-    public void setUser(MobDefUser user) {
-        this.user = user;
+    user.openInventory(shop.getInventory());
 
-        for (Shop shop : this.shopsByItem.values()) {
-            if (shop instanceof UserShop) {
-                ((UserShop) shop).setUser(user);
-            }
-        }
+  }
+
+  @Override
+  public @NotNull Inventory getInventory() {
+    return this.inv.getInventory();
+  }
+
+  public void setUser(MobDefUser user) {
+    this.user = user;
+
+    for (Shop shop : this.shopsByItem.values()) {
+      if (shop instanceof UserShop) {
+        ((UserShop) shop).setUser(user);
+      }
     }
+  }
 
 }

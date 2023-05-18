@@ -8,13 +8,13 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 
 public abstract class SpecialWeapon {
 
-    protected final ExItemStack item;
+  protected final ExItemStack item;
 
-    public SpecialWeapon(ExItemStack item) {
-        this.item = item;
-    }
+  public SpecialWeapon(ExItemStack item) {
+    this.item = item;
+  }
 
-    public ExItemStack getItem() {
-        return item;
-    }
+  public ExItemStack getItem() {
+    return item;
+  }
 }

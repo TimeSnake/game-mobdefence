@@ -14,24 +14,24 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class GameMobDefence extends JavaPlugin {
 
-    private static GameMobDefence plugin;
+  private static GameMobDefence plugin;
 
-    @Override
-    public void onLoad() {
-        ServerManager.setInstance(new MobDefServerManager());
-    }
+  @Override
+  public void onLoad() {
+    ServerManager.setInstance(new MobDefServerManager());
+  }
 
-    @Override
-    public void onEnable() {
-        plugin = this;
+  @Override
+  public void onEnable() {
+    plugin = this;
 
-        MobDefServerManager.getInstance().onMobGameEnable();
+    MobDefServerManager.getInstance().onMobGameEnable();
 
-        Server.getCommandManager().addCommand(this, "mobdebug", new DebugCmd(), Plugin.MOB_DEFENCE);
-        Server.getCommandManager().addCommand(this, "mobdef", new MobDefCmd(), Plugin.MOB_DEFENCE);
-    }
+    Server.getCommandManager().addCommand(this, "mobdebug", new DebugCmd(), Plugin.MOB_DEFENCE);
+    Server.getCommandManager().addCommand(this, "mobdef", new MobDefCmd(), Plugin.MOB_DEFENCE);
+  }
 
-    public static GameMobDefence getPlugin() {
-        return plugin;
-    }
+  public static GameMobDefence getPlugin() {
+    return plugin;
+  }
 }

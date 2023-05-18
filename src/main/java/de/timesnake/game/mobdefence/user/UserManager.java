@@ -50,315 +50,315 @@ import org.bukkit.event.player.PlayerShearEntityEvent;
 
 public class UserManager implements Listener {
 
-    public static final ExItemStack DEBUG_TOOL = new ExItemStack(Material.BONE)
-            .onInteract(e -> {
-                User user = e.getUser();
-
-                if (user.getPlayer().isSneaking()) {
-                    HeightBlock block =
-                            MobDefServer.getMap().getHeightMapManager()
-                                    .getMap(HeightMapManager.MapType.WALL_FINDER)
-                                    .getHeightBlock(user.getExLocation());
-                    sendHeightLevel(user, block);
-                    return;
-                }
-
-                HeightBlock block =
-                        MobDefServer.getMap().getHeightMapManager()
-                                .getMap(HeightMapManager.MapType.NORMAL)
-                                .getHeightBlock(user.getExLocation());
-                sendHeightLevel(user, block);
-            });
-
-    private static final List<Material> ALLOWED_DROPS = List.of(Currency.BRONZE.getItem().getType(),
-            Currency.SILVER.getItem().getType(), Currency.GOLD.getItem().getType(),
-            Currency.EMERALD.getItem().getType(), Material.COOKED_BEEF, MobDefKit.KELP.getType(),
-            Material.GOLDEN_APPLE, Material.OAK_FENCE, Material.OAK_PLANKS, Material.IRON_BARS,
-            Material.COBBLESTONE_WALL, Material.OAK_SLAB);
-
-    private static final List<Material> REMOVED_DROPS = List.of(Material.GLASS_BOTTLE,
-            Material.BUCKET);
-
-    private static final double BLOCK_VILLAGER_DISTANCE = 3;
-
-    private final CoreRegeneration coreRegeneration;
-    private final ResistanceAura resistanceAura;
-
-    private final PotionGenerator potionGenerator;
-
-
-    private final ReviveManager reviveManager;
-
-    private final MobTracker mobTracker;
-
-    private final ExplosionManager explosionManager;
-
-    private final TrapManager trapManager;
-
-    public UserManager() {
-
-        //this.itemGenerators.add(new ItemGenerator(MobDefKit.ARCHER, 1, Speer.SPEER.getItem().cloneWithId()
-        // .asQuantity(3), 8));
-
-        this.coreRegeneration = new CoreRegeneration();
-        this.resistanceAura = new ResistanceAura();
-
-        this.potionGenerator = new PotionGenerator();
-
-        this.reviveManager = new ReviveManager();
-
-        this.mobTracker = new MobTracker();
-
-        this.explosionManager = new ExplosionManager();
-
-        this.trapManager = new TrapManager();
-
-        Server.registerListener(this, GameMobDefence.getPlugin());
-    }
-
-    public void runTasks() {
-        this.potionGenerator.run();
-        this.reviveManager.run();
-        this.resistanceAura.run();
-        this.trapManager.start();
-    }
-
-    public void cancelTasks() {
-        this.coreRegeneration.cancel();
-        this.potionGenerator.cancel();
-        this.reviveManager.stop();
-        this.resistanceAura.cancel();
-        this.trapManager.reset();
-    }
-
-    @EventHandler
-    public void onBlockBreak(UserBlockBreakEvent e) {
-        if (e.getUser().isService()) {
-            return;
-        }
-
-        if (e.getUser() instanceof MobDefUser) {
-            if (!((MobDefUser) e.getUser()).isAlive()) {
-                e.setCancelled(true);
-            }
-        }
-
-        Material type = e.getBlock().getType();
-
-        if (!(BlockCheck.NORMAL_BREAKABLE.isTagged(type) || BlockCheck.HIGH_BREAKABLE.isTagged(type)
-                || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
-            e.setCancelled(true);
-        } else {
-            ExItemStack item = MobDefKit.BLOCK_ITEM_BY_TYPE.get(type);
-
-            if (item == null) {
-                return;
-            }
-
-            e.setDropItems(false);
-            e.getBlock().getWorld()
-                    .dropItemNaturally(e.getBlock().getLocation().add(0.5, 0, 0.5), item);
-        }
-    }
-
-    @EventHandler
-    public void onBlockPlace(UserBlockPlaceEvent e) {
-
+  public static final ExItemStack DEBUG_TOOL = new ExItemStack(Material.BONE)
+      .onInteract(e -> {
         User user = e.getUser();
-        Block blockPlaced = e.getBlockPlaced();
-        Material type = blockPlaced.getType();
 
-        if (user.isService()) {
-            return;
+        if (user.getPlayer().isSneaking()) {
+          HeightBlock block =
+              MobDefServer.getMap().getHeightMapManager()
+                  .getMap(HeightMapManager.MapType.WALL_FINDER)
+                  .getHeightBlock(user.getExLocation());
+          sendHeightLevel(user, block);
+          return;
         }
 
-        if (!BlockCheck.NORMAL_BREAKABLE.isTagged(type) && !BlockCheck.HIGH_BREAKABLE.isTagged(type)
-                && !TrapManager.TRAP_MATERIALS.contains(type) && !type.equals(Material.LADDER)) {
-            e.setCancelled(true);
-            return;
-        }
+        HeightBlock block =
+            MobDefServer.getMap().getHeightMapManager()
+                .getMap(HeightMapManager.MapType.NORMAL)
+                .getHeightBlock(user.getExLocation());
+        sendHeightLevel(user, block);
+      });
 
-        if (MobDefServer.getMap().getCoreLocation().distanceSquared(blockPlaced.getLocation())
-                < BLOCK_VILLAGER_DISTANCE * BLOCK_VILLAGER_DISTANCE) {
-            e.setCancelled(true);
-            e.getUser().sendPluginMessage(Plugin.MOB_DEFENCE,
-                    Component.text("You can not place a block here", ExTextColor.WARNING));
-            return;
-        }
+  private static final List<Material> ALLOWED_DROPS = List.of(Currency.BRONZE.getItem().getType(),
+      Currency.SILVER.getItem().getType(), Currency.GOLD.getItem().getType(),
+      Currency.EMERALD.getItem().getType(), Material.COOKED_BEEF, MobDefKit.KELP.getType(),
+      Material.GOLDEN_APPLE, Material.OAK_FENCE, Material.OAK_PLANKS, Material.IRON_BARS,
+      Material.COBBLESTONE_WALL, Material.OAK_SLAB);
 
-        Location loc = blockPlaced.getLocation();
+  private static final List<Material> REMOVED_DROPS = List.of(Material.GLASS_BOTTLE,
+      Material.BUCKET);
 
-        boolean empty = true;
+  private static final double BLOCK_VILLAGER_DISTANCE = 3;
 
-        for (int y = 1; y <= 2; y++) {
-            loc = loc.clone().add(0, -y, 0);
+  private final CoreRegeneration coreRegeneration;
+  private final ResistanceAura resistanceAura;
 
-            if (!loc.getBlock().isEmpty()) {
-                empty = false;
-                break;
-            }
-        }
+  private final PotionGenerator potionGenerator;
 
-        if (empty) {
-            Server.runTaskLaterSynchrony(() -> {
-                blockPlaced.getWorld().spawnFallingBlock(blockPlaced.getLocation().add(0.5, 0, 0.5),
-                        blockPlaced.getBlockData());
 
-                Server.runTaskLaterSynchrony(() -> blockPlaced.setType(Material.AIR), 1,
-                        GameMobDefence.getPlugin());
-            }, 1, GameMobDefence.getPlugin());
+  private final ReviveManager reviveManager;
 
-        }
+  private final MobTracker mobTracker;
+
+  private final ExplosionManager explosionManager;
+
+  private final TrapManager trapManager;
+
+  public UserManager() {
+
+    //this.itemGenerators.add(new ItemGenerator(MobDefKit.ARCHER, 1, Speer.SPEER.getItem().cloneWithId()
+    // .asQuantity(3), 8));
+
+    this.coreRegeneration = new CoreRegeneration();
+    this.resistanceAura = new ResistanceAura();
+
+    this.potionGenerator = new PotionGenerator();
+
+    this.reviveManager = new ReviveManager();
+
+    this.mobTracker = new MobTracker();
+
+    this.explosionManager = new ExplosionManager();
+
+    this.trapManager = new TrapManager();
+
+    Server.registerListener(this, GameMobDefence.getPlugin());
+  }
+
+  public void runTasks() {
+    this.potionGenerator.run();
+    this.reviveManager.run();
+    this.resistanceAura.run();
+    this.trapManager.start();
+  }
+
+  public void cancelTasks() {
+    this.coreRegeneration.cancel();
+    this.potionGenerator.cancel();
+    this.reviveManager.stop();
+    this.resistanceAura.cancel();
+    this.trapManager.reset();
+  }
+
+  @EventHandler
+  public void onBlockBreak(UserBlockBreakEvent e) {
+    if (e.getUser().isService()) {
+      return;
     }
 
-    @EventHandler
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Player) {
-            MobDefUser user = ((MobDefUser) Server.getUser(((Player) e.getDamager())));
-            if (!user.isAlive()) {
-                e.setCancelled(true);
-                e.setDamage(0);
-            }
-
-            if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
-                e.setCancelled(true);
-                e.setDamage(0);
-            }
-        }
-
-        if (e.getDamager() instanceof Projectile
-                && ((Projectile) e.getDamager()).getShooter() instanceof Player) {
-            if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
-                e.setCancelled(true);
-                e.setDamage(0);
-            }
-        }
-
-        if (e.getDamager().getType().equals(EntityType.CREEPER)
-                && MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
-            e.setDamage(0);
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onEntityDamageByBlock(EntityDamageByBlockEvent e) {
-        if (e.getDamager() == null && (e.getEntityType().equals(EntityType.PLAYER)
-                || e.getEntityType().equals(EntityType.VILLAGER))) {
-            e.setDamage(0);
-            e.setCancelled(true);
-
-        }
-    }
-
-    @EventHandler
-    public void onUserDamage(UserDamageByUserEvent e) {
+    if (e.getUser() instanceof MobDefUser) {
+      if (!((MobDefUser) e.getUser()).isAlive()) {
         e.setCancelled(true);
-        e.setCancelDamage(true);
+      }
     }
 
-    @EventHandler
-    public void onUserDropItem(UserDropItemEvent e) {
-        if (e.getUser().isService()) {
-            return;
-        }
+    Material type = e.getBlock().getType();
 
-        Material material = e.getItemStack().getType();
+    if (!(BlockCheck.NORMAL_BREAKABLE.isTagged(type) || BlockCheck.HIGH_BREAKABLE.isTagged(type)
+        || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
+      e.setCancelled(true);
+    } else {
+      ExItemStack item = MobDefKit.BLOCK_ITEM_BY_TYPE.get(type);
 
-        if (REMOVED_DROPS.contains(material)) {
-            e.setCancelled(true);
-            Server.runTaskLaterSynchrony(() -> e.getUser().getInventory().remove(material), 1,
-                    GameMobDefence.getPlugin());
-        }
+      if (item == null) {
+        return;
+      }
 
-        if (!ALLOWED_DROPS.contains(material)) {
-            e.setCancelled(true);
-        }
+      e.setDropItems(false);
+      e.getBlock().getWorld()
+          .dropItemNaturally(e.getBlock().getLocation().add(0.5, 0, 0.5), item);
+    }
+  }
+
+  @EventHandler
+  public void onBlockPlace(UserBlockPlaceEvent e) {
+
+    User user = e.getUser();
+    Block blockPlaced = e.getBlockPlaced();
+    Material type = blockPlaced.getType();
+
+    if (user.isService()) {
+      return;
     }
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
-        User user = Server.getUser(e.getWhoClicked().getUniqueId());
-
-        if (user == null) {
-            return;
-        }
-
-        InventoryAction action = e.getAction();
-
-        if (action.equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) && e.getView().getTopInventory()
-                .equals(((MobDefUser) user).getShop().getInventory())) {
-            e.setResult(Event.Result.DENY);
-            e.setCancelled(true);
-        }
+    if (!BlockCheck.NORMAL_BREAKABLE.isTagged(type) && !BlockCheck.HIGH_BREAKABLE.isTagged(type)
+        && !TrapManager.TRAP_MATERIALS.contains(type) && !type.equals(Material.LADDER)) {
+      e.setCancelled(true);
+      return;
     }
 
-    @EventHandler
-    public void onPlayerPickUpArrow(PlayerPickupArrowEvent e) {
-        e.getArrow().remove();
+    if (MobDefServer.getMap().getCoreLocation().distanceSquared(blockPlaced.getLocation())
+        < BLOCK_VILLAGER_DISTANCE * BLOCK_VILLAGER_DISTANCE) {
+      e.setCancelled(true);
+      e.getUser().sendPluginMessage(Plugin.MOB_DEFENCE,
+          Component.text("You can not place a block here", ExTextColor.WARNING));
+      return;
+    }
+
+    Location loc = blockPlaced.getLocation();
+
+    boolean empty = true;
+
+    for (int y = 1; y <= 2; y++) {
+      loc = loc.clone().add(0, -y, 0);
+
+      if (!loc.getBlock().isEmpty()) {
+        empty = false;
+        break;
+      }
+    }
+
+    if (empty) {
+      Server.runTaskLaterSynchrony(() -> {
+        blockPlaced.getWorld().spawnFallingBlock(blockPlaced.getLocation().add(0.5, 0, 0.5),
+            blockPlaced.getBlockData());
+
+        Server.runTaskLaterSynchrony(() -> blockPlaced.setType(Material.AIR), 1,
+            GameMobDefence.getPlugin());
+      }, 1, GameMobDefence.getPlugin());
+
+    }
+  }
+
+  @EventHandler
+  public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+    if (e.getDamager() instanceof Player) {
+      MobDefUser user = ((MobDefUser) Server.getUser(((Player) e.getDamager())));
+      if (!user.isAlive()) {
         e.setCancelled(true);
-    }
+        e.setDamage(0);
+      }
 
-    @EventHandler
-    public void onPlayerShearEntity(PlayerShearEntityEvent e) {
+      if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
         e.setCancelled(true);
+        e.setDamage(0);
+      }
     }
 
-    @EventHandler
-    public void onPlayerShearBlock(PlayerShearBlockEvent e) {
+    if (e.getDamager() instanceof Projectile
+        && ((Projectile) e.getDamager()).getShooter() instanceof Player) {
+      if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
         e.setCancelled(true);
+        e.setDamage(0);
+      }
     }
 
-    @EventHandler
-    public void onPlayerBread(PlayerInteractEntityEvent e) {
-        e.setCancelled(true);
+    if (e.getDamager().getType().equals(EntityType.CREEPER)
+        && MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
+      e.setDamage(0);
+      e.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onEntityDamageByBlock(EntityDamageByBlockEvent e) {
+    if (e.getDamager() == null && (e.getEntityType().equals(EntityType.PLAYER)
+        || e.getEntityType().equals(EntityType.VILLAGER))) {
+      e.setDamage(0);
+      e.setCancelled(true);
+
+    }
+  }
+
+  @EventHandler
+  public void onUserDamage(UserDamageByUserEvent e) {
+    e.setCancelled(true);
+    e.setCancelDamage(true);
+  }
+
+  @EventHandler
+  public void onUserDropItem(UserDropItemEvent e) {
+    if (e.getUser().isService()) {
+      return;
     }
 
-    @EventHandler
-    public void onBlockForm(EntityBlockFormEvent e) {
-        if (e.getNewState().getType().equals(Material.SNOW)) {
-            e.setCancelled(true);
-        }
+    Material material = e.getItemStack().getType();
+
+    if (REMOVED_DROPS.contains(material)) {
+      e.setCancelled(true);
+      Server.runTaskLaterSynchrony(() -> e.getUser().getInventory().remove(material), 1,
+          GameMobDefence.getPlugin());
     }
 
-    @EventHandler
-    public void onEntityChangeBlock(EntityChangeBlockEvent e) {
-        if (e.getBlock().getType().equals(Material.SNOW)) {
-            e.setCancelled(true);
-        }
+    if (!ALLOWED_DROPS.contains(material)) {
+      e.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onInventoryClick(InventoryClickEvent e) {
+    User user = Server.getUser(e.getWhoClicked().getUniqueId());
+
+    if (user == null) {
+      return;
     }
 
-    private static void sendHeightLevel(User user, HeightBlock block) {
-        String level;
-        if (block != null) {
-            level = String.valueOf(block.getLevel());
-        } else {
-            level = "null";
-        }
-        user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Height: ", ExTextColor.PERSONAL)
-                .append(Component.text(level, ExTextColor.VALUE)));
-        if (block != null) {
-            HeightBlock next = block.getNext();
-            if (next != null) {
-                Location loc = next.getLocation();
-                user.sendPluginMessage(Plugin.MOB_DEFENCE,
-                        Component.text("Next: ", ExTextColor.PERSONAL)
-                                .append(Component.text(
-                                        loc.getX() + " " + loc.getY() + " " + loc.getZ(),
-                                        ExTextColor.VALUE)));
-            } else {
-                user.sendPluginMessage(Plugin.MOB_DEFENCE,
-                        Component.text("Next:", ExTextColor.PERSONAL)
-                                .append(Component.text(" null", ExTextColor.VALUE)));
-            }
-        }
-    }
+    InventoryAction action = e.getAction();
 
-    public ReviveManager getReviveManager() {
-        return reviveManager;
+    if (action.equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) && e.getView().getTopInventory()
+        .equals(((MobDefUser) user).getShop().getInventory())) {
+      e.setResult(Event.Result.DENY);
+      e.setCancelled(true);
     }
+  }
 
-    public CoreRegeneration getCoreRegeneration() {
-        return coreRegeneration;
+  @EventHandler
+  public void onPlayerPickUpArrow(PlayerPickupArrowEvent e) {
+    e.getArrow().remove();
+    e.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onPlayerShearEntity(PlayerShearEntityEvent e) {
+    e.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onPlayerShearBlock(PlayerShearBlockEvent e) {
+    e.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onPlayerBread(PlayerInteractEntityEvent e) {
+    e.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onBlockForm(EntityBlockFormEvent e) {
+    if (e.getNewState().getType().equals(Material.SNOW)) {
+      e.setCancelled(true);
     }
+  }
+
+  @EventHandler
+  public void onEntityChangeBlock(EntityChangeBlockEvent e) {
+    if (e.getBlock().getType().equals(Material.SNOW)) {
+      e.setCancelled(true);
+    }
+  }
+
+  private static void sendHeightLevel(User user, HeightBlock block) {
+    String level;
+    if (block != null) {
+      level = String.valueOf(block.getLevel());
+    } else {
+      level = "null";
+    }
+    user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Height: ", ExTextColor.PERSONAL)
+        .append(Component.text(level, ExTextColor.VALUE)));
+    if (block != null) {
+      HeightBlock next = block.getNext();
+      if (next != null) {
+        Location loc = next.getLocation();
+        user.sendPluginMessage(Plugin.MOB_DEFENCE,
+            Component.text("Next: ", ExTextColor.PERSONAL)
+                .append(Component.text(
+                    loc.getX() + " " + loc.getY() + " " + loc.getZ(),
+                    ExTextColor.VALUE)));
+      } else {
+        user.sendPluginMessage(Plugin.MOB_DEFENCE,
+            Component.text("Next:", ExTextColor.PERSONAL)
+                .append(Component.text(" null", ExTextColor.VALUE)));
+      }
+    }
+  }
+
+  public ReviveManager getReviveManager() {
+    return reviveManager;
+  }
+
+  public CoreRegeneration getCoreRegeneration() {
+    return coreRegeneration;
+  }
 }

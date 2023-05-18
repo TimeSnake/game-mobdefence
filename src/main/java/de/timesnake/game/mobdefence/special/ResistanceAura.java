@@ -17,27 +17,29 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class ResistanceAura implements Listener {
 
-    private static final double RADIUS = 5;
+  private static final double RADIUS = 5;
 
 
-    private BukkitTask task;
+  private BukkitTask task;
 
-    public void run() {
-        this.task = Server.runTaskTimerSynchrony(() -> {
-            for (User user : Server.getInGameUsers()) {
-                if (((MobDefUser) user).isAlive() && ((MobDefUser) user).getKit().equals(MobDefKit.KNIGHT)) {
-                    for (Player player : user.getWorld().getNearbyPlayers(user.getLocation(), RADIUS)) {
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1));
-                    }
-                    user.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1));
-                }
-            }
-        }, 0, 20 * 3, GameMobDefence.getPlugin());
-    }
-
-    public void cancel() {
-        if (this.task != null) {
-            this.task.cancel();
+  public void run() {
+    this.task = Server.runTaskTimerSynchrony(() -> {
+      for (User user : Server.getInGameUsers()) {
+        if (((MobDefUser) user).isAlive() && ((MobDefUser) user).getKit()
+            .equals(MobDefKit.KNIGHT)) {
+          for (Player player : user.getWorld().getNearbyPlayers(user.getLocation(), RADIUS)) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1));
+          }
+          user.getPlayer()
+              .addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1));
         }
+      }
+    }, 0, 20 * 3, GameMobDefence.getPlugin());
+  }
+
+  public void cancel() {
+    if (this.task != null) {
+      this.task.cancel();
     }
+  }
 }

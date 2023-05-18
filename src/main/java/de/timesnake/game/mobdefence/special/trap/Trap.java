@@ -12,22 +12,22 @@ import org.bukkit.entity.LivingEntity;
 
 public abstract class Trap {
 
-    protected final ExBlock block;
+  protected final ExBlock block;
 
-    public Trap(ExBlock block) {
-        this.block = block;
-    }
+  public Trap(ExBlock block) {
+    this.block = block;
+  }
 
-    public ExBlock getBlock() {
-        return block;
-    }
+  public ExBlock getBlock() {
+    return block;
+  }
 
-    public ExLocation getLocation() {
-        return this.block.getLocation();
-    }
+  public ExLocation getLocation() {
+    return this.block.getLocation();
+  }
 
-    public boolean trigger(Collection<LivingEntity> entities) {
-        this.block.getBlock().setType(Material.AIR);
-        return true;
-    }
+  public boolean trigger(Collection<LivingEntity> entities) {
+    this.block.getBlock().setType(Material.AIR);
+    return true;
+  }
 }

@@ -16,29 +16,29 @@ import java.util.List;
 
 public class MobDefCmd implements CommandListener {
 
-    private Code perm;
+  private Code perm;
 
-    @Override
-    public void onCommand(Sender sender, ExCommand<Sender, Argument> cmd,
-            Arguments<Argument> args) {
-        if (!sender.hasPermission(this.perm)) {
-            return;
-        }
-
-        MobDefServer.initNextWave();
+  @Override
+  public void onCommand(Sender sender, ExCommand<Sender, Argument> cmd,
+      Arguments<Argument> args) {
+    if (!sender.hasPermission(this.perm)) {
+      return;
     }
 
-    @Override
-    public List<String> getTabCompletion(ExCommand<Sender, Argument> cmd,
-            Arguments<Argument> args) {
-        if (args.getLength() == 1) {
-            return List.of("nextwave");
-        }
-        return List.of();
-    }
+    MobDefServer.initNextWave();
+  }
 
-    @Override
-    public void loadCodes(Plugin plugin) {
-        this.perm = plugin.createPermssionCode("game.mobdef.nextwave");
+  @Override
+  public List<String> getTabCompletion(ExCommand<Sender, Argument> cmd,
+      Arguments<Argument> args) {
+    if (args.getLength() == 1) {
+      return List.of("nextwave");
     }
+    return List.of();
+  }
+
+  @Override
+  public void loadCodes(Plugin plugin) {
+    this.perm = plugin.createPermssionCode("game.mobdef.nextwave");
+  }
 }
