@@ -5,21 +5,20 @@
 package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.world.ExLocation;
+import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
-import de.timesnake.library.entities.entity.bukkit.ExCreeper;
-import de.timesnake.library.entities.entity.bukkit.HumanEntity;
-import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMeleeAttack;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLocationSwell;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalSwell;
-import org.bukkit.World;
+import de.timesnake.library.entities.entity.CreeperBuilder;
+import de.timesnake.library.entities.pathfinder.SwellGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 
-public class Creeper extends MobDefMob<ExCreeper> {
+public class Creeper extends MobDefMob<net.minecraft.world.entity.monster.Creeper> {
 
   public Creeper(ExLocation spawn, int currentWave) {
     super(Type.OTHER, HeightMapManager.MapType.WALL_FINDER, 0, spawn, currentWave);
@@ -28,49 +27,37 @@ public class Creeper extends MobDefMob<ExCreeper> {
   @Override
   public void spawn() {
 
-    World world = MobDefServer.getMap().getWorld().getBukkitWorld();
+    ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new ExCreeper(world, false, false);
-
-    ExCustomPathfinderGoalLocationSwell swell = new ExCustomPathfinderGoalLocationSwell(4, 7);
-
-    this.entity.addPathfinderGoal(1, swell);
+    float health = 30;
 
     if (this.currentWave > 10) {
-      this.entity.addPathfinderGoal(2,
-          getCorePathfinder(HeightMapManager.MapType.WALL_FINDER, 1.4, swell, 5));
+      health = this.currentWave * 10;
     } else if (this.currentWave > 5) {
-      this.entity.addPathfinderGoal(2,
-          getCorePathfinder(HeightMapManager.MapType.WALL_FINDER, 1.3, swell, 5));
-    } else {
-      this.entity.addPathfinderGoal(2,
-          getCorePathfinder(HeightMapManager.MapType.WALL_FINDER, 1.2, swell, 5));
+      health = 40;
     }
 
-    this.entity.addPathfinderGoal(3, new ExCustomPathfinderGoalSwell(3, 5));
-    this.entity.addPathfinderGoal(4, new ExPathfinderGoalMeleeAttack(1.1D));
-    this.entity.addPathfinderGoal(6, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
-    this.entity.addPathfinderGoal(6, new ExPathfinderGoalRandomLookaround());
-
-    this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
-    this.entity.addPathfinderGoal(2,
-        new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class,
-            true,
-            true));
-
-    if (this.currentWave > 10) {
-      this.entity.setMaxHealth(this.currentWave * 10);
-      this.entity.setHealth(this.currentWave * 10);
-    } else if (this.currentWave > 5) {
-      this.entity.setMaxHealth(40);
-      this.entity.setHealth(40);
-    } else {
-      this.entity.setMaxHealth(30);
-      this.entity.setHealth(30);
-    }
+    this.entity = new CreeperBuilder(world.getHandle(), false, false)
+        .setMaxHealthAndHealth(health)
+        .apply(b -> {
+          SwellGoal swellGoal = new SwellGoal(b.getHandle(), 4, 7);
+          b.addPathfinderGoal(1, e -> swellGoal);
+          if (this.currentWave > 10) {
+            b.addPathfinderGoal(2, e -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.4, swellGoal, 5));
+          } else if (this.currentWave > 5) {
+            b.addPathfinderGoal(2, e -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.3, swellGoal, 5));
+          } else {
+            b.addPathfinderGoal(2, e -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.2, swellGoal, 5));
+          }
+        })
+        .addPathfinderGoal(3, e -> new SwellGoal(e, 3, 5))
+        .addPathfinderGoal(4, e -> new MeleeAttackGoal(e, 1.1, false))
+        .addPathfinderGoal(6, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
+        .addPathfinderGoal(6, e -> new RandomLookAroundGoal(e))
+        .addTargetGoal(1, e -> new HurtByTargetGoal(e, Monster.class))
+        .addTargetGoal(2, e -> new NearestAttackableTargetGoal<>(e, Player.class, true, true))
+        .build();
 
     super.spawn();
-
-
   }
 }

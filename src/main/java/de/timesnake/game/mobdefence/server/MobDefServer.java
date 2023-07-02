@@ -14,9 +14,10 @@ import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
 import de.timesnake.library.basic.util.statistics.IntegerStat;
 import de.timesnake.library.basic.util.statistics.StatType;
-import java.util.Collection;
+import net.minecraft.world.entity.LivingEntity;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.LivingEntity;
+
+import java.util.Collection;
 
 public class MobDefServer extends LoungeBridgeServer {
 

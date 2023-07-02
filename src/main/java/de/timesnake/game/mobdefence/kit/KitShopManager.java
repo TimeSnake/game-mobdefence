@@ -20,7 +20,7 @@ public class KitShopManager implements Listener {
 
   @EventHandler
   public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-    if (event.getRightClicked().getUniqueId().equals(MobDefServer.getCoreEntity().getUniqueId())) {
+    if (event.getRightClicked().getUniqueId().equals(MobDefServer.getCoreEntity().getBukkitEntity().getUniqueId())) {
       event.setCancelled(true);
       MobDefUser user = (MobDefUser) Server.getUser(event.getPlayer());
       if (user.getKit() == null) {

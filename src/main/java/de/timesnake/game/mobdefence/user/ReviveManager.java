@@ -7,6 +7,9 @@ package de.timesnake.game.mobdefence.user;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.inventory.ExInventory;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
+import de.timesnake.basic.bukkit.util.world.ExLocation;
+import de.timesnake.basic.bukkit.util.world.entity.HoloDisplay;
+import de.timesnake.basic.bukkit.util.world.entity.PacketPlayer;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
@@ -17,22 +20,19 @@ import de.timesnake.game.mobdefence.shop.Upgradeable;
 import de.timesnake.library.basic.util.Tuple;
 import de.timesnake.library.basic.util.server.Task;
 import de.timesnake.library.chat.ExTextColor;
-import de.timesnake.library.entities.entity.bukkit.ExArmorStand;
-import de.timesnake.library.entities.entity.bukkit.ExPlayer;
-import de.timesnake.library.entities.wrapper.ExEntityPose;
-import de.timesnake.library.packets.util.packet.ExPacketPlayOutEntityDestroy;
-import de.timesnake.library.packets.util.packet.ExPacketPlayOutEntityMetadata;
-import de.timesnake.library.packets.util.packet.ExPacketPlayOutPlayerInfo;
-import de.timesnake.library.packets.util.packet.ExPacketPlayOutSpawnEntity;
-import de.timesnake.library.packets.util.packet.ExPacketPlayOutSpawnNamedEntity;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
+import de.timesnake.library.entities.entity.PlayerBuilder;
 import net.kyori.adventure.text.Component;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class ReviveManager {
 
@@ -95,67 +95,49 @@ public class ReviveManager {
 
   private final HashMap<MobDefUser, Location> deathLocationsByUser = new HashMap<>();
   private final Map<MobDefUser, BukkitTask> deadTasksByUser = new HashMap<>();
-  private final Map<MobDefUser, ExArmorStand> displayEntitiesByUser = new HashMap<>();
+  private final Map<MobDefUser, HoloDisplay> displayEntitiesByUser = new HashMap<>();
   private int reviveRespawnTime = 7;
   private int reviveDespawnTime = 30;
   private BukkitTask revivingCheckTask;
 
-  public ExPlayer addDeadUser(MobDefUser user, Location location) {
+  public PacketPlayer addDeadUser(MobDefUser user, Location location) {
     this.deathLocationsByUser.put(user, location);
 
-    ExPlayer deadBody = new ExPlayer(user.getExWorld().getBukkitWorld(), user.getName());
+    Tuple<String, String> textures = user.asPlayerBuilder().getTextures();
+    ExLocation loc = user.getExLocation();
 
-    Tuple<String, String> textures = user.asExPlayer().getTextureValueSiganture();
+    Player deadBody = PlayerBuilder.ofName(user.getName(), textures.getA(), textures.getB())
+        .applyOnEntity(e -> {
+          e.setPos(loc.getX(), loc.getY() + 0.2, loc.getZ());
+          e.setRot(120, 0);
+          e.setNoGravity(true);
+          e.setCustomName(net.minecraft.network.chat.Component.literal(user.getName()));
+          e.setCustomNameVisible(true);
+          e.setPose(Pose.SLEEPING);
+        })
+        .build();
 
-    deadBody.setTextures(textures.getA(), textures.getB());
+    PacketPlayer player = new PacketPlayer(deadBody, loc);
 
-    Location loc = user.getLocation();
-    deadBody.setPositionRotation(loc.getX(), loc.getY() + 0.2, loc.getZ(), 120, 0);
-    deadBody.setNoGravity(true);
-    deadBody.setCustomName(user.getName());
-    deadBody.setCustomNameVisible(true);
-
-    deadBody.setPose(ExEntityPose.SLEEPING);
-
-    Server.broadcastPacket(
-        ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.ADD_PLAYER,
-            deadBody));
-    Server.broadcastPacket(ExPacketPlayOutSpawnNamedEntity.wrap(deadBody));
-    Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(deadBody,
-        ExPacketPlayOutEntityMetadata.DataType.UPDATE));
-
-    Server.runTaskLaterSynchrony(() -> Server.broadcastPacket(
-        ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.REMOVE_PLAYER,
-            deadBody)), 3, GameMobDefence.getPlugin());
+    Server.getEntityManager().registerEntity(player);
 
     this.startDying(user, deadBody);
 
-    return deadBody;
+    return player;
   }
 
-  private void startDying(MobDefUser user, ExPlayer deadBody) {
+  private void startDying(MobDefUser user, Player deadBody) {
 
-    ExArmorStand stand = new ExArmorStand(user.getExWorld().getBukkitWorld());
-
-    stand.setCustomName("§cDead in 30s");
-    stand.setCustomNameVisible(true);
-    stand.setSmall(true);
-    stand.setInvulnerable(true);
-    stand.setInvisible(true);
-    stand.setNoGravity(true);
-
-    Location loc = deadBody.getLocation();
-    stand.setPosition(loc.getX(), loc.getY() - 1.1, loc.getZ());
+    HoloDisplay stand = new HoloDisplay(ExLocation.fromLocation(deadBody.getBukkitEntity().getLocation().add(0, -1.1, 0)),
+        List.of("§cDead in 30s"));
+    stand.setPublic(true);
 
     this.displayEntitiesByUser.put(user, stand);
 
-    Server.broadcastPacket(ExPacketPlayOutSpawnEntity.wrap(stand));
-    Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(stand,
-        ExPacketPlayOutEntityMetadata.DataType.UPDATE));
+    Server.getEntityManager().registerEntity(stand);
 
-    this.deadTasksByUser.put(user,
-        Server.runTaskTimerAsynchrony(new DyingProcess(user, this.reviveDespawnTime),
-            0, 20, GameMobDefence.getPlugin()));
+    this.deadTasksByUser.put(user, Server.runTaskTimerAsynchrony(new DyingProcess(user, this.reviveDespawnTime),
+        0, 20, GameMobDefence.getPlugin()));
   }
 
   public void run() {
@@ -203,7 +185,7 @@ public class ReviveManager {
       return;
     }
 
-    ExPlayer deadBody = deadUser.getDeadBody();
+    PacketPlayer deadBody = deadUser.getDeadBody();
 
     if (deadBody == null) {
       return;
@@ -219,18 +201,8 @@ public class ReviveManager {
       ReviveManager.this.deadTasksByUser.get(user).cancel();
     }
 
-    Server.broadcastPacket(
-        ExPacketPlayOutPlayerInfo.wrap(ExPacketPlayOutPlayerInfo.Action.REMOVE_PLAYER,
-            user.getDeadBody()));
-    Server.broadcastPacket(ExPacketPlayOutEntityDestroy.wrap(user.getDeadBody()));
-    Server.broadcastPacket(
-        ExPacketPlayOutEntityDestroy.wrap(this.displayEntitiesByUser.remove(user)));
-
-    Server.runTaskSynchrony(() -> {
-      if (user.getDeadBody() != null) {
-        user.getDeadBody().kill();
-      }
-    }, GameMobDefence.getPlugin());
+    Server.getEntityManager().unregisterEntity(user.getDeadBody());
+    Server.getEntityManager().unregisterEntity(this.displayEntitiesByUser.remove(user));
 
     if (removeFromList) {
       this.deathLocationsByUser.remove(user);
@@ -259,8 +231,7 @@ public class ReviveManager {
 
     @Override
     public void run() {
-
-      ExArmorStand entity = ReviveManager.this.displayEntitiesByUser.get(user);
+      HoloDisplay entity = ReviveManager.this.displayEntitiesByUser.get(user);
 
       if (user.isBeingRevived()) {
         if (reviveTime == ReviveManager.this.reviveRespawnTime) {
@@ -281,7 +252,7 @@ public class ReviveManager {
                     ", " + (reviveRespawnTime - reviveTime) + "s",
                     ExTextColor.PERSONAL)));
 
-        entity.setCustomName("§2Revived in " + (reviveRespawnTime - reviveTime) + "s");
+        entity.setText(List.of("§2Revived in " + (reviveRespawnTime - reviveTime) + "s"));
 
         reviveTime++;
       } else {
@@ -295,15 +266,11 @@ public class ReviveManager {
           return;
         }
 
-        entity.setCustomName("§cDead in " + this.despawnTime + "s");
+        entity.setText(List.of("§cDead in " + this.despawnTime + "s"));
 
       }
 
       this.despawnTime--;
-
-      Server.broadcastPacket(ExPacketPlayOutEntityMetadata.wrap(entity,
-          ExPacketPlayOutEntityMetadata.DataType.UPDATE));
-
     }
   }
 

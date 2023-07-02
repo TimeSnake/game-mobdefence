@@ -6,29 +6,22 @@ package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
+import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
-import de.timesnake.library.entities.entity.bukkit.ExSkeleton;
-import de.timesnake.library.entities.entity.bukkit.HumanEntity;
-import de.timesnake.library.entities.entity.extension.Mob;
-import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalBowShoot;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
-import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
-import de.timesnake.library.entities.wrapper.ExMobEffects;
+import de.timesnake.library.entities.entity.SkeletonBuilder;
+import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.player.Player;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 
-public class CompressedSkeleton extends MobDefMob<ExSkeleton> {
+public class CompressedSkeleton extends MobDefMob<Skeleton> {
 
   public CompressedSkeleton(ExLocation spawn, int currentWave) {
     super(Type.COMBRESSED_RANGED, HeightMapManager.MapType.NORMAL, 0, spawn, currentWave);
@@ -41,76 +34,48 @@ public class CompressedSkeleton extends MobDefMob<ExSkeleton> {
   }
 
   public void init() {
-    World world = MobDefServer.getMap().getWorld().getBukkitWorld();
+    ExWorld world = MobDefServer.getMap().getWorld();
 
-    if (this.currentWave > 20) {
-      if (this.random.nextBoolean()) {
-        this.entity = new ExSkeleton(world, false, ExMobEffects.INSTANT_DAMAGE, 0, 2);
-      } else {
-        this.entity = new ExSkeleton(world, false, ExMobEffects.POISON,
-            (int) (this.currentWave * 0.5 * 20), 3);
-      }
-    } else {
-      this.entity = new ExSkeleton(world, false, ExMobEffects.POISON,
-          (int) (this.currentWave * 0.5 * 20), 3);
-    }
+    this.entity = new SkeletonBuilder(world.getHandle(), false, false)
+        .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+            .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
+        .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND,
+            new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE, this.currentWave / 2).getHandle()))
+        .applyOnEntity(e -> {
+          e.setItemSlot(EquipmentSlot.HEAD,
+              ExItemStack.getLeatherArmor(Material.LEATHER_HELMET, Color.GREEN)
+                  .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4).getHandle());
+          e.setItemSlot(EquipmentSlot.CHEST,
+              ExItemStack.getLeatherArmor(Material.LEATHER_CHESTPLATE, Color.GREEN)
+                  .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4).getHandle());
+          e.setItemSlot(EquipmentSlot.LEGS,
+              ExItemStack.getLeatherArmor(Material.LEATHER_LEGGINGS, Color.GREEN)
+                  .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4).getHandle());
+          e.setItemSlot(EquipmentSlot.FEET,
+              ExItemStack.getLeatherArmor(Material.LEATHER_BOOTS, Color.GREEN)
+                  .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4).getHandle());
+        })
+        .setMaxHealthAndHealth(this.currentWave * 20)
+        .apply(b -> {
+          BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.8, false,
+              BlockCheck.BREAKABLE_MATERIALS);
 
-    ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.8, false,
-        BlockCheck.BREAKABLE_MATERIALS);
+          b.addPathfinderGoal(2, e -> getCorePathfinder(e, this.getMapType(), 1.2, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(2, e -> breakBlock);
+        })
+        .apply(b -> {
+          if (this.currentWave > 20) {
+            b.addPathfinderGoal(1, e -> new RangedBowAttackGoal<>(e, 1.2, 5, 30.0F));
+          } else {
+            b.addPathfinderGoal(1, e -> new RangedBowAttackGoal<>(e, 1.2, 10, 30.0F));
 
-    this.entity.addPathfinderGoal(2,
-        getCorePathfinder(this.getMapType(), 1.2, breakBlock, BREAK_LEVEL));
-    this.entity.addPathfinderGoal(2, breakBlock);
-    this.entity.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.9D));
-    this.entity.addPathfinderGoal(4, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
-    this.entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
-
-    this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
-
-    for (Class<? extends Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-      this.entity.addPathfinderGoal(2,
-          new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
-    }
-    this.entity.addPathfinderGoal(3,
-        new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
-
-    for (Class<? extends Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-      this.entity.addPathfinderGoal(3,
-          new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
-    }
-
-    entity.setSlot(ExEnumItemSlot.MAIN_HAND,
-        new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE,
-            this.currentWave / 2));
-
-    if (this.currentWave > 20) {
-      this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 5, 30.0F));
-    } else {
-      this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 10, 30.0F));
-
-    }
-
-    this.entity.setMaxHealth(this.currentWave * 20);
-    this.entity.setHealth(this.currentWave * 20);
-
-    this.entity.setSlot(ExEnumItemSlot.HEAD,
-        ExItemStack.getLeatherArmor(Material.LEATHER_HELMET, Color.GREEN)
-            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
-                this.currentWave / 4));
-    this.entity.setSlot(ExEnumItemSlot.CHEST,
-        ExItemStack.getLeatherArmor(Material.LEATHER_CHESTPLATE, Color.GREEN)
-            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
-                this.currentWave / 4));
-    this.entity.setSlot(ExEnumItemSlot.LEGS,
-        ExItemStack.getLeatherArmor(Material.LEATHER_LEGGINGS, Color.GREEN)
-            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
-                this.currentWave / 4));
-    this.entity.setSlot(ExEnumItemSlot.FEET,
-        ExItemStack.getLeatherArmor(Material.LEATHER_BOOTS, Color.GREEN)
-            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
-                this.currentWave / 4));
-
-    this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
-        .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER);
+          }
+        })
+        .addPathfinderGoal(2, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1, 1))
+        .addPathfinderGoal(3, e -> new RandomStrollGoal(e, 0.9D))
+        .addPathfinderGoal(4, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
+        .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
+        .apply(this::applyDefaultTargetGoals)
+        .build();
   }
 }

@@ -4,6 +4,7 @@
 
 package de.timesnake.game.mobdefence.special.entity;
 
+import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
@@ -11,15 +12,15 @@ import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.Trade;
 import de.timesnake.library.entities.EntityManager;
-import de.timesnake.library.entities.entity.bukkit.ExSnowman;
-import de.timesnake.library.entities.entity.bukkit.HumanEntity;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalArrowAttack;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalNearestAttackableTarget;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
-import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
+import de.timesnake.library.entities.entity.SnowGolemBuilder;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.SnowGolem;
+import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -46,27 +47,21 @@ public class Snowman extends BlockSpawner implements Listener {
 
   @Override
   public void spawnEntities(Location location) {
-    ExSnowman snowman = new ExSnowman(location.getWorld(), false, false);
-    snowman.setPosition(location.getX(), location.getY(), location.getZ());
-    snowman.setSlot(ExEnumItemSlot.HEAD, null);
-
-    snowman.addPathfinderGoal(1, new ExPathfinderGoalArrowAttack(0D, 1, 10.0F));
-    snowman.addPathfinderGoal(3, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 6.0F));
-    snowman.addPathfinderGoal(4, new ExPathfinderGoalRandomStrollLand(0, 0));
-    snowman.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
-
-    snowman.addPathfinderGoal(1,
-        new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
-
-    for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTITY_CLASSES) {
-      snowman.addPathfinderGoal(2,
-          new ExPathfinderGoalNearestAttackableTarget(entityClass, true, false));
-    }
-
-    snowman.setPersistent(true);
-
-    snowman.setMaxHealth(40);
-    snowman.setHealth(40);
+    SnowGolem snowman = new SnowGolemBuilder(Server.getWorld(location.getWorld()).getHandle(), false, false)
+        .applyOnEntity(e -> {
+          e.setPos(location.getX(), location.getY(), location.getZ());
+          e.setPumpkin(false);
+          e.setPersistenceRequired(true);
+        })
+        .setMaxHealthAndHealth(40)
+        .addPathfinderGoal(1, e -> new RangedAttackGoal(e, 0D, 1, 10.0F))
+        .addPathfinderGoal(3, e -> new LookAtPlayerGoal(e, Player.class, 6.0F))
+        .addPathfinderGoal(4, e -> new RandomStrollGoal(e, 0))
+        .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
+        .addTargetGoal(1, e -> new HurtByTargetGoal(e, MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)))
+        .addTargetGoals(2, MobDefMob.ATTACKER_ENTITY_CLASSES.stream()
+            .map(c -> e -> new NearestAttackableTargetGoal<>(e, c, true, false)))
+        .build();
 
     EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), snowman);
   }

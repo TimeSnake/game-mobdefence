@@ -11,19 +11,20 @@ import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.library.chat.ExTextColor;
-import de.timesnake.library.entities.entity.bukkit.ExSheep;
-import de.timesnake.library.entities.entity.bukkit.HumanEntity;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalPet;
+import de.timesnake.library.entities.entity.SheepBuilder;
+import de.timesnake.library.entities.pathfinder.PetGoal;
+import net.kyori.adventure.text.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.player.Player;
+import org.bukkit.Material;
+
 import java.util.ArrayList;
 import java.util.List;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Sheep;
 
 public class SheepSpawner extends EntitySpawner {
 
@@ -53,12 +54,12 @@ public class SheepSpawner extends EntitySpawner {
   }
 
   @Override
-  public List<? extends de.timesnake.library.entities.entity.extension.Entity> getEntities(
+  public List<? extends Entity> getEntities(
       User user, ExItemStack item) {
 
     int sheep = 0;
-    for (Entity s : user.getExWorld().getEntitiesByClasses(Sheep.class)) {
-      if (s.getCustomName() != null && s.getCustomName().equals(user.getName())) {
+    for (org.bukkit.entity.Entity s : user.getExWorld().getEntitiesByClasses(org.bukkit.entity.Sheep.class)) {
+      if (s.customName() != null && s.customName().equals(Component.text(user.getName()))) {
         sheep++;
       }
     }
@@ -70,7 +71,7 @@ public class SheepSpawner extends EntitySpawner {
 
     int amount = AMOUNT_LEVELS.getNumberFromLore(item, Integer::valueOf);
 
-    List<de.timesnake.library.entities.entity.extension.Entity> entities = new ArrayList<>();
+    List<Entity> entities = new ArrayList<>();
     for (int i = 0; i < amount; i++) {
       entities.add(this.getSheep(user));
     }
@@ -78,24 +79,20 @@ public class SheepSpawner extends EntitySpawner {
     return entities;
   }
 
-  private ExSheep getSheep(User user) {
-    ExSheep entity = new ExSheep(user.getExWorld().getBukkitWorld(), false, false);
-
-    entity.addPathfinderGoal(0, new ExPathfinderGoalFloat());
-    entity.addPathfinderGoal(1, new ExCustomPathfinderGoalPet(user.getPlayer(), 1.3, 4, 7));
-    entity.addPathfinderGoal(2, new ExPathfinderGoalRandomStrollLand(1.1D));
-    entity.addPathfinderGoal(3, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 6.0F));
-    entity.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
-
-    entity.setCustomName(user.getName());
-    entity.setCustomNameVisible(false);
-
-    entity.setMaxHealth(20);
-    entity.setHealth(20);
-
-    entity.setGlowing(true);
-    entity.setInvisible(true);
-
-    return entity;
+  private Sheep getSheep(User user) {
+    return new SheepBuilder(user.getExWorld().getHandle(), false, false)
+        .setMaxHealthAndHealth(20)
+        .applyOnEntity(e -> {
+          e.setGlowingTag(true);
+          e.setInvisible(true);
+          e.setCustomName(net.minecraft.network.chat.Component.literal(user.getName()));
+          e.setCustomNameVisible(false);
+        })
+        .addPathfinderGoal(0, e -> new FloatGoal(e))
+        .addPathfinderGoal(1, e -> new PetGoal(e, user.getMinecraftPlayer(), 1.3, 4, 7, true))
+        .addPathfinderGoal(2, e -> new RandomStrollGoal(e, 1.0))
+        .addPathfinderGoal(3, e -> new LookAtPlayerGoal(e, Player.class, 6.0F))
+        .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
+        .build();
   }
 }

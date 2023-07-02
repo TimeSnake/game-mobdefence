@@ -4,45 +4,23 @@
 
 package de.timesnake.game.mobdefence.kit;
 
-import static de.timesnake.game.mobdefence.shop.Currency.BRONZE;
-import static de.timesnake.game.mobdefence.shop.Currency.GOLD;
-import static de.timesnake.game.mobdefence.shop.Currency.SILVER;
-
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.server.MobDefServer;
-import de.timesnake.game.mobdefence.shop.Currency;
-import de.timesnake.game.mobdefence.shop.LevelType;
-import de.timesnake.game.mobdefence.shop.Price;
-import de.timesnake.game.mobdefence.shop.Shop;
-import de.timesnake.game.mobdefence.shop.Trade;
-import de.timesnake.game.mobdefence.shop.UpgradeableItem;
-import de.timesnake.game.mobdefence.special.entity.Blaze;
-import de.timesnake.game.mobdefence.special.entity.DogSpawner;
-import de.timesnake.game.mobdefence.special.entity.IronGolem;
-import de.timesnake.game.mobdefence.special.entity.SheepSpawner;
-import de.timesnake.game.mobdefence.special.entity.Snowman;
-import de.timesnake.game.mobdefence.special.weapon.BoomerangAxe;
-import de.timesnake.game.mobdefence.special.weapon.Bow;
-import de.timesnake.game.mobdefence.special.weapon.FireHoe;
-import de.timesnake.game.mobdefence.special.weapon.FireStaff;
-import de.timesnake.game.mobdefence.special.weapon.Iceball;
-import de.timesnake.game.mobdefence.special.weapon.LumberAxe;
-import de.timesnake.game.mobdefence.special.weapon.PoisonArrow;
-import de.timesnake.game.mobdefence.special.weapon.RocketCrossBow;
-import de.timesnake.game.mobdefence.special.weapon.SafeSphere;
-import de.timesnake.game.mobdefence.special.weapon.SplashBow;
-import de.timesnake.game.mobdefence.special.weapon.SwingSword;
-import de.timesnake.game.mobdefence.special.weapon.Sword;
-import de.timesnake.game.mobdefence.special.weapon.Wand;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
+import de.timesnake.game.mobdefence.shop.*;
+import de.timesnake.game.mobdefence.special.entity.*;
+import de.timesnake.game.mobdefence.special.weapon.*;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+import static de.timesnake.game.mobdefence.shop.Currency.*;
 
 public interface KitItems {
 
@@ -195,7 +173,7 @@ public interface KitItems {
       .slot(38);
 
   Trade.Builder IRON_GOLEM = new Trade.Builder()
-      .giveItems(IronGolem.ITEM.cloneWithId())
+      .giveItems(MobDefIronGolem.ITEM.cloneWithId())
       .price(new Price(12, SILVER), 1, 4)
       .slot(38);
 
@@ -537,6 +515,6 @@ public interface KitItems {
       .slot(12)
       .display(WEAPONS)
       .addUpgradeable(FireHoe.FIRE_HOE, FireStaff.FIRE_STAFF, Iceball.ICEBALL)
-      .addTrade(ALCHEMIST_SPEED, Snowman.SNOWMAN, Blaze.BLAZE)
+      .addTrade(ALCHEMIST_SPEED, Snowman.SNOWMAN, MobDefBlaze.BLAZE)
       .type(Shop.Builder.Type.USER);
 }

@@ -6,6 +6,7 @@ package de.timesnake.game.mobdefence.user;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
+import de.timesnake.basic.bukkit.util.world.entity.PacketPlayer;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.game.mobdefence.kit.KitShop;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
@@ -13,7 +14,6 @@ import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.TeamHealth;
 import de.timesnake.library.basic.util.Status;
-import de.timesnake.library.entities.entity.bukkit.ExPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.Statistic;
 import org.bukkit.attribute.Attribute;
@@ -31,7 +31,7 @@ public class MobDefUser extends GameUser {
 
   private KitShop shop;
 
-  private ExPlayer deadBody;
+  private PacketPlayer deadBody;
   private MobDefUser beingRevivedUser = null;
 
   public MobDefUser(Player player) {
@@ -124,7 +124,7 @@ public class MobDefUser extends GameUser {
     ExLocation respawnLocation;
 
     if (this.deadBody != null) {
-      respawnLocation = ExLocation.fromLocation(this.deadBody.getLocation());
+      respawnLocation = ExLocation.fromLocation(this.deadBody.getPlayer().getBukkitEntity().getLocation());
       this.deadBody = null;
     } else {
       respawnLocation = MobDefServer.getMap().getUserSpawn();
@@ -190,7 +190,7 @@ public class MobDefUser extends GameUser {
     this.beingRevivedUser = user;
   }
 
-  public ExPlayer getDeadBody() {
+  public PacketPlayer getDeadBody() {
     return deadBody;
   }
 }
