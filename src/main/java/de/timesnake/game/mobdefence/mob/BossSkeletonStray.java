@@ -6,33 +6,26 @@ package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
+import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
-import de.timesnake.library.entities.entity.bukkit.ExStray;
-import de.timesnake.library.entities.entity.bukkit.HumanEntity;
-import de.timesnake.library.entities.entity.bukkit.Stray;
-import de.timesnake.library.entities.entity.extension.Mob;
-import de.timesnake.library.entities.entity.extension.Monster;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalAvoidTarget;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalBowShoot;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalBreakBlock;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalSpawnArmy;
-import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
-import java.util.ArrayList;
-import java.util.List;
+import de.timesnake.library.entities.entity.StrayBuilder;
+import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
+import de.timesnake.library.entities.pathfinder.SpawnArmyGoal;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.monster.Stray;
+import net.minecraft.world.entity.player.Player;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
 
-public class BossSkeletonStray extends MobDefMob<ExStray> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BossSkeletonStray extends MobDefMob<Stray> {
 
   public BossSkeletonStray(ExLocation spawn, int currentWave) {
     super(Type.BOSS, HeightMapManager.MapType.NORMAL, 0, spawn, currentWave);
@@ -40,118 +33,85 @@ public class BossSkeletonStray extends MobDefMob<ExStray> {
 
   @Override
   public void spawn() {
-    World world = MobDefServer.getMap().getWorld().getBukkitWorld();
+    ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new ExStray(world, false, false);
+    this.entity = new StrayBuilder(world.getHandle(), false, false)
+        .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+            .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
+        .setMaxHealthAndHealth(this.currentWave * 70)
+        .applyOnEntity(e -> {
+          e.setItemSlot(EquipmentSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET).getHandle());
+          e.setItemSlot(EquipmentSlot.CHEST, new ExItemStack(Material.GOLDEN_CHESTPLATE).getHandle());
+          e.setItemSlot(EquipmentSlot.LEGS, new ExItemStack(Material.GOLDEN_LEGGINGS).getHandle());
+          e.setItemSlot(EquipmentSlot.FEET, new ExItemStack(Material.GOLDEN_BOOTS).getHandle());
+          e.setItemSlot(EquipmentSlot.MAINHAND,
+              new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_FIRE, 2)
+                  .addExEnchantment(Enchantment.ARROW_DAMAGE, 12)
+                  .addExEnchantment(Enchantment.ARROW_KNOCKBACK, 6).getHandle());
+        })
+        .applyOnEntity(e -> {
+          e.getBukkitCreature().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
+          e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(10);
+          e.getBukkitCreature().getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(5);
+        })
+        .addPathfinderGoal(1, e -> new RangedBowAttackGoal<>(e, 1.2, 2, 30.0F))
+        .addPathfinderGoal(2, e -> new SpawnArmyGoal(e, Stray.class, 3, 10 * 20) {
+          @Override
+          public List<? extends Mob> getArmy() {
+            List<Stray> skeletons = new ArrayList<>();
 
-    ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.4, false,
-        BlockCheck.BREAKABLE_MATERIALS);
+            float health = 20;
 
-    this.entity.addPathfinderGoal(3,
-        getCorePathfinder(this.getMapType(), 1.3, breakBlock, BREAK_LEVEL));
-    this.entity.addPathfinderGoal(3, breakBlock);
-    this.entity.addPathfinderGoal(3,
-        new ExPathfinderGoalAvoidTarget(HumanEntity.class, 5, 1.1, 1.3));
-    this.entity.addPathfinderGoal(4, new ExPathfinderGoalRandomStrollLand(1.3D));
-    this.entity.addPathfinderGoal(5, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
-    this.entity.addPathfinderGoal(5, new ExPathfinderGoalRandomLookaround());
+            if (BossSkeletonStray.this.currentWave > 16) {
+              health = BossSkeletonStray.this.currentWave * 5;
+            } else if (BossSkeletonStray.this.currentWave > 12) {
+              health = 60;
+            } else if (BossSkeletonStray.this.currentWave > 6) {
+              health = 40;
+            }
 
-    this.entity.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
+            for (int i = 0; i < 4; i++) {
+              ExWorld world = MobDefServer.getMap().getWorld();
 
-    for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-      this.entity.addPathfinderGoal(1,
-          new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
-    }
-    this.entity.addPathfinderGoal(2,
-        new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
+              Stray stray = new StrayBuilder(world.getHandle(), false, false)
+                  .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+                      .setBaseValue(2 + BossSkeletonStray.this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
+                  .applyOnEntity(e -> e.getBukkitCreature().setNoDamageTicks(1))
+                  .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.BOW).getHandle()))
+                  .setMaxHealthAndHealth(health)
+                  .apply(b -> {
+                    BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.5, false,
+                        BlockCheck.BREAKABLE_MATERIALS);
 
-    for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-      this.entity.addPathfinderGoal(2,
-          new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
-    }
+                    b.addPathfinderGoal(2, e -> getCorePathfinder(e, HeightMapManager.MapType.NORMAL, 1, breakBlock, BREAK_LEVEL));
+                    b.addPathfinderGoal(2, e -> breakBlock);
+                  })
+                  .addPathfinderGoal(2, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1.1, 1.1))
+                  .addPathfinderGoal(3, e -> new RandomStrollGoal(e, 0.9D))
+                  .addPathfinderGoal(4, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
+                  .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
+                  .apply(BossSkeletonStray.this::applyDefaultTargetGoals)
+                  .build();
 
-    this.entity.addPathfinderGoal(1, new ExPathfinderGoalBowShoot(1.2, 2, 30.0F));
+              skeletons.add(stray);
+            }
 
-    this.entity.addPathfinderGoal(2, new ExCustomPathfinderGoalSpawnArmy(Stray.class, 3,
-        10 * 20) {
-      @Override
-      public List<? extends Mob> getArmee(Mob entity) {
-        List<ExStray> skeletons = new ArrayList<>();
-
-        for (int i = 0; i < 4; i++) {
-          World world = MobDefServer.getMap().getWorld().getBukkitWorld();
-
-          ExStray stray = new ExStray(world, false, false);
-
-          ExCustomPathfinderGoalBreakBlock breakBlock = getBreakPathfinder(0.5, false,
+            return skeletons;
+          }
+        })
+        .apply(b -> {
+          BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.4, false,
               BlockCheck.BREAKABLE_MATERIALS);
 
-          stray.addPathfinderGoal(2,
-              getCorePathfinder(HeightMapManager.MapType.NORMAL, 1, breakBlock,
-                  BREAK_LEVEL));
-          stray.addPathfinderGoal(2, breakBlock);
-          stray.addPathfinderGoal(3,
-              new ExPathfinderGoalAvoidTarget(HumanEntity.class, 5, 1.1, 1.1));
-          stray.addPathfinderGoal(3, new ExPathfinderGoalRandomStrollLand(0.9D));
-          stray.addPathfinderGoal(4,
-              new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
-          stray.addPathfinderGoal(4, new ExPathfinderGoalRandomLookaround());
-
-          stray.addPathfinderGoal(1, new ExPathfinderGoalHurtByTarget(Monster.class));
-
-          for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.FIRST_DEFENDER_CLASSES) {
-            stray.addPathfinderGoal(2,
-                new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
-          }
-          stray.addPathfinderGoal(3,
-              new ExCustomPathfinderGoalNearestAttackableTarget(HumanEntity.class));
-
-          for (Class<? extends de.timesnake.library.entities.entity.extension.Mob> entityClass : MobDefMob.SECOND_DEFENDER_CLASSES) {
-            stray.addPathfinderGoal(3,
-                new ExCustomPathfinderGoalNearestAttackableTarget(entityClass));
-          }
-
-          stray.setMaxNoDamageTicks(1);
-
-          if (BossSkeletonStray.this.currentWave > 16) {
-            stray.setMaxHealth(BossSkeletonStray.this.currentWave * 5);
-          } else if (BossSkeletonStray.this.currentWave > 12) {
-            stray.setMaxHealth(60);
-            stray.setHealth(60);
-          } else if (BossSkeletonStray.this.currentWave > 6) {
-            stray.setMaxHealth(40);
-            stray.setHealth(40);
-          }
-
-          stray.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2
-              + BossSkeletonStray.this.currentWave / 5.
-              * MobManager.MOB_DAMAGE_MULTIPLIER);
-
-          stray.setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.BOW));
-
-          skeletons.add(stray);
-        }
-
-        return skeletons;
-      }
-    });
-
-    this.entity.setSlot(ExEnumItemSlot.HEAD, new ItemStack(Material.GOLDEN_HELMET));
-    this.entity.setSlot(ExEnumItemSlot.CHEST, new ItemStack(Material.GOLDEN_CHESTPLATE));
-    this.entity.setSlot(ExEnumItemSlot.LEGS, new ItemStack(Material.GOLDEN_LEGGINGS));
-    this.entity.setSlot(ExEnumItemSlot.FEET, new ItemStack(Material.GOLDEN_BOOTS));
-
-    this.entity.setSlot(ExEnumItemSlot.MAIN_HAND,
-        new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_FIRE, 2)
-            .addExEnchantment(Enchantment.ARROW_DAMAGE, 12)
-            .addExEnchantment(Enchantment.ARROW_KNOCKBACK, 6));
-
-    this.entity.getBukkitAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
-    this.entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(10);
-    this.entity.getBukkitAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(5);
-
-    this.entity.setMaxHealth(this.currentWave * 70);
-    this.entity.setHealth(this.currentWave * 70);
+          b.addPathfinderGoal(2, e -> getCorePathfinder(e, this.getMapType(), 1.3, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(2, e -> breakBlock);
+        })
+        .addPathfinderGoal(3, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1, 1))
+        .addPathfinderGoal(4, e -> new RandomStrollGoal(e, 0.9D))
+        .addPathfinderGoal(5, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
+        .addPathfinderGoal(5, e -> new RandomLookAroundGoal(e))
+        .apply(this::applyDefaultTargetGoals)
+        .build();
 
     super.spawn();
   }

@@ -7,14 +7,11 @@ package de.timesnake.game.mobdefence.special.weapon;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.special.entity.Blaze;
-import de.timesnake.game.mobdefence.special.entity.DogSpawner;
-import de.timesnake.game.mobdefence.special.entity.IronGolem;
-import de.timesnake.game.mobdefence.special.entity.SheepSpawner;
-import de.timesnake.game.mobdefence.special.entity.Snowman;
+import de.timesnake.game.mobdefence.special.entity.*;
 import de.timesnake.game.mobdefence.special.weapon.bullet.BulletManager;
-import java.util.HashMap;
 import org.bukkit.event.Listener;
+
+import java.util.HashMap;
 
 public class WeaponManager implements Listener {
 
@@ -33,13 +30,13 @@ public class WeaponManager implements Listener {
     this.addWeapon(new FireStaff());
     this.addWeapon(new SplashBow());
     this.addWeapon(new Wand());
-    this.addWeapon(new IronGolem());
+    this.addWeapon(new MobDefIronGolem());
     this.addWeapon(new FireHoe());
     this.addWeapon(new RocketCrossBow());
     this.addWeapon(new WaterBottle());
     this.addWeapon(new Sword());
     this.addWeapon(new Snowman());
-    this.addWeapon(new Blaze());
+    this.addWeapon(new MobDefBlaze());
     this.addWeapon(new PoisonArrow());
     this.addWeapon(new SheepSpawner());
     this.addWeapon(new DogSpawner());

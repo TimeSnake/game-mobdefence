@@ -44,32 +44,22 @@ import de.timesnake.library.basic.util.TimeCoins;
 import de.timesnake.library.basic.util.statistics.StatType;
 import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.entities.EntityManager;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Difficulty;
-import org.bukkit.GameMode;
-import org.bukkit.GameRule;
-import org.bukkit.Instrument;
-import org.bukkit.Note;
-import org.bukkit.Sound;
-import org.bukkit.Statistic;
+import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
 public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> implements Listener {
 
@@ -87,7 +77,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
   private static final boolean DEBUG = false;
   private Integer playerAmount; // set at game start
   private double coreMaxHealth;
-  private LivingEntity coreEntity;
+  private net.minecraft.world.entity.LivingEntity coreEntity;
   private BossBar coreHealthBar;
   private double coreHealth;
   private ExSideboard sideboard;
@@ -150,7 +140,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     return new TablistManager() {
       @Override
       public void loadTablist(Tablist.Type type) {
-        super.loadTablist(Tablist.Type.HEARTS);
+        super.loadTablist(Tablist.Type.HEALTH);
       }
     };
   }
@@ -405,8 +395,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
   @EventHandler
   public void onEntityByEntityDamage(EntityDamageByEntityEvent e) {
-    if (this.coreEntity != null && e.getEntity().getUniqueId()
-        .equals(this.coreEntity.getUniqueId())) {
+    if (this.coreEntity != null && e.getEntity().getUniqueId().equals(this.coreEntity.getBukkitEntity().getUniqueId())) {
       if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile
           && ((Projectile) e.getDamager()).getShooter() instanceof Player)) {
         e.setDamage(0);
@@ -468,7 +457,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     return coreHealthBar;
   }
 
-  public LivingEntity getCoreEntity() {
+  public net.minecraft.world.entity.LivingEntity getCoreEntity() {
     return coreEntity;
   }
 

@@ -5,27 +5,24 @@
 package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.Server;
+import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.basic.util.Loggers;
-import de.timesnake.library.entities.entity.bukkit.ExVillager;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalLocation;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import org.bukkit.Location;
+import de.timesnake.library.entities.entity.VillagerBuilder;
+import de.timesnake.library.entities.pathfinder.LocationGoal;
+import net.minecraft.world.entity.npc.Villager;
 import org.bukkit.Sound;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+
+import java.util.*;
 
 public class MobManager implements Listener {
 
@@ -61,11 +58,9 @@ public class MobManager implements Listener {
 
   @EventHandler
   public void onEntityExplode(EntityExplodeEvent e) {
-    if (!(e.getEntity() instanceof Creeper creeper)) {
+    if (!(e.getEntity() instanceof Creeper)) {
       return;
     }
-
-    Beeper.handleExplosion(creeper, e.getLocation());
 
     Server.runTaskLaterSynchrony(this::checkRespawn, 1, GameMobDefence.getPlugin());
   }
@@ -131,20 +126,18 @@ public class MobManager implements Listener {
     }
   }
 
-  public LivingEntity createCoreEntity() {
-    Location loc = MobDefServer.getMap().getCoreLocation();
-    ExVillager entity = new ExVillager(loc.getWorld(), ExVillager.Type.PLAINS, false, false,
-        false);
-    entity.addPathfinderGoal(1,
-        new ExCustomPathfinderGoalLocation(loc.getX(), loc.getY(), loc.getZ(), 1.4, 32, 1));
-    entity.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
-        loc.getPitch());
-    entity.setPersistent(true);
-    entity.setInvulnerable(false);
-
-    entity.setMaxHealth(2048);
-    entity.setHealth(2048);
-    return entity;
+  public Villager createCoreEntity() {
+    ExLocation loc = MobDefServer.getMap().getCoreLocation();
+    return new VillagerBuilder(loc.getExWorld().getHandle(), false, false)
+        .addPathfinderGoal(1, e -> new LocationGoal(e, loc.getX(), loc.getY(), loc.getZ(), 1.4, 32, 1))
+        .applyOnEntity(e -> {
+          e.setPos(loc.getX(), loc.getY(), loc.getZ());
+          e.setRot(loc.getYaw(), loc.getPitch());
+          e.setPersistenceRequired(true);
+          e.setInvulnerable(true);
+        })
+        .setMaxHealthAndHealth(2048)
+        .build();
 
   }
 
@@ -198,10 +191,7 @@ public class MobManager implements Listener {
     if (wave % 5 == 0) {
       List<MobDefMob<?>> bossMobs = new ArrayList<>();
       for (int i = 0; i < playerSqrt; i++) {
-        bossMobs.add(new Illusioner(MobDefServer.getMap().getRandomMobPath().getLocation(),
-            wave));
-        bossMobs.add(new BossZombie(MobDefServer.getMap().getRandomMobPath().getLocation(),
-            wave));
+        bossMobs.add(new BossZombie(MobDefServer.getMap().getRandomMobPath().getLocation(), wave));
       }
 
       delay = (int) (this.nextLimitedGaussian(0.2) * delay) + delay * (groupSizes.size() - 1);
@@ -211,12 +201,10 @@ public class MobManager implements Listener {
 
       this.mobGroups.addLast(
           new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
-              this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize,
-              delay));
+              this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
       this.mobGroups.addLast(
           new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
-              this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize,
-              delay));
+              this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
 
       Loggers.GAME.info("Bosses: " + bossGroup.size());
     }
@@ -224,8 +212,7 @@ public class MobManager implements Listener {
     if (wave % 5 == 1 && wave > 5) {
       List<MobDefMob<?>> bossMobs = new ArrayList<>();
       for (int i = 0; i < playerSqrt; i++) {
-        bossMobs.add(new BossSkeletonStray(
-            MobDefServer.getMap().getRandomMobPath().getLocation(), wave));
+        bossMobs.add(new BossSkeletonStray(MobDefServer.getMap().getRandomMobPath().getLocation(), wave));
       }
 
       delay = (int) (this.nextLimitedGaussian(0.2) * delay) + delay * (groupSizes.size() - 1);
@@ -235,12 +222,10 @@ public class MobManager implements Listener {
 
       this.mobGroups.addLast(
           new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
-              this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize,
-              delay));
+              this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
       this.mobGroups.addLast(
           new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
-              this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize,
-              delay));
+              this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
 
       Loggers.GAME.info("Bosses: " + bossGroup.size());
     }

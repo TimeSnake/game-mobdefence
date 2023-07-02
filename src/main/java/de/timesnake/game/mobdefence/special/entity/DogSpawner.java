@@ -12,27 +12,21 @@ import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.library.chat.ExTextColor;
-import de.timesnake.library.entities.entity.bukkit.ExWolf;
-import de.timesnake.library.entities.entity.bukkit.HumanEntity;
-import de.timesnake.library.entities.entity.extension.LivingEntity;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFloat;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalFollowOwner;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalHurtByTarget;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLeapAtTarget;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalLookAtPlayer;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalMeleeAttack;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalOwnerHurtByTarget;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalOwnerHurtTarget;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomLookaround;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalRandomStrollLand;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalNearestAttackableTarget;
-import java.util.ArrayList;
-import java.util.List;
+import de.timesnake.library.entities.entity.WolfBuilder;
 import net.kyori.adventure.text.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.player.Player;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Wolf;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DogSpawner extends EntitySpawner {
 
@@ -76,13 +70,13 @@ public class DogSpawner extends EntitySpawner {
   }
 
   @Override
-  public List<de.timesnake.library.entities.entity.extension.Entity> getEntities(User user,
-      ExItemStack item) {
+  public List<Entity> getEntities(User user,
+                                  ExItemStack item) {
 
     int dogs = 0;
-    for (Entity wolf : user.getWorld().getEntitiesByClasses(Wolf.class)) {
-      if (wolf instanceof Wolf && ((Wolf) wolf).getOwnerUniqueId() != null
-          && ((Wolf) wolf).getOwnerUniqueId().equals(user.getUniqueId())) {
+    for (org.bukkit.entity.Entity wolf : user.getWorld().getEntitiesByClasses(org.bukkit.entity.Wolf.class)) {
+      if (wolf instanceof org.bukkit.entity.Wolf && ((org.bukkit.entity.Wolf) wolf).getOwnerUniqueId() != null
+          && ((org.bukkit.entity.Wolf) wolf).getOwnerUniqueId().equals(user.getUniqueId())) {
         dogs++;
       }
     }
@@ -93,9 +87,9 @@ public class DogSpawner extends EntitySpawner {
     }
 
     int amount = AMOUNT_LEVELS.getNumberFromLore(item, Integer::valueOf);
-    double health = 2 * HEALTH_LEVELS.getNumberFromLore(item, Double::valueOf);
+    float health = 2 * HEALTH_LEVELS.getNumberFromLore(item, Integer::valueOf);
 
-    List<de.timesnake.library.entities.entity.extension.Entity> entities = new ArrayList<>();
+    List<Entity> entities = new ArrayList<>();
     for (int i = 0; i < amount; i++) {
       entities.add(this.getDog(user, health));
     }
@@ -103,37 +97,27 @@ public class DogSpawner extends EntitySpawner {
     return entities;
   }
 
-  private ExWolf getDog(User user, double health) {
-    ExWolf entity = new ExWolf(user.getExWorld().getBukkitWorld(), false, false);
-
-    entity.setTamed(true);
-    entity.setOwnerUUID(user.getUniqueId());
-    entity.setWillSit(false);
-
-    entity.addPathfinderGoal(1, new ExPathfinderGoalFloat());
-    entity.addPathfinderGoal(4, new ExPathfinderGoalLeapAtTarget(0.4F));
-    entity.addPathfinderGoal(5, new ExPathfinderGoalMeleeAttack(1.0D));
-    entity.addPathfinderGoal(6, new ExPathfinderGoalFollowOwner(1.0D, 10.0F, 2.0F, false));
-    entity.addPathfinderGoal(8, new ExPathfinderGoalRandomStrollLand(1.0D));
-    entity.addPathfinderGoal(10, new ExPathfinderGoalLookAtPlayer(HumanEntity.class, 8.0F));
-    entity.addPathfinderGoal(10, new ExPathfinderGoalRandomLookaround());
-
-    entity.addPathfinderGoal(1, new ExPathfinderGoalOwnerHurtByTarget());
-    entity.addPathfinderGoal(2, new ExPathfinderGoalOwnerHurtTarget());
-
-    entity.addPathfinderGoal(3,
-        new ExPathfinderGoalHurtByTarget(MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)));
-    for (Class<? extends LivingEntity> entityClass : MobDefMob.ATTACKER_ENTITY_CLASSES) {
-      entity.addPathfinderGoal(4,
-          new ExCustomPathfinderGoalNearestAttackableTarget(entityClass, 10, true,
-              false));
-    }
-
-    entity.setMaxHealth(health);
-    entity.setHealth(health);
-
-    entity.getBukkitAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(8);
-
-    return entity;
+  private Wolf getDog(User user, float health) {
+    return new WolfBuilder(user.getExWorld().getHandle(), false, false)
+        .applyOnEntity(e -> {
+          e.setTame(true);
+          e.setOwnerUUID(user.getUniqueId());
+          e.setOrderedToSit(false);
+          e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(8);
+        })
+        .setMaxHealthAndHealth(health)
+        .addPathfinderGoal(1, e -> new FloatGoal(e))
+        .addPathfinderGoal(4, e -> new LeapAtTargetGoal(e, 0.4F))
+        .addPathfinderGoal(5, e -> new MeleeAttackGoal(e, 1.0, false))
+        .addPathfinderGoal(6, e -> new FollowOwnerGoal(e, 1.2D, 10.0F, 2.0F, true))
+        .addPathfinderGoal(8, e -> new RandomStrollGoal(e, 1.0D))
+        .addPathfinderGoal(10, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
+        .addPathfinderGoal(10, e -> new RandomLookAroundGoal(e))
+        .addTargetGoal(1, e -> new OwnerHurtByTargetGoal(e))
+        .addTargetGoal(2, e -> new OwnerHurtTargetGoal(e))
+        .addTargetGoal(3, e -> new HurtByTargetGoal(e, MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)))
+        .addTargetGoals(4, MobDefMob.ATTACKER_ENTITY_CLASSES.stream()
+            .map(c -> e -> new NearestAttackableTargetGoal<>(e, c, true, false)))
+        .build();
   }
 }

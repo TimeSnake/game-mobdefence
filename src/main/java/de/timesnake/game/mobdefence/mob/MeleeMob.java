@@ -7,16 +7,15 @@ package de.timesnake.game.mobdefence.mob;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import de.timesnake.library.entities.entity.extension.Mob;
-import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
 
 public abstract class MeleeMob<M extends Mob> extends ArmorMob<M> {
 
   public MeleeMob(Type type, HeightMapManager.MapType mapType, int wave, ExLocation spawn,
-      int currentWave) {
+                  int currentWave) {
     super(type, mapType, wave, spawn, currentWave);
   }
 
@@ -31,67 +30,52 @@ public abstract class MeleeMob<M extends Mob> extends ArmorMob<M> {
       int random = this.random.nextInt(8);
 
       switch (random) {
-        case 0 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.STONE_SWORD));
-        case 1 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.IRON_SWORD));
-        case 2 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.GOLDEN_SWORD));
+        case 0 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.STONE_SWORD).getHandle());
+        case 1 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_SWORD).getHandle());
+        case 2 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.GOLDEN_SWORD).getHandle());
       }
     } else if (this.currentWave <= 7) {
       int random = this.random.nextInt(6);
 
       switch (random) {
-        case 0 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.STONE_SWORD));
-        case 1 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.IRON_SWORD));
-        case 2 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.DIAMOND_SWORD));
+        case 0 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.STONE_SWORD).getHandle());
+        case 1 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_SWORD).getHandle());
+        case 2 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.DIAMOND_SWORD).getHandle());
       }
 
     } else if (this.currentWave <= 10) {
       int random = this.random.nextInt(5);
 
       switch (random) {
-        case 0 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.STONE_SWORD));
-        case 1 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.IRON_SWORD));
-        case 2 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.DIAMOND_SWORD));
-        case 3 -> this.entity.getExtension()
-            .setSlot(ExEnumItemSlot.MAIN_HAND, new ItemStack(Material.IRON_AXE));
+        case 0 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.STONE_SWORD).getHandle());
+        case 1 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_SWORD).getHandle());
+        case 2 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.DIAMOND_SWORD).getHandle());
+        case 3 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_AXE).getHandle());
       }
     } else if (this.currentWave <= 14) {
       int random = this.random.nextInt(5);
 
       switch (random) {
-        case 0 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.STONE_SWORD));
-        case 1 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.IRON_SWORD));
-        case 2 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.DIAMOND_SWORD));
-        case 3 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.IRON_AXE));
-        case 4 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ItemStack(Material.DIAMOND_AXE));
+        case 0 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.STONE_SWORD).getHandle());
+        case 1 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_SWORD).getHandle());
+        case 2 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.DIAMOND_SWORD).getHandle());
+        case 3 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_AXE).getHandle());
+        case 4 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.DIAMOND_AXE).getHandle());
       }
     } else {
       int random = this.random.nextInt(5);
 
       switch (random) {
-        case 0 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ExItemStack(Material.STONE_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 2));
-        case 1 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ExItemStack(Material.IRON_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 2));
-        case 2 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ExItemStack(Material.DIAMOND_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 2));
-        case 3 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ExItemStack(Material.IRON_AXE).addExEnchantment(Enchantment.DAMAGE_ALL, 1));
-        case 4 -> this.entity.getExtension().setSlot(ExEnumItemSlot.MAIN_HAND,
-            new ExItemStack(Material.DIAMOND_AXE).addExEnchantment(Enchantment.DAMAGE_ALL, 1));
+        case 0 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND,
+            new ExItemStack(Material.STONE_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 2).getHandle());
+        case 1 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND,
+            new ExItemStack(Material.IRON_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 2).getHandle());
+        case 2 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND,
+            new ExItemStack(Material.DIAMOND_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 2).getHandle());
+        case 3 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND,
+            new ExItemStack(Material.IRON_AXE).addExEnchantment(Enchantment.DAMAGE_ALL, 1).getHandle());
+        case 4 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND,
+            new ExItemStack(Material.DIAMOND_AXE).addExEnchantment(Enchantment.DAMAGE_ALL, 1).getHandle());
       }
     }
   }

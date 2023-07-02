@@ -13,12 +13,13 @@ import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.special.weapon.SpecialWeapon;
 import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.entities.EntityManager;
-import de.timesnake.library.entities.entity.extension.Entity;
+import net.kyori.adventure.text.Component;
+import net.minecraft.world.entity.Entity;
+import org.bukkit.Location;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Location;
 
 public abstract class EntitySpawner extends SpecialWeapon implements UserInventoryInteractListener {
 
@@ -46,7 +47,7 @@ public abstract class EntitySpawner extends SpecialWeapon implements UserInvento
     Location loc = user.getLocation();
 
     for (Entity entity : entities) {
-      entity.getExtension().setPosition(loc.getX(), loc.getY(), loc.getZ());
+      entity.setPos(loc.getX(), loc.getY(), loc.getZ());
       EntityManager.spawnEntity(user.getExWorld().getBukkitWorld(), entity);
     }
 
