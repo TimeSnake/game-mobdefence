@@ -21,6 +21,7 @@ import de.timesnake.library.basic.util.Tuple;
 import de.timesnake.library.basic.util.server.Task;
 import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.entities.entity.PlayerBuilder;
+import de.timesnake.library.packets.core.packet.out.entity.ClientboundSetEntityDataPacketBuilder;
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -118,6 +119,7 @@ public class ReviveManager {
         .build();
 
     PacketPlayer player = new PacketPlayer(deadBody, loc);
+    player.setPoseTag(ClientboundSetEntityDataPacketBuilder.Type.SLEEPING, true);
 
     Server.getEntityManager().registerEntity(player);
 
