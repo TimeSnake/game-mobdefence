@@ -29,7 +29,7 @@ public class MobDefBabyZombie extends ArmorMob<Zombie> {
   public void spawn() {
     ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new ZombieBuilder(world.getHandle(), false, false)
+    this.entity = new ZombieBuilder(world.getHandle(), false, false, false)
         .setMaxHealth(30)
         .applyOnEntity(e -> {
           e.setBaby(true);

@@ -40,7 +40,7 @@ public class MobDefBlaze extends BlockSpawner implements Listener {
 
   @Override
   public void spawnEntities(Location location) {
-    Blaze blaze = new BlazeBuilder(ExLocation.fromLocation(location).getExWorld().getHandle(), false, false)
+    Blaze blaze = new BlazeBuilder(ExLocation.fromLocation(location).getExWorld().getHandle(), false, false, false)
         .applyOnEntity(e -> {
           e.setPos(location.getX(), location.getY(), location.getZ());
           e.setPersistenceRequired(true);

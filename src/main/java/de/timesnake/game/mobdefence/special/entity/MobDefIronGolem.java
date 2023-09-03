@@ -36,7 +36,7 @@ public class MobDefIronGolem extends BlockSpawner implements Listener {
 
   @Override
   public void spawnEntities(Location location) {
-    IronGolem golem = new IronGolemBuilder(Server.getWorld(location.getWorld()).getHandle(), false, false)
+    IronGolem golem = new IronGolemBuilder(Server.getWorld(location.getWorld()).getHandle(), false, false, false)
         .applyOnEntity(e -> {
           e.setPos(location.getX(), location.getY(), location.getZ());
           e.setPersistenceRequired(true);

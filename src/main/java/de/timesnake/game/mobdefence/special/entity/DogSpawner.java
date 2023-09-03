@@ -98,7 +98,7 @@ public class DogSpawner extends EntitySpawner {
   }
 
   private Wolf getDog(User user, float health) {
-    return new WolfBuilder(user.getExWorld().getHandle(), false, false)
+    return new WolfBuilder(user.getExWorld().getHandle(), false, false, false)
         .applyOnEntity(e -> {
           e.setTame(true);
           e.setOwnerUUID(user.getUniqueId());

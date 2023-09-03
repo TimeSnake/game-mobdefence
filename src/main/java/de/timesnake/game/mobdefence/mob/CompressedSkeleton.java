@@ -36,7 +36,7 @@ public class CompressedSkeleton extends MobDefMob<Skeleton> {
   public void init() {
     ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new SkeletonBuilder(world.getHandle(), false, false)
+    this.entity = new SkeletonBuilder(world.getHandle(), false, false, false)
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
         .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND,

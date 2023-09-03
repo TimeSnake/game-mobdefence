@@ -80,7 +80,7 @@ public class SheepSpawner extends EntitySpawner {
   }
 
   private Sheep getSheep(User user) {
-    return new SheepBuilder(user.getExWorld().getHandle(), false, false)
+    return new SheepBuilder(user.getExWorld().getHandle(), false, false, false)
         .setMaxHealthAndHealth(20)
         .applyOnEntity(e -> {
           e.setGlowingTag(true);

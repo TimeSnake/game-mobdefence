@@ -45,7 +45,7 @@ public class MobDefSkeleton extends ArmorMob<Skeleton> {
       health = 40;
     }
 
-    this.entity = new SkeletonBuilder(world.getHandle(), false, false)
+    this.entity = new SkeletonBuilder(world.getHandle(), false, false, false)
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
         .setMaxHealthAndHealth(health)

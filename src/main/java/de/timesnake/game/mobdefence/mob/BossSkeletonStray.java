@@ -35,7 +35,7 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
   public void spawn() {
     ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new StrayBuilder(world.getHandle(), false, false)
+    this.entity = new StrayBuilder(world.getHandle(), false, false, false)
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
         .setMaxHealthAndHealth(this.currentWave * 70)
@@ -73,7 +73,7 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
             for (int i = 0; i < 4; i++) {
               ExWorld world = MobDefServer.getMap().getWorld();
 
-              Stray stray = new StrayBuilder(world.getHandle(), false, false)
+              Stray stray = new StrayBuilder(world.getHandle(), false, false, false)
                   .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
                       .setBaseValue(2 + BossSkeletonStray.this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
                   .applyOnEntity(e -> e.getBukkitCreature().setNoDamageTicks(1))

@@ -35,7 +35,7 @@ public class MobDefWitch extends MobDefMob<net.minecraft.world.entity.monster.Wi
       health = 60;
     }
 
-    this.entity = new WitchBuilder(world.getHandle(), true, false)
+    this.entity = new WitchBuilder(world.getHandle(), true, false, false)
         .setMaxHealthAndHealth(health)
         .addPathfinderGoal(1, e -> new FloatGoal(e))
         .addPathfinderGoal(2, e -> new RangedAttackGoal(e, 1.0D, 60, 10.0F))

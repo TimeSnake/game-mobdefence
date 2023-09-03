@@ -42,7 +42,7 @@ public class MobDefPillager extends MobDefMob<Pillager> {
       health = 40;
     }
 
-    this.entity = new PillagerBuilder(world.getHandle(), false, false)
+    this.entity = new PillagerBuilder(world.getHandle(), false, false, false)
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
         .setMaxHealthAndHealth(health)
