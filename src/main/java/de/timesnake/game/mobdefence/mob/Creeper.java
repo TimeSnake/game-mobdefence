@@ -37,7 +37,7 @@ public class Creeper extends MobDefMob<net.minecraft.world.entity.monster.Creepe
       health = 40;
     }
 
-    this.entity = new CreeperBuilder(world.getHandle(), false, false)
+    this.entity = new CreeperBuilder(world.getHandle(), false, false, false)
         .setMaxHealthAndHealth(health)
         .apply(b -> {
           SwellGoal swellGoal = new SwellGoal(b.getHandle(), 4, 7);

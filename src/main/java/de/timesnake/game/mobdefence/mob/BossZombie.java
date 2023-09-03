@@ -38,7 +38,7 @@ public class BossZombie extends MobDefMob<Zombie> {
   public void spawn() {
     ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new ZombieBuilder(world.getHandle(), false, false)
+    this.entity = new ZombieBuilder(world.getHandle(), false, false, false)
         .setMaxHealthAndHealth(this.currentWave * 100)
         .applyOnEntity(e -> {
           e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.GOLDEN_AXE).addExEnchantment(Enchantment.FIRE_ASPECT, 2).getHandle());

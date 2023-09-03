@@ -24,7 +24,7 @@ public class CaveSpider extends MobDefMob<net.minecraft.world.entity.monster.Cav
   public void spawn() {
     ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new CaveSpiderBuilder(world.getHandle(), false, false)
+    this.entity = new CaveSpiderBuilder(world.getHandle(), false, false, false)
         .setMaxHealthAndHealth(this.currentWave > 13 ? 40 : 20)
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))

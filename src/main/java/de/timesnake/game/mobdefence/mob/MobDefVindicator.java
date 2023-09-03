@@ -41,7 +41,7 @@ public class MobDefVindicator extends MobDefMob<Vindicator> {
       health = 40;
     }
 
-    this.entity = new VindicatorBuilder(world.getHandle(), false, false)
+    this.entity = new VindicatorBuilder(world.getHandle(), false, false, false)
         .setMaxHealthAndHealth(health)
         .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_AXE).getHandle()))
         .apply(b -> {

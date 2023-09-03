@@ -58,7 +58,7 @@ public class CompressedZombie extends MobDefMob<Zombie> {
     }
 
 
-    this.entity = new ZombieBuilder(world.getHandle(), false, false)
+    this.entity = new ZombieBuilder(world.getHandle(), false, false, false)
         .setMaxHealthAndHealth(health)
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5. * MobManager.MOB_DAMAGE_MULTIPLIER * 2))

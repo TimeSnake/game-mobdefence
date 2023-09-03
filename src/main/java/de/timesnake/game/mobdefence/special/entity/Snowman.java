@@ -47,7 +47,7 @@ public class Snowman extends BlockSpawner implements Listener {
 
   @Override
   public void spawnEntities(Location location) {
-    SnowGolem snowman = new SnowGolemBuilder(Server.getWorld(location.getWorld()).getHandle(), false, false)
+    SnowGolem snowman = new SnowGolemBuilder(Server.getWorld(location.getWorld()).getHandle(), false, false, false)
         .applyOnEntity(e -> {
           e.setPos(location.getX(), location.getY(), location.getZ());
           e.setPumpkin(false);
