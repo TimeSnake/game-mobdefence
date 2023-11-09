@@ -18,7 +18,6 @@ import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.Upgradeable;
 import de.timesnake.library.basic.util.Tuple;
-import de.timesnake.library.basic.util.server.Task;
 import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.entities.entity.PlayerBuilder;
 import de.timesnake.library.packets.core.packet.out.entity.ClientboundSetEntityDataPacketBuilder;
@@ -219,7 +218,7 @@ public class ReviveManager {
     this.reviveDespawnTime = time;
   }
 
-  private class DyingProcess implements Task {
+  private class DyingProcess implements Runnable {
 
     private final MobDefUser user;
     private int reviveTime;
