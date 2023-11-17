@@ -32,6 +32,7 @@ public class MobDefUser extends GameUser {
   private KitShop shop;
 
   private PacketPlayer deadBody;
+  private ExLocation deathLocation;
   private MobDefUser beingRevivedUser = null;
 
   public MobDefUser(Player player) {
@@ -107,9 +108,8 @@ public class MobDefUser extends GameUser {
       if (MobDefServer.isDelayRunning()) {
         this.rejoinGame(this.getExLocation(), Status.User.IN_GAME);
       } else {
-        this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager()
-            .addDeadUser(this,
-                this.getLocation());
+        this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager().addDeadUser(this, this.getLocation());
+        this.deathLocation = this.getExLocation();
       }
     }
 
@@ -123,8 +123,8 @@ public class MobDefUser extends GameUser {
   public void leaveSpectatorAndRejoin() {
     ExLocation respawnLocation;
 
-    if (this.deadBody != null) {
-      respawnLocation = ExLocation.fromLocation(this.deadBody.getPlayer().getBukkitEntity().getLocation());
+    if (this.deathLocation != null) {
+      respawnLocation = this.deathLocation;
       this.deadBody = null;
     } else {
       respawnLocation = MobDefServer.getMap().getUserSpawn();
