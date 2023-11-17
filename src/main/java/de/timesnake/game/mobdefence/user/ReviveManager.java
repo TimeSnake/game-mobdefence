@@ -20,7 +20,6 @@ import de.timesnake.game.mobdefence.shop.Upgradeable;
 import de.timesnake.library.basic.util.Tuple;
 import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.entities.entity.PlayerBuilder;
-import de.timesnake.library.packets.core.packet.out.entity.ClientboundSetEntityDataPacketBuilder;
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -118,7 +117,6 @@ public class ReviveManager {
         .build();
 
     PacketPlayer player = new PacketPlayer(deadBody, loc);
-    player.setPoseTag(ClientboundSetEntityDataPacketBuilder.Type.SLEEPING, true);
 
     Server.getEntityManager().registerEntity(player);
 
@@ -240,8 +238,7 @@ public class ReviveManager {
               .append(Component.text(" was revived by ", ExTextColor.WARNING))
               .append(user.getBeingRevivedUser().getChatNameComponent()));
           ReviveManager.this.removeDyingUser(user, true);
-          Server.runTaskSynchrony(user::leaveSpectatorAndRejoin,
-              GameMobDefence.getPlugin());
+          Server.runTaskSynchrony(user::leaveSpectatorAndRejoin, GameMobDefence.getPlugin());
           return;
         }
 
