@@ -249,11 +249,6 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
   }
 
   @Override
-  public void onGameUserQuitBeforeStart(GameUser user) {
-
-  }
-
-  @Override
   public boolean isRejoiningAllowed() {
     return true;
   }
