@@ -238,13 +238,12 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
   @Override
   public void onGameUserQuit(GameUser user) {
-    if (this.getAliveUsers().size() == 0) {
+    if (this.getAliveUsers().isEmpty()) {
       this.stopGame();
     }
 
     if (!((MobDefUser) user).isAlive() && ((MobDefUser) user).getDeadBody() != null) {
-      this.getMobDefUserManager().getReviveManager()
-          .removeDyingUser(((MobDefUser) user), true);
+      ((MobDefUser) user).getDeadBody().remove();
     }
   }
 
@@ -283,8 +282,6 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     }
 
     this.delayIsRunning = true;
-
-    this.userManager.getReviveManager().clear();
 
     for (User user : Server.getInOutGameUsers()) {
       if (!((MobDefUser) user).isAlive()) {
