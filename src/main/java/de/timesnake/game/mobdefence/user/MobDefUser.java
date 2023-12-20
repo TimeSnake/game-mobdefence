@@ -6,7 +6,6 @@ package de.timesnake.game.mobdefence.user;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
-import de.timesnake.basic.bukkit.util.world.entity.PacketPlayer;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.game.mobdefence.kit.KitShop;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
@@ -31,7 +30,7 @@ public class MobDefUser extends GameUser {
 
   private KitShop shop;
 
-  private PacketPlayer deadBody;
+  private ReviveManager.DeadPlayer deadBody;
   private ExLocation deathLocation;
   private MobDefUser beingRevivedUser = null;
 
@@ -108,7 +107,7 @@ public class MobDefUser extends GameUser {
       if (MobDefServer.isDelayRunning()) {
         this.rejoinGame(this.getExLocation(), Status.User.IN_GAME);
       } else {
-        this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager().addDeadUser(this, this.getLocation());
+        this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager().addDeadUser(this);
         this.deathLocation = this.getExLocation();
       }
     }
@@ -156,6 +155,15 @@ public class MobDefUser extends GameUser {
   }
 
   @Override
+  public void onGameStop() {
+    super.onGameStop();
+
+    if (this.deadBody != null) {
+      this.deadBody.remove();
+    }
+  }
+
+  @Override
   public void setRejoinInventory() {
     super.setRejoinInventory();
     this.getInventory().setContents(this.invItems);
@@ -190,7 +198,7 @@ public class MobDefUser extends GameUser {
     this.beingRevivedUser = user;
   }
 
-  public PacketPlayer getDeadBody() {
+  public ReviveManager.DeadPlayer getDeadBody() {
     return deadBody;
   }
 }

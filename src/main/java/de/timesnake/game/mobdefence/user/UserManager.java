@@ -27,7 +27,6 @@ import de.timesnake.game.mobdefence.special.ResistanceAura;
 import de.timesnake.game.mobdefence.special.trap.TrapManager;
 import de.timesnake.library.chat.ExTextColor;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
-import java.util.List;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,6 +46,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+
+import java.util.List;
 
 public class UserManager implements Listener {
 
@@ -118,7 +119,6 @@ public class UserManager implements Listener {
 
   public void runTasks() {
     this.potionGenerator.run();
-    this.reviveManager.run();
     this.resistanceAura.run();
     this.trapManager.start();
   }
@@ -126,7 +126,6 @@ public class UserManager implements Listener {
   public void cancelTasks() {
     this.coreRegeneration.cancel();
     this.potionGenerator.cancel();
-    this.reviveManager.stop();
     this.resistanceAura.cancel();
     this.trapManager.reset();
   }
