@@ -35,7 +35,7 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
   public void spawn() {
     ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new StrayBuilder(world.getHandle(), false, false, false)
+    this.entity = new StrayBuilder()
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
         .setMaxHealthAndHealth(this.currentWave * 70)
@@ -73,25 +73,25 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
             for (int i = 0; i < 4; i++) {
               ExWorld world = MobDefServer.getMap().getWorld();
 
-              Stray stray = new StrayBuilder(world.getHandle(), false, false, false)
+              Stray stray = new StrayBuilder()
                   .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
                       .setBaseValue(2 + BossSkeletonStray.this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
                   .applyOnEntity(e -> e.getBukkitCreature().setNoDamageTicks(1))
                   .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.BOW).getHandle()))
                   .setMaxHealthAndHealth(health)
-                  .apply(b -> {
-                    BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.5, false,
+                  .apply(b -> b.applyOnEntity(e -> {
+                    BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.5, false,
                         BlockCheck.BREAKABLE_MATERIALS);
 
-                    b.addPathfinderGoal(2, e -> getCorePathfinder(e, HeightMapManager.MapType.NORMAL, 1, breakBlock, BREAK_LEVEL));
-                    b.addPathfinderGoal(2, e -> breakBlock);
-                  })
+                    b.addPathfinderGoal(4, f -> getCorePathfinder(f, HeightMapManager.MapType.NORMAL, 1, breakBlock, BREAK_LEVEL));
+                    b.addPathfinderGoal(4, f -> breakBlock);
+                  }))
                   .addPathfinderGoal(2, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1.1, 1.1))
                   .addPathfinderGoal(3, e -> new RandomStrollGoal(e, 0.9D))
                   .addPathfinderGoal(4, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
                   .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
                   .apply(BossSkeletonStray.this::applyDefaultTargetGoals)
-                  .build();
+                  .build(world.getHandle());
 
               skeletons.add(stray);
             }
@@ -99,19 +99,19 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
             return skeletons;
           }
         })
-        .apply(b -> {
-          BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.4, false,
+        .apply(b -> b.applyOnEntity(e -> {
+          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.4, false,
               BlockCheck.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(2, e -> getCorePathfinder(e, this.getMapType(), 1.3, breakBlock, BREAK_LEVEL));
-          b.addPathfinderGoal(2, e -> breakBlock);
-        })
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1.3, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> breakBlock);
+        }))
         .addPathfinderGoal(3, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1, 1))
         .addPathfinderGoal(4, e -> new RandomStrollGoal(e, 0.9D))
         .addPathfinderGoal(5, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .addPathfinderGoal(5, e -> new RandomLookAroundGoal(e))
         .apply(this::applyDefaultTargetGoals)
-        .build();
+        .build(world.getHandle());
 
     super.spawn();
   }

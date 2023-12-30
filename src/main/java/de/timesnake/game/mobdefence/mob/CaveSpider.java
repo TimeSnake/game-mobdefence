@@ -24,7 +24,7 @@ public class CaveSpider extends MobDefMob<net.minecraft.world.entity.monster.Cav
   public void spawn() {
     ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new CaveSpiderBuilder(world.getHandle(), false, false, false)
+    this.entity = new CaveSpiderBuilder()
         .setMaxHealthAndHealth(this.currentWave > 13 ? 40 : 20)
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
@@ -36,7 +36,7 @@ public class CaveSpider extends MobDefMob<net.minecraft.world.entity.monster.Cav
         .addPathfinderGoal(5, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .addPathfinderGoal(5, e -> new RandomLookAroundGoal(e))
         .apply(this::applyDefaultTargetGoals)
-        .build();
+        .build(world.getHandle());
 
     super.spawn();
   }

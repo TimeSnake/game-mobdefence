@@ -4,7 +4,6 @@
 
 package de.timesnake.game.mobdefence.special.entity;
 
-import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
@@ -23,6 +22,7 @@ import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Snowball;
@@ -47,7 +47,7 @@ public class Snowman extends BlockSpawner implements Listener {
 
   @Override
   public void spawnEntities(Location location) {
-    SnowGolem snowman = new SnowGolemBuilder(Server.getWorld(location.getWorld()).getHandle(), false, false, false)
+    SnowGolem snowman = new SnowGolemBuilder()
         .applyOnEntity(e -> {
           e.setPos(location.getX(), location.getY(), location.getZ());
           e.setPumpkin(false);
@@ -61,7 +61,7 @@ public class Snowman extends BlockSpawner implements Listener {
         .addTargetGoal(1, e -> new HurtByTargetGoal(e, MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)))
         .addTargetGoals(2, MobDefMob.ATTACKER_ENTITY_CLASSES.stream()
             .map(c -> e -> new NearestAttackableTargetGoal<>(e, c, true, false)))
-        .build();
+        .build(((CraftWorld) location.getWorld()).getHandle());
 
     EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), snowman);
   }

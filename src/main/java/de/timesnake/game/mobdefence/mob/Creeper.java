@@ -37,26 +37,27 @@ public class Creeper extends MobDefMob<net.minecraft.world.entity.monster.Creepe
       health = 40;
     }
 
-    this.entity = new CreeperBuilder(world.getHandle(), false, false, false)
+    this.entity = new CreeperBuilder()
         .setMaxHealthAndHealth(health)
-        .apply(b -> {
-          SwellGoal swellGoal = new SwellGoal(b.getHandle(), 4, 7);
-          b.addPathfinderGoal(1, e -> swellGoal);
-          if (this.currentWave > 10) {
-            b.addPathfinderGoal(2, e -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.4, swellGoal, 5));
-          } else if (this.currentWave > 5) {
-            b.addPathfinderGoal(2, e -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.3, swellGoal, 5));
-          } else {
-            b.addPathfinderGoal(2, e -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.2, swellGoal, 5));
-          }
-        })
+        .apply(b -> b.applyOnEntity(e -> {
+              SwellGoal swellGoal = new SwellGoal(e, 4, 7);
+              b.addPathfinderGoal(1, f -> swellGoal);
+              if (this.currentWave > 10) {
+                b.addPathfinderGoal(2, f -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.4, swellGoal, 5));
+              } else if (this.currentWave > 5) {
+                b.addPathfinderGoal(2, f -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.3, swellGoal, 5));
+              } else {
+                b.addPathfinderGoal(2, f -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.2, swellGoal, 5));
+              }
+            })
+        )
         .addPathfinderGoal(3, e -> new SwellGoal(e, 3, 5))
         .addPathfinderGoal(4, e -> new MeleeAttackGoal(e, 1.1, false))
         .addPathfinderGoal(6, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .addPathfinderGoal(6, e -> new RandomLookAroundGoal(e))
         .addTargetGoal(1, e -> new HurtByTargetGoal(e, Monster.class))
         .addTargetGoal(2, e -> new NearestAttackableTargetGoal<>(e, Player.class, true, true))
-        .build();
+        .build(world.getHandle());
 
     super.spawn();
   }

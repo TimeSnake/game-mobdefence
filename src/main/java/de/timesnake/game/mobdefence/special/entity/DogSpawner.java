@@ -98,7 +98,7 @@ public class DogSpawner extends EntitySpawner {
   }
 
   private Wolf getDog(User user, float health) {
-    return new WolfBuilder(user.getExWorld().getHandle(), false, false, false)
+    return new WolfBuilder()
         .applyOnEntity(e -> {
           e.setTame(true);
           e.setOwnerUUID(user.getUniqueId());
@@ -118,6 +118,6 @@ public class DogSpawner extends EntitySpawner {
         .addTargetGoal(3, e -> new HurtByTargetGoal(e, MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)))
         .addTargetGoals(4, MobDefMob.ATTACKER_ENTITY_CLASSES.stream()
             .map(c -> e -> new NearestAttackableTargetGoal<>(e, c, true, false)))
-        .build();
+        .build(user.getExWorld().getHandle());
   }
 }

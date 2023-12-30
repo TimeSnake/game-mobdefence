@@ -29,7 +29,7 @@ public class MobDefBabyZombie extends ArmorMob<Zombie> {
   public void spawn() {
     ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new ZombieBuilder(world.getHandle(), false, false, false)
+    this.entity = new ZombieBuilder()
         .setMaxHealth(30)
         .applyOnEntity(e -> {
           e.setBaby(true);
@@ -40,18 +40,18 @@ public class MobDefBabyZombie extends ArmorMob<Zombie> {
               .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobManager.MOB_DAMAGE_MULTIPLIER);
         })
         .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, this.currentWave < 15 ? 1.2 : 1.3, false))
-        .apply(b -> {
-          BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.3, false,
+        .apply(b -> b.applyOnEntity(e -> {
+          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.3, false,
               BlockCheck.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(2, e -> getCorePathfinder(e, this.getMapType(), 1.2, breakBlock, BREAK_LEVEL));
-          b.addPathfinderGoal(2, e -> breakBlock);
-        })
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1.2, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> breakBlock);
+        }))
         .addPathfinderGoal(3, e -> new RandomStrollGoal(e, 1.2))
         .addPathfinderGoal(4, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
         .apply(this::applyDefaultTargetGoals)
-        .build();
+        .build(world.getHandle());
 
 
     super.spawn();

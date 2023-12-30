@@ -9,7 +9,7 @@ import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.mob.map.HeightPathfinder;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.EntityManager;
-import de.timesnake.library.entities.entity.MobBuilder;
+import de.timesnake.library.entities.entity.base.MobBuilder;
 import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;

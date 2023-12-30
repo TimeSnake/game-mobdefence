@@ -57,23 +57,23 @@ public class MobDefZombie extends MeleeMob<Zombie> {
       health = 40;
     }
 
-    this.entity = new ZombieBuilder(world.getHandle(), false, false, false)
+    this.entity = new ZombieBuilder()
         .setMaxHealthAndHealth(health)
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobManager.MOB_DAMAGE_MULTIPLIER))
         .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, speed + (isRunner ? 0.2 : 0), false))
-        .apply(b -> {
-          BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.4, false,
+        .apply(b -> b.applyOnEntity(e -> {
+          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.4, false,
               BlockCheck.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(2, e -> getCorePathfinder(e, this.getMapType(), speed + (isRunner ? 0.2 : 0), breakBlock, BREAK_LEVEL));
-          b.addPathfinderGoal(2, e -> breakBlock);
-        })
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), speed + (isRunner ? 0.2 : 0), breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> breakBlock);
+        }))
         .addPathfinderGoal(3, e -> new RandomStrollGoal(e, 1.2))
         .addPathfinderGoal(4, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
         .apply(this::applyDefaultTargetGoals)
-        .build();
+        .build(world.getHandle());
 
   }
 }

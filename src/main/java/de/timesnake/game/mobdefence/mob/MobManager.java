@@ -128,7 +128,7 @@ public class MobManager implements Listener {
 
   public Villager createCoreEntity() {
     ExLocation loc = MobDefServer.getMap().getCoreLocation();
-    return new VillagerBuilder(loc.getExWorld().getHandle(), false, false, false)
+    return new VillagerBuilder()
         .addPathfinderGoal(1, e -> new LocationGoal(e, loc.getX(), loc.getY(), loc.getZ(), 1.4, 32, 1))
         .applyOnEntity(e -> {
           e.setPos(loc.getX(), loc.getY(), loc.getZ());
@@ -137,7 +137,7 @@ public class MobManager implements Listener {
           e.setInvulnerable(true);
         })
         .setMaxHealthAndHealth(2048)
-        .build();
+        .build(loc.getExWorld().getHandle());
 
   }
 

@@ -18,7 +18,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.ZombieAttackGoal;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Material;
@@ -38,7 +37,7 @@ public class BossZombie extends MobDefMob<Zombie> {
   public void spawn() {
     ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new ZombieBuilder(world.getHandle(), false, false, false)
+    this.entity = new ZombieBuilder()
         .setMaxHealthAndHealth(this.currentWave * 100)
         .applyOnEntity(e -> {
           e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.GOLDEN_AXE).addExEnchantment(Enchantment.FIRE_ASPECT, 2).getHandle());
@@ -56,14 +55,13 @@ public class BossZombie extends MobDefMob<Zombie> {
         })
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobManager.MOB_DAMAGE_MULTIPLIER))
-        .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, 1.1, false))
-        .apply(b -> {
-          BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.8, false,
+        .apply(b -> b.applyOnEntity(e -> {
+          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.8, false,
               BlockCheck.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(2, e -> getCorePathfinder(e, this.getMapType(), 1, breakBlock, BREAK_LEVEL));
-          b.addPathfinderGoal(2, e -> breakBlock);
-        })
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> breakBlock);
+        }))
         .addPathfinderGoal(2, e -> new SpawnArmyGoal(e, Zombie.class, 3, 10 * 20) {
           @Override
           public List<? extends Mob> getArmy() {
@@ -87,7 +85,7 @@ public class BossZombie extends MobDefMob<Zombie> {
         .addPathfinderGoal(4, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
         .apply(this::applyDefaultTargetGoals)
-        .build();
+        .build(world.getHandle());
 
     super.spawn();
   }

@@ -35,27 +35,27 @@ public class MobDefWitch extends MobDefMob<net.minecraft.world.entity.monster.Wi
       health = 60;
     }
 
-    this.entity = new WitchBuilder(world.getHandle(), true, false, false)
+    this.entity = new WitchBuilder()
         .setMaxHealthAndHealth(health)
         .addPathfinderGoal(1, e -> new FloatGoal(e))
         .addPathfinderGoal(2, e -> new RangedAttackGoal(e, 1.0D, 60, 10.0F))
         .addPathfinderGoal(2, e -> new RandomStrollGoal(e, 1))
         .addPathfinderGoal(3, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
-        .apply(b -> {
-          BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.2, false,
+        .apply(b -> b.applyOnEntity(e -> {
+          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.2, false,
               BlockCheck.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(2, e -> getCorePathfinder(e, this.getMapType(), 1.5, breakBlock, BREAK_LEVEL));
-          b.addPathfinderGoal(2, e -> breakBlock);
-        })
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1.5, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> breakBlock);
+        }))
         .addTargetGoal(1, e -> new HurtByTargetGoal(e, Monster.class))
         .addTargetGoals(2, MobDefMob.FIRST_DEFENDER_CLASSES.stream()
             .map(defClass -> e -> new NearestAttackableTargetGoal<>(e, defClass, 10, true, false, null)))
         .addTargetGoal(3, e -> new NearestAttackableTargetGoal<>(e, Player.class, 10, true, false, null))
         .addTargetGoals(3, MobDefMob.SECOND_DEFENDER_CLASSES.stream()
             .map(defClass -> e -> new NearestAttackableTargetGoal<>(e, defClass, 10, true, false, null)))
-        .build();
+        .build(world.getHandle());
 
     super.spawn();
   }

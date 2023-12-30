@@ -42,24 +42,24 @@ public class MobDefPillager extends MobDefMob<Pillager> {
       health = 40;
     }
 
-    this.entity = new PillagerBuilder(world.getHandle(), false, false, false)
+    this.entity = new PillagerBuilder()
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
         .setMaxHealthAndHealth(health)
         .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.CROSSBOW).getHandle()))
         .addPathfinderGoal(0, e -> new FloatGoal(e))
         .addPathfinderGoal(3, e -> new RangedCrossbowAttackGoal<>(e, 1, 15))
-        .apply(b -> {
-          BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.3, false,
+        .apply(b -> b.applyOnEntity(e -> {
+          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.3, false,
               BlockCheck.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(4, e -> getCorePathfinder(e, this.getMapType(), 0.7, breakBlock, BREAK_LEVEL));
-          b.addPathfinderGoal(4, e -> breakBlock);
-        })
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 0.7, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> breakBlock);
+        }))
         .addPathfinderGoal(8, e -> new RandomStrollGoal(e, 0.6))
         .addPathfinderGoal(9, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .apply(this::applyDefaultTargetGoals)
-        .build();
+        .build(world.getHandle());
 
     super.spawn();
   }
