@@ -80,7 +80,7 @@ public class SheepSpawner extends EntitySpawner {
   }
 
   private Sheep getSheep(User user) {
-    return new SheepBuilder(user.getExWorld().getHandle(), false, false, false)
+    return new SheepBuilder()
         .setMaxHealthAndHealth(20)
         .applyOnEntity(e -> {
           e.setGlowingTag(true);
@@ -93,6 +93,6 @@ public class SheepSpawner extends EntitySpawner {
         .addPathfinderGoal(2, e -> new RandomStrollGoal(e, 1.0))
         .addPathfinderGoal(3, e -> new LookAtPlayerGoal(e, Player.class, 6.0F))
         .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
-        .build();
+        .build(user.getExWorld().getHandle());
   }
 }

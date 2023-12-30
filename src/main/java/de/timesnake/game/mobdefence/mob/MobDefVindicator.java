@@ -41,22 +41,22 @@ public class MobDefVindicator extends MobDefMob<Vindicator> {
       health = 40;
     }
 
-    this.entity = new VindicatorBuilder(world.getHandle(), false, false, false)
+    this.entity = new VindicatorBuilder()
         .setMaxHealthAndHealth(health)
         .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_AXE).getHandle()))
-        .apply(b -> {
-          BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.3, false,
+        .apply(b -> b.applyOnEntity(e -> {
+          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.3, false,
               BlockCheck.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(4, e -> getCorePathfinder(e, this.getMapType(), 0.7, breakBlock, BREAK_LEVEL));
-          b.addPathfinderGoal(4, e -> breakBlock);
-        })
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 0.7, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> breakBlock);
+        }))
         .addPathfinderGoal(0, e -> new FloatGoal(e))
         .addPathfinderGoal(3, e -> new VindicatorMeleeAttackGoal(e, this.currentWave < 13 ? 1 : this.currentWave < 19 ? 1.1 : 1.2))
         .addPathfinderGoal(8, e -> new RandomStrollGoal(e, 0.6))
         .addPathfinderGoal(9, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .apply(this::applyDefaultTargetGoals)
-        .build();
+        .build(world.getHandle());
 
     super.spawn();
   }

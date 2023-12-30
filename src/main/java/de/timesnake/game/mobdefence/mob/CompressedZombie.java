@@ -58,7 +58,7 @@ public class CompressedZombie extends MobDefMob<Zombie> {
     }
 
 
-    this.entity = new ZombieBuilder(world.getHandle(), false, false, false)
+    this.entity = new ZombieBuilder()
         .setMaxHealthAndHealth(health)
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5. * MobManager.MOB_DAMAGE_MULTIPLIER * 2))
@@ -70,17 +70,17 @@ public class CompressedZombie extends MobDefMob<Zombie> {
           e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.NETHERITE_SHOVEL).addExEnchantment(Enchantment.DAMAGE_ALL, this.currentWave * 2).getHandle());
         })
         .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, speed, false))
-        .apply(b -> {
-          BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.8, false,
+        .apply(b -> b.applyOnEntity(e -> {
+          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.8, false,
               BlockCheck.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(2, e -> getCorePathfinder(e, this.getMapType(), speed, breakBlock, BREAK_LEVEL));
-          b.addPathfinderGoal(2, e -> breakBlock);
-        })
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), speed, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> breakBlock);
+        }))
         .addPathfinderGoal(3, e -> new RandomStrollGoal(e, speed))
         .addPathfinderGoal(4, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
         .apply(this::applyDefaultTargetGoals)
-        .build();
+        .build(world.getHandle());
   }
 }

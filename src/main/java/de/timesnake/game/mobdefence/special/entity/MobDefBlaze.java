@@ -5,7 +5,6 @@
 package de.timesnake.game.mobdefence.special.entity;
 
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
-import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
@@ -22,6 +21,7 @@ import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
 
@@ -40,7 +40,7 @@ public class MobDefBlaze extends BlockSpawner implements Listener {
 
   @Override
   public void spawnEntities(Location location) {
-    Blaze blaze = new BlazeBuilder(ExLocation.fromLocation(location).getExWorld().getHandle(), false, false, false)
+    Blaze blaze = new BlazeBuilder()
         .applyOnEntity(e -> {
           e.setPos(location.getX(), location.getY(), location.getZ());
           e.setPersistenceRequired(true);
@@ -52,7 +52,7 @@ public class MobDefBlaze extends BlockSpawner implements Listener {
         .addTargetGoal(3, e -> new HurtByTargetGoal(e, MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)))
         .addTargetGoals(4, MobDefMob.ATTACKER_ENTITY_CLASSES.stream()
             .map(c -> e -> new NearestAttackableTargetGoal<>(e, c, true, false)))
-        .build();
+        .build(((CraftWorld) location.getWorld()).getHandle());
 
     EntityManager.spawnEntity(MobDefServer.getMap().getWorld().getBukkitWorld(), blaze);
   }

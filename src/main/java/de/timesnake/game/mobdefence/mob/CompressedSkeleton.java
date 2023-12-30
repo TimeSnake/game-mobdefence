@@ -36,7 +36,7 @@ public class CompressedSkeleton extends MobDefMob<Skeleton> {
   public void init() {
     ExWorld world = MobDefServer.getMap().getWorld();
 
-    this.entity = new SkeletonBuilder(world.getHandle(), false, false, false)
+    this.entity = new SkeletonBuilder()
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
         .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND,
@@ -56,13 +56,13 @@ public class CompressedSkeleton extends MobDefMob<Skeleton> {
                   .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4).getHandle());
         })
         .setMaxHealthAndHealth(this.currentWave * 20)
-        .apply(b -> {
-          BreakBlockGoal breakBlock = getBreakPathfinder(b.getNMS(), 0.8, false,
+        .apply(b -> b.applyOnEntity(e -> {
+          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.8, false,
               BlockCheck.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(2, e -> getCorePathfinder(e, this.getMapType(), 1.2, breakBlock, BREAK_LEVEL));
-          b.addPathfinderGoal(2, e -> breakBlock);
-        })
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1.2, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> breakBlock);
+        }))
         .apply(b -> {
           if (this.currentWave > 20) {
             b.addPathfinderGoal(1, e -> new RangedBowAttackGoal<>(e, 1.2, 5, 30.0F));
@@ -76,6 +76,6 @@ public class CompressedSkeleton extends MobDefMob<Skeleton> {
         .addPathfinderGoal(4, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
         .apply(this::applyDefaultTargetGoals)
-        .build();
+        .build(world.getHandle());
   }
 }
