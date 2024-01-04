@@ -14,7 +14,7 @@ import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.library.commands.PluginCommand;
 import de.timesnake.library.commands.simple.Arguments;
-import de.timesnake.library.extension.util.chat.Code;
+import de.timesnake.library.chat.Code;
 
 public class DebugCmd implements CommandListener {
 
