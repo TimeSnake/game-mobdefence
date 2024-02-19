@@ -10,20 +10,16 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import de.timesnake.library.chat.ExTextColor;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.enchantments.Enchantment;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class LevelType {
 
@@ -59,7 +55,7 @@ public class LevelType {
     Level<?> nextLevel = this.levels.get(this.level + 1);
 
     StringBuilder sb = new StringBuilder();
-    if (this.conflictingTypes.size() > 0) {
+    if (!this.conflictingTypes.isEmpty()) {
       sb.append("§7Conflicts: §c");
       for (String conflictName : this.conflictingTypes) {
         sb.append(conflictName);
@@ -72,7 +68,7 @@ public class LevelType {
       this.displayItem.setLore("§fLevel: §2" + this.level, "",
           "§7Next Level: §cmax level reached", "");
     } else {
-      if (this.conflictingTypes.size() > 0) {
+      if (!this.conflictingTypes.isEmpty()) {
         this.displayItem.setLore("§7Level: §2" + this.level, "",
             "§7Next Level: §9" + nextLevel.getDescription(), "",
             "§7Price:        §2" + nextLevel.getPrice().toString(), "", sb.toString());
@@ -273,10 +269,8 @@ public class LevelType {
       return this.addLvl(price, this.currentDescription, function);
     }
 
-    public Builder addLvl(Price price, String description,
-        Function<ExItemStack, ExItemStack> function) {
-      this.levels.addLast(new Level.ItemLevel(this.currentLevelItemStack, ++this.levelCounter,
-          price, description, function));
+    public Builder addLvl(Price price, String description, Function<ExItemStack, ExItemStack> function) {
+      this.levels.addLast(new Level.ItemLevel(this.currentLevelItemStack, ++this.levelCounter, price, description, function));
       return this;
     }
 
@@ -352,8 +346,7 @@ public class LevelType {
       cloned.displayItem = displayItem != null ? displayItem.cloneWithId() : null;
       cloned.baseLevel = baseLevel;
       cloned.levelCounter = levelCounter;
-      cloned.currentLevelItemStack =
-          currentLevelItemStack != null ? currentLevelItemStack.cloneWithId() : null;
+      cloned.currentLevelItemStack = currentLevelItemStack != null ? currentLevelItemStack.cloneWithId() : null;
       cloned.currentDescription = currentDescription;
       cloned.currentEnchantment = currentEnchantment;
       cloned.currentLoreName = currentLoreName;

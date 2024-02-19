@@ -12,11 +12,13 @@ import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
 import de.timesnake.game.mobdefence.mob.map.HeightBlock;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import de.timesnake.library.basic.util.Loggers;
-import java.util.HashMap;
-import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.GameRule;
 import org.bukkit.Material;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class MobDefMap extends Map implements ResetableMap {
 
@@ -26,6 +28,9 @@ public class MobDefMap extends Map implements ResetableMap {
   private static final Integer DEFAULT_MAP_RADIUS = 100;
   private static final Integer CORE_LOCATION_INDEX = 0;
   private static final Integer USER_SPAWN_INDEX = 1;
+
+  private final Logger logger = LogManager.getLogger("mob-def.map");
+
   private final java.util.Map<Integer, MobDefStage> stages = new HashMap<>();
   private MobDefStage current;
 
@@ -52,10 +57,10 @@ public class MobDefMap extends Map implements ResetableMap {
 
     for (int stageNumber = 0; stageNumber <= map.getLastLocationNumber();
         stageNumber += STAGE_LOC_SIZE) {
-      Loggers.GAME.info("Loading stage " + stageNumber + " ...");
+      this.logger.info("Loading stage {}...", stageNumber);
       MobDefStage stage = new MobDefStage(stageNumber, this.getCoreLocation(),
           super.getLocationsById());
-      Loggers.GAME.info("Loaded stage" + stageNumber);
+      this.logger.info("Loaded stage {}", stageNumber);
       this.stages.put(stageNumber, stage);
     }
     this.current = this.stages.get(0);

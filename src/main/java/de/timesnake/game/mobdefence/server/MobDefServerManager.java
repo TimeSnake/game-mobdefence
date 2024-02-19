@@ -15,6 +15,7 @@ import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.game.util.game.Map;
 import de.timesnake.basic.game.util.user.SpectatorManager;
 import de.timesnake.basic.loungebridge.util.game.TmpGame;
+import de.timesnake.basic.loungebridge.util.server.EndMessage;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
 import de.timesnake.basic.loungebridge.util.server.TablistManager;
 import de.timesnake.basic.loungebridge.util.tool.listener.GameUserDeathListener;
@@ -38,13 +39,14 @@ import de.timesnake.game.mobdefence.special.weapon.WeaponManager;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
-import de.timesnake.library.basic.util.Loggers;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.basic.util.TimeCoins;
 import de.timesnake.library.basic.util.statistics.StatType;
 import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.entities.EntityManager;
 import net.kyori.adventure.text.Component;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -75,6 +77,9 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
   }
 
   private static final boolean DEBUG = false;
+
+  private final Logger logger = LogManager.getLogger("mob-def.server");
+
   private Integer playerAmount; // set at game start
   private double coreMaxHealth;
   private net.minecraft.world.entity.LivingEntity coreEntity;
@@ -192,11 +197,11 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
         entity.remove();
       }
     }
-    Loggers.GAME.info("Cleared living entities");
+    this.logger.info("Cleared living entities");
 
     this.coreEntity = this.mobManager.createCoreEntity();
     EntityManager.spawnEntity(this.getMap().getWorld().getBukkitWorld(), this.coreEntity);
-    Loggers.GAME.info("Spawned core entity");
+    this.logger.info("Spawned core entity");
 
     ((MobDefMap) this.getMap()).getHeightMapManager().resetMaps();
     ((MobDefMap) this.getMap()).getHeightMapManager().updateMaps();
@@ -371,7 +376,9 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
       }
     }
 
-    super.closeGame();
+    new EndMessage().winner("Game Over")
+        .addExtra("§hWave: §v" + this.waveNumber)
+        .send();
   }
 
   @Override

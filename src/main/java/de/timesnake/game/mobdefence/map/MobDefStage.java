@@ -6,13 +6,17 @@ package de.timesnake.game.mobdefence.map;
 
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import de.timesnake.library.basic.util.Loggers;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
 public class MobDefStage {
+
+  private final Logger logger = LogManager.getLogger("mob-def.map.stage");
 
   private final Integer number;
 
@@ -42,7 +46,7 @@ public class MobDefStage {
       }
 
       this.spawnsByIndex.put(i, new MobSpawn(priority, loc));
-      Loggers.GAME.info("Loaded spawn " + index + " with index " + i);
+      this.logger.info("Loaded spawn {} with index {}", index, i);
 
       this.chanceSum += 10 - priority;
 

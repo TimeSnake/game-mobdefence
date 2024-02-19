@@ -24,7 +24,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class Sword extends SpecialWeapon implements Listener {
 
-  public static final ExItemStack ITEM = new ExItemStack(Material.WOODEN_SWORD).unbreakable()
+  public static final ExItemStack ITEM = new ExItemStack(Material.WOODEN_SWORD)
+      .unbreakable()
       .immutable();
 
   private static final LevelType.Builder TYPE = new LevelType.Builder()
