@@ -5,22 +5,20 @@
 package de.timesnake.game.mobdefence.kit;
 
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
-import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.basic.loungebridge.util.user.Kit;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Shop;
 import de.timesnake.game.mobdefence.special.PotionGenerator;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.MobTracker;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class MobDefKit extends Kit implements KitItems {
 
@@ -29,8 +27,7 @@ public class MobDefKit extends Kit implements KitItems {
       .name("Knight")
       .material(Material.IRON_SWORD)
       .addDescription("§fWeapons: §7Sword, Axe", "§fArmor: §7Strong", "", "§7Resistance aura")
-      .addItems(
-          new ExItemStack(Material.SHIELD).unbreakable().setSlot(EquipmentSlot.OFF_HAND),
+      .addItems(new ExItemStack(Material.SHIELD).unbreakable().setSlot(EquipmentSlot.OFF_HAND),
           MobDefKit.BEEF, MobTracker.TRACKER)
       .addShopSuppliers(KNIGHT_WEAPONS, KNIGHT_ARMOR,
           () -> MobDefServer.getBaseShops().getBasicShop(),
@@ -112,44 +109,9 @@ public class MobDefKit extends Kit implements KitItems {
     return new KitShop(user);
   }
 
-  public static class Builder extends Kit.Builder {
+  public static class Builder extends Kit.Builder<Builder> {
 
     private final LinkedList<Supplier<Shop>> shopSuppliers = new LinkedList<>();
-
-    @Override
-    public Builder id(int id) {
-      return (Builder) super.id(id);
-    }
-
-    @Override
-    public Builder name(String name) {
-      return (Builder) super.name(name);
-    }
-
-    @Override
-    public Builder addDescription(String... lines) {
-      return (Builder) super.addDescription(lines);
-    }
-
-    @Override
-    public Builder material(Material material) {
-      return (Builder) super.material(material);
-    }
-
-    @Override
-    public Builder addApplier(Consumer<GameUser> applier) {
-      return ((Builder) super.addApplier(applier));
-    }
-
-    @Override
-    public Builder addItems(ItemStack... items) {
-      return ((Builder) super.addItems(items));
-    }
-
-    @Override
-    public Builder addEffect(PotionEffectType effectType, int amplifier) {
-      return ((Builder) super.addEffect(effectType, amplifier));
-    }
 
     @SafeVarargs
     public final Builder addShopSuppliers(Supplier<Shop>... suppliers) {
@@ -157,11 +119,6 @@ public class MobDefKit extends Kit implements KitItems {
         this.shopSuppliers.addLast(supplier);
       }
       return this;
-    }
-
-    @Override
-    public void checkBuild() {
-      super.checkBuild();
     }
 
     @Override

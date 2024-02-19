@@ -32,7 +32,7 @@ public class MobDefUser extends GameUser {
 
   private ReviveManager.DeadPlayer deadBody;
   private ExLocation deathLocation;
-  private MobDefUser beingRevivedUser = null;
+  private MobDefUser reviveUser;
 
   public MobDefUser(Player player) {
     super(player);
@@ -137,7 +137,7 @@ public class MobDefUser extends GameUser {
     super.rejoinGame(location, newStatus);
 
     this.alive = true;
-    this.beingRevivedUser = null;
+    this.reviveUser = null;
 
     if (this.kit.equals(MobDefKit.ALCHEMIST)) {
       Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0),
@@ -187,15 +187,15 @@ public class MobDefUser extends GameUser {
   }
 
   public boolean isBeingRevived() {
-    return this.beingRevivedUser != null;
+    return this.reviveUser != null;
   }
 
-  public MobDefUser getBeingRevivedUser() {
-    return this.beingRevivedUser;
+  public MobDefUser getReviveUser() {
+    return this.reviveUser;
   }
 
-  public void setBeingRevivedUser(MobDefUser user) {
-    this.beingRevivedUser = user;
+  public void setReviveUser(MobDefUser user) {
+    this.reviveUser = user;
   }
 
   public ReviveManager.DeadPlayer getDeadBody() {

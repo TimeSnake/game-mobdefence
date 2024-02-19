@@ -35,8 +35,7 @@ public class LumberAxe extends SpecialWeapon implements Listener {
       .levelItem(ITEM)
       .addMaterialLvl(null, "Iron Axe", Material.IRON_AXE)
       .addMaterialLvl(new Price(6, Currency.SILVER), "Diamond Axe", Material.DIAMOND_AXE)
-      .addMaterialLvl(new Price(32, Currency.BRONZE), "Netherite Axe",
-          Material.NETHERITE_AXE);
+      .addMaterialLvl(new Price(32, Currency.BRONZE), "Netherite Axe", Material.NETHERITE_AXE);
 
   private static final LevelType.Builder SHARPNESS = new LevelType.Builder()
       .name("Sharpness")

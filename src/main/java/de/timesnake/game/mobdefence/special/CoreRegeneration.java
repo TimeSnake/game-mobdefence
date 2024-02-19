@@ -36,7 +36,7 @@ public class CoreRegeneration {
     this.task = Server.runTaskTimerSynchrony(() -> {
       Location coreLoc = MobDefServer.getMap().getCoreLocation();
       for (User user : Server.getInGameUsers()) {
-        if (coreLoc.distanceSquared(user.getExLocation()) <= RADIUS * RADIUS) {
+        if (coreLoc.getWorld().equals(user.getWorld()) && coreLoc.distanceSquared(user.getExLocation()) <= RADIUS * RADIUS) {
           user.addPotionEffect(PotionEffectType.REGENERATION, 5 * 20, 1);
         }
       }

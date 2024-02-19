@@ -88,6 +88,7 @@ public class ReviveManager {
 
   public DeadPlayer addDeadUser(MobDefUser user) {
     DeadPlayer deadPlayer = new DeadPlayer(user, user.getExLocation());
+    deadPlayer.spawn();
     deadPlayer.startDying(user);
     return deadPlayer;
   }
@@ -110,7 +111,6 @@ public class ReviveManager {
     }
 
     private void startDying(MobDefUser user) {
-
       this.displayEntity = new HoloDisplay(ExLocation.fromLocation(this.bodyEntity.getLocation().add(0, -1.1, 0)),
           List.of("§cDead in 30s"));
       this.displayEntity.setPublic(true);
@@ -143,12 +143,12 @@ public class ReviveManager {
 
       @Override
       public void run() {
-        ((MobDefUser) DeadPlayer.this.getUser()).setBeingRevivedUser(null);
+        ((MobDefUser) DeadPlayer.this.getUser()).setReviveUser(null);
 
         for (MobDefUser user : MobDefServer.getAliveUsers()) {
           if (!((MobDefUser) DeadPlayer.this.getUser()).isBeingRevived()) {
             if (DeadPlayer.this.getLocation().distanceSquared(user.getLocation()) <= RADIUS) {
-              ((MobDefUser) DeadPlayer.this.getUser()).setBeingRevivedUser(user);
+              ((MobDefUser) DeadPlayer.this.getUser()).setReviveUser(user);
               break;
             }
           }
@@ -157,7 +157,7 @@ public class ReviveManager {
         if (user.isBeingRevived()) {
           if (reviveTime == ReviveManager.this.reviveRespawnTime) {
             MobDefServer.broadcastGameTDMessage(user.getTDChatName() + "§w was revived by "
-                + user.getBeingRevivedUser().getTDChatName());
+                + user.getReviveUser().getTDChatName());
 
             DeadPlayer.this.despawn();
             Server.getEntityManager().unregisterEntity(DeadPlayer.this.displayEntity);
@@ -167,8 +167,8 @@ public class ReviveManager {
             return;
           }
 
-          user.getBeingRevivedUser().playSound(Sound.ENTITY_PLAYER_LEVELUP, 2);
-          user.getBeingRevivedUser().sendPluginTDMessage(Plugin.MOB_DEFENCE, "§sReviving " + user.getTDChatName()
+          user.getReviveUser().playSound(Sound.ENTITY_PLAYER_LEVELUP, 2);
+          user.getReviveUser().sendPluginTDMessage(Plugin.MOB_DEFENCE, "§sReviving " + user.getTDChatName()
               + "§s, §v" + (reviveRespawnTime - reviveTime) + "s");
 
           DeadPlayer.this.displayEntity.setText(List.of("§2Revived in " + (reviveRespawnTime - reviveTime) + "s"));

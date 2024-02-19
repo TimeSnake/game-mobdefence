@@ -24,10 +24,6 @@ import org.bukkit.entity.ShulkerBullet;
 
 public class Wand extends CooldownWeapon {
 
-  private static final double FIRE_RATE = 2; // per second
-  private static final double DAMAGE = 1.5;
-  private static final double SPEED = 2;
-
   private static final ExItemStack ITEM = new ExItemStack(Material.STICK, "§3Wand").enchant()
       .immutable();
 

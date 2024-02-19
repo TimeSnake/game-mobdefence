@@ -8,10 +8,11 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
-import de.timesnake.library.basic.util.Loggers;
 import de.timesnake.library.entities.entity.VillagerBuilder;
 import de.timesnake.library.entities.pathfinder.LocationGoal;
 import net.minecraft.world.entity.npc.Villager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.Sound;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
@@ -36,9 +37,11 @@ public class MobManager implements Listener {
   public static final double GROUP_SIZE_INCREASE = 1.4;
   public static final double GROUP_SIZE_PLAYER_MULTIPLIER = 1.7;
 
-  public static final int MOB_LIMIT = 70;
+  public static final int MOB_LIMIT = 50;
 
   public static final double MOB_DAMAGE_MULTIPLIER = 1;
+
+  private final Logger logger = LogManager.getLogger("mob-def.mob.manager");
 
   private final LinkedList<MobGroup> mobGroups = new LinkedList<>();
 
@@ -149,7 +152,7 @@ public class MobManager implements Listener {
     double players = MobDefServer.getPlayerAmount();
     double playerSqrt = Math.sqrt(players);
 
-    Loggers.GAME.info("Spawning wave " + wave + " ...");
+    this.logger.info("Spawning wave {}...", wave);
     this.mobGroups.clear();
 
     int totalMobAmount =
@@ -206,7 +209,7 @@ public class MobManager implements Listener {
           new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
               this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
 
-      Loggers.GAME.info("Bosses: " + bossGroup.size());
+      this.logger.info("Bosses: {}", bossGroup.size());
     }
 
     if (wave % 5 == 1 && wave > 5) {
@@ -220,21 +223,19 @@ public class MobManager implements Listener {
       MobGroup bossGroup = new MobGroup(bossMobs, delay);
       this.mobGroups.addLast(bossGroup);
 
-      this.mobGroups.addLast(
-          new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+      this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
               this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
-      this.mobGroups.addLast(
-          new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+      this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
               this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
 
-      Loggers.GAME.info("Bosses: " + bossGroup.size());
+      this.logger.info("Bosses: {}", bossGroup.size());
     }
 
     for (MobGroup mobGroup : mobGroups) {
       mobGroup.run();
     }
 
-    Loggers.GAME.info("Mobs: " + mobAmount + " in " + groupAmount + " groups and bosses");
+    this.logger.info("Mobs: {} in {} groups and bosses", mobAmount, groupAmount);
 
   }
 

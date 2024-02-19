@@ -13,15 +13,20 @@ import de.timesnake.game.mobdefence.shop.Shop;
 import de.timesnake.game.mobdefence.shop.UserShop;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 import net.kyori.adventure.text.Component;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
 public class KitShop implements UserInventoryClickListener, InventoryHolder {
+
+  private final Logger logger = LogManager.getLogger("mob-def.kit.shop");
 
   private final ExInventory inv;
   private final Map<ExItemStack, Shop> shopsByItem = new HashMap<>();
@@ -38,7 +43,7 @@ public class KitShop implements UserInventoryClickListener, InventoryHolder {
       try {
         shop = shopSupplier.get();
       } catch (BuilderNotFullyInstantiatedException e) {
-        e.printStackTrace();
+        this.logger.warn("Failed to build shop for '{}': {}", user.getName(), e.getMessage());
         return;
       }
       if (shop instanceof UserShop) {
