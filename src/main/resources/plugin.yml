@@ -1,5 +1,5 @@
 main: de.timesnake.game.mobdefence.main.GameMobDefence
-version: 1.4.0
+version: 1.4.1
 name: game-mobdefence
 author: timesnake
 depend: [ basic-lounge-bridge ]
