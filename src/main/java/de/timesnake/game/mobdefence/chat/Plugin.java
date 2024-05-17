@@ -4,16 +4,11 @@
 
 package de.timesnake.game.mobdefence.chat;
 
-import de.timesnake.library.basic.util.LogHelper;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class Plugin extends de.timesnake.basic.game.util.user.Plugin {
 
-  public static final Plugin MOB_DEFENCE = new Plugin("MobDefence", "GMD",
-      LogHelper.getLogger("MobDefence", Level.INFO));
+  public static final Plugin MOB_DEFENCE = new Plugin("MobDefence", "GMD");
 
-  protected Plugin(String name, String code, Logger logger) {
-    super(name, code, logger);
+  protected Plugin(String name, String code) {
+    super(name, code);
   }
 }
