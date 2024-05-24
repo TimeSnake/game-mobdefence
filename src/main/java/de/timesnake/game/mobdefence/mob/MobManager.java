@@ -69,8 +69,7 @@ public class MobManager implements Listener {
   }
 
   private void checkRespawn() {
-    int alive =
-        MobDefServer.getMap().getWorld().getEntitiesByClasses(
+    int alive = MobDefServer.getMap().getWorld().getEntitiesByClasses(
             MobDefMob.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0])).size();
 
     if (alive <= 3 * MobDefServer.getPlayerAmount() * Math.sqrt(MobDefServer.getWaveNumber())) {
@@ -83,8 +82,7 @@ public class MobManager implements Listener {
         }
       }
 
-      if (allSpawned && alive == 0 && MobDefServer.isGameRunning()
-          && !MobDefServer.isDelayRunning()) {
+      if (allSpawned && alive == 0 && MobDefServer.isGameRunning() && !MobDefServer.isDelayRunning()) {
         Server.broadcastSound(Sound.ITEM_GOAT_HORN_SOUND_1, 2);
         MobDefServer.initNextWave();
       }
@@ -137,7 +135,6 @@ public class MobManager implements Listener {
           e.setPos(loc.getX(), loc.getY(), loc.getZ());
           e.setRot(loc.getYaw(), loc.getPitch());
           e.setPersistenceRequired(true);
-          e.setInvulnerable(true);
         })
         .setMaxHealthAndHealth(2048)
         .build(loc.getExWorld().getHandle());
