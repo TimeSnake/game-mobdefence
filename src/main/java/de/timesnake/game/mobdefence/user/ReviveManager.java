@@ -111,7 +111,7 @@ public class ReviveManager {
     }
 
     private void startDying(MobDefUser user) {
-      this.displayEntity = new HoloDisplay(ExLocation.fromLocation(this.bodyEntity.getLocation().add(0, -1.1, 0)),
+      this.displayEntity = new HoloDisplay(ExLocation.fromLocation(this.bodyEntity.getLocation().add(0, 0.5, 0)),
           List.of("§cDead in 30s"));
       this.displayEntity.setPublic(true);
 
@@ -159,7 +159,7 @@ public class ReviveManager {
             MobDefServer.broadcastGameTDMessage(user.getTDChatName() + "§w was revived by "
                 + user.getReviveUser().getTDChatName());
 
-            DeadPlayer.this.despawn();
+            DeadPlayer.this.remove();
             Server.getEntityManager().unregisterEntity(DeadPlayer.this.displayEntity);
 
             Server.runTaskSynchrony(user::leaveSpectatorAndRejoin, GameMobDefence.getPlugin());
@@ -179,7 +179,7 @@ public class ReviveManager {
 
           if (this.despawnTime <= 0) {
             MobDefServer.broadcastGameTDMessage(user.getTDChatName() + "§w is now resting in pieces");
-            DeadPlayer.this.despawn();
+            DeadPlayer.this.remove();
             return;
           }
 

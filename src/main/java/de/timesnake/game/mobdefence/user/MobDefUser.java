@@ -124,7 +124,10 @@ public class MobDefUser extends GameUser {
 
     if (this.deathLocation != null) {
       respawnLocation = this.deathLocation;
-      this.deadBody = null;
+      if (this.deadBody != null) {
+        this.deadBody.remove();
+        this.deadBody = null;
+      }
     } else {
       respawnLocation = MobDefServer.getMap().getUserSpawn();
     }
