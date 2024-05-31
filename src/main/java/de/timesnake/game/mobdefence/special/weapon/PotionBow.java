@@ -28,7 +28,7 @@ public class PotionBow extends SpecialWeapon implements Listener {
   public static final UpgradeableItem.Builder BOW = new UpgradeableItem.Builder()
       .name("Splash Bow")
       .price(new Price(6, Currency.GOLD))
-      .baseItem(new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_INFINITE, 1)
+      .baseItem(new ExItemStack(Material.BOW).addExEnchantment(Enchantment.INFINITY, 1)
           .setUnbreakable(true)
           .setDisplayName("§6Potion Bow"))
       .unlockedAtWave(5);

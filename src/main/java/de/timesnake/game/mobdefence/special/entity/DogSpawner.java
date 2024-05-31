@@ -100,7 +100,7 @@ public class DogSpawner extends EntitySpawner {
   private Wolf getDog(User user, float health) {
     return new WolfBuilder()
         .applyOnEntity(e -> {
-          e.setTame(true);
+          e.setTame(true, true);
           e.setOwnerUUID(user.getUniqueId());
           e.setOrderedToSit(false);
           e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(8);

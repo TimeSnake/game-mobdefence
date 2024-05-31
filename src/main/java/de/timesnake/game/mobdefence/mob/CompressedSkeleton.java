@@ -39,20 +39,20 @@ public class CompressedSkeleton extends MobDefMob<Skeleton> {
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
         .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND,
-            new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE, this.currentWave / 2).getHandle()))
+            new ExItemStack(Material.BOW).addExEnchantment(Enchantment.POWER, this.currentWave / 2).getHandle()))
         .applyOnEntity(e -> {
           e.setItemSlot(EquipmentSlot.HEAD,
               ExItemStack.getLeatherArmor(Material.LEATHER_HELMET, Color.GREEN)
-                  .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4).getHandle());
+                  .addExEnchantment(Enchantment.PROTECTION, this.currentWave / 4).getHandle());
           e.setItemSlot(EquipmentSlot.CHEST,
               ExItemStack.getLeatherArmor(Material.LEATHER_CHESTPLATE, Color.GREEN)
-                  .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4).getHandle());
+                  .addExEnchantment(Enchantment.PROTECTION, this.currentWave / 4).getHandle());
           e.setItemSlot(EquipmentSlot.LEGS,
               ExItemStack.getLeatherArmor(Material.LEATHER_LEGGINGS, Color.GREEN)
-                  .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4).getHandle());
+                  .addExEnchantment(Enchantment.PROTECTION, this.currentWave / 4).getHandle());
           e.setItemSlot(EquipmentSlot.FEET,
               ExItemStack.getLeatherArmor(Material.LEATHER_BOOTS, Color.GREEN)
-                  .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, this.currentWave / 4).getHandle());
+                  .addExEnchantment(Enchantment.PROTECTION, this.currentWave / 4).getHandle());
         })
         .setMaxHealthAndHealth(this.currentWave * 20)
         .apply(b -> b.applyOnEntity(e -> {

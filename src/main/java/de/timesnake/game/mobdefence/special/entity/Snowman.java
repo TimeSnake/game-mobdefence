@@ -21,7 +21,7 @@ import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Snowball;
@@ -42,7 +42,7 @@ public class Snowman extends BlockSpawner implements Listener {
       .slot(47);
 
   public Snowman() {
-    super(EntityType.SNOWMAN, ITEM);
+    super(EntityType.SNOW_GOLEM, ITEM);
   }
 
   @Override
@@ -85,7 +85,7 @@ public class Snowman extends BlockSpawner implements Listener {
       return;
     }
 
-    entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 1));
+    entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 5, 1));
     entity.damage(1, snowball);
   }
 }

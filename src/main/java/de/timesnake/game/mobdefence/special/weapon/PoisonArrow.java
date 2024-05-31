@@ -22,7 +22,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -70,7 +69,7 @@ public class PoisonArrow extends SpecialWeapon implements UserInventoryInteractL
 
     if (arrow.getCustomName() != null && arrow.getCustomName().equals(NAME)) {
       arrow.getWorld()
-          .playEffect(arrow.getLocation(), Effect.POTION_BREAK, new Potion(PotionType.POISON));
+          .playEffect(arrow.getLocation(), Effect.POTION_BREAK, PotionEffectType.POISON);
       for (Entity entity : arrow.getNearbyEntities(3, 3, 3)) {
         if (MobDefServer.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
           ((LivingEntity) entity).addPotionEffect(

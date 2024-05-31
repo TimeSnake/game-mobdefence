@@ -62,10 +62,10 @@ public class MobDefKit extends Kit implements KitItems {
   public static final MobDefKit WIZARD = new Builder()
       .id(4)
       .name("Wizard")
-      .material(ExItemStack.getPotion(Material.POTION, PotionType.INSTANT_HEAL,
+      .material(ExItemStack.getPotion(Material.POTION, PotionType.HEALING,
           false, false).getType())
       .addDescription("§fWeapon: §7Wand", "§fArmor: §7Weak", "", "§7Instant Heal Potions")
-      .addItems(MobDefKit.BEEF, PotionGenerator.INSTANT_HEAL, MobTracker.TRACKER)
+      .addItems(MobDefKit.BEEF, PotionGenerator.HEALING, MobTracker.TRACKER)
       .addShopSuppliers(WIZARD_WEAPONS, RANGED_ARMOR,
           () -> MobDefServer.getBaseShops().getBasicShop(),
           () -> MobDefServer.getBaseShops().getBlockShop(),

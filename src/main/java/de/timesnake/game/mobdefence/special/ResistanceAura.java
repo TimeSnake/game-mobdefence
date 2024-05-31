@@ -28,10 +28,10 @@ public class ResistanceAura implements Listener {
         if (((MobDefUser) user).isAlive() && ((MobDefUser) user).getKit()
             .equals(MobDefKit.KNIGHT)) {
           for (Player player : user.getWorld().getNearbyPlayers(user.getLocation(), RADIUS)) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 4 * 20, 1));
           }
           user.getPlayer()
-              .addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 4 * 20, 1));
+              .addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 4 * 20, 1));
         }
       }
     }, 0, 20 * 3, GameMobDefence.getPlugin());

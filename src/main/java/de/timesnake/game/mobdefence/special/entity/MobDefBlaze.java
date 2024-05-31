@@ -20,7 +20,7 @@ import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
 
