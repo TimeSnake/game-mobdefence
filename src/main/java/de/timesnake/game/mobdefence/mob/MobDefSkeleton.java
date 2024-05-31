@@ -53,7 +53,7 @@ public class MobDefSkeleton extends ArmorMob<Skeleton> {
             switch (this.random.nextInt(8)) {
               case 0, 1 -> {
                 e.setItemSlot(EquipmentSlot.MAINHAND,
-                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE, 2).getHandle());
+                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.POWER, 2).getHandle());
                 e.setItemSlot(EquipmentSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET).getHandle());
                 b.addPathfinderGoal(1, f -> new RangedBowAttackGoal<>(e, 1.2, 20, 30.0F));
               }
@@ -66,18 +66,18 @@ public class MobDefSkeleton extends ArmorMob<Skeleton> {
             switch (this.random.nextInt(this.currentWave < 7 ? 15 : 10)) {
               case 0, 1, 2, 5 -> {
                 e.setItemSlot(EquipmentSlot.MAINHAND,
-                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE, 4).getHandle());
+                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.POWER, 4).getHandle());
                 e.setItemSlot(EquipmentSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET).getHandle());
                 b.addPathfinderGoal(1, f -> new RangedBowAttackGoal<>(e, 1.2, 10, 30.0F));
               }
               case 3 -> {
                 e.setItemSlot(EquipmentSlot.MAINHAND,
-                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_FIRE, 1).getHandle());
+                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.FLAME, 1).getHandle());
                 b.addPathfinderGoal(1, f -> new RangedBowAttackGoal<>(e, 1.1, 10, 15.0F));
               }
               default -> {
                 e.setItemSlot(EquipmentSlot.MAINHAND,
-                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE, 2).getHandle());
+                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.POWER, 2).getHandle());
                 b.addPathfinderGoal(1, f -> new RangedBowAttackGoal<>(e, 1.1, 10, 15.0F));
               }
             }
@@ -85,12 +85,12 @@ public class MobDefSkeleton extends ArmorMob<Skeleton> {
             switch (this.random.nextInt(8)) {
               case 0, 1 -> {
                 e.setItemSlot(EquipmentSlot.MAINHAND,
-                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_FIRE, 1).getHandle());
+                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.FLAME, 1).getHandle());
                 b.addPathfinderGoal(1, f -> new RangedBowAttackGoal<>(e, 1.1, 10, 15.0F));
               }
               default -> {
                 e.setItemSlot(EquipmentSlot.MAINHAND,
-                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE, this.currentWave / 4).getHandle());
+                    new ExItemStack(Material.BOW).addExEnchantment(Enchantment.POWER, this.currentWave / 4).getHandle());
                 e.setItemSlot(EquipmentSlot.HEAD, new ExItemStack(Material.TURTLE_HELMET).getHandle());
                 b.addPathfinderGoal(1, f -> new RangedBowAttackGoal<>(e, 1.2, 10, 30.0F));
               }

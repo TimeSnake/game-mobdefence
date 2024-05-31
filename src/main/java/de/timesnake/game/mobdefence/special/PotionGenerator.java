@@ -19,8 +19,8 @@ import org.bukkit.scheduler.BukkitTask;
 public class PotionGenerator implements Listener {
 
 
-  public static final ExItemStack INSTANT_HEAL = ExItemStack.getPotion(Material.SPLASH_POTION,
-      PotionType.INSTANT_HEAL,
+  public static final ExItemStack HEALING = ExItemStack.getPotion(Material.SPLASH_POTION,
+      PotionType.HEALING,
       false, false).setSlot(1).asQuantity(2);
 
   private BukkitTask task;
@@ -34,7 +34,7 @@ public class PotionGenerator implements Listener {
       for (User user : Server.getInGameUsers()) {
         if (user instanceof MobDefUser && ((MobDefUser) user).isAlive()
             && ((MobDefUser) user).getKit().equals(MobDefKit.WIZARD)) {
-          this.fillItem(((MobDefUser) user), INSTANT_HEAL, 8);
+          this.fillItem(((MobDefUser) user), HEALING, 8);
         }
       }
     }, 0, 5 * 20, GameMobDefence.getPlugin());
@@ -51,13 +51,13 @@ public class PotionGenerator implements Listener {
       return;
     }
 
-    ItemStack baseSlotItem = user.getInventory().getItem(INSTANT_HEAL.getSlot());
+    ItemStack baseSlotItem = user.getInventory().getItem(HEALING.getSlot());
 
-    if (baseSlotItem != null && new ExItemStack(baseSlotItem).equals(INSTANT_HEAL)) {
-      user.setItem(INSTANT_HEAL.getSlot(),
-          INSTANT_HEAL.cloneWithId().asQuantity(
+    if (baseSlotItem != null && new ExItemStack(baseSlotItem).equals(HEALING)) {
+      user.setItem(HEALING.getSlot(),
+          HEALING.cloneWithId().asQuantity(
               baseSlotItem.getAmount() + Math.min(max - baseSlotItem.getAmount(),
-                  INSTANT_HEAL.getAmount())));
+                  HEALING.getAmount())));
       user.updateInventory();
       return;
     }
@@ -65,17 +65,17 @@ public class PotionGenerator implements Listener {
     for (int slot = 0; slot < user.getInventory().getSize(); slot++) {
       ItemStack slotItem = user.getInventory().getItem(slot);
 
-      if (slotItem != null && new ExItemStack(slotItem).equals(INSTANT_HEAL)) {
+      if (slotItem != null && new ExItemStack(slotItem).equals(HEALING)) {
         user.setItem(slot,
-            INSTANT_HEAL.cloneWithId().asQuantity(
+            HEALING.cloneWithId().asQuantity(
                 slotItem.getAmount() + Math.min(max - slotItem.getAmount(),
-                    INSTANT_HEAL.getAmount())));
+                    HEALING.getAmount())));
         user.updateInventory();
         return;
       }
     }
 
-    user.addItem(INSTANT_HEAL.cloneWithId().asQuantity(INSTANT_HEAL.getAmount()));
+    user.addItem(HEALING.cloneWithId().asQuantity(HEALING.getAmount()));
   }
 
 }

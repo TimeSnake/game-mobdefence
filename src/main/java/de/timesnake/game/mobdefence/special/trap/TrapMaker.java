@@ -84,7 +84,7 @@ public enum TrapMaker {
           this.getLocation().getWorld()
               .playSound(this.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 2, 1);
           for (LivingEntity entity : entities) {
-            entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 20, 4));
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 20, 4));
           }
 
           return super.trigger(entities);

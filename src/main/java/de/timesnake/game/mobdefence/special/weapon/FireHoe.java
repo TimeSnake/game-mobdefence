@@ -136,7 +136,7 @@ public class FireHoe extends CooldownWeapon implements Listener {
     event.setDamage(damage * 2);
 
     entity.setFireTicks(burningTime * 20);
-    entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 3, slowness - 1));
+    entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 3, slowness - 1));
 
     Server.runTaskLaterSynchrony(() -> cooldownUsers.remove(user), COOLDOWN,
         GameMobDefence.getPlugin());

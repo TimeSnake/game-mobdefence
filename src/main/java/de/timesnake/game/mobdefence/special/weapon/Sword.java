@@ -43,7 +43,7 @@ public class Sword extends SpecialWeapon implements Listener {
       .name("Sharpness")
       .display(new ExItemStack(Material.RED_DYE))
       .baseLevel(0)
-      .levelEnchantment(Enchantment.DAMAGE_ALL)
+      .levelEnchantment(Enchantment.SHARPNESS)
       .levelDescription("+1 Sharpness")
       .levelItem(ITEM)
       .addEnchantmentLvl(new Price(9, Currency.BRONZE), 1)

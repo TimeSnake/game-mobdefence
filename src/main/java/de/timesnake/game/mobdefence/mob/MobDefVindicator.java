@@ -11,10 +11,10 @@ import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.VindicatorBuilder;
 import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
-import de.timesnake.library.entities.pathfinder.VindicatorMeleeAttackGoal;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.monster.Vindicator;
 import net.minecraft.world.entity.player.Player;
@@ -52,7 +52,8 @@ public class MobDefVindicator extends MobDefMob<Vindicator> {
           b.addPathfinderGoal(4, f -> breakBlock);
         }))
         .addPathfinderGoal(0, e -> new FloatGoal(e))
-        .addPathfinderGoal(3, e -> new VindicatorMeleeAttackGoal(e, this.currentWave < 13 ? 1 : this.currentWave < 19 ? 1.1 : 1.2))
+        .addPathfinderGoal(3, e -> new MeleeAttackGoal(e, this.currentWave < 13 ? 1 : this.currentWave < 19 ? 1.1 :
+            1.2, false))
         .addPathfinderGoal(8, e -> new RandomStrollGoal(e, 0.6))
         .addPathfinderGoal(9, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .apply(this::applyDefaultTargetGoals)

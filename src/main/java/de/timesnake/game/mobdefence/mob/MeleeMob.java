@@ -67,15 +67,15 @@ public abstract class MeleeMob<M extends Mob> extends ArmorMob<M> {
 
       switch (random) {
         case 0 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND,
-            new ExItemStack(Material.STONE_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 2).getHandle());
+            new ExItemStack(Material.STONE_SWORD).addExEnchantment(Enchantment.SHARPNESS, 2).getHandle());
         case 1 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND,
-            new ExItemStack(Material.IRON_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 2).getHandle());
+            new ExItemStack(Material.IRON_SWORD).addExEnchantment(Enchantment.SHARPNESS, 2).getHandle());
         case 2 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND,
-            new ExItemStack(Material.DIAMOND_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 2).getHandle());
+            new ExItemStack(Material.DIAMOND_SWORD).addExEnchantment(Enchantment.SHARPNESS, 2).getHandle());
         case 3 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND,
-            new ExItemStack(Material.IRON_AXE).addExEnchantment(Enchantment.DAMAGE_ALL, 1).getHandle());
+            new ExItemStack(Material.IRON_AXE).addExEnchantment(Enchantment.SHARPNESS, 1).getHandle());
         case 4 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND,
-            new ExItemStack(Material.DIAMOND_AXE).addExEnchantment(Enchantment.DAMAGE_ALL, 1).getHandle());
+            new ExItemStack(Material.DIAMOND_AXE).addExEnchantment(Enchantment.SHARPNESS, 1).getHandle());
       }
     }
   }

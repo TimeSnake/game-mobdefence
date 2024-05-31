@@ -66,7 +66,9 @@ public class CompressedZombie extends MobDefMob<Zombie> {
           e.setItemSlot(EquipmentSlot.CHEST, new ExItemStack(Material.NETHERITE_CHESTPLATE).getHandle());
           e.setItemSlot(EquipmentSlot.LEGS, new ExItemStack(Material.NETHERITE_LEGGINGS).getHandle());
           e.setItemSlot(EquipmentSlot.FEET, new ExItemStack(Material.NETHERITE_BOOTS).getHandle());
-          e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.NETHERITE_SHOVEL).addExEnchantment(Enchantment.DAMAGE_ALL, this.currentWave * 2).getHandle());
+          e.setItemSlot(EquipmentSlot.MAINHAND,
+              new ExItemStack(Material.NETHERITE_SHOVEL).addExEnchantment(Enchantment.SHARPNESS,
+                  this.currentWave * 2).getHandle());
         })
         .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, speed, false))
         .apply(b -> b.applyOnEntity(e -> {
