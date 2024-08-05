@@ -36,7 +36,7 @@ public interface KitItems {
       .giveItems(OAK_FENCE_ITEM)
       .price(new Price(2, BRONZE), 1, 8)
       .description(BLOCK_INFO)
-      .slot(10);
+      .slot(0);
 
   ExItemStack OAK_FENCE_GATE_ITEM = new ExItemStack(Material.OAK_FENCE_GATE, 3)
       .setDisplayName("§6Fence Gate")
@@ -45,7 +45,7 @@ public interface KitItems {
       .giveItems(OAK_FENCE_GATE_ITEM)
       .price(new Price(2, BRONZE), 1, 6)
       .description(BLOCK_INFO)
-      .slot(11);
+      .slot(1);
 
   ExItemStack OAK_PLANKS_ITEM = new ExItemStack(Material.OAK_PLANKS, 4)
       .setDisplayName("§6Plank")
@@ -54,7 +54,7 @@ public interface KitItems {
       .giveItems(OAK_PLANKS_ITEM)
       .price(new Price(1, SILVER), 1, 10)
       .description(BLOCK_INFO)
-      .slot(19);
+      .slot(9);
 
   ExItemStack OAK_SLAB_ITEM = new ExItemStack(Material.OAK_SLAB, 4)
       .setDisplayName("§6Slab")
@@ -63,7 +63,7 @@ public interface KitItems {
       .giveItems(OAK_SLAB_ITEM)
       .price(new Price(1, SILVER), 1, 10)
       .description(BLOCK_INFO)
-      .slot(20);
+      .slot(10);
 
   ExItemStack IRON_BARS_ITEM = new ExItemStack(Material.IRON_BARS, 3)
       .setDisplayName("§6Iron Bars")
@@ -72,7 +72,7 @@ public interface KitItems {
       .giveItems(IRON_BARS_ITEM)
       .price(new Price(2, SILVER), 1, 8)
       .description(BLOCK_INFO)
-      .slot(28);
+      .slot(18);
 
   ExItemStack COBBLESTONE_WALL_ITEM = new ExItemStack(Material.COBBLESTONE_WALL, 2)
       .setDisplayName("§6Wall")
@@ -81,7 +81,7 @@ public interface KitItems {
       .giveItems(COBBLESTONE_WALL_ITEM)
       .price(new Price(2, SILVER), 1, 8)
       .description(BLOCK_INFO)
-      .slot(29);
+      .slot(19);
 
   Trade.Builder STONE_AXE = new Trade.Builder()
       .giveItems(new ExItemStack(Material.STONE_AXE)
@@ -89,7 +89,7 @@ public interface KitItems {
           .unbreakable())
       .price(new Price(4, BRONZE))
       .notRebuyable()
-      .slot(13);
+      .slot(3);
 
   Trade.Builder IRON_PICKAXE = new Trade.Builder()
       .giveItems(new ExItemStack(Material.IRON_PICKAXE)
@@ -97,17 +97,17 @@ public interface KitItems {
           .unbreakable())
       .price(new Price(8, BRONZE))
       .notRebuyable()
-      .slot(14);
+      .slot(4);
 
   Trade.Builder APPLE = new Trade.Builder()
       .giveItems(new ExItemStack(Material.APPLE, 6, "§6Apple"))
       .price(new Price(1, SILVER))
-      .slot(10);
+      .slot(3);
 
   Trade.Builder PUMPKIN_PIE = new Trade.Builder()
       .giveItems(new ExItemStack(Material.PUMPKIN_PIE, 4, "§6Pumpkin Pie"))
       .price(new Price(2, SILVER))
-      .slot(11);
+      .slot(4);
 
   ExItemStack BEEF = new ExItemStack(Material.COOKED_BEEF, 12)
       .setSlot(7)
@@ -115,7 +115,7 @@ public interface KitItems {
   Trade.Builder COOKED_BEEF = new Trade.Builder()
       .giveItems(BEEF.cloneWithId().asQuantity(12))
       .price(new Price(4, BRONZE))
-      .slot(19);
+      .slot(5);
 
   ExItemStack KELP = new ExItemStack(Material.DRIED_KELP, 8, "§6Dried Kelp")
       .setLore("§7Healthy Fast Food")
@@ -137,40 +137,40 @@ public interface KitItems {
   Trade.Builder DRIED_KELP = new Trade.Builder()
       .giveItems(KELP)
       .price(new Price(1, BRONZE))
-      .slot(20);
+      .slot(12);
 
   Trade.Builder GOLDEN_APPLE = new Trade.Builder()
       .giveItems(new ExItemStack(Material.GOLDEN_APPLE, 1, "§6Golden Apple"))
       .price(new Price(2, SILVER), 1, 6)
-      .slot(12);
+      .slot(13);
 
   Trade.Builder GOLDEN_CARROT = new Trade.Builder()
       .giveItems(new ExItemStack(Material.GOLDEN_CARROT, 6, "§6Golden Carrot"))
       .price(new Price(1, GOLD))
-      .slot(21);
+      .slot(14);
 
   Trade.Builder MILK = new Trade.Builder()
       .giveItems(new ExItemStack(Material.MILK_BUCKET, "§6Milk"))
       .price(new Price(2, BRONZE))
-      .slot(14);
+      .slot(21);
 
   Trade.Builder ENDER_PEARL = new Trade.Builder()
       .giveItems(new ExItemStack(Material.ENDER_PEARL, "§6Ender Pearl"))
       .price(new Price(1, GOLD))
-      .slot(15);
+      .slot(22);
 
   Trade.Builder SPEED = new Trade.Builder()
       .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.SPEED, false, false)
           .setDisplayName("§6Speed"))
       .price(new Price(1, SILVER))
-      .slot(37);
+      .slot(7);
 
   Trade.Builder INSTANT_HEAL = new Trade.Builder()
       .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.INSTANT_HEAL, false,
               true)
           .setDisplayName("§6Instant Heal"))
       .price(new Price(6, BRONZE), 1, 32)
-      .slot(38);
+      .slot(8);
 
   Trade.Builder IRON_GOLEM = new Trade.Builder()
       .giveItems(MobDefIronGolem.ITEM.cloneWithId())
@@ -330,7 +330,7 @@ public interface KitItems {
       .addConflictToLvlType(PROTECTION, PROJECTILE_PROTECTION);
   Shop.Builder LUMBERJACK_ARMOR = new Shop.Builder()
       .name("Armor")
-      .slot(14)
+      .slot(1)
       .display(ARMOR)
       .addUpgradeable(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS,
           MELEE_ARMOR_BOOTS)
@@ -437,7 +437,7 @@ public interface KitItems {
   Shop.Builder RANGED_ARMOR = new Shop.Builder()
       .name("Armor")
       .display(ARMOR)
-      .slot(14)
+      .slot(1)
       .addUpgradeable(RANGED_ARMOR_HELMET, RANGED_ARMOR_CHESTPLATE, RANGED_ARMOR_LEGGINGS,
           RANGED_ARMOR_BOOTS)
       .type(Shop.Builder.Type.USER);
@@ -472,14 +472,14 @@ public interface KitItems {
       .price(new Price(8, SILVER));
   Shop.Builder KNIGHT_WEAPONS = new Shop.Builder()
       .name("Weapons")
-      .slot(12)
+      .slot(0)
       .display(WEAPONS)
       .addUpgradeable(Sword.SWORD, SwingSword.SWORD)
       .addTrade(FIRE_GOLD_SWORD)
       .type(Shop.Builder.Type.USER);
   Shop.Builder LUMBERJACK_WEAPONS = new Shop.Builder()
       .name("Weapons")
-      .slot(12)
+      .slot(0)
       .display(WEAPONS)
       .addUpgradeable(LumberAxe.AXE, BoomerangAxe.BOOMERANG_AXE, SheepSpawner.LEVEL_ITEM,
           DogSpawner.LEVEL_ITEM)
@@ -487,24 +487,16 @@ public interface KitItems {
       .type(Shop.Builder.Type.USER);
   Shop.Builder WIZARD_WEAPONS = new Shop.Builder()
       .name("Weapons")
-      .slot(12)
+      .slot(0)
       .display(WEAPONS)
       .addUpgradeable(Wand.WAND)
       .addUpgradeable(SafeSphere.SAFE_SPHERE)
       .addTrade(WIZARD_REGEN, IRON_SKIN)
       .type(Shop.Builder.Type.USER);
 
-  Shop.Builder ARCHER_WEAPONS = new Shop.Builder()
-      .name("Weapons")
-      .slot(12)
-      .display(WEAPONS)
-      .addUpgradeable(Bow.BOW, SplashBow.BOW, RocketCrossBow.CROSSBOW)
-      .addTrade(PoisonArrow.TRADE)
-      .type(Shop.Builder.Type.USER);
-
   Shop.Builder KNIGHT_ARMOR = new Shop.Builder()
       .name("Armor")
-      .slot(14)
+      .slot(1)
       .display(ARMOR)
       .addUpgradeable(MELEE_ARMOR_HELMET, MELEE_ARMOR_CHESTPLATE, MELEE_ARMOR_LEGGINGS,
           MELEE_ARMOR_BOOTS)
@@ -512,7 +504,7 @@ public interface KitItems {
       .type(Shop.Builder.Type.USER);
   Shop.Builder ALCHEMIST_WEAPONS = new Shop.Builder()
       .name("Weapons")
-      .slot(12)
+      .slot(0)
       .display(WEAPONS)
       .addUpgradeable(FireHoe.FIRE_HOE, FireStaff.FIRE_STAFF, Iceball.ICEBALL)
       .addTrade(ALCHEMIST_SPEED, Snowman.SNOWMAN, MobDefBlaze.BLAZE)

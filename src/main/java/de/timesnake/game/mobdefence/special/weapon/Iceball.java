@@ -14,8 +14,6 @@ import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.UpgradeableItem;
-import java.util.HashSet;
-import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,12 +28,15 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Iceball extends SpecialWeapon implements Listener {
 
   public static final ExItemStack ITEM = new ExItemStack(Material.SNOWBALL,
       "§6Ice Ball").immutable();
   private static final String NAME = "iceball";
-  private static final String PIERCING_NAME = "piercing";
+
   private static final LevelType.Builder SPEED_LEVELS = new LevelType.Builder()
       .name("Speed")
       .display(new ExItemStack(Material.FEATHER))
@@ -76,30 +77,13 @@ public class Iceball extends SpecialWeapon implements Listener {
       .addLoreLvl(new Price(23, Currency.GOLD), 6.5)
       .addLoreLvl(new Price(42, Currency.SILVER), 7)
       .addLoreLvl(new Price(34, Currency.GOLD), 7.5);
-  private static final LevelType.Builder PIERCING_LEVELS = new LevelType.Builder()
-      .name("Piercing")
-      .display(new ExItemStack(Material.FEATHER))
-      .baseLevel(1)
-      .levelDescription("+1 Mob")
-      .levelUnit("mobs")
-      .levelDecimalDigit(0)
-      .levelLoreLine(3)
-      .levelLoreName("Piercing")
-      .levelItem(ITEM)
-      .addLoreLvl(null, 1)
-      .addLoreLvl(new Price(10, Currency.SILVER), 2)
-      .addLoreLvl(new Price(7, Currency.GOLD), 3)
-      .addLoreLvl(new Price(26, Currency.BRONZE), 4)
-      .addLoreLvl(new Price(24, Currency.SILVER), 5)
-      .addLoreLvl(new Price(14, Currency.GOLD), 6)
-      .addLoreLvl(new Price(33, Currency.BRONZE), 7);
+
   public static final UpgradeableItem.Builder ICEBALL = new UpgradeableItem.Builder()
       .name("Iceball")
       .display(ITEM.cloneWithId())
       .baseItem(ITEM.cloneWithId())
       .addLvlType(SPEED_LEVELS)
-      .addLvlType(DAMAGE_LEVELS)
-      .addLvlType(PIERCING_LEVELS);
+      .addLvlType(DAMAGE_LEVELS);
 
   private final Set<User> cooldownUsers = new HashSet<>();
 
@@ -127,12 +111,11 @@ public class Iceball extends SpecialWeapon implements Listener {
 
     double speed = SPEED_LEVELS.getNumberFromLore(item, Double::valueOf);
     double damage = DAMAGE_LEVELS.getNumberFromLore(item, Double::valueOf);
-    int piercing = PIERCING_LEVELS.getNumberFromLore(item, Integer::parseInt);
 
     Snowball snowball = user.getExWorld()
         .spawn(user.getPlayer().getEyeLocation().add(0, -0.2, 0), Snowball.class);
 
-    snowball.setCustomName(NAME + damage + PIERCING_NAME + piercing);
+    snowball.setCustomName(NAME + damage);
     snowball.setCustomNameVisible(false);
     snowball.setPersistent(true);
     snowball.setShooter(user.getPlayer());
@@ -153,10 +136,7 @@ public class Iceball extends SpecialWeapon implements Listener {
       return;
     }
 
-    String[] nameParts = snowball.getCustomName().replaceAll(NAME, "").split(PIERCING_NAME);
-
-    double damage = Double.parseDouble(nameParts[0]) * 2;
-    int piercing = Integer.parseInt(nameParts[1]);
+    double damage = Double.parseDouble(snowball.getCustomName().replaceAll(NAME, "")) * 2;
 
     if (e.getHitEntity() != null && e.getHitEntity() instanceof LivingEntity entity) {
 
@@ -168,10 +148,6 @@ public class Iceball extends SpecialWeapon implements Listener {
 
       entity.damage(damage, snowball);
       entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 1));
-
-      if (piercing == 0) {
-        snowball.remove();
-      }
     }
 
     if (e.getHitBlock() == null) {
@@ -180,11 +156,11 @@ public class Iceball extends SpecialWeapon implements Listener {
 
     Vector snowballVector = snowball.getVelocity();
 
-    final double magnitude =
-        Math.sqrt(Math.pow(snowballVector.getX(), 2) + Math.pow(snowballVector.getY(), 2)
+    final double magnitude = Math.sqrt(Math.pow(snowballVector.getX(), 2) + Math.pow(snowballVector.getY(), 2)
             + Math.pow(snowballVector.getZ(), 2));
 
     if (magnitude < 0.2) {
+
       return;
     }
 
@@ -219,10 +195,9 @@ public class Iceball extends SpecialWeapon implements Listener {
       float speed = (float) magnitude;
       speed *= 0.6F;
 
-      Snowball newSnowball = snowball.getWorld()
-          .spawn(snowball.getLocation(), Snowball.class);
+      Snowball newSnowball = snowball.getWorld().spawn(snowball.getLocation(), Snowball.class);
       newSnowball.setVelocity(snowballVector.subtract(u).normalize().multiply(speed));
-      newSnowball.setCustomName(NAME + damage + PIERCING_NAME + piercing);
+      newSnowball.setCustomName(NAME + damage);
       newSnowball.setCustomNameVisible(false);
       newSnowball.setShooter(snowball.getShooter());
 

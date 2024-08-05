@@ -11,15 +11,16 @@ import de.timesnake.game.mobdefence.special.trap.TrapMaker;
 import de.timesnake.game.mobdefence.special.weapon.WaterBottle;
 import de.timesnake.game.mobdefence.user.ReviveManager;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
+import org.bukkit.Material;
+
 import java.util.HashMap;
 import java.util.List;
-import org.bukkit.Material;
 
 public class BaseShops {
 
   public static final Shop.Builder BLOCK_SHOP = new Shop.Builder()
       .name("Blocks")
-      .slot(31)
+      .slot(3)
       .display(new ExItemStack(Material.OAK_FENCE))
       .addTrade(MobDefKit.OAK_FENCE, MobDefKit.OAK_FENCE_GATE, MobDefKit.OAK_PLANKS,
           MobDefKit.OAK_SLAB,
@@ -30,7 +31,7 @@ public class BaseShops {
 
   public static final Shop.Builder BASIC_SHOP = new Shop.Builder()
       .name("Basics")
-      .slot(29)
+      .slot(2)
       .display(new ExItemStack(Material.COOKED_BEEF))
       .addTrade(MobDefKit.APPLE, MobDefKit.COOKED_BEEF, MobDefKit.PUMPKIN_PIE,
           MobDefKit.DRIED_KELP,
@@ -41,7 +42,7 @@ public class BaseShops {
 
   public static final Shop.Builder TEAM_SHOP = new Shop.Builder()
       .name("Team Stuff")
-      .slot(33)
+      .slot(4)
       .display(new ExItemStack(Material.PLAYER_HEAD))
       .addUpgradeable(TeamHealth.HEALTH, ReviveManager.REVIVE)
       .addTrade(MobDefKit.IRON_GOLEM, MobDefKit.REGEN)

@@ -8,13 +8,14 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.special.weapon.WeaponTargetType;
-import java.util.HashMap;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.Vector;
+
+import java.util.HashMap;
 
 public class BulletManager implements Listener {
 
@@ -53,8 +54,7 @@ public class BulletManager implements Listener {
       return;
     }
 
-    if (e.getHitEntity() == null || !MobDefMob.ATTACKER_ENTITY_TYPES.contains(
-        e.getHitEntity().getType())) {
+    if (e.getHitEntity() == null || !MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getHitEntity().getType())) {
       e.setCancelled(true);
       return;
     }

@@ -13,7 +13,6 @@ import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.MobTracker;
 import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 
 import java.util.LinkedList;
@@ -56,17 +55,6 @@ public class MobDefKit extends Kit implements KitItems {
           "", "§7Resistant against fire", "§7Defence Snowmen, Blazes")
       .addItems(MobDefKit.BEEF, MobTracker.TRACKER)
       .addShopSuppliers(ALCHEMIST_WEAPONS, RANGED_ARMOR,
-          () -> MobDefServer.getBaseShops().getBasicShop(),
-          () -> MobDefServer.getBaseShops().getBlockShop(),
-          () -> MobDefServer.getBaseShops().getTeamShop())
-      .build();
-  public static final MobDefKit ARCHER = new Builder()
-      .id(2)
-      .name("Archer")
-      .material(Material.BOW)
-      .addDescription("§fWeapons: §7Bows, Crossbow", "§fArmor: §7Weak")
-      .addItems(MobDefKit.BEEF, MobTracker.TRACKER, new ItemStack(Material.ARROW))
-      .addShopSuppliers(ARCHER_WEAPONS, RANGED_ARMOR,
           () -> MobDefServer.getBaseShops().getBasicShop(),
           () -> MobDefServer.getBaseShops().getBlockShop(),
           () -> MobDefServer.getBaseShops().getTeamShop())

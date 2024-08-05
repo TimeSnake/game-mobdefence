@@ -17,7 +17,6 @@ import de.timesnake.game.mobdefence.user.MobDefUser;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -111,7 +110,7 @@ public class LumberAxe extends SpecialWeapon implements Listener {
 
     LivingEntity entity = e.getEntity();
 
-    if (entity.getKiller() == null || !(entity.getKiller() instanceof Player)) {
+    if (entity.getKiller() == null) {
       return;
     }
 

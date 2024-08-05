@@ -13,9 +13,9 @@ import de.timesnake.game.mobdefence.shop.Shop;
 import de.timesnake.game.mobdefence.shop.UserShop;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
-import net.kyori.adventure.text.Component;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +36,7 @@ public class KitShop implements UserInventoryClickListener, InventoryHolder {
     this.user = user;
     MobDefKit kit = ((MobDefKit) user.getKit());
 
-    this.inv = new ExInventory(9 * 6, Component.text(kit.getName() + " Shop"), this);
+    this.inv = new ExInventory(InventoryType.HOPPER, "§7Shop", this);
 
     for (Supplier<Shop> shopSupplier : kit.getShopSuppliers()) {
       Shop shop;

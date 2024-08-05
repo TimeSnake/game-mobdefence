@@ -15,10 +15,6 @@ import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.game.mobdefence.user.MobDefUser;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -28,9 +24,14 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
 public class BoomerangAxe extends CooldownWeapon implements UserInventoryInteractListener {
 
-  public static final ExItemStack AXE = new ExItemStack(Material.IRON_AXE, "§6Boomerang Axe")
+  public static final ExItemStack AXE = new ExItemStack(Material.WOODEN_AXE, "§6Boomerang Axe")
       .unbreakable().immutable();
 
   private static final LevelType.Builder SPEED_LEVELS = new LevelType.Builder()
