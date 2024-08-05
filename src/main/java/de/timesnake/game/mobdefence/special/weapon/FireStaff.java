@@ -15,8 +15,6 @@ import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.game.mobdefence.user.MobDefUser;
-import java.util.HashSet;
-import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
@@ -26,6 +24,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class FireStaff extends InteractWeapon implements Listener, UserInventoryInteractListener {
 
@@ -86,7 +87,7 @@ public class FireStaff extends InteractWeapon implements Listener, UserInventory
 
   private static final LevelType.Builder FIRE_RATE_LEVELS = new LevelType.Builder()
       .name("Fire Rate")
-      .display(new ExItemStack(Material.FIRE_CHARGE))
+      .display(new ExItemStack(Material.YELLOW_DYE))
       .baseLevel(1)
       .levelDescription("+1 per sec.")
       .levelDecimalDigit(0)

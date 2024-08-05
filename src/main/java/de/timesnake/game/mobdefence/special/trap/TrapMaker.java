@@ -9,9 +9,6 @@ import de.timesnake.basic.bukkit.util.world.ExBlock;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.Trade;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -20,10 +17,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public enum TrapMaker {
 
   EXPLOSION(new Trade.Builder()
-      .slot(31)
+      .slot(7)
       .price(new Price(8, Currency.BRONZE), 1, 8),
       new ExItemStack(Material.CRIMSON_BUTTON, "§6Explosion Trap")
           .setLore("§fRadius: §73 blocks", "§7Explodes if 3 mobs are nearby")) {
@@ -41,7 +42,7 @@ public enum TrapMaker {
   },
 
   ARROW(new Trade.Builder()
-      .slot(32)
+      .slot(8)
       .price(new Price(3, Currency.SILVER), 1, 8),
       new ExItemStack(Material.STONE_BUTTON, "§6Arrow Trap")
           .setLore("§fRadius: §77 blocks", "§fUses: §716", "§7Shoots against mobs")) {
@@ -70,7 +71,7 @@ public enum TrapMaker {
   },
 
   SLOWNESS(new Trade.Builder()
-      .slot(33)
+      .slot(16)
       .price(new Price(7, Currency.BRONZE), 1, 8),
       new ExItemStack(Material.POLISHED_BLACKSTONE_BUTTON, "§6Slowness Trap")
           .setLore("§fRadius: §75 blocks", "§fUses: §73",
@@ -93,7 +94,7 @@ public enum TrapMaker {
   },
 
   POISON(new Trade.Builder()
-      .slot(34)
+      .slot(17)
       .price(new Price(7, Currency.BRONZE), 1, 8),
       new ExItemStack(Material.WARPED_BUTTON, "§6Poison Trap")
           .setLore("§fRadius: §74 blocks", "§7Gives mobs poison III for 20s")) {

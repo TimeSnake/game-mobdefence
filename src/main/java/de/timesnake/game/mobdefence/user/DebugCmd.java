@@ -12,9 +12,9 @@ import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.library.chat.Code;
 import de.timesnake.library.commands.PluginCommand;
 import de.timesnake.library.commands.simple.Arguments;
-import de.timesnake.library.chat.Code;
 
 public class DebugCmd implements CommandListener {
 
@@ -41,7 +41,7 @@ public class DebugCmd implements CommandListener {
         user.addItem(new Price(64, Currency.BRONZE).asItem(),
             new Price(64, Currency.SILVER).asItem(),
             new Price(64, Currency.GOLD).asItem(),
-            new Price(64, Currency.EMERALD).asItem());
+            new Price(32, Currency.EMERALD).asItem());
       }
     }
   }

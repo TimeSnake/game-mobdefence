@@ -20,7 +20,7 @@ import de.timesnake.game.mobdefence.user.MobDefUser;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.ShulkerBullet;
+import org.bukkit.entity.LlamaSpit;
 
 public class Wand extends CooldownWeapon {
 
@@ -64,7 +64,7 @@ public class Wand extends CooldownWeapon {
 
   private static final LevelType.Builder FIRE_RATE_LEVELS = new LevelType.Builder()
       .name("Fire Rate")
-      .display(new ExItemStack(Material.FIRE_CHARGE))
+      .display(new ExItemStack(Material.YELLOW_DYE))
       .baseLevel(1)
       .levelDescription("+1 per sec.")
       .levelDecimalDigit(0)
@@ -168,15 +168,24 @@ public class Wand extends CooldownWeapon {
   private static class WandBullet extends PiercingBullet {
 
     public WandBullet(User user, double speed, double damage, int piercing) {
-      super(user, user.getEyeLocation().add(0, -0.5, 0), TargetFinder.STRAIGHT, speed, damage,
+      super(user, user.getEyeLocation().add(0, -0.8, 0), TargetFinder.STRAIGHT, speed, damage,
           piercing);
     }
 
     @Override
     public Entity spawn(Location location) {
-      ShulkerBullet bullet = location.getWorld().spawn(location, ShulkerBullet.class);
+      LlamaSpit bullet = location.getWorld().spawn(location, LlamaSpit.class);
       bullet.setShooter(this.shooter.getPlayer());
+      bullet.setGravity(false);
       return bullet;
+
+      //LlamaSpit spit = new LlamaSpitBuilder()
+      //    .applyOnEntity(e -> {
+      //      e.setPos(location.getX(), location.getY(), location.getZ());
+      //      e.setOwner(this.shooter.getMinecraftPlayer());
+      //    })
+      //    .build(((CraftWorld) location.getWorld()).getHandle());
+      //return spit.getBukkitEntity();
     }
   }
 

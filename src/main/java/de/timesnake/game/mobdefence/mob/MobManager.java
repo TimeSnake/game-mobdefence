@@ -138,9 +138,7 @@ public class MobManager implements Listener {
         })
         .setMaxHealthAndHealth(2048)
         .build(loc.getExWorld().getHandle());
-
   }
-
 
   public void spawnWave() {
     int wave = MobDefServer.getWaveNumber();
@@ -152,18 +150,15 @@ public class MobManager implements Listener {
     this.logger.info("Spawning wave {}...", wave);
     this.mobGroups.clear();
 
-    int totalMobAmount =
-        (int) (SPAWN_AMOUNT_MULTIPLIER * Math.sqrt(wave) * SPAWN_AMOUNT_INCREASE * players
+    int totalMobAmount = (int) (SPAWN_AMOUNT_MULTIPLIER * Math.sqrt(wave) * SPAWN_AMOUNT_INCREASE * players
             * this.nextLimitedGaussian(0.2));
     int mobAmount = totalMobAmount;
 
     int totalTime = (int) (Math.log(totalMobAmount) * SPAWN_TIME_MULTIPLIER);
 
-    int minGroupSize =
-        (int) (MIN_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE
+    int minGroupSize = (int) (MIN_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE
             + playerSqrt * GROUP_SIZE_PLAYER_MULTIPLIER);
-    int maxGroupSize =
-        ((int) (MAX_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE
+    int maxGroupSize = ((int) (MAX_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE
             + playerSqrt * GROUP_SIZE_PLAYER_MULTIPLIER));
 
     List<Integer> groupSizes = new ArrayList<>();
@@ -177,14 +172,12 @@ public class MobManager implements Listener {
     int groupAmount = groupSizes.size();
     int delay = totalTime / groupAmount;
 
-    this.mobGroups.addLast(
-        new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+    this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
             groupSizes.get(0), 1));
 
     for (int i = 1; i < groupSizes.size(); i++) {
       int groupDelay = (int) (this.nextLimitedGaussian(0.2) * delay) + delay * (i - 1);
-      this.mobGroups.addLast(
-          new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+      this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
               groupSizes.get(i), groupDelay));
     }
 
@@ -199,11 +192,9 @@ public class MobManager implements Listener {
       MobGroup bossGroup = new MobGroup(bossMobs, delay);
       this.mobGroups.addLast(bossGroup);
 
-      this.mobGroups.addLast(
-          new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+      this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
               this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
-      this.mobGroups.addLast(
-          new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
+      this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
               this.random.nextInt(maxGroupSize - minGroupSize) + minGroupSize, delay));
 
       this.logger.info("Bosses: {}", bossGroup.size());

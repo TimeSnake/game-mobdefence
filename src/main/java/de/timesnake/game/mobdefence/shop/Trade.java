@@ -8,11 +8,8 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExInventory;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Trade {
@@ -49,14 +46,10 @@ public class Trade {
   protected void updateDisplayItemDescription() {
     List<String> lore = new ArrayList<>();
 
-    if (lore == null) {
-      lore = new ArrayList<>();
-    }
-
     lore.add("");
     lore.add("§9Price: §2" + this.getPrice().toString());
 
-    if (this.description.size() > 0) {
+    if (!this.description.isEmpty()) {
       lore.add("");
       lore.addAll(this.description);
     }
@@ -84,7 +77,9 @@ public class Trade {
     if (this.priceIt.hasNext()) {
       this.currentPrice = priceIt.next();
       this.updateDisplayItemDescription();
-      inventory.setItemStack(this.getSlot(), this.getDisplayItem());
+      inventory.update();
+      // TODO check
+      // inventory.setItemStack(this.getSlot(), this.getDisplayItem());
     }
   }
 

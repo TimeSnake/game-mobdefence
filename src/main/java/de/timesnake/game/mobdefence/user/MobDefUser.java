@@ -106,6 +106,7 @@ public class MobDefUser extends GameUser {
     if (this.getStatus().equals(Status.User.IN_GAME) && MobDefServer.isGameRunning()) {
       if (MobDefServer.isDelayRunning()) {
         this.rejoinGame(this.getExLocation(), Status.User.IN_GAME);
+        return;
       } else {
         this.deadBody = MobDefServer.getMobDefUserManager().getReviveManager().addDeadUser(this);
         this.deathLocation = this.getExLocation();

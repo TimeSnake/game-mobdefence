@@ -28,11 +28,9 @@ public class WeaponManager implements Listener {
 
     this.addWeapon(new BoomerangAxe());
     this.addWeapon(new FireStaff());
-    this.addWeapon(new SplashBow());
     this.addWeapon(new Wand());
     this.addWeapon(new MobDefIronGolem());
     this.addWeapon(new FireHoe());
-    this.addWeapon(new RocketCrossBow());
     this.addWeapon(new WaterBottle());
     this.addWeapon(new Sword());
     this.addWeapon(new Snowman());

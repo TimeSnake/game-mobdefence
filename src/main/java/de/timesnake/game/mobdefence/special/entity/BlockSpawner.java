@@ -41,7 +41,7 @@ public abstract class BlockSpawner extends SpecialWeapon implements Listener {
       return;
     }
 
-    this.spawnEntities(e.getBlock().getLocation());
+    this.spawnEntities(e.getBlock().getLocation().add(0.5, 0, 0.5));
 
     if (item.getAmount() > 1) {
       user.setItem(e.getHand(), item.asQuantity(item.getAmount() - 1));

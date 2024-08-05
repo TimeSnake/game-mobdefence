@@ -46,7 +46,7 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
           e.setItemSlot(EquipmentSlot.FEET, new ExItemStack(Material.GOLDEN_BOOTS).getHandle());
           e.setItemSlot(EquipmentSlot.MAINHAND,
               new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_FIRE, 2)
-                  .addExEnchantment(Enchantment.ARROW_DAMAGE, 12)
+                  .addExEnchantment(Enchantment.ARROW_DAMAGE, 7)
                   .addExEnchantment(Enchantment.ARROW_KNOCKBACK, 6).getHandle());
         })
         .applyOnEntity(e -> {

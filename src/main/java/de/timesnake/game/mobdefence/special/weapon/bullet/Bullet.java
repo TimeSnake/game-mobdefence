@@ -9,13 +9,14 @@ import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.weapon.WeaponTargetType;
-import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+
+import java.util.List;
 
 public abstract class Bullet implements Listener {
 
@@ -59,8 +60,7 @@ public abstract class Bullet implements Listener {
     this.entity = this.spawn(this.entity.getLocation());
 
     this.entityFollowTask = Server.runTaskTimerSynchrony(() -> {
-      Vector vec =
-          this.target.getLocation().add(0, 1, 0).toVector()
+      Vector vec = this.target.getLocation().add(0, 1, 0).toVector()
               .subtract(this.entity.getLocation().toVector()).normalize();
       this.entity.setVelocity(vec.multiply(this.speed));
     }, 0, 2, GameMobDefence.getPlugin());

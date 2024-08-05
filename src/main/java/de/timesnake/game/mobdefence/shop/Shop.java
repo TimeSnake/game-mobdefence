@@ -13,19 +13,16 @@ import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import de.timesnake.library.chat.ExTextColor;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
+import java.util.function.Supplier;
 
 public class Shop implements UserInventoryClickListener, InventoryHolder {
 
@@ -53,24 +50,22 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
       this.inv = new ExInventory(upgradeables.size() * 9 + 18, Component.text(this.name),
           this);
 
-      int itemSlot = 10;
+      int itemSlot = 1;
       for (Upgradeable levelItem : upgradeables) {
         this.upgradeableBySlot.put(itemSlot, levelItem);
         levelItem.fillInventoryRow(this.inv, itemSlot);
         itemSlot += 9;
       }
     } else if (upgradeables.isEmpty()) {
-      this.inv = new ExInventory(this.getTrades().stream()
-          .max(Comparator.comparingInt(Trade::getSlot)).get().getSlot() + 9,
-          Component.text(this.name), this);
+      this.inv = new ExInventory(InventoryType.SHULKER_BOX, this.name, this);
 
       for (Trade trade : this.getTrades()) {
         this.inv.setItemStack(trade.getSlot(), trade.getDisplayItem());
       }
     } else {
-      this.inv = new ExInventory(54, Component.text(this.name), this);
+      this.inv = new ExInventory(54, this.name, this);
 
-      int itemSlot = upgradeables.size() < 3 ? 10 : 1;
+      int itemSlot = 1;
 
       for (Upgradeable levelItem : upgradeables) {
         this.upgradeableBySlot.put(itemSlot, levelItem);

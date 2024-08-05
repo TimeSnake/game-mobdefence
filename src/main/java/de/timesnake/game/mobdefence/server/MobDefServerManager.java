@@ -13,6 +13,7 @@ import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Tablist;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.game.util.game.Map;
+import de.timesnake.basic.game.util.server.GameServer;
 import de.timesnake.basic.game.util.user.SpectatorManager;
 import de.timesnake.basic.loungebridge.util.game.TmpGame;
 import de.timesnake.basic.loungebridge.util.server.EndMessage;
@@ -177,7 +178,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
   @Override
   protected SpectatorManager initSpectatorManager() {
-    return new de.timesnake.basic.loungebridge.core.main.SpectatorManager() {
+    return new de.timesnake.basic.loungebridge.SpectatorManager() {
       @Override
       public GameMode getReJoinGameMode() {
         return GameMode.SURVIVAL;
@@ -269,6 +270,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     } else {
       user.joinGame();
       ((MobDefUser) user).startGame();
+      GameServer.getGameTablist().reloadEntry(user, true);
     }
   }
 

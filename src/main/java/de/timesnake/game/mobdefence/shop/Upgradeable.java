@@ -9,20 +9,10 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import de.timesnake.library.basic.util.MultiKeyMap;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import org.bukkit.Material;
+
+import java.util.*;
 
 public abstract class Upgradeable {
-
-  public static final ExItemStack PLACEHOLDER = new ExItemStack(Material.GRAY_STAINED_GLASS_PANE,
-      "")
-      .setMoveable(false).setDropable(false).immutable();
 
   protected final String name;
   protected final ExItemStack displayItem;
@@ -52,11 +42,10 @@ public abstract class Upgradeable {
   }
 
   public void fillInventoryRow(ExInventory inv, int slot) {
-    inv.setItemStack(slot++, this.getDisplayItem());
-    inv.setItemStack(slot++, PLACEHOLDER);
+    inv.setItemStack(slot, this.getDisplayItem());
+    slot += 2;
 
-    for (Iterator<LevelType> iterator = this.levelType.values().iterator();
-        slot % 9 != 8 && iterator.hasNext(); slot++) {
+    for (Iterator<LevelType> iterator = this.levelType.values().iterator(); slot % 9 != 8 && iterator.hasNext(); slot++) {
       LevelType levelType = iterator.next();
       levelType.getDisplayItem().setSlot(slot);
       inv.setItemStack(slot, levelType.getDisplayItem());
