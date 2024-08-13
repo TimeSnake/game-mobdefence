@@ -26,7 +26,7 @@ import org.bukkit.enchantments.Enchantment;
 public class CompressedZombie extends MobDefMob<Zombie> {
 
   public CompressedZombie(ExLocation spawn, int currentWave) {
-    super(Type.COMPRESSED_MELEE, HeightMapManager.MapType.NORMAL, 0, spawn, currentWave);
+    super(Type.COMPRESSED_MELEE, HeightMapManager.MapType.DEFAULT, 0, spawn, currentWave);
   }
 
   @Override

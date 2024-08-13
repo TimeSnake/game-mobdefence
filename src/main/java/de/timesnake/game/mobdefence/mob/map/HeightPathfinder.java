@@ -45,7 +45,7 @@ public class HeightPathfinder<Break extends Goal & LocationTargetable> extends U
 
     HeightBlock currentBlock = this.map.getHeightBlock(ExLocation.fromLocation(loc));
     if (currentBlock == null) {
-      return this.lastBlock != null ? this.lastBlock.location() : this.map.getCoreLocation();
+      return this.lastBlock != null ? this.lastBlock.block().getLocation() : this.map.getCoreLocation();
     }
 
     HeightBlock nextBlock = currentBlock;
@@ -58,7 +58,7 @@ public class HeightPathfinder<Break extends Goal & LocationTargetable> extends U
 
     if (nextBlock != null) {
       if (nextBlock.level() - currentBlock.level() - this.maxBlocksToNextLocation + 1 >= this.maxPathCostsBeforeBreak) {
-        ExLocation firstNextLoc = currentBlock.next().location();
+        ExLocation firstNextLoc = currentBlock.next().block().getLocation();
         if (this.breakBlock != null) {
           this.breakBlock.setTarget(firstNextLoc.getX(), firstNextLoc.getY(), firstNextLoc.getZ());
         }
@@ -72,6 +72,6 @@ public class HeightPathfinder<Break extends Goal & LocationTargetable> extends U
 
     this.lastBlock = nextBlock;
 
-    return nextBlock.location();
+    return nextBlock.block().getLocation();
   }
 }

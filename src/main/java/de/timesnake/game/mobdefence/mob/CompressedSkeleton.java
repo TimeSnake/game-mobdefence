@@ -24,7 +24,7 @@ import org.bukkit.enchantments.Enchantment;
 public class CompressedSkeleton extends MobDefMob<Skeleton> {
 
   public CompressedSkeleton(ExLocation spawn, int currentWave) {
-    super(Type.COMBRESSED_RANGED, HeightMapManager.MapType.NORMAL, 0, spawn, currentWave);
+    super(Type.COMBRESSED_RANGED, HeightMapManager.MapType.DEFAULT, 0, spawn, currentWave);
   }
 
   @Override

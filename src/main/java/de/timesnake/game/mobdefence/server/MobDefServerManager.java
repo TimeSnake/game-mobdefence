@@ -205,9 +205,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     this.logger.info("Spawned core entity");
 
     this.logger.info("Initializing height maps");
-    ((MobDefMap) this.getMap()).getHeightMapManager().resetMaps();
-    ((MobDefMap) this.getMap()).getHeightMapManager().startHeightMapUpdater();
-    ((MobDefMap) this.getMap()).getHeightMapManager().updateMaps();
+    this.getMap().getHeightMapManager().resetMaps();
+    this.getMap().getHeightMapManager().updateMaps();
 
     for (ItemFrame frame : this.getMap().getWorld().getEntitiesByClass(ItemFrame.class)) {
       frame.setFixed(true);
@@ -370,8 +369,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
     this.running = false;
 
+    this.getMap().getHeightMapManager().stopUpdater();
     this.mobManager.cancelSpawning();
-
     this.userManager.cancelTasks();
 
     for (LivingEntity entity : this.getMap().getWorld().getBukkitWorld().getLivingEntities()) {
@@ -393,7 +392,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
   @Override
   public ExLocation getSpectatorSpawn() {
-    return ((MobDefMap) this.getMap()).getUserSpawn();
+    return this.getMap().getUserSpawn();
   }
 
   @EventHandler
@@ -488,6 +487,11 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     return delayIsRunning;
   }
 
+  @Override
+  public MobDefMap getMap() {
+    return (MobDefMap) super.getMap();
+  }
+
   public Collection<MobDefUser> getAliveUsers() {
     Collection<MobDefUser> users = new ArrayList<>();
     for (User user :
@@ -507,12 +511,12 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
   @EventHandler
   public void onBlockBreak(BlockBreakEvent e) {
-    ((MobDefMap) this.getMap()).getHeightMapManager().updateMaps();
+    this.getMap().getHeightMapManager().updateMaps();
   }
 
   @EventHandler
   public void onBlockPlace(BlockPlaceEvent e) {
-    ((MobDefMap) this.getMap()).getHeightMapManager().updateMaps();
+    this.getMap().getHeightMapManager().updateMaps();
   }
 
   @Override

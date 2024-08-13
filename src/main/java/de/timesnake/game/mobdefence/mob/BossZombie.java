@@ -30,7 +30,7 @@ import java.util.List;
 public class BossZombie extends MobDefMob<Zombie> {
 
   public BossZombie(ExLocation spawn, int currentWave) {
-    super(Type.MELEE, HeightMapManager.MapType.NORMAL, 5, spawn, currentWave);
+    super(Type.MELEE, HeightMapManager.MapType.DEFAULT, 5, spawn, currentWave);
   }
 
   @Override

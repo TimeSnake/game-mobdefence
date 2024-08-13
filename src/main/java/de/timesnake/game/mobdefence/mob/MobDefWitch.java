@@ -20,7 +20,7 @@ import net.minecraft.world.entity.player.Player;
 public class MobDefWitch extends MobDefMob<net.minecraft.world.entity.monster.Witch> {
 
   public MobDefWitch(ExLocation spawn, int currentWave) {
-    super(Type.OTHER, HeightMapManager.MapType.NORMAL, 3, spawn, currentWave);
+    super(Type.OTHER, HeightMapManager.MapType.DEFAULT, 3, spawn, currentWave);
   }
 
   @Override

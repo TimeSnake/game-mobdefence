@@ -24,7 +24,7 @@ import org.bukkit.Material;
 public class MobDefVindicator extends MobDefMob<Vindicator> {
 
   public MobDefVindicator(ExLocation spawn, int currentWave) {
-    super(Type.MELEE, HeightMapManager.MapType.NORMAL, 7, spawn, currentWave);
+    super(Type.MELEE, HeightMapManager.MapType.DEFAULT, 7, spawn, currentWave);
   }
 
   @Override

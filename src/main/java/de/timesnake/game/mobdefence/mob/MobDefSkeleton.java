@@ -23,7 +23,7 @@ import org.bukkit.enchantments.Enchantment;
 public class MobDefSkeleton extends ArmorMob<Skeleton> {
 
   public MobDefSkeleton(ExLocation spawn, int currentWave) {
-    super(Type.RANGED, HeightMapManager.MapType.NORMAL, 0, spawn, currentWave);
+    super(Type.RANGED, HeightMapManager.MapType.DEFAULT, 0, spawn, currentWave);
   }
 
   @Override

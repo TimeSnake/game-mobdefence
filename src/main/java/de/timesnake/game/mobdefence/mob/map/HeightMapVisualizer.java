@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class HeightMapVisualizer {
 
-  private static final int Y_OFFSET = 50;
+  private static final int Y_OFFSET = 70;
 
   private final HeightMap heightMap;
 
@@ -28,7 +28,7 @@ public class HeightMapVisualizer {
     for (Map.Entry<Integer, List<HeightBlock>> entry : heightMap.getBlocksByHeight().entrySet()) {
       List<HeightBlock> heightBlocks = entry.getValue();
       for (HeightBlock heightBlock : heightBlocks) {
-        world.getBlockAt(heightBlock.location().clone().add(0, Y_OFFSET, 0)).setType(color);
+        world.getBlockAt(heightBlock.block().getLocation().clone().add(0, Y_OFFSET, 0)).setType(color);
       }
       color = ColorConverter.colorIterator2(color);
     }

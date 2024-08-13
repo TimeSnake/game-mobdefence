@@ -24,7 +24,7 @@ public class MobDefZombie extends MeleeMob<Zombie> {
   private static final double RUNNER_CHANCE = 0.3;
 
   public MobDefZombie(ExLocation spawn, int currentWave) {
-    super(Type.COMPRESSED_MELEE, HeightMapManager.MapType.NORMAL, 0, spawn, currentWave);
+    super(Type.COMPRESSED_MELEE, HeightMapManager.MapType.DEFAULT, 0, spawn, currentWave);
   }
 
   @Override
