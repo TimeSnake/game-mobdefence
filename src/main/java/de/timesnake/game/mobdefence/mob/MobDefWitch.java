@@ -6,8 +6,8 @@ package de.timesnake.game.mobdefence.mob;
 
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
-import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
+import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.WitchBuilder;
 import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
@@ -44,7 +44,7 @@ public class MobDefWitch extends MobDefMob<net.minecraft.world.entity.monster.Wi
         .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
         .apply(b -> b.applyOnEntity(e -> {
           BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.2, false,
-              BlockCheck.BREAKABLE_MATERIALS);
+              PathCostCalc.BREAKABLE_MATERIALS);
 
           b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1.5, breakBlock, BREAK_LEVEL));
           b.addPathfinderGoal(4, f -> breakBlock);

@@ -32,6 +32,7 @@ import java.util.stream.Stream;
 public abstract class MobDefMob<M extends Mob> {
 
   public static final int BREAK_LEVEL = 16;
+  public static final int BREAKER_HARDNESS_MULTIPLIER = 2;
 
   public static final List<Class<? extends LivingEntity>> ATTACKER_ENTITY_CLASSES =
       List.of(net.minecraft.world.entity.monster.Zombie.class,
@@ -76,6 +77,7 @@ public abstract class MobDefMob<M extends Mob> {
   public static final List<EntityType> DEFENDER_TYPES = List.of(EntityType.SHEEP,
       EntityType.PLAYER, EntityType.IRON_GOLEM, EntityType.VILLAGER, EntityType.WOLF,
       EntityType.SNOWMAN, EntityType.BLAZE);
+
 
   public static MobDefMob<?> getCompressedMob(int wave, Type type, ExLocation spawn) {
     return switch (type) {

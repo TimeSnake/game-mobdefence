@@ -7,8 +7,8 @@ package de.timesnake.game.mobdefence.mob;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
-import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
+import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.PillagerBuilder;
 import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
@@ -51,7 +51,7 @@ public class MobDefPillager extends MobDefMob<Pillager> {
         .addPathfinderGoal(3, e -> new RangedCrossbowAttackGoal<>(e, 1, 15))
         .apply(b -> b.applyOnEntity(e -> {
           BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.3, false,
-              BlockCheck.BREAKABLE_MATERIALS);
+              PathCostCalc.BREAKABLE_MATERIALS);
 
           b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 0.7, breakBlock, BREAK_LEVEL));
           b.addPathfinderGoal(4, f -> breakBlock);

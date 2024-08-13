@@ -32,7 +32,7 @@ public class KitShop implements UserInventoryClickListener, InventoryHolder {
   private final Map<ExItemStack, Shop> shopsByItem = new HashMap<>();
   private MobDefUser user;
 
-  public KitShop(MobDefUser user) {
+  public KitShop(MobDefUser user, boolean loadItemBase) {
     this.user = user;
     MobDefKit kit = ((MobDefKit) user.getKit());
 
@@ -52,7 +52,9 @@ public class KitShop implements UserInventoryClickListener, InventoryHolder {
       this.shopsByItem.put(shop.getDisplayItem(), shop);
       this.inv.setItemStack(shop.getSlot(), shop.getDisplayItem());
 
-      shop.getUpgradeables().forEach(u -> u.loadBaseForUser(user));
+      if (loadItemBase) {
+        shop.getUpgradeables().forEach(u -> u.loadBaseForUser(user));
+      }
     }
 
     Server.getInventoryEventManager().addClickListener(this, this);

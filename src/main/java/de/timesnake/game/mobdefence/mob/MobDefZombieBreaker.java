@@ -7,9 +7,9 @@ package de.timesnake.game.mobdefence.mob;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
-import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.server.MobDefServer;
+import de.timesnake.game.mobdefence.special.ExplosionManager;
 import de.timesnake.library.entities.entity.ZombieBuilder;
 import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -47,8 +47,8 @@ public class MobDefZombieBreaker extends ArmorMob<Zombie> {
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS).setBaseValue(0.3))
         .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_PICKAXE).getHandle()))
         .apply(b -> b.applyOnEntity(e -> {
-          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.3, false,
-              BlockCheck.BREAKABLE_MATERIALS);
+          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.3, true,
+              ExplosionManager.HARD_BREAKABLE);
 
           b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), this.currentWave > 6 ? 1.3 : 1.2, breakBlock, 5));
           b.addPathfinderGoal(4, f -> breakBlock);

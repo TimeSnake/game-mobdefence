@@ -93,8 +93,8 @@ public class MobDefKit extends Kit implements KitItems {
     return this.shopSuppliers;
   }
 
-  public KitShop getShop(MobDefUser user) {
-    return new KitShop(user);
+  public KitShop getShop(MobDefUser user, boolean loadItemBase) {
+    return new KitShop(user, loadItemBase);
   }
 
   public static class Builder extends Kit.Builder<Builder> {

@@ -102,7 +102,7 @@ public class Trade {
 
   public static class Builder {
 
-    protected int slot;
+    protected Integer slot;
     protected ExItemStack displayItem;
     protected boolean rebuyable = true;
     protected List<Price> prices = new LinkedList<>();
@@ -195,6 +195,9 @@ public class Trade {
       }
       if (this.giveConsumer == null) {
         throw new BuilderNotFullyInstantiatedException("give consumer is null");
+      }
+      if (this.slot == null) {
+        throw new BuilderNotFullyInstantiatedException("slot is null");
       }
     }
   }

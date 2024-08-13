@@ -15,9 +15,9 @@ import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
-import de.timesnake.game.mobdefence.mob.map.BlockCheck;
 import de.timesnake.game.mobdefence.mob.map.HeightBlock;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
+import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.special.CoreRegeneration;
@@ -144,8 +144,8 @@ public class UserManager implements Listener {
 
     Material type = e.getBlock().getType();
 
-    if (!(BlockCheck.NORMAL_BREAKABLE.isTagged(type) || BlockCheck.HIGH_BREAKABLE.isTagged(type)
-        || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
+    if (!(PathCostCalc.NORMAL_BREAKABLE_MATERIALS.contains(type) || PathCostCalc.HIGH_BREAKABLE_MATERIALS.contains(type)
+          || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
       e.setCancelled(true);
     } else {
       ExItemStack item = MobDefKit.BLOCK_ITEM_BY_TYPE.get(type);
@@ -171,7 +171,7 @@ public class UserManager implements Listener {
       return;
     }
 
-    if (!BlockCheck.NORMAL_BREAKABLE.isTagged(type) && !BlockCheck.HIGH_BREAKABLE.isTagged(type)
+    if (!PathCostCalc.NORMAL_BREAKABLE_MATERIALS.contains(type) && !PathCostCalc.HIGH_BREAKABLE_MATERIALS.contains(type)
         && !TrapManager.TRAP_MATERIALS.contains(type) && !type.equals(Material.LADDER)) {
       e.setCancelled(true);
       return;
@@ -330,16 +330,16 @@ public class UserManager implements Listener {
   private static void sendHeightLevel(User user, HeightBlock block) {
     String level;
     if (block != null) {
-      level = String.valueOf(block.getLevel());
+      level = String.valueOf(block.level());
     } else {
       level = "null";
     }
     user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Height: ", ExTextColor.PERSONAL)
         .append(Component.text(level, ExTextColor.VALUE)));
     if (block != null) {
-      HeightBlock next = block.getNext();
+      HeightBlock next = block.next();
       if (next != null) {
-        Location loc = next.getLocation();
+        Location loc = next.location();
         user.sendPluginMessage(Plugin.MOB_DEFENCE,
             Component.text("Next: ", ExTextColor.PERSONAL)
                 .append(Component.text(
