@@ -25,7 +25,7 @@ import org.bukkit.attribute.Attribute;
 public class MobDefPillager extends MobDefMob<Pillager> {
 
   MobDefPillager(ExLocation spawn, int currentWave) {
-    super(Type.RANGED, HeightMapManager.MapType.NORMAL, 6, spawn, currentWave);
+    super(Type.RANGED, HeightMapManager.MapType.DEFAULT, 6, spawn, currentWave);
   }
 
   @Override

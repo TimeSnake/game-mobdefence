@@ -17,7 +17,7 @@ import org.bukkit.attribute.Attribute;
 public class CaveSpider extends MobDefMob<net.minecraft.world.entity.monster.CaveSpider> {
 
   public CaveSpider(ExLocation spawn, int currentWave) {
-    super(Type.OTHER, HeightMapManager.MapType.NORMAL, 8, spawn, currentWave);
+    super(Type.OTHER, HeightMapManager.MapType.DEFAULT, 8, spawn, currentWave);
   }
 
   @Override

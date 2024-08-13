@@ -66,7 +66,7 @@ public class UserManager implements Listener {
 
         HeightBlock block =
             MobDefServer.getMap().getHeightMapManager()
-                .getMap(HeightMapManager.MapType.NORMAL)
+                .getMap(HeightMapManager.MapType.DEFAULT)
                 .getHeightBlock(user.getExLocation());
         sendHeightLevel(user, block);
       });
@@ -144,8 +144,7 @@ public class UserManager implements Listener {
 
     Material type = e.getBlock().getType();
 
-    if (!(PathCostCalc.NORMAL_BREAKABLE_MATERIALS.contains(type) || PathCostCalc.HIGH_BREAKABLE_MATERIALS.contains(type)
-          || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
+    if (!(PathCostCalc.BREAKABLE_MATERIALS.contains(type) || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
       e.setCancelled(true);
     } else {
       ExItemStack item = MobDefKit.BLOCK_ITEM_BY_TYPE.get(type);
@@ -171,8 +170,7 @@ public class UserManager implements Listener {
       return;
     }
 
-    if (!PathCostCalc.NORMAL_BREAKABLE_MATERIALS.contains(type) && !PathCostCalc.HIGH_BREAKABLE_MATERIALS.contains(type)
-        && !TrapManager.TRAP_MATERIALS.contains(type) && !type.equals(Material.LADDER)) {
+    if (!PathCostCalc.BREAKABLE_MATERIALS.contains(type) && !TrapManager.TRAP_MATERIALS.contains(type) && !type.equals(Material.LADDER)) {
       e.setCancelled(true);
       return;
     }
@@ -339,7 +337,7 @@ public class UserManager implements Listener {
     if (block != null) {
       HeightBlock next = block.next();
       if (next != null) {
-        Location loc = next.location();
+        Location loc = next.block().getLocation();
         user.sendPluginMessage(Plugin.MOB_DEFENCE,
             Component.text("Next: ", ExTextColor.PERSONAL)
                 .append(Component.text(

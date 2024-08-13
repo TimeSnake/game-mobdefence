@@ -28,7 +28,7 @@ import java.util.List;
 public class BossSkeletonStray extends MobDefMob<Stray> {
 
   public BossSkeletonStray(ExLocation spawn, int currentWave) {
-    super(Type.BOSS, HeightMapManager.MapType.NORMAL, 0, spawn, currentWave);
+    super(Type.BOSS, HeightMapManager.MapType.DEFAULT, 0, spawn, currentWave);
   }
 
   @Override
@@ -83,7 +83,8 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
                     BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.5, false,
                         PathCostCalc.BREAKABLE_MATERIALS);
 
-                    b.addPathfinderGoal(4, f -> getCorePathfinder(f, HeightMapManager.MapType.NORMAL, 1, breakBlock, BREAK_LEVEL));
+                    b.addPathfinderGoal(4, f -> getCorePathfinder(f, HeightMapManager.MapType.DEFAULT, 1, breakBlock,
+                        BREAK_LEVEL));
                     b.addPathfinderGoal(4, f -> breakBlock);
                   }))
                   .addPathfinderGoal(2, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1.1, 1.1))

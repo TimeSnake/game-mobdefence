@@ -22,7 +22,7 @@ import org.bukkit.attribute.Attribute;
 public class MobDefBabyZombie extends ArmorMob<Zombie> {
 
   public MobDefBabyZombie(ExLocation spawn, int currentWave) {
-    super(Type.OTHER, HeightMapManager.MapType.NORMAL, 1, spawn, currentWave);
+    super(Type.OTHER, HeightMapManager.MapType.DEFAULT, 1, spawn, currentWave);
   }
 
   @Override

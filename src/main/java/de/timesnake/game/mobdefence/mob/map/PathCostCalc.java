@@ -20,15 +20,15 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
   public static final Set<Material> ROUNDED_BLOCK_MATERIALS = new HashSet<>();
   public static final Set<Material> EMPTY_MATERIALS = new HashSet<>();
 
-  public static final Set<Material> NORMAL_BREAKABLE_MATERIALS = Set.of(
+  public static final Set<Material> BREAKABLE_MATERIALS = Set.of(
       Material.OAK_PLANKS,
       Material.OAK_SLAB,
-      Material.IRON_BARS);
-  public static final Set<Material> HIGH_BREAKABLE_MATERIALS = Set.of(
+      Material.IRON_BARS,
       Material.OAK_FENCE,
       Material.OAK_FENCE_GATE,
       Material.COBBLESTONE_WALL);
-  public static final Set<Material> BREAKABLE_MATERIALS = new HashSet<>();
+
+  public static final Set<Material> BREAKABLE_MATERIALS_2 = new HashSet<>();
 
   static {
     ROUNDED_BLOCK_MATERIALS.addAll(Tag.SLABS.getValues());
@@ -52,8 +52,14 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
     EMPTY_MATERIALS.add(Material.TRIPWIRE);
     EMPTY_MATERIALS.addAll(List.of(Material.GRASS, Material.TALL_GRASS, Material.ARMOR_STAND));
 
-    BREAKABLE_MATERIALS.addAll(NORMAL_BREAKABLE_MATERIALS);
-    BREAKABLE_MATERIALS.addAll(HIGH_BREAKABLE_MATERIALS);
+    BREAKABLE_MATERIALS_2.addAll(PathCostCalc.BREAKABLE_MATERIALS);
+    BREAKABLE_MATERIALS_2.addAll(Tag.STONE_BRICKS.getValues());
+    BREAKABLE_MATERIALS_2.addAll(Tag.FENCES.getValues());
+    BREAKABLE_MATERIALS_2.addAll(Tag.WOODEN_TRAPDOORS.getValues());
+    BREAKABLE_MATERIALS_2.addAll(Tag.WOODEN_DOORS.getValues());
+    BREAKABLE_MATERIALS_2.addAll(Tag.WOODEN_SLABS.getValues());
+    BREAKABLE_MATERIALS_2.addAll(Tag.PLANKS.getValues());
+    BREAKABLE_MATERIALS_2.addAll(Tag.WALLS.getValues());
   }
 
   public static class StartGroundIsSolid extends PathCostCalc {
@@ -152,11 +158,9 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
       ExBlock zBottom = z.down();
 
       boolean xSolid = this.isSolid(x);
-      boolean xTopSolid = this.isSolid(xTop);
       boolean xBottomSolid = this.isSolid(xBottom);
 
       boolean zSolid = this.isSolid(z);
-      boolean zTopSolid = this.isSolid(zTop);
       boolean zBottomSolid = this.isSolid(zBottom);
 
       Integer xCosts = this.getCostsForBlock(x);
@@ -225,7 +229,7 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
         }
       } else if (heightDelta == 0) {
         if (xCosts != null && xTopCosts != null) {
-          if (xSolid || xBottomSolid) {
+          if (xBottomSolid) {
             result.addBlockToBreakToNext(xCosts, x);
             result.addBlockToBreakToNext(xTopCosts, xTop);
             return result;
@@ -233,7 +237,7 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
         }
 
         if (xTopCosts != null && xTop2Costs != null) {
-          if (xTopSolid) {
+          if (xSolid) {
             result.addBlockToBreakToNext(xTopCosts, xTop);
             result.addBlockToBreakToNext(xTop2Costs, xTop2);
             return result;
@@ -241,7 +245,7 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
         }
 
         if (zCosts != null && zTopCosts != null) {
-          if (zSolid || zBottomSolid) {
+          if (zBottomSolid) {
             result.addBlockToBreakToNext(zCosts, z);
             result.addBlockToBreakToNext(zTopCosts, zTop);
             return result;
@@ -249,7 +253,7 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
         }
 
         if (zTopCosts != null && zTop2Costs != null) {
-          if (zTopSolid) {
+          if (zSolid) {
             result.addBlockToBreakToNext(zTopCosts, zTop);
             result.addBlockToBreakToNext(zTop2Costs, zTop2);
             return result;
@@ -272,7 +276,7 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
         }
       }
 
-      return PathCostResult.EMPTY;
+      return PathCostResult.BLOCKED;
     }
   }
 

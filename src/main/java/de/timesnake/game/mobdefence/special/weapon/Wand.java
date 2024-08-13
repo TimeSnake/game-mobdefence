@@ -181,10 +181,10 @@ public class Wand extends CooldownWeapon {
 
       //LlamaSpit spit = new LlamaSpitBuilder()
       //    .applyOnEntity(e -> {
-      //      e.setPos(location.getX(), location.getY(), location.getZ());
+      //      e.setPos(block.getX(), block.getY(), block.getZ());
       //      e.setOwner(this.shooter.getMinecraftPlayer());
       //    })
-      //    .build(((CraftWorld) location.getWorld()).getHandle());
+      //    .build(((CraftWorld) block.getWorld()).getHandle());
       //return spit.getBukkitEntity();
     }
   }

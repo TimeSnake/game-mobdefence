@@ -35,16 +35,25 @@ public class DebugCmd implements CommandListener {
       return;
     }
 
-    if (args.isLengthEquals(1, false)) {
+    if (args.isLengthHigherEquals(1, false)) {
       if (args.get(0).equalsIgnoreCase("coins")) {
         user.addItem(new Price(64, Currency.BRONZE).asItem(),
             new Price(64, Currency.SILVER).asItem(),
             new Price(64, Currency.GOLD).asItem(),
             new Price(32, Currency.EMERALD).asItem());
       } else if (args.get(0).equalsIgnoreCase("heightMap")) {
+        args.isLengthEqualsElseExit(2, true);
+
+        HeightMapManager.MapType type;
+        try {
+          type = HeightMapManager.MapType.valueOf(args.getString(1).toUpperCase());
+        } catch (IllegalArgumentException e) {
+          sender.sendPluginTDMessage("§wHeight map type §v" + args.getString(1) + "§w does not exist");
+          return;
+        }
+
         sender.sendPluginTDMessage("§sVisualizing...");
-        new HeightMapVisualizer(MobDefServer.getMap().getHeightMapManager().getMap(HeightMapManager.MapType.NORMAL))
-            .visualize();
+        new HeightMapVisualizer(MobDefServer.getMap().getHeightMapManager().getMap(type)).visualize();
         sender.sendPluginTDMessage("§sDone");
       }
     }

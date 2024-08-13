@@ -92,14 +92,6 @@ public class MobDefMap extends Map implements ResetableMap {
     return this.current.getRandomMobPath();
   }
 
-  public void startHeightMapUpdater() {
-    this.current.getHeightMapManager().startHeightMapUpdater();
-  }
-
-  public void stopHeightMapUpdater() {
-    this.current.getHeightMapManager().stopHeightMapUpdater();
-  }
-
   public HeightBlock getHeightBlockByLocation(HeightMapManager.MapType type,
       ExLocation location) {
     return this.current.getHeightMapManager().getMap(type).getHeightBlock(location);

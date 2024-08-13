@@ -4,19 +4,19 @@
 
 package de.timesnake.game.mobdefence.mob.map;
 
-import de.timesnake.basic.bukkit.util.world.ExLocation;
+import de.timesnake.basic.bukkit.util.world.ExBlock;
 
 import java.util.List;
+import java.util.Objects;
 
-public record HeightBlock(int level, ExLocation location, HeightBlock next,
+public record HeightBlock(int level, ExBlock block, HeightBlock next,
                           List<BreakableBlock> blocksToBreak,
                           List<BreakableBlock> blocksToBreakForNext) {
 
-  public HeightBlock(int level, ExLocation location, HeightBlock next, List<BreakableBlock> blocksToBreak,
+  public HeightBlock(int level, ExBlock block, HeightBlock next, List<BreakableBlock> blocksToBreak,
                      List<BreakableBlock> blocksToBreakForNext) {
-
     this.level = level;
-    this.location = location.getExBlock().getLocation();
+    this.block = block;
     this.next = next;
     this.blocksToBreak = blocksToBreak;
     this.blocksToBreakForNext = blocksToBreakForNext;
@@ -24,5 +24,18 @@ public record HeightBlock(int level, ExLocation location, HeightBlock next,
 
   public boolean hasNext() {
     return this.next != null;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    HeightBlock that = (HeightBlock) o;
+    return Objects.equals(block, that.block);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(block);
   }
 }

@@ -24,8 +24,7 @@ public class ExplosionManager implements Listener {
   public static final List<Material> EXPLODEABLE = new ArrayList<>();
 
   static {
-    EXPLODEABLE.addAll(PathCostCalc.NORMAL_BREAKABLE_MATERIALS);
-    EXPLODEABLE.addAll(PathCostCalc.HIGH_BREAKABLE_MATERIALS);
+    EXPLODEABLE.addAll(PathCostCalc.BREAKABLE_MATERIALS);
     EXPLODEABLE.addAll(Tag.STONE_BRICKS.getValues());
     EXPLODEABLE.addAll(Tag.FENCES.getValues());
     EXPLODEABLE.addAll(Tag.WOODEN_TRAPDOORS.getValues());
@@ -36,21 +35,6 @@ public class ExplosionManager implements Listener {
     EXPLODEABLE.addAll(Tag.WALLS.getValues());
   }
 
-  public static final List<Material> HARD_BREAKABLE = new ArrayList<>();
-
-  static {
-    HARD_BREAKABLE.addAll(PathCostCalc.NORMAL_BREAKABLE_MATERIALS);
-    HARD_BREAKABLE.addAll(PathCostCalc.HIGH_BREAKABLE_MATERIALS);
-    HARD_BREAKABLE.addAll(Tag.STONE_BRICKS.getValues());
-    HARD_BREAKABLE.addAll(Tag.FENCES.getValues());
-    HARD_BREAKABLE.addAll(Tag.WOODEN_TRAPDOORS.getValues());
-    HARD_BREAKABLE.addAll(Tag.WOODEN_DOORS.getValues());
-    HARD_BREAKABLE.addAll(Tag.WOODEN_SLABS.getValues());
-    HARD_BREAKABLE.addAll(Tag.PLANKS.getValues());
-    HARD_BREAKABLE.addAll(Tag.WALLS.getValues());
-  }
-
-
   public ExplosionManager() {
     Server.registerListener(this, GameMobDefence.getPlugin());
   }
@@ -59,10 +43,7 @@ public class ExplosionManager implements Listener {
   public void onEntityExplode(EntityExplodeEvent e) {
     if (e.getEntityType().equals(EntityType.CREEPER)) {
       e.setYield(0);
-      e.blockList().removeIf(
-          block -> block.getY() < e.getLocation().getY() || !EXPLODEABLE.contains(
-              block.getType()));
-
+      e.blockList().removeIf(block -> block.getY() < e.getLocation().getY() || !EXPLODEABLE.contains(block.getType()));
       MobDefServer.getMap().getHeightMapManager().updateMaps();
     }
   }
@@ -71,9 +52,10 @@ public class ExplosionManager implements Listener {
   public void onBlockDrop(BlockDropItemEvent e) {
     Material type = e.getBlock().getType();
 
-    if (!(PathCostCalc.NORMAL_BREAKABLE_MATERIALS.contains(type) || PathCostCalc.HIGH_BREAKABLE_MATERIALS.contains(type)
-          || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
-      e.setCancelled(true);
+    if (PathCostCalc.BREAKABLE_MATERIALS.contains(type) || e.getBlock().isEmpty() || type.equals(Material.FIRE)) {
+      return;
     }
+
+    e.setCancelled(true);
   }
 }

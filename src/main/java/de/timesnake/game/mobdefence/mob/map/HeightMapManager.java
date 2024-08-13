@@ -16,15 +16,10 @@ public class HeightMapManager implements Listener {
   private final HashMap<MapType, HeightMap> mapsByType = new HashMap<>();
 
   public HeightMapManager(ExLocation core) {
-    this.mapsByType.put(MapType.NORMAL, new HeightMap(core, MapType.NORMAL.getCostCalc()));
-    //for (MapType type : MapType.values()) {
-    //  HeightMap heightMap = new HeightMap(core, type.getCostCalc());
-    //  this.mapsByType.put(type, heightMap);
-    //}
-  }
-
-  public void startHeightMapUpdater() {
-    this.mapsByType.values().forEach(HeightMap::startUpdater);
+    for (MapType type : MapType.values()) {
+      HeightMap heightMap = new HeightMap(type.name().toLowerCase(), core, type.getCostCalc());
+      this.mapsByType.put(type, heightMap);
+    }
   }
 
   public HashMap<MapType, HeightMap> getMapsByType() {
@@ -32,14 +27,14 @@ public class HeightMapManager implements Listener {
   }
 
   public HeightMap getDefaultMap() {
-    return this.mapsByType.get(MapType.NORMAL);
+    return this.mapsByType.get(MapType.DEFAULT);
   }
 
   public HeightMap getMap(MapType type) {
     return this.mapsByType.get(type);
   }
 
-  public void stopHeightMapUpdater() {
+  public void stopUpdater() {
     this.mapsByType.values().forEach(HeightMap::stopUpdater);
   }
 
@@ -52,12 +47,12 @@ public class HeightMapManager implements Listener {
   }
 
   public enum MapType {
-    NORMAL(new PathCostCalc.And(
+    DEFAULT(new PathCostCalc.And(
         new PathCostCalc.StartGroundIsSolid(),
         new PathCostCalc.PathIsBreakableOrEmptyOnY() {
           @Override
           public boolean isBreakable(Material material) {
-            return NORMAL_BREAKABLE_MATERIALS.contains(material);
+            return BREAKABLE_MATERIALS.contains(material);
           }
 
           @Override
@@ -68,7 +63,7 @@ public class HeightMapManager implements Listener {
         new PathCostCalc.PathIsEmptyOrBreakableOnXZDiagonal() {
           @Override
           public boolean isBreakable(Material material) {
-            return NORMAL_BREAKABLE_MATERIALS.contains(material);
+            return BREAKABLE_MATERIALS.contains(material);
           }
 
           @Override
@@ -79,7 +74,7 @@ public class HeightMapManager implements Listener {
         new PathCostCalc.PathIsFencedOrWalledOnY() {
           @Override
           public boolean isBreakable(Material material) {
-            return NORMAL_BREAKABLE_MATERIALS.contains(material);
+            return BREAKABLE_MATERIALS.contains(material);
           }
 
           @Override
@@ -105,7 +100,7 @@ public class HeightMapManager implements Listener {
         new PathCostCalc.PathIsBreakableOrEmptyOnY() {
           @Override
           public boolean isBreakable(Material material) {
-            return PathCostCalc.BREAKABLE_MATERIALS.contains(material);
+            return PathCostCalc.BREAKABLE_MATERIALS_2.contains(material);
           }
 
           @Override
@@ -116,7 +111,7 @@ public class HeightMapManager implements Listener {
         new PathCostCalc.PathIsEmptyOrBreakableOnXZDiagonal() {
           @Override
           public boolean isBreakable(Material material) {
-            return PathCostCalc.BREAKABLE_MATERIALS.contains(material);
+            return PathCostCalc.BREAKABLE_MATERIALS_2.contains(material);
           }
 
           @Override
@@ -127,7 +122,7 @@ public class HeightMapManager implements Listener {
         new PathCostCalc.PathIsFencedOrWalledOnY() {
           @Override
           public boolean isBreakable(Material material) {
-            return PathCostCalc.BREAKABLE_MATERIALS.contains(material);
+            return PathCostCalc.BREAKABLE_MATERIALS_2.contains(material);
           }
 
           @Override
