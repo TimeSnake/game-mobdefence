@@ -14,22 +14,20 @@ import org.bukkit.Location;
 public class HeightPathfinder<Break extends Goal & LocationTargetable> extends UpdatedLocationGoal {
 
   private final HeightMap map;
-  private final int steps;
+  private final int maxBlocksToNextLocation;
   private final Break breakBlock;
-  private final int breakLevel;
-  private HeightBlock current;
+  private final int maxPathCostsBeforeBreak;
 
-  public HeightPathfinder(Mob mob, HeightMap map, int steps, double speed, double trackingDistance,
-                          double minDistance, Break breakBlock, int breakLevel) {
-    super(mob, speed, trackingDistance, minDistance);
+  private HeightBlock lastBlock;
+
+  public HeightPathfinder(Mob mob, HeightMap map, int maxBlocksToNextLocation, double walkSpeed,
+                          double trackingDistance,
+                          double minDistance, Break breakBlock, int maxPathCostsBeforeBreak) {
+    super(mob, walkSpeed, trackingDistance, minDistance);
     this.map = map;
-    this.steps = steps;
-    if (breakBlock != null) {
-      this.breakBlock = breakBlock;
-    } else {
-      this.breakBlock = null;
-    }
-    this.breakLevel = breakLevel;
+    this.maxBlocksToNextLocation = maxBlocksToNextLocation;
+    this.breakBlock = breakBlock;
+    this.maxPathCostsBeforeBreak = maxPathCostsBeforeBreak;
   }
 
   @Override
@@ -43,40 +41,37 @@ public class HeightPathfinder<Break extends Goal & LocationTargetable> extends U
     }
 
     // slab, stair fix
-    Location loc =
-        entityLoc.getY() - entityLoc.getBlockY() > 0 ? entityLoc.add(0, 1, 0) : entityLoc;
+    Location loc = entityLoc.getY() - entityLoc.getBlockY() > 0 ? entityLoc.add(0, 1, 0) : entityLoc;
 
-    HeightBlock next = this.map.getHeightBlock(ExLocation.fromLocation(loc));
-    if (next == null) {
-      return this.current != null ? this.current.getLocation() : this.map.getCoreLocation();
+    HeightBlock currentBlock = this.map.getHeightBlock(ExLocation.fromLocation(loc));
+    if (currentBlock == null) {
+      return this.lastBlock != null ? this.lastBlock.location() : this.map.getCoreLocation();
     }
 
-    for (int i = 0; i < this.steps; i++) {
-      if (!next.hasNext()) {
+    HeightBlock nextBlock = currentBlock;
+    for (int i = 0; i < this.maxBlocksToNextLocation; i++) {
+      if (!nextBlock.hasNext()) {
         break;
       }
-      next = next.getNext();
+      nextBlock = nextBlock.next();
     }
 
-    if (this.current != null) {
-      HeightBlock entityHeightBlock = this.map.getHeightBlock(ExLocation.fromLocation(loc));
-      if (entityHeightBlock != null) {
-        if (entityHeightBlock.getLevel() - next.getLevel() >= this.steps - 1 + this.breakLevel) {
-          ExLocation nextLoc = next.getLocation();
-          if (this.breakBlock != null) {
-            this.breakBlock.setTarget(nextLoc.getX(), nextLoc.getY(), nextLoc.getZ());
-          }
-          return null;
-        } else {
-          if (this.breakBlock != null) {
-            this.breakBlock.setTarget(null, null, null);
-          }
+    if (nextBlock != null) {
+      if (nextBlock.level() - currentBlock.level() - this.maxBlocksToNextLocation + 1 >= this.maxPathCostsBeforeBreak) {
+        ExLocation firstNextLoc = currentBlock.next().location();
+        if (this.breakBlock != null) {
+          this.breakBlock.setTarget(firstNextLoc.getX(), firstNextLoc.getY(), firstNextLoc.getZ());
+        }
+        return null;
+      } else {
+        if (this.breakBlock != null) {
+          this.breakBlock.setTarget(null, null, null);
         }
       }
     }
 
-    this.current = next;
+    this.lastBlock = nextBlock;
 
-    return next.getLocation();
+    return nextBlock.location();
   }
 }

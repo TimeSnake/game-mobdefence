@@ -6,6 +6,8 @@ package de.timesnake.game.mobdefence.mob.map;
 
 import de.timesnake.basic.bukkit.util.world.ExBlock;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
@@ -19,6 +21,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class HeightMap {
 
   public static final int MAX_LEVEL = 400;
+
+  private final Logger logger = LogManager.getLogger("mob-def.height-map");
 
   private final ExLocation coreLocation;
 
@@ -36,10 +40,17 @@ public class HeightMap {
 
   private final Random random = new Random();
 
-  public HeightMap(ExLocation coreLocation, List<List<BlockCheck>> checkGroups) {
+  public HeightMap(ExLocation coreLocation, PathCostCalc pathCostCalc) {
     this.coreLocation = coreLocation;
-    this.heightLevelGeneratorThread = new Thread(new HeightLevelGenerator(checkGroups));
+    this.heightLevelGeneratorThread = new Thread(new HeightLevelGenerator(pathCostCalc));
+  }
+
+  public void startUpdater() {
     this.heightLevelGeneratorThread.start();
+  }
+
+  public void stopUpdater() {
+    this.heightLevelGeneratorThread.interrupt();
   }
 
   public void reset() {
@@ -48,7 +59,7 @@ public class HeightMap {
   }
 
   public HeightBlock getHeightBlock(ExLocation current) {
-    if (BlockCheck.ROUNDED_BLOCKS.isTagged(current.getBlock().getType())) {
+    if (PathCostCalc.ROUNDED_BLOCK_MATERIALS.contains(current.getBlock().getType())) {
       current = current.getExBlock().getLocation().add(0, 1, 0);
     }
 
@@ -60,6 +71,10 @@ public class HeightMap {
       this.readLock.unlock();
     }
     return block;
+  }
+
+  public Map<Integer, List<HeightBlock>> getBlocksByHeight() {
+    return blocksByHeight;
   }
 
   public HeightBlock getHeightBlock(ExLocation current, int radius, boolean lowerLevel) {
@@ -77,13 +92,12 @@ public class HeightMap {
       for (int y = 0; y <= radius; y++) {
         for (int z = 0; z <= radius; z++) {
           HeightBlock block = this.getHeightBlock(
-              current.getLocation().clone().add(x, y, z));
+              current.location().clone().add(x, y, z));
           if (block == null) {
             continue;
           }
 
-          if (block.getLevel() == current.getLevel() || (lowerLevel
-              && block.getLevel() < current.getLevel())) {
+          if (block.level() == current.level() || (lowerLevel && block.level() < current.level())) {
             blocks.add(block);
           }
         }
@@ -112,10 +126,10 @@ public class HeightMap {
 
     private Map<ExLocation, HeightBlock> heightBlocksByLocation = new ConcurrentHashMap<>();
 
-    private final List<List<BlockCheck>> checkGroups;
+    private final PathCostCalc pathCostCalc;
 
-    public HeightLevelGenerator(List<List<BlockCheck>> checkGroups) {
-      this.checkGroups = checkGroups;
+    public HeightLevelGenerator(PathCostCalc pathCostCalc) {
+      this.pathCostCalc = pathCostCalc;
     }
 
     @Override
@@ -124,11 +138,14 @@ public class HeightMap {
     }
 
     public void update() {
+      if (HeightMap.this.running) {
+        return;
+      }
+
+      HeightMap.this.logger.info("Updating heightmap...");
 
       HeightMap.this.update = false;
       HeightMap.this.running = true;
-
-      long begin = System.currentTimeMillis();
 
       this.heightBlocksByLocation = new HashMap<>();
       Map<Integer, List<HeightBlock>> blocksByHeight = new HashMap<>();
@@ -139,9 +156,9 @@ public class HeightMap {
       }
 
       // init core height block
-      HeightBlock core = new HeightBlock(0, HeightMap.this.coreLocation, null);
+      HeightBlock core = new HeightBlock(0, HeightMap.this.coreLocation, null, null, null);
       blocksByHeight.put(0, List.of(core));
-      this.heightBlocksByLocation.put(core.getLocation(), core);
+      this.heightBlocksByLocation.put(core.location(), core);
 
       // calc levels
       for (int level = 1; level <= MAX_LEVEL; level++) {
@@ -153,12 +170,10 @@ public class HeightMap {
           for (HeightBlock center : heightBlockCenters) {
 
             // get blocks, which have a path to the center
-            Map<Block, Integer> pathBlocks = this.getReachableByBlocks(
-                center.getLocation().getBlock(),
-                blockArea);
+            Map<Block, PathCostResult> startBlocks = this.getReachableByBlocks(center.location().getBlock(), blockArea);
 
-            for (Map.Entry<Block, Integer> entry : pathBlocks.entrySet()) {
-              int delta = entry.getValue();
+            for (Map.Entry<Block, PathCostResult> entry : startBlocks.entrySet()) {
+              PathCostResult result = entry.getValue();
               ExLocation pathBlockLoc = new ExBlock(entry.getKey()).getLocation();
 
               // block already seen
@@ -166,21 +181,22 @@ public class HeightMap {
                 continue;
               }
 
-              if (level + delta > MAX_LEVEL) {
+              if (level + result.costs() > MAX_LEVEL) {
                 continue;
               }
 
-              HeightBlock block = new HeightBlock(level + delta, pathBlockLoc,
-                  center);
+              HeightBlock block = new HeightBlock(level + result.costs() + 1, pathBlockLoc, center,
+                  result.getBlocksToBreakOnStart(), result.getBlocksToBreakToNext());
 
               // add as new center
-              blocksByHeight.get(level + delta).add(block);
+              blocksByHeight.get(level + result.costs()).add(block);
 
               // add to location map
               this.heightBlocksByLocation.put(pathBlockLoc, block);
             }
           }
         }
+        HeightMap.this.logger.info("Blocks on height {}: {}", level, blocksByHeight.get(level).size());
       }
 
       HeightMap.this.writeLock.lock();
@@ -190,11 +206,7 @@ public class HeightMap {
       } finally {
         HeightMap.this.writeLock.unlock();
       }
-
-      long timeDelta = (System.currentTimeMillis() - begin);
-      // Server.printText(Plugin.MOB_DEFENCE, "Map updated in " + (timeDelta / 1000) + "." + timeDelta % 1000 +
-      // "s");
-
+      HeightMap.this.logger.info("Updated heightmap");
       HeightMap.this.running = false;
       this.waitForUpdate();
     }
@@ -212,67 +224,37 @@ public class HeightMap {
       this.update();
     }
 
-    public Map<Block, Integer> getReachableByBlocks(Block start, BlockArea blockArea) {
-      Map<Block, Integer> blocksWithLevelDelta = new HashMap<>();
+    public Map<Block, PathCostResult> getReachableByBlocks(Block end, BlockArea blockArea) {
+      Map<Block, PathCostResult> blockByCostResult = new HashMap<>();
 
-      Location startLoc = start.getLocation();
+      Location endLocation = end.getLocation();
 
       for (Vector vector : blockArea.getVectors()) {
 
-        Location loc = startLoc.clone().add(vector);
+        Location startLocation = endLocation.clone().add(vector);
 
-        if (this.heightBlocksByLocation.containsKey(ExLocation.fromLocation(loc))) {
+        if (this.heightBlocksByLocation.containsKey(ExLocation.fromLocation(startLocation))) {
           continue;
         }
 
-        Block block = loc.getBlock();
+        Block startBlock = startLocation.getBlock();
 
-        int delta = this.isBlockReachable(block, start);
-        if (delta >= 0) {
-          blocksWithLevelDelta.put(block, delta);
+        PathCostResult result = this.isBlockReachable(startBlock, end);
+        if (!result.isBlocked()) {
+          blockByCostResult.put(startBlock, result);
         }
       }
 
-      return blocksWithLevelDelta;
+      return blockByCostResult;
     }
 
-    private int isBlockReachable(Block start, Block finish) {
-      if (start.getLocation().distanceSquared(finish.getLocation()) > 2) {
-        return -1;
+    private PathCostResult isBlockReachable(Block start, Block end) {
+      if (start.getLocation().distanceSquared(end.getLocation()) > 2) {
+        return PathCostResult.BLOCKED;
       }
 
-      int heightDelta = start.getY() - finish.getY();
-
-      int costSum = 0;
-
-      for (List<BlockCheck> checks : this.checkGroups) {
-        int extraCheckDelta = -1;
-
-        for (BlockCheck check : checks) {
-          int delta = check.getLevelDelta(start, finish, heightDelta);
-
-          if (delta <= 0) {
-            continue;
-          }
-
-          if (delta == 1) {
-            extraCheckDelta = 0;
-            break;
-          }
-
-          if (extraCheckDelta > delta || extraCheckDelta < 0) {
-            extraCheckDelta = delta - 1;
-          }
-        }
-
-        if (extraCheckDelta < 0) {
-          return -1;
-        }
-
-        costSum += extraCheckDelta;
-      }
-
-      return costSum;
+      return this.pathCostCalc.apply(new ShortPath(new ExBlock(start), new ExBlock(end),
+          end.getY() - start.getY()));
     }
 
   }

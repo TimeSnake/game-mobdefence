@@ -68,13 +68,13 @@ public class MobDefUser extends GameUser {
       return false;
     }
 
-    this.loadKit();
+    this.loadKit(true);
 
     return true;
   }
 
-  public void loadKit() {
-    this.shop = ((MobDefKit) this.kit).getShop(this);
+  public void loadKit(boolean giveItems) {
+    this.shop = ((MobDefKit) this.kit).getShop(this, giveItems);
 
     if (this.kit.equals(MobDefKit.ALCHEMIST)) {
       Server.runTaskSynchrony(() -> this.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 0),

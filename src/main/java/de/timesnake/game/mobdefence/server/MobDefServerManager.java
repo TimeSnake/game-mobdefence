@@ -204,7 +204,9 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     EntityManager.spawnEntity(this.getMap().getWorld().getBukkitWorld(), this.coreEntity);
     this.logger.info("Spawned core entity");
 
+    this.logger.info("Initializing height maps");
     ((MobDefMap) this.getMap()).getHeightMapManager().resetMaps();
+    ((MobDefMap) this.getMap()).getHeightMapManager().startHeightMapUpdater();
     ((MobDefMap) this.getMap()).getHeightMapManager().updateMaps();
 
     for (ItemFrame frame : this.getMap().getWorld().getEntitiesByClass(ItemFrame.class)) {

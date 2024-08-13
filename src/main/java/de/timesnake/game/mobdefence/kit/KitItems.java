@@ -175,14 +175,14 @@ public interface KitItems {
   Trade.Builder IRON_GOLEM = new Trade.Builder()
       .giveItems(MobDefIronGolem.ITEM.cloneWithId())
       .price(new Price(12, SILVER), 1, 4)
-      .slot(38);
+      .slot(46);
 
   Trade.Builder REGEN = new Trade.Builder()
       .display(new ExItemStack(Material.BEACON, "§cVillager Regeneration"))
       .give(u -> MobDefServer.getMobDefUserManager().getCoreRegeneration().run(u))
       .price(new Price(4, Currency.EMERALD), 1, 8)
       .notRebuyable()
-      .slot(37);
+      .slot(47);
 
   ExItemStack WEAPONS = new ExItemStack(Material.IRON_SWORD).hideAll();
   ExItemStack ARMOR = new ExItemStack(Material.CHAINMAIL_CHESTPLATE).hideAll();
@@ -445,31 +445,38 @@ public interface KitItems {
       .giveItems(new ExItemStack(Material.GOLDEN_SWORD)
           .setDisplayName("§6Fire Sword")
           .addExEnchantment(Enchantment.FIRE_ASPECT, 2))
-      .price(new Price(2, Currency.SILVER));
+      .price(new Price(2, Currency.SILVER))
+      .slot(46);
   Trade.Builder ALCHEMIST_SPEED = new Trade.Builder()
       .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.SPEED, false,
           true))
-      .price(new Price(4, BRONZE));
+      .price(new Price(4, BRONZE))
+      .slot(46);
   Trade.Builder WIZARD_REGEN = new Trade.Builder()
       .giveItems(ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 2, "§6Regeneration",
           PotionEffectType.REGENERATION, 10 * 20, 2))
-      .price(new Price(4, BRONZE));
+      .price(new Price(4, BRONZE))
+      .slot(46);
   Trade.Builder LUMBER_SPEED = new Trade.Builder()
       .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.SPEED, false,
           true))
-      .price(new Price(4, BRONZE));
+      .price(new Price(4, BRONZE))
+      .slot(46);
   Trade.Builder LUMBER_STRENGTH = new Trade.Builder()
       .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Strength", PotionType.STRENGTH,
           false, true))
-      .price(new Price(3, SILVER));
+      .price(new Price(3, SILVER))
+      .slot(47);
   Trade.Builder LUMBER_REGENERATION = new Trade.Builder()
       .giveItems(ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 2, "§6Regeneration",
           PotionEffectType.REGENERATION, 15, 3))
-      .price(new Price(3, SILVER));
+      .price(new Price(3, SILVER))
+      .slot(48);
   Trade.Builder IRON_SKIN = new Trade.Builder()
       .giveItems(ExItemStack.getPotion(ExItemStack.PotionMaterial.DRINK, 1, "Iron Skin",
           PotionEffectType.DAMAGE_RESISTANCE, 60 * 20, 3))
-      .price(new Price(8, SILVER));
+      .price(new Price(8, SILVER))
+      .slot(47);
   Shop.Builder KNIGHT_WEAPONS = new Shop.Builder()
       .name("Weapons")
       .slot(0)

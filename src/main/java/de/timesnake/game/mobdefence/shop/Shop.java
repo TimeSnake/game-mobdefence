@@ -73,12 +73,8 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
         itemSlot += 9;
       }
 
-      itemSlot = itemSlot < 4 * 9 ? itemSlot + 18 : itemSlot + 9;
-
       for (Trade trade : this.getTrades()) {
-        trade.getDisplayItem().setSlot(itemSlot);
-        this.inv.setItemStack(itemSlot, trade.getDisplayItem());
-        itemSlot++;
+        this.inv.setItemStack(trade.getSlot(), trade.getDisplayItem());
       }
     }
 

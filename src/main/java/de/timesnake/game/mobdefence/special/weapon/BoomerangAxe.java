@@ -9,7 +9,7 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryInteractListener;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
-import de.timesnake.game.mobdefence.mob.map.BlockCheck;
+import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
@@ -149,7 +149,7 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
         vec.multiply(-1);
       }
 
-      if (!BlockCheck.WALKABLE_IN.isTagged(
+      if (!PathCostCalc.EMPTY_MATERIALS.contains(
           stand.getEyeLocation().add(vec).getBlock().getType())) {
         if (counter.get() >= 1) {
           this.dropBoomerang(stand);

@@ -220,8 +220,10 @@ public class MobManager implements Listener {
     }
 
     for (MobGroup mobGroup : mobGroups) {
-      mobGroup.run();
+      //mobGroup.run();
     }
+
+    new MobGroup(List.of(new MobDefZombieBreaker(MobDefServer.getMap().getRandomMobPath().getLocation(), wave)), 0).run();
 
     this.logger.info("Mobs: {} in {} groups and bosses", mobAmount, groupAmount);
 

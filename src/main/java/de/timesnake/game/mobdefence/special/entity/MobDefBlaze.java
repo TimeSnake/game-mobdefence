@@ -32,7 +32,8 @@ public class MobDefBlaze extends BlockSpawner implements Listener {
 
   public static final Trade.Builder BLAZE = new Trade.Builder()
       .price(new Price(16, Currency.SILVER))
-      .giveItems(MobDefBlaze.ITEM.cloneWithId().asQuantity(3));
+      .giveItems(MobDefBlaze.ITEM.cloneWithId().asQuantity(3))
+      .slot(48);
 
   public MobDefBlaze() {
     super(EntityType.BLAZE, ITEM);

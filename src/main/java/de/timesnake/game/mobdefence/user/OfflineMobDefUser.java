@@ -23,7 +23,7 @@ public class OfflineMobDefUser extends OfflineUser {
   @Override
   public void loadInto(GameUser user) {
     super.loadInto(user);
-    ((MobDefUser) user).loadKit();
+    ((MobDefUser) user).loadKit(false);
 
     ((MobDefUser) user).setShop(this.shop);
     ((MobDefUser) user).setAlive(this.alive);

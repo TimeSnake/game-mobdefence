@@ -4,36 +4,27 @@
 
 package de.timesnake.game.mobdefence.mob.map;
 
-import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
-import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.map.MobDefMap;
 import de.timesnake.game.mobdefence.mob.MobDefMob;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.bukkit.Material;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitTask;
+
+import java.util.HashMap;
 
 public class HeightMapManager implements Listener {
 
   private final HashMap<MapType, HeightMap> mapsByType = new HashMap<>();
-  private BukkitTask heightMapUpdaterTask;
 
   public HeightMapManager(ExLocation core) {
-    for (MapType type : MapType.values()) {
-      HeightMap heightMap = new HeightMap(core, type.getCheckGroups());
-      this.mapsByType.put(type, heightMap);
-      heightMap.update();
-    }
+    this.mapsByType.put(MapType.NORMAL, new HeightMap(core, MapType.NORMAL.getCostCalc()));
+    //for (MapType type : MapType.values()) {
+    //  HeightMap heightMap = new HeightMap(core, type.getCostCalc());
+    //  this.mapsByType.put(type, heightMap);
+    //}
   }
 
   public void startHeightMapUpdater() {
-    if (this.heightMapUpdaterTask == null) {
-      this.heightMapUpdaterTask = Server.runTaskTimerAsynchrony(this::updateMaps, 0,
-          MobDefMap.HEIGHT_MAP_UPDATE_DELAY, GameMobDefence.getPlugin());
-    }
+    this.mapsByType.values().forEach(HeightMap::startUpdater);
   }
 
   public HashMap<MapType, HeightMap> getMapsByType() {
@@ -49,32 +40,54 @@ public class HeightMapManager implements Listener {
   }
 
   public void stopHeightMapUpdater() {
-    if (this.heightMapUpdaterTask != null) {
-      this.heightMapUpdaterTask.cancel();
-      this.heightMapUpdaterTask = null;
-    }
+    this.mapsByType.values().forEach(HeightMap::stopUpdater);
   }
 
   public void resetMaps() {
-    for (Map.Entry<MapType, HeightMap> entry : this.mapsByType.entrySet()) {
-      entry.getValue().reset();
-    }
+    this.mapsByType.values().forEach(HeightMap::reset);
   }
 
   public void updateMaps() {
-    for (Map.Entry<MapType, HeightMap> entry : this.mapsByType.entrySet()) {
-      entry.getValue().update();
-    }
+    this.mapsByType.values().forEach(HeightMap::update);
   }
 
   public enum MapType {
-    NORMAL(List.of(BlockCheck.WALK_IN, new BlockCheck.HighBlockBreak(MobDefMob.BREAK_LEVEL,
-        BlockCheck.HIGH_BREAKABLE, BlockCheck.NORMAL_BREAKABLE)),
-        List.of(BlockCheck.ON_SOLID_1H),
-        List.of(new BlockCheck.DiagonalBlocked(MobDefMob.BREAK_LEVEL,
-            BlockCheck.HIGH_BREAKABLE,
-            BlockCheck.NORMAL_BREAKABLE)),
-        List.of(new BlockCheck.FloorFenceWallBlocked())),
+    NORMAL(new PathCostCalc.And(
+        new PathCostCalc.StartGroundIsSolid(),
+        new PathCostCalc.PathIsBreakableOrEmptyOnY() {
+          @Override
+          public boolean isBreakable(Material material) {
+            return NORMAL_BREAKABLE_MATERIALS.contains(material);
+          }
+
+          @Override
+          public int getCostsForBreakableMaterial(Material material) {
+            return MobDefMob.BREAK_LEVEL;
+          }
+        },
+        new PathCostCalc.PathIsEmptyOrBreakableOnXZDiagonal() {
+          @Override
+          public boolean isBreakable(Material material) {
+            return NORMAL_BREAKABLE_MATERIALS.contains(material);
+          }
+
+          @Override
+          public int getCostsForBreakableMaterial(Material material) {
+            return MobDefMob.BREAK_LEVEL;
+          }
+        },
+        new PathCostCalc.PathIsFencedOrWalledOnY() {
+          @Override
+          public boolean isBreakable(Material material) {
+            return NORMAL_BREAKABLE_MATERIALS.contains(material);
+          }
+
+          @Override
+          public int getCostsForBreakableMaterial(Material material) {
+            return MobDefMob.BREAK_LEVEL;
+          }
+        }
+    )),
 
     /*SMALL(List.of(BlockCheck.WALK_IN_SMALL),
             List.of(BlockCheck.ON_SOLID_1H)),
@@ -87,17 +100,51 @@ public class HeightMapManager implements Listener {
 
 
      */
-    WALL_FINDER(List.of(BlockCheck.WALK_IN, BlockCheck.WALL), List.of(BlockCheck.ON_SOLID_1H),
-        List.of(new BlockCheck.DiagonalBlocked(MobDefMob.BREAK_LEVEL)));
+    WALL_FINDER(new PathCostCalc.And(
+        new PathCostCalc.StartGroundIsSolid(),
+        new PathCostCalc.PathIsBreakableOrEmptyOnY() {
+          @Override
+          public boolean isBreakable(Material material) {
+            return PathCostCalc.BREAKABLE_MATERIALS.contains(material);
+          }
 
-    private final List<List<BlockCheck>> checkGroups;
+          @Override
+          public int getCostsForBreakableMaterial(Material material) {
+            return (int) (material.getHardness() * MobDefMob.BREAKER_HARDNESS_MULTIPLIER);
+          }
+        },
+        new PathCostCalc.PathIsEmptyOrBreakableOnXZDiagonal() {
+          @Override
+          public boolean isBreakable(Material material) {
+            return PathCostCalc.BREAKABLE_MATERIALS.contains(material);
+          }
 
-    MapType(List<BlockCheck>... checkGroups) {
-      this.checkGroups = Arrays.asList(checkGroups);
+          @Override
+          public int getCostsForBreakableMaterial(Material material) {
+            return (int) (material.getHardness() * MobDefMob.BREAKER_HARDNESS_MULTIPLIER);
+          }
+        },
+        new PathCostCalc.PathIsFencedOrWalledOnY() {
+          @Override
+          public boolean isBreakable(Material material) {
+            return PathCostCalc.BREAKABLE_MATERIALS.contains(material);
+          }
+
+          @Override
+          public int getCostsForBreakableMaterial(Material material) {
+            return (int) (material.getHardness() * MobDefMob.BREAKER_HARDNESS_MULTIPLIER);
+          }
+        }
+    ));
+
+    private final PathCostCalc costCalc;
+
+    MapType(PathCostCalc costCalc) {
+      this.costCalc = costCalc;
     }
 
-    public List<List<BlockCheck>> getCheckGroups() {
-      return checkGroups;
+    public PathCostCalc getCostCalc() {
+      return costCalc;
     }
   }
 }
