@@ -62,6 +62,23 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
     BREAKABLE_MATERIALS_2.addAll(Tag.WALLS.getValues());
   }
 
+  public static class MaxPositiveDelta extends PathCostCalc {
+
+    private final int max;
+
+    public MaxPositiveDelta(int max) {
+      this.max = max;
+    }
+
+    @Override
+    public PathCostResult apply(ShortPath shortPath) {
+      if (shortPath.heightDelta() > max) {
+        return PathCostResult.BLOCKED;
+      }
+      return PathCostResult.EMPTY;
+    }
+  }
+
   public static class StartGroundIsSolid extends PathCostCalc {
     @Override
     public PathCostResult apply(ShortPath path) {
@@ -346,6 +363,12 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
               return PathCostResult.BLOCKED;
             }
 
+            if (endGroundCosts == null) {
+              result.addBlockToBreakToNext(startTop2Costs, startTop2);
+              result.addBlockToBreakToNext(endTop2Costs, endTop2);
+              return result;
+            }
+
             if (startTop2Costs + endTop2Costs <= startGroundCosts + endGroundCosts) {
               result.addBlockToBreakToNext(startTop2Costs, startTop2);
               result.addBlockToBreakToNext(endTop2Costs, endTop2);
@@ -402,7 +425,9 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
       } else if (heightDelta == 1) {
         if (endFenced) {
           if (startFenced) {
-            result.addBlockToBreakOnStart(this.getCostsForBlock(startTop2.up()), startTop2.up());
+            if (startTop2Costs != null) {
+              result.addBlockToBreakOnStart(startTop2Costs, startTop2.up());
+            }
             return result;
           }
           return PathCostResult.BLOCKED;
@@ -453,7 +478,7 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
         if (result.isBlocked()) {
           return PathCostResult.BLOCKED;
         }
-        overallResult.merge(result);
+        overallResult = overallResult.merge(result);
       }
       return overallResult;
     }

@@ -7,28 +7,39 @@ package de.timesnake.game.mobdefence.mob.map;
 import de.timesnake.basic.bukkit.util.server.ColorConverter;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class HeightMapVisualizer {
 
   private static final int Y_OFFSET = 70;
 
-  private final HeightMap heightMap;
+  private final Set<Block> lastBlocks = new HashSet<>();
 
-  public HeightMapVisualizer(HeightMap heightMap) {
-    this.heightMap = heightMap;
+  public HeightMapVisualizer() {
   }
 
-  public void visualize() {
+  public void clear() {
+    for (Block block : lastBlocks) {
+      block.setType(Material.AIR);
+    }
+  }
+
+  public void visualize(HeightMap heightMap) {
     ExWorld world = heightMap.getCoreLocation().getExWorld();
     Material color = Material.WHITE_WOOL;
 
-    for (Map.Entry<Integer, List<HeightBlock>> entry : heightMap.getBlocksByHeight().entrySet()) {
-      List<HeightBlock> heightBlocks = entry.getValue();
+    this.lastBlocks.clear();
+
+    for (int level = 0; level <= HeightMapGenerator.MAX_LEVEL; level++) {
+      List<HeightBlock> heightBlocks = heightMap.getBlocksByHeight().getOrDefault(level, List.of());
       for (HeightBlock heightBlock : heightBlocks) {
-        world.getBlockAt(heightBlock.block().getLocation().clone().add(0, Y_OFFSET, 0)).setType(color);
+        final Block block = world.getBlockAt(heightBlock.block().getLocation().clone().add(0, Y_OFFSET, 0));
+        block.setType(color);
+        this.lastBlocks.add(block);
       }
       color = ColorConverter.colorIterator2(color);
     }

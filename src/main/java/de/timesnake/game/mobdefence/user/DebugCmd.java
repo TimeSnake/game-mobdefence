@@ -19,9 +19,13 @@ import de.timesnake.library.chat.Code;
 import de.timesnake.library.commands.PluginCommand;
 import de.timesnake.library.commands.simple.Arguments;
 
+import java.util.Arrays;
+
 public class DebugCmd implements CommandListener {
 
   private final Code perm = Plugin.MOB_DEFENCE.createPermssionCode("game.mobdef.debug");
+
+  private final HeightMapVisualizer visualizer = new HeightMapVisualizer();
 
   @Override
   public void onCommand(Sender sender, PluginCommand cmd, Arguments<Argument> args) {
@@ -31,7 +35,7 @@ public class DebugCmd implements CommandListener {
     User user = sender.getUser();
 
     if (args.isLengthEquals(0, false)) {
-      user.addItem(UserManager.DEBUG_TOOL);
+
       return;
     }
 
@@ -53,8 +57,21 @@ public class DebugCmd implements CommandListener {
         }
 
         sender.sendPluginTDMessage("§sVisualizing...");
-        new HeightMapVisualizer(MobDefServer.getMap().getHeightMapManager().getMap(type)).visualize();
+        this.visualizer.clear();
+        this.visualizer.visualize(MobDefServer.getMap().getHeightMapManager().getMap(type));
         sender.sendPluginTDMessage("§sDone");
+      } else if (args.get(0).equalsIgnoreCase("path_tool")) {
+        args.isLengthEqualsElseExit(2, true);
+
+        HeightMapManager.MapType type;
+        try {
+          type = HeightMapManager.MapType.valueOf(args.getString(1).toUpperCase());
+        } catch (IllegalArgumentException e) {
+          sender.sendPluginTDMessage("§wHeight map type §v" + args.getString(1) + "§w does not exist");
+          return;
+        }
+
+        user.addItem(UserManager.DEBUG_TOOL.cloneWithId().asQuantity(type.ordinal() + 1));
       }
     }
   }
@@ -62,7 +79,9 @@ public class DebugCmd implements CommandListener {
   @Override
   public Completion getTabCompletion() {
     return new Completion(this.perm)
-        .addArgument(new Completion("coins", "heightMap"));
+        .addArgument(new Completion("coins"))
+        .addArgument(new Completion("heightMap", "path_tool")
+            .addArgument(new Completion(Arrays.stream(HeightMapManager.MapType.values()).map(HeightMapManager.MapType::name))));
   }
 
   @Override

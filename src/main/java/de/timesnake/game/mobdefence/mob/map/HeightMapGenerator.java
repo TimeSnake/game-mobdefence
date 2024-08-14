@@ -78,9 +78,6 @@ public class HeightMapGenerator {
           futures.add(this.completionService.submit(() -> this.getReachableByBlocks(finalLevel, center, blockArea)));
         }
       }
-
-      int blockCount = 0;
-
       while (!futures.isEmpty()) {
         Future<Collection<HeightBlock>> future = this.completionService.take();
         futures.remove(future);
@@ -88,10 +85,7 @@ public class HeightMapGenerator {
 
         heightBlocks.addAll(blocks);
         blocks.forEach(b -> blocksByHeight.computeIfAbsent(b.level(), k -> new ArrayList<>()).add(b));
-        blockCount += blocks.size();
       }
-
-      this.logger.info("Finished level {}: {} blocks", level, blockCount);
     }
 
     this.logger.info("Updated heightmap: {} blocks", heightBlocks.size());
