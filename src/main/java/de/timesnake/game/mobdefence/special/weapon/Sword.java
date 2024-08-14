@@ -8,7 +8,7 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
@@ -96,7 +96,7 @@ public class Sword extends SpecialWeapon implements Listener {
     User user = Server.getUser(((Player) e.getDamager()));
 
     for (LivingEntity entity : user.getLocation().getNearbyLivingEntities(2, 1)) {
-      if (MobDefMob.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
+      if (MobDefServer.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
         entity.damage(2, user.getPlayer());
       }
     }

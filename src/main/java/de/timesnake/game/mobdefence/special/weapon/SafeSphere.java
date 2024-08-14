@@ -7,18 +7,19 @@ package de.timesnake.game.mobdefence.special.weapon;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.game.mobdefence.shop.UpgradeableItem.Builder;
 import de.timesnake.game.mobdefence.user.MobDefUser;
-import java.util.HashMap;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.HashMap;
 
 public class SafeSphere extends ReloadableWeapon {
 
@@ -105,7 +106,7 @@ public class SafeSphere extends ReloadableWeapon {
 
   private void knockbackMobs(Location location) {
     for (LivingEntity entity : location.getNearbyLivingEntities(RADIUS)) {
-      if (MobDefMob.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
+      if (MobDefServer.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
         entity.setVelocity(entity.getLocation().toVector()
             .subtract(location.toVector()).normalize().multiply(1.5));
       }

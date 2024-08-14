@@ -6,7 +6,7 @@ package de.timesnake.game.mobdefence.special.weapon.bullet;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.special.weapon.WeaponTargetType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -54,7 +54,7 @@ public class BulletManager implements Listener {
       return;
     }
 
-    if (e.getHitEntity() == null || !MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getHitEntity().getType())) {
+    if (e.getHitEntity() == null || !MobDefServer.ATTACKER_ENTITY_TYPES.contains(e.getHitEntity().getType())) {
       e.setCancelled(true);
       return;
     }

@@ -8,7 +8,6 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.ZombieBuilder;
 import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
@@ -61,7 +60,7 @@ public class CompressedZombie extends MobDefMob<Zombie> {
     this.entity = new ZombieBuilder()
         .setMaxHealthAndHealth(health)
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
-            .setBaseValue(2 + this.currentWave / 5. * MobManager.MOB_DAMAGE_MULTIPLIER * 2))
+            .setBaseValue(2 + this.currentWave / 5. * MobDefServer.MOB_DAMAGE_MULTIPLIER * 2))
         .applyOnEntity(e -> {
           e.setItemSlot(EquipmentSlot.HEAD, new ExItemStack(Material.NETHERITE_HELMET).getHandle());
           e.setItemSlot(EquipmentSlot.CHEST, new ExItemStack(Material.NETHERITE_CHESTPLATE).getHandle());
@@ -72,9 +71,10 @@ public class CompressedZombie extends MobDefMob<Zombie> {
         .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, speed, false))
         .apply(b -> b.applyOnEntity(e -> {
           BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.8, false,
-              PathCostCalc.BREAKABLE_MATERIALS);
+              MobDefServer.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), speed, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), speed, breakBlock,
+              MobDefServer.BREAK_LEVEL));
           b.addPathfinderGoal(4, f -> breakBlock);
         }))
         .addPathfinderGoal(3, e -> new RandomStrollGoal(e, speed))

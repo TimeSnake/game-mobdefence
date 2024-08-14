@@ -7,7 +7,6 @@ package de.timesnake.game.mobdefence.mob;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.ZombieBuilder;
 import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
@@ -37,14 +36,15 @@ public class MobDefBabyZombie extends ArmorMob<Zombie> {
             e.setHealth(30);
           }
           e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
-              .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobManager.MOB_DAMAGE_MULTIPLIER);
+              .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobDefServer.MOB_DAMAGE_MULTIPLIER);
         })
         .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, this.currentWave < 15 ? 1.2 : 1.3, false))
         .apply(b -> b.applyOnEntity(e -> {
           BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.3, false,
-              PathCostCalc.BREAKABLE_MATERIALS);
+              MobDefServer.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1.2, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1.2, breakBlock,
+              MobDefServer.BREAK_LEVEL));
           b.addPathfinderGoal(4, f -> breakBlock);
         }))
         .addPathfinderGoal(3, e -> new RandomStrollGoal(e, 1.2))

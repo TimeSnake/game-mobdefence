@@ -10,8 +10,12 @@ import de.timesnake.library.entities.pathfinder.UpdatedLocationGoal;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 
-public class HeightPathfinder<Break extends Goal & LocationTargetable> extends UpdatedLocationGoal {
+import java.util.ArrayList;
+import java.util.List;
+
+public class HeightPathGoal<Break extends Goal & LocationTargetable> extends UpdatedLocationGoal {
 
   private final HeightMap map;
   private final int maxBlocksToNextLocation;
@@ -20,9 +24,8 @@ public class HeightPathfinder<Break extends Goal & LocationTargetable> extends U
 
   private HeightBlock lastBlock;
 
-  public HeightPathfinder(Mob mob, HeightMap map, int maxBlocksToNextLocation, double walkSpeed,
-                          double trackingDistance,
-                          double minDistance, Break breakBlock, int maxPathCostsBeforeBreak) {
+  public HeightPathGoal(Mob mob, HeightMap map, int maxBlocksToNextLocation, double walkSpeed, double trackingDistance,
+                        double minDistance, Break breakBlock, int maxPathCostsBeforeBreak) {
     super(mob, walkSpeed, trackingDistance, minDistance);
     this.map = map;
     this.maxBlocksToNextLocation = maxBlocksToNextLocation;
@@ -57,15 +60,21 @@ public class HeightPathfinder<Break extends Goal & LocationTargetable> extends U
     }
 
     if (nextBlock != null) {
-      if (nextBlock.level() - currentBlock.level() - this.maxBlocksToNextLocation + 1 >= this.maxPathCostsBeforeBreak) {
-        ExLocation firstNextLoc = currentBlock.next().block().getLocation();
+      HeightBlock firstNextBlock = currentBlock.next();
+
+      List<BreakableBlock> blocksToBreak = new ArrayList<>();
+      blocksToBreak.addAll(currentBlock.blocksToBreakForNext());
+      blocksToBreak.addAll(firstNextBlock.blocksToBreak());
+
+      if (!blocksToBreak.isEmpty()) {
         if (this.breakBlock != null) {
-          this.breakBlock.setTarget(firstNextLoc.getX(), firstNextLoc.getY(), firstNextLoc.getZ());
+          Block blockToBreak = blocksToBreak.get(0).block().getBlock();
+          this.breakBlock.setTarget(blockToBreak.getX(), blockToBreak.getY(), blockToBreak.getZ());
+          return null;
         }
-        return null;
       } else {
         if (this.breakBlock != null) {
-          this.breakBlock.setTarget(null, null, null);
+          this.breakBlock.clearTarget();
         }
       }
     }

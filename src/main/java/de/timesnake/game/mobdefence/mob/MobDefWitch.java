@@ -7,7 +7,6 @@ package de.timesnake.game.mobdefence.mob;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.WitchBuilder;
 import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
@@ -44,16 +43,17 @@ public class MobDefWitch extends MobDefMob<net.minecraft.world.entity.monster.Wi
         .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
         .apply(b -> b.applyOnEntity(e -> {
           BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.2, false,
-              PathCostCalc.BREAKABLE_MATERIALS);
+              MobDefServer.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1.5, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1.5, breakBlock,
+              MobDefServer.BREAK_LEVEL));
           b.addPathfinderGoal(4, f -> breakBlock);
         }))
         .addTargetGoal(1, e -> new HurtByTargetGoal(e, Monster.class))
-        .addTargetGoals(2, MobDefMob.FIRST_DEFENDER_CLASSES.stream()
+        .addTargetGoals(2, MobDefServer.FIRST_DEFENDER_CLASSES.stream()
             .map(defClass -> e -> new NearestAttackableTargetGoal<>(e, defClass, 10, true, false, null)))
         .addTargetGoal(3, e -> new NearestAttackableTargetGoal<>(e, Player.class, 10, true, false, null))
-        .addTargetGoals(3, MobDefMob.SECOND_DEFENDER_CLASSES.stream()
+        .addTargetGoals(3, MobDefServer.SECOND_DEFENDER_CLASSES.stream()
             .map(defClass -> e -> new NearestAttackableTargetGoal<>(e, defClass, 10, true, false, null)))
         .build(world.getHandle());
 

@@ -8,7 +8,6 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.StrayBuilder;
 import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
@@ -37,7 +36,7 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
 
     this.entity = new StrayBuilder()
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
-            .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
+            .setBaseValue(2 + this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
         .setMaxHealthAndHealth(this.currentWave * 70)
         .applyOnEntity(e -> {
           e.setItemSlot(EquipmentSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET).getHandle());
@@ -46,8 +45,8 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
           e.setItemSlot(EquipmentSlot.FEET, new ExItemStack(Material.GOLDEN_BOOTS).getHandle());
           e.setItemSlot(EquipmentSlot.MAINHAND,
               new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_FIRE, 2)
-                  .addExEnchantment(Enchantment.ARROW_DAMAGE, 7)
-                  .addExEnchantment(Enchantment.ARROW_KNOCKBACK, 6).getHandle());
+                  .addExEnchantment(Enchantment.ARROW_DAMAGE, 5)
+                  .addExEnchantment(Enchantment.ARROW_KNOCKBACK, 4).getHandle());
         })
         .applyOnEntity(e -> {
           e.getBukkitCreature().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
@@ -75,16 +74,16 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
 
               Stray stray = new StrayBuilder()
                   .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
-                      .setBaseValue(2 + BossSkeletonStray.this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
+                      .setBaseValue(2 + BossSkeletonStray.this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
                   .applyOnEntity(e -> e.getBukkitCreature().setNoDamageTicks(1))
                   .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.BOW).getHandle()))
                   .setMaxHealthAndHealth(health)
                   .apply(b -> b.applyOnEntity(e -> {
                     BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.5, false,
-                        PathCostCalc.BREAKABLE_MATERIALS);
+                        MobDefServer.BREAKABLE_MATERIALS);
 
                     b.addPathfinderGoal(4, f -> getCorePathfinder(f, HeightMapManager.MapType.DEFAULT, 1, breakBlock,
-                        BREAK_LEVEL));
+                        MobDefServer.BREAK_LEVEL));
                     b.addPathfinderGoal(4, f -> breakBlock);
                   }))
                   .addPathfinderGoal(2, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1.1, 1.1))
@@ -102,9 +101,10 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
         })
         .apply(b -> b.applyOnEntity(e -> {
           BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.4, false,
-              PathCostCalc.BREAKABLE_MATERIALS);
+              MobDefServer.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1.3, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1.3, breakBlock,
+              MobDefServer.BREAK_LEVEL));
           b.addPathfinderGoal(4, f -> breakBlock);
         }))
         .addPathfinderGoal(3, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1, 1))
