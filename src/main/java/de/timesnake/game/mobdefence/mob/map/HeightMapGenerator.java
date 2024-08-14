@@ -30,6 +30,7 @@ public class HeightMapGenerator {
   private final PathCostCalc pathCostCalc;
 
   private boolean running = false;
+
   private Future<Collection<HeightBlock>> currentFuture;
   private final Set<ExBlock> seenBlocks = ConcurrentHashMap.newKeySet();
 
@@ -60,7 +61,7 @@ public class HeightMapGenerator {
     Set<HeightBlock> heightBlocks = ConcurrentHashMap.newKeySet();
     Map<Integer, List<HeightBlock>> blocksByHeight = new ConcurrentHashMap<>();
 
-    HeightBlock core = new HeightBlock(0, this.startLocation.getExBlock(), null, null, null);
+    HeightBlock core = new HeightBlock(0, this.startLocation.getExBlock(), null, List.of(), List.of());
     blocksByHeight.put(0, List.of(core));
     heightBlocks.add(core);
 

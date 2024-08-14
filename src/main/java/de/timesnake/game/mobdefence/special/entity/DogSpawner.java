@@ -6,7 +6,7 @@ package de.timesnake.game.mobdefence.special.entity;
 
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
@@ -115,8 +115,8 @@ public class DogSpawner extends EntitySpawner {
         .addPathfinderGoal(10, e -> new RandomLookAroundGoal(e))
         .addTargetGoal(1, e -> new OwnerHurtByTargetGoal(e))
         .addTargetGoal(2, e -> new OwnerHurtTargetGoal(e))
-        .addTargetGoal(3, e -> new HurtByTargetGoal(e, MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)))
-        .addTargetGoals(4, MobDefMob.ATTACKER_ENTITY_CLASSES.stream()
+        .addTargetGoal(3, e -> new HurtByTargetGoal(e, MobDefServer.DEFENDER_CLASSES.toArray(Class[]::new)))
+        .addTargetGoals(4, MobDefServer.ATTACKER_ENTITY_CLASSES.stream()
             .map(c -> e -> new NearestAttackableTargetGoal<>(e, c, true, false)))
         .build(user.getExWorld().getHandle());
   }

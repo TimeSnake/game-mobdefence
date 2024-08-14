@@ -5,7 +5,6 @@
 package de.timesnake.game.mobdefence.special.entity;
 
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
@@ -59,8 +58,8 @@ public class Snowman extends BlockSpawner implements Listener {
         .addPathfinderGoal(3, e -> new LookAtPlayerGoal(e, Player.class, 6.0F))
         .addPathfinderGoal(4, e -> new RandomStrollGoal(e, 0))
         .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
-        .addTargetGoal(1, e -> new HurtByTargetGoal(e, MobDefMob.DEFENDER_CLASSES.toArray(Class[]::new)))
-        .addTargetGoals(2, MobDefMob.ATTACKER_ENTITY_CLASSES.stream()
+        .addTargetGoal(1, e -> new HurtByTargetGoal(e, MobDefServer.DEFENDER_CLASSES.toArray(Class[]::new)))
+        .addTargetGoals(2, MobDefServer.ATTACKER_ENTITY_CLASSES.stream()
             .map(c -> e -> new NearestAttackableTargetGoal<>(e, c, true, false)))
         .build(((CraftWorld) location.getWorld()).getHandle());
 
@@ -77,7 +76,7 @@ public class Snowman extends BlockSpawner implements Listener {
       return;
     }
 
-    if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
+    if (!MobDefServer.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
       e.setCancelled(true);
       return;
     }

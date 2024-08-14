@@ -8,15 +8,12 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryInteractListener;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.game.mobdefence.user.MobDefUser;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -26,6 +23,10 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SwingSword extends CooldownWeapon implements UserInventoryInteractListener {
 
@@ -113,7 +114,7 @@ public class SwingSword extends CooldownWeapon implements UserInventoryInteractL
     Location loc = user.getLocation().clone().add(0, -0.35, 0);
 
     for (Entity entity : loc.getWorld().getNearbyEntities(loc, radius, 1.5, radius,
-        e -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType()))) {
+        e -> MobDefServer.ATTACKER_ENTITY_TYPES.contains(e.getType()))) {
 
       Vector vec = entity.getLocation().toVector().subtract(loc.toVector());
       double knockback = 2 / (vec.length() > 1 ? vec.length() : 1D);

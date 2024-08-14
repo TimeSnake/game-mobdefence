@@ -7,7 +7,7 @@ package de.timesnake.game.mobdefence.special.weapon.bullet;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.UserSet;
 import org.bukkit.Location;
@@ -77,7 +77,7 @@ public abstract class ExProjectile implements Listener {
 
       e.setCancelled(true);
 
-      if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
+      if (!MobDefServer.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
         return;
       }
 

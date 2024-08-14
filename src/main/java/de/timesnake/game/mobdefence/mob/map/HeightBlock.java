@@ -5,22 +5,15 @@
 package de.timesnake.game.mobdefence.mob.map;
 
 import de.timesnake.basic.bukkit.util.world.ExBlock;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
 
-public record HeightBlock(int level, ExBlock block, HeightBlock next,
-                          List<BreakableBlock> blocksToBreak,
-                          List<BreakableBlock> blocksToBreakForNext) {
-
-  public HeightBlock(int level, ExBlock block, HeightBlock next, List<BreakableBlock> blocksToBreak,
-                     List<BreakableBlock> blocksToBreakForNext) {
-    this.level = level;
-    this.block = block;
-    this.next = next;
-    this.blocksToBreak = blocksToBreak;
-    this.blocksToBreakForNext = blocksToBreakForNext;
-  }
+public record HeightBlock(int level, @NotNull ExBlock block, @Nullable HeightBlock next,
+                          @NotNull List<BreakableBlock> blocksToBreak,
+                          @NotNull List<BreakableBlock> blocksToBreakForNext) {
 
   public boolean hasNext() {
     return this.next != null;

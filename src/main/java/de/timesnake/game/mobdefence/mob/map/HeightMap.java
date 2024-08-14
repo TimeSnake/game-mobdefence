@@ -8,9 +8,9 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExBlock;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -18,6 +18,10 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class HeightMap {
+
+  private static final ExecutorService executorService =
+      new ThreadPoolExecutor(HeightMapManager.MapType.values().length, 4, 10L,
+          TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 
   private final Logger logger;
 
@@ -31,7 +35,8 @@ public class HeightMap {
 
   private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
-  private BukkitTask updateTask;
+  private boolean updating = false;
+  private boolean updateQueued = false;
 
   public HeightMap(String name, ExLocation coreLocation, PathCostCalc pathCostCalc) {
     this.name = name;
@@ -41,45 +46,53 @@ public class HeightMap {
   }
 
   public void update() {
-    this.updateTask = Server.runTaskAsynchrony(() -> {
+    if (updating) {
+      this.updateQueued = true;
+      return;
+    }
+    executorService.execute(this::performUpdate);
+  }
 
-      Future<Collection<HeightBlock>> future = this.generator.invokeUpdate();
+  private void performUpdate() {
+    HeightMap.this.updating = true;
+    do {
+      HeightMap.this.updateQueued = false;
+      Future<Collection<HeightBlock>> future = HeightMap.this.generator.invokeUpdate();
       try {
         Collection<HeightBlock> blocks = future.get(30, TimeUnit.SECONDS);
         try {
-          this.lock.writeLock().lock();
-          this.heightBlocksByBlock.clear();
-          this.blocksByHeight.clear();
+          HeightMap.this.lock.writeLock().lock();
+          HeightMap.this.heightBlocksByBlock.clear();
+          HeightMap.this.blocksByHeight.clear();
           blocks.forEach(b -> {
-            this.heightBlocksByBlock.put(b.block(), b);
-            this.blocksByHeight.computeIfAbsent(b.level(), k -> new ArrayList<>()).add(b);
+            HeightMap.this.heightBlocksByBlock.put(b.block(), b);
+            HeightMap.this.blocksByHeight.computeIfAbsent(b.level(), k -> new ArrayList<>()).add(b);
           });
         } finally {
-          this.lock.writeLock().unlock();
+          HeightMap.this.lock.writeLock().unlock();
         }
 
       } catch (InterruptedException | ExecutionException | TimeoutException e) {
-        this.logger.warn("Exception while updating heightmap", e);
+        HeightMap.this.logger.warn("Exception while updating heightmap", e);
         future.cancel(true);
       }
+    } while (HeightMap.this.updateQueued);
+    HeightMap.this.updating = false;
+  }
 
+  public static void stopUpdater() {
+    Server.runTaskAsynchrony(() -> {
+      executorService.shutdownNow();
     }, GameMobDefence.getPlugin());
   }
 
-  public void stopUpdater() {
-    if (this.updateTask != null) {
-      this.updateTask.cancel();
-    }
-  }
-
   public void reset() {
-    this.stopUpdater();
     this.heightBlocksByBlock.clear();
     this.blocksByHeight.clear();
   }
 
   public HeightBlock getHeightBlock(ExLocation current) {
-    if (PathCostCalc.ROUNDED_BLOCK_MATERIALS.contains(current.getBlock().getType())) {
+    if (MobDefServer.ROUNDED_BLOCK_MATERIALS.contains(current.getBlock().getType())) {
       current = current.getExBlock().getLocation().add(0, 1, 0);
     }
 
@@ -91,39 +104,6 @@ public class HeightMap {
       this.lock.readLock().unlock();
     }
     return heightBlock;
-  }
-
-  public HeightBlock getHeightBlock(ExLocation current, int radius, boolean lowerLevel) {
-    return this.getHeightBlock(this.getHeightBlock(current), radius, lowerLevel);
-  }
-
-  public HeightBlock getHeightBlock(HeightBlock current, int radius, boolean lowerLevel) {
-    if (current == null) {
-      return null;
-    }
-
-    List<HeightBlock> blocks = new ArrayList<>();
-
-    for (int x = 0; x <= radius; x++) {
-      for (int y = 0; y <= radius; y++) {
-        for (int z = 0; z <= radius; z++) {
-          HeightBlock block = this.getHeightBlock(current.block().getLocation().clone().add(x, y, z));
-          if (block == null) {
-            continue;
-          }
-
-          if (block.level() == current.level() || (lowerLevel && block.level() < current.level())) {
-            blocks.add(block);
-          }
-        }
-      }
-    }
-
-    if (blocks.isEmpty()) {
-      return current;
-    }
-
-    return blocks.get(Server.getRandom().nextInt(blocks.size()));
   }
 
   public Map<Integer, List<HeightBlock>> getBlocksByHeight() {
@@ -142,4 +122,5 @@ public class HeightMap {
   public ExLocation getCoreLocation() {
     return coreLocation;
   }
+
 }

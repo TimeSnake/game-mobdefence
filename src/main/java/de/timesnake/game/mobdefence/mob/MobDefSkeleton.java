@@ -8,7 +8,6 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.SkeletonBuilder;
 import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
@@ -47,7 +46,7 @@ public class MobDefSkeleton extends ArmorMob<Skeleton> {
 
     this.entity = new SkeletonBuilder()
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
-            .setBaseValue(2 + this.currentWave / 5D * MobManager.MOB_DAMAGE_MULTIPLIER))
+            .setBaseValue(2 + this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
         .setMaxHealthAndHealth(health)
         .apply(b -> b.applyOnEntity(e -> {
           if (this.currentWave < 3) {
@@ -100,9 +99,9 @@ public class MobDefSkeleton extends ArmorMob<Skeleton> {
         }))
         .apply(b -> b.applyOnEntity(e -> {
           BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.4, false,
-              PathCostCalc.BREAKABLE_MATERIALS);
+              MobDefServer.BREAKABLE_MATERIALS);
 
-          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1, breakBlock, BREAK_LEVEL));
+          b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), 1, breakBlock, MobDefServer.BREAK_LEVEL));
           b.addPathfinderGoal(4, f -> breakBlock);
         }))
         .addPathfinderGoal(2, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1, 1))

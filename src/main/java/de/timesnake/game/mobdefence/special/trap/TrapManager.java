@@ -10,13 +10,7 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExBlock;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.entity.EntityType;
@@ -25,6 +19,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.*;
 
 public class TrapManager implements Listener {
 
@@ -106,7 +102,7 @@ public class TrapManager implements Listener {
         Collection<LivingEntity> entities = ((Collection) loc.getWorld()
             .getNearbyEntities(loc,
                 trap.getRange(), 1, trap.getRange(),
-                (e) -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType())));
+                (e) -> MobDefServer.ATTACKER_ENTITY_TYPES.contains(e.getType())));
 
         if (entities.size() >= trap.getMobAmount()) {
           if (trap.trigger(entities)) {

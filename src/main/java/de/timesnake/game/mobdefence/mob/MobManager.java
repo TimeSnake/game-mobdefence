@@ -27,20 +27,6 @@ import java.util.*;
 
 public class MobManager implements Listener {
 
-  public static final double SPAWN_AMOUNT_MULTIPLIER = 5;
-  public static final double SPAWN_AMOUNT_INCREASE = 1.6;
-
-  public static final double SPAWN_TIME_MULTIPLIER = 17;
-
-  public static final int MIN_GROUP_SIZE = 5;
-  public static final int MAX_GROUP_SIZE = 7;
-  public static final double GROUP_SIZE_INCREASE = 1.4;
-  public static final double GROUP_SIZE_PLAYER_MULTIPLIER = 1.7;
-
-  public static final int MOB_LIMIT = 50;
-
-  public static final double MOB_DAMAGE_MULTIPLIER = 1;
-
   private final Logger logger = LogManager.getLogger("mob-def.mob.manager");
 
   private final LinkedList<MobGroup> mobGroups = new LinkedList<>();
@@ -70,7 +56,7 @@ public class MobManager implements Listener {
 
   private void checkRespawn() {
     int alive = MobDefServer.getMap().getWorld().getEntitiesByClasses(
-            MobDefMob.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0])).size();
+        MobDefServer.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0])).size();
 
     if (alive <= 3 * MobDefServer.getPlayerAmount() * Math.sqrt(MobDefServer.getWaveNumber())) {
       boolean allSpawned = true;
@@ -92,11 +78,11 @@ public class MobManager implements Listener {
 
   @EventHandler
   public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-    if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
+    if (!MobDefServer.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
       return;
     }
 
-    if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getDamager().getType())) {
+    if (!MobDefServer.ATTACKER_ENTITY_TYPES.contains(e.getDamager().getType())) {
       return;
     }
 
@@ -111,13 +97,13 @@ public class MobManager implements Listener {
 
   public boolean compressGroups() {
     return MobDefServer.getMap().getWorld()
-        .getEntitiesByClasses(MobDefMob.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0]))
-        .size() > MOB_LIMIT;
+               .getEntitiesByClasses(MobDefServer.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0]))
+               .size() > MobDefServer.MOB_LIMIT;
   }
 
   public Collection<Entity> getAliveMobs() {
     return MobDefServer.getMap().getWorld().getEntitiesByClasses(
-        MobDefMob.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0]));
+        MobDefServer.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0]));
   }
 
   // spawn tasks
@@ -150,16 +136,17 @@ public class MobManager implements Listener {
     this.logger.info("Spawning wave {}...", wave);
     this.mobGroups.clear();
 
-    int totalMobAmount = (int) (SPAWN_AMOUNT_MULTIPLIER * Math.sqrt(wave) * SPAWN_AMOUNT_INCREASE * players
+    int totalMobAmount =
+        (int) (MobDefServer.SPAWN_AMOUNT_MULTIPLIER * Math.sqrt(wave) * MobDefServer.SPAWN_AMOUNT_INCREASE * players
             * this.nextLimitedGaussian(0.2));
     int mobAmount = totalMobAmount;
 
-    int totalTime = (int) (Math.log(totalMobAmount) * SPAWN_TIME_MULTIPLIER);
+    int totalTime = (int) (Math.log(totalMobAmount) * MobDefServer.SPAWN_TIME_MULTIPLIER);
 
-    int minGroupSize = (int) (MIN_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE
-            + playerSqrt * GROUP_SIZE_PLAYER_MULTIPLIER);
-    int maxGroupSize = ((int) (MAX_GROUP_SIZE + waveSqrt * GROUP_SIZE_INCREASE
-            + playerSqrt * GROUP_SIZE_PLAYER_MULTIPLIER));
+    int minGroupSize = (int) (MobDefServer.MIN_GROUP_SIZE + waveSqrt * MobDefServer.GROUP_SIZE_INCREASE
+                              + playerSqrt * MobDefServer.GROUP_SIZE_PLAYER_MULTIPLIER);
+    int maxGroupSize = ((int) (MobDefServer.MAX_GROUP_SIZE + waveSqrt * MobDefServer.GROUP_SIZE_INCREASE
+                               + playerSqrt * MobDefServer.GROUP_SIZE_PLAYER_MULTIPLIER));
 
     List<Integer> groupSizes = new ArrayList<>();
 

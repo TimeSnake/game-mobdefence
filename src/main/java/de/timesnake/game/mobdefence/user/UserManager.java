@@ -14,10 +14,8 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
 import de.timesnake.game.mobdefence.mob.map.HeightBlock;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.special.CoreRegeneration;
@@ -134,7 +132,7 @@ public class UserManager implements Listener {
 
     Material type = e.getBlock().getType();
 
-    if (!(PathCostCalc.BREAKABLE_MATERIALS.contains(type) || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
+    if (!(MobDefServer.BREAKABLE_MATERIALS.contains(type) || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
       e.setCancelled(true);
     } else {
       ExItemStack item = MobDefKit.BLOCK_ITEM_BY_TYPE.get(type);
@@ -160,7 +158,7 @@ public class UserManager implements Listener {
       return;
     }
 
-    if (!PathCostCalc.BREAKABLE_MATERIALS.contains(type) && !TrapManager.TRAP_MATERIALS.contains(type) && !type.equals(Material.LADDER)) {
+    if (!MobDefServer.BREAKABLE_MATERIALS.contains(type) && !TrapManager.TRAP_MATERIALS.contains(type) && !type.equals(Material.LADDER)) {
       e.setCancelled(true);
       return;
     }
@@ -207,7 +205,7 @@ public class UserManager implements Listener {
         e.setDamage(0);
       }
 
-      if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
+      if (!MobDefServer.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
         e.setCancelled(true);
         e.setDamage(0);
       }
@@ -215,14 +213,14 @@ public class UserManager implements Listener {
 
     if (e.getDamager() instanceof Projectile
         && ((Projectile) e.getDamager()).getShooter() instanceof Player) {
-      if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
+      if (!MobDefServer.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
         e.setCancelled(true);
         e.setDamage(0);
       }
     }
 
     if (e.getDamager().getType().equals(EntityType.CREEPER)
-        && MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
+        && MobDefServer.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
       e.setDamage(0);
       e.setCancelled(true);
     }

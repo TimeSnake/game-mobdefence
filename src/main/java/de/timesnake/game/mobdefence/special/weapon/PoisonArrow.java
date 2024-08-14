@@ -10,7 +10,7 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryInteractEvent;
 import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryInteractListener;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.Trade;
@@ -72,7 +72,7 @@ public class PoisonArrow extends SpecialWeapon implements UserInventoryInteractL
       arrow.getWorld()
           .playEffect(arrow.getLocation(), Effect.POTION_BREAK, new Potion(PotionType.POISON));
       for (Entity entity : arrow.getNearbyEntities(3, 3, 3)) {
-        if (MobDefMob.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
+        if (MobDefServer.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
           ((LivingEntity) entity).addPotionEffect(
               new PotionEffect(PotionEffectType.POISON, 20 * 3, 1));
         }

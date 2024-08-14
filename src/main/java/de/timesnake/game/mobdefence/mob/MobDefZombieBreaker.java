@@ -8,7 +8,6 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
-import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.library.entities.entity.ZombieBuilder;
 import de.timesnake.library.entities.pathfinder.BreakBlockGoal;
@@ -25,7 +24,7 @@ import org.bukkit.attribute.Attribute;
 public class MobDefZombieBreaker extends ArmorMob<Zombie> {
 
   public MobDefZombieBreaker(ExLocation spawn, int currentWave) {
-    super(Type.MELEE, HeightMapManager.MapType.WALL_FINDER, 0, spawn, currentWave);
+    super(Type.MELEE, HeightMapManager.MapType.BREAKER, 0, spawn, currentWave);
   }
 
   @Override
@@ -43,13 +42,11 @@ public class MobDefZombieBreaker extends ArmorMob<Zombie> {
     this.entity = new ZombieBuilder()
         .setMaxHealthAndHealth(health)
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
-            .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobManager.MOB_DAMAGE_MULTIPLIER))
+            .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobDefServer.MOB_DAMAGE_MULTIPLIER))
         .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS).setBaseValue(0.3))
         .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_PICKAXE).getHandle()))
         .apply(b -> b.applyOnEntity(e -> {
-          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.3, true,
-              PathCostCalc.BREAKABLE_MATERIALS_2);
-
+          BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.3, true, MobDefServer.BREAKABLE_MATERIALS_2);
           b.addPathfinderGoal(4, f -> getCorePathfinder(f, this.getMapType(), this.currentWave > 6 ? 1.3 : 1.2, breakBlock, 5));
           b.addPathfinderGoal(4, f -> breakBlock);
         }))

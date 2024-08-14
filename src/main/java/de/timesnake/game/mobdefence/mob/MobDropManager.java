@@ -16,11 +16,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 public class MobDropManager implements Listener {
 
-  private static final double EMERALD_CHANCE = 0.08;
-  private static final double GOLD_CHANCE = 0.15;
-  private static final double SILVER_CHANCE = 0.4;
-  private static final double BRONZE_CHANCE = 0.6;
-
   public MobDropManager() {
     Server.registerListener(this, GameMobDefence.getPlugin());
   }
@@ -30,22 +25,22 @@ public class MobDropManager implements Listener {
     e.setDroppedExp(0);
     e.getDrops().clear();
 
-    if (MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
+    if (MobDefServer.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
       if (e.getEntityType().equals(EntityType.ENDERMITE) || e.getEntityType()
           .equals(EntityType.SILVERFISH)) {
         return;
       }
 
-      if (Math.random() < EMERALD_CHANCE / MobDefServer.getPlayerAmount()) {
+      if (Math.random() < MobDefServer.EMERALD_CHANCE / MobDefServer.getPlayerAmount()) {
         e.getDrops().add(new Price(1, Currency.EMERALD).asItem());
       }
-      if (Math.random() < GOLD_CHANCE) {
+      if (Math.random() < MobDefServer.GOLD_CHANCE) {
         e.getDrops().add(new Price(1, Currency.GOLD).asItem());
       }
-      if (Math.random() < SILVER_CHANCE) {
+      if (Math.random() < MobDefServer.SILVER_CHANCE) {
         e.getDrops().add(new Price(1, Currency.SILVER).asItem());
       }
-      if (Math.random() < BRONZE_CHANCE) {
+      if (Math.random() < MobDefServer.BRONZE_CHANCE) {
         e.getDrops().add(new Price(1, Currency.BRONZE).asItem());
       }
     }

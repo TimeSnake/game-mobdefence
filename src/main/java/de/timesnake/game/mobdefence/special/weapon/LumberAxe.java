@@ -8,7 +8,7 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
@@ -104,7 +104,7 @@ public class LumberAxe extends SpecialWeapon implements Listener {
 
   @EventHandler
   public void onEntityDeath(EntityDeathEvent e) {
-    if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
+    if (!MobDefServer.ATTACKER_ENTITY_TYPES.contains(e.getEntityType())) {
       return;
     }
 

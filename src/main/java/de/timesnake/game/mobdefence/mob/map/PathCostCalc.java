@@ -5,62 +5,15 @@
 package de.timesnake.game.mobdefence.mob.map;
 
 import de.timesnake.basic.bukkit.util.world.ExBlock;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 
 public abstract class PathCostCalc implements Function<ShortPath, PathCostResult> {
-
-  public static final Set<Material> ROUNDED_BLOCK_MATERIALS = new HashSet<>();
-  public static final Set<Material> EMPTY_MATERIALS = new HashSet<>();
-
-  public static final Set<Material> BREAKABLE_MATERIALS = Set.of(
-      Material.OAK_PLANKS,
-      Material.OAK_SLAB,
-      Material.IRON_BARS,
-      Material.OAK_FENCE,
-      Material.OAK_FENCE_GATE,
-      Material.COBBLESTONE_WALL);
-
-  public static final Set<Material> BREAKABLE_MATERIALS_2 = new HashSet<>();
-
-  static {
-    ROUNDED_BLOCK_MATERIALS.addAll(Tag.SLABS.getValues());
-    ROUNDED_BLOCK_MATERIALS.addAll(Tag.STAIRS.getValues());
-
-    EMPTY_MATERIALS.add(Material.AIR);
-    EMPTY_MATERIALS.addAll(Tag.CLIMBABLE.getValues());
-    EMPTY_MATERIALS.addAll(Tag.CROPS.getValues());
-    EMPTY_MATERIALS.addAll(Tag.WOOL_CARPETS.getValues());
-    EMPTY_MATERIALS.addAll(Tag.SIGNS.getValues());
-    EMPTY_MATERIALS.addAll(Tag.BANNERS.getValues());
-    EMPTY_MATERIALS.addAll(Tag.BUTTONS.getValues());
-    EMPTY_MATERIALS.addAll(Tag.PRESSURE_PLATES.getValues());
-    EMPTY_MATERIALS.addAll(Tag.RAILS.getValues());
-    EMPTY_MATERIALS.addAll(Tag.FLOWERS.getValues());
-    EMPTY_MATERIALS.addAll(Tag.SAPLINGS.getValues());
-    EMPTY_MATERIALS.addAll(Tag.RAILS.getValues());
-    EMPTY_MATERIALS.add(Material.SNOW);
-    EMPTY_MATERIALS.add(Material.WATER);
-    EMPTY_MATERIALS.add(Material.LAVA);
-    EMPTY_MATERIALS.add(Material.TRIPWIRE);
-    EMPTY_MATERIALS.addAll(List.of(Material.GRASS, Material.TALL_GRASS, Material.ARMOR_STAND));
-
-    BREAKABLE_MATERIALS_2.addAll(PathCostCalc.BREAKABLE_MATERIALS);
-    BREAKABLE_MATERIALS_2.addAll(Tag.STONE_BRICKS.getValues());
-    BREAKABLE_MATERIALS_2.addAll(Tag.FENCES.getValues());
-    BREAKABLE_MATERIALS_2.addAll(Tag.WOODEN_TRAPDOORS.getValues());
-    BREAKABLE_MATERIALS_2.addAll(Tag.WOODEN_DOORS.getValues());
-    BREAKABLE_MATERIALS_2.addAll(Tag.WOODEN_SLABS.getValues());
-    BREAKABLE_MATERIALS_2.addAll(Tag.PLANKS.getValues());
-    BREAKABLE_MATERIALS_2.addAll(Tag.WALLS.getValues());
-  }
 
   public static class MaxPositiveDelta extends PathCostCalc {
 
@@ -522,7 +475,7 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
       if (this.isBreakable(material)) {
         return this.getCostsForBreakableMaterial(material);
       }
-      if (EMPTY_MATERIALS.contains(material)) {
+      if (MobDefServer.EMPTY_MATERIALS.contains(material)) {
         return 0;
       }
       return null;
@@ -543,7 +496,7 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
   }
 
   public boolean isEmpty(Material material) {
-    return EMPTY_MATERIALS.contains(material);
+    return MobDefServer.EMPTY_MATERIALS.contains(material);
   }
 
   public boolean isEmpty(Block block) {
@@ -567,7 +520,7 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
   }
 
   public boolean isSolid(Material material) {
-    return !EMPTY_MATERIALS.contains(material);
+    return !MobDefServer.EMPTY_MATERIALS.contains(material);
   }
 
   public boolean isSolid(ExBlock block) {

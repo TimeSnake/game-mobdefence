@@ -9,14 +9,12 @@ import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.event.EntityDamageByUserEvent;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.UpgradeableItem;
 import de.timesnake.game.mobdefence.user.MobDefUser;
-import java.util.HashSet;
-import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -27,6 +25,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class FireHoe extends CooldownWeapon implements Listener {
 
@@ -108,7 +109,7 @@ public class FireHoe extends CooldownWeapon implements Listener {
 
   @EventHandler
   public void onEntityDamageByEntity(EntityDamageByUserEvent event) {
-    if (!MobDefMob.ATTACKER_ENTITY_TYPES.contains(event.getEntity().getType())) {
+    if (!MobDefServer.ATTACKER_ENTITY_TYPES.contains(event.getEntity().getType())) {
       return;
     }
 
@@ -158,7 +159,7 @@ public class FireHoe extends CooldownWeapon implements Listener {
     }
 
     for (LivingEntity entity : user.getLocation().getNearbyLivingEntities(5,
-        e -> MobDefMob.ATTACKER_ENTITY_TYPES.contains(e.getType()))) {
+        e -> MobDefServer.ATTACKER_ENTITY_TYPES.contains(e.getType()))) {
       Vector vec = entity.getLocation().toVector().subtract(user.getLocation().toVector());
       float angle = vec.angle(new Vector(0, 0, 1));
 

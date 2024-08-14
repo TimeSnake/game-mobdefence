@@ -8,8 +8,7 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryInteractListener;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
-import de.timesnake.game.mobdefence.mob.MobDefMob;
-import de.timesnake.game.mobdefence.mob.map.PathCostCalc;
+import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelType;
 import de.timesnake.game.mobdefence.shop.Price;
@@ -149,7 +148,7 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
         vec.multiply(-1);
       }
 
-      if (!PathCostCalc.EMPTY_MATERIALS.contains(
+      if (!MobDefServer.EMPTY_MATERIALS.contains(
           stand.getEyeLocation().add(vec).getBlock().getType())) {
         if (counter.get() >= 1) {
           this.dropBoomerang(stand);
@@ -162,7 +161,7 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
 
       if (damageCounter.get() % 2 == 0) {
         for (LivingEntity entity : loc.getNearbyLivingEntities(1, 2)) {
-          if (MobDefMob.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
+          if (MobDefServer.ATTACKER_ENTITY_TYPES.contains(entity.getType())) {
             entity.damage(damage * 2, user.getPlayer());
           }
         }

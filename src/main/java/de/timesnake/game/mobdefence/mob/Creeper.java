@@ -22,7 +22,7 @@ import net.minecraft.world.entity.player.Player;
 public class Creeper extends MobDefMob<net.minecraft.world.entity.monster.Creeper> {
 
   public Creeper(ExLocation spawn, int currentWave) {
-    super(Type.OTHER, HeightMapManager.MapType.WALL_FINDER, 0, spawn, currentWave);
+    super(Type.OTHER, HeightMapManager.MapType.BREAKER, 0, spawn, currentWave);
   }
 
   @Override
@@ -42,11 +42,11 @@ public class Creeper extends MobDefMob<net.minecraft.world.entity.monster.Creepe
           LocationSwellGoal swellGoal = new LocationSwellGoal(e, 4, 7);
           b.addPathfinderGoal(1, f -> swellGoal);
           if (this.currentWave > 10) {
-            b.addPathfinderGoal(2, f -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.4, swellGoal, 5));
+            b.addPathfinderGoal(2, f -> getCorePathfinder(e, HeightMapManager.MapType.BREAKER, 1.4, swellGoal, 5));
           } else if (this.currentWave > 5) {
-            b.addPathfinderGoal(2, f -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.3, swellGoal, 5));
+            b.addPathfinderGoal(2, f -> getCorePathfinder(e, HeightMapManager.MapType.BREAKER, 1.3, swellGoal, 5));
           } else {
-            b.addPathfinderGoal(2, f -> getCorePathfinder(e, HeightMapManager.MapType.WALL_FINDER, 1.2, swellGoal, 5));
+            b.addPathfinderGoal(2, f -> getCorePathfinder(e, HeightMapManager.MapType.BREAKER, 1.2, swellGoal, 5));
           }
         }))
         .addPathfinderGoal(3, e -> new SwellGoal(e, 3, 5))
