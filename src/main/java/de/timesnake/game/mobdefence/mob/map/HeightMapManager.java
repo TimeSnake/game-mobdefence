@@ -48,6 +48,7 @@ public class HeightMapManager implements Listener {
 
   public enum MapType {
     DEFAULT(new PathCostCalc.And(
+        new PathCostCalc.MaxPositiveDelta(1),
         new PathCostCalc.StartGroundIsSolid(),
         new PathCostCalc.PathIsBreakableOrEmptyOnY() {
           @Override
@@ -96,6 +97,7 @@ public class HeightMapManager implements Listener {
 
      */
     WALL_FINDER(new PathCostCalc.And(
+        new PathCostCalc.MaxPositiveDelta(1),
         new PathCostCalc.StartGroundIsSolid(),
         new PathCostCalc.PathIsBreakableOrEmptyOnY() {
           @Override
@@ -105,7 +107,7 @@ public class HeightMapManager implements Listener {
 
           @Override
           public int getCostsForBreakableMaterial(Material material) {
-            return (int) (material.getHardness() * MobDefMob.BREAKER_HARDNESS_MULTIPLIER);
+            return MobDefMob.BREAK_LEVEL;
           }
         },
         new PathCostCalc.PathIsEmptyOrBreakableOnXZDiagonal() {
@@ -116,7 +118,7 @@ public class HeightMapManager implements Listener {
 
           @Override
           public int getCostsForBreakableMaterial(Material material) {
-            return (int) (material.getHardness() * MobDefMob.BREAKER_HARDNESS_MULTIPLIER);
+            return MobDefMob.BREAK_LEVEL;
           }
         },
         new PathCostCalc.PathIsFencedOrWalledOnY() {
@@ -127,7 +129,7 @@ public class HeightMapManager implements Listener {
 
           @Override
           public int getCostsForBreakableMaterial(Material material) {
-            return (int) (material.getHardness() * MobDefMob.BREAKER_HARDNESS_MULTIPLIER);
+            return MobDefMob.BREAK_LEVEL;
           }
         }
     ));

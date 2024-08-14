@@ -5,6 +5,7 @@
 package de.timesnake.game.mobdefence.mob.map;
 
 import de.timesnake.basic.bukkit.util.Server;
+import de.timesnake.basic.bukkit.util.world.ExBlock;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +26,7 @@ public class HeightMap {
 
   private final HeightMapGenerator generator;
 
-  private final ConcurrentHashMap<ExLocation, HeightBlock> heightBlocksByLocation = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<ExBlock, HeightBlock> heightBlocksByBlock = new ConcurrentHashMap<>();
   private final ConcurrentHashMap<Integer, List<HeightBlock>> blocksByHeight = new ConcurrentHashMap<>();
 
   private final ReadWriteLock lock = new ReentrantReadWriteLock();
@@ -47,10 +48,10 @@ public class HeightMap {
         Collection<HeightBlock> blocks = future.get(30, TimeUnit.SECONDS);
         try {
           this.lock.writeLock().lock();
-          this.heightBlocksByLocation.clear();
+          this.heightBlocksByBlock.clear();
           this.blocksByHeight.clear();
           blocks.forEach(b -> {
-            this.heightBlocksByLocation.put(b.block().getLocation(), b);
+            this.heightBlocksByBlock.put(b.block(), b);
             this.blocksByHeight.computeIfAbsent(b.level(), k -> new ArrayList<>()).add(b);
           });
         } finally {
@@ -73,7 +74,7 @@ public class HeightMap {
 
   public void reset() {
     this.stopUpdater();
-    this.heightBlocksByLocation.clear();
+    this.heightBlocksByBlock.clear();
     this.blocksByHeight.clear();
   }
 
@@ -85,7 +86,7 @@ public class HeightMap {
     HeightBlock heightBlock;
     try {
       this.lock.readLock().lock();
-      heightBlock = this.heightBlocksByLocation.get(current.middleHorizontalBlock());
+      heightBlock = this.heightBlocksByBlock.get(current.getExBlock());
     } finally {
       this.lock.readLock().unlock();
     }

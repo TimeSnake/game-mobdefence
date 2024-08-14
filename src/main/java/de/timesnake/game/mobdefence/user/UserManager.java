@@ -55,18 +55,8 @@ public class UserManager implements Listener {
       .onInteract(e -> {
         User user = e.getUser();
 
-        if (user.getPlayer().isSneaking()) {
-          HeightBlock block =
-              MobDefServer.getMap().getHeightMapManager()
-                  .getMap(HeightMapManager.MapType.WALL_FINDER)
-                  .getHeightBlock(user.getExLocation());
-          sendHeightLevel(user, block);
-          return;
-        }
-
-        HeightBlock block =
-            MobDefServer.getMap().getHeightMapManager()
-                .getMap(HeightMapManager.MapType.DEFAULT)
+        HeightBlock block = MobDefServer.getMap().getHeightMapManager()
+            .getMap(HeightMapManager.MapType.values()[e.getClickedItem().getAmount() - 1])
                 .getHeightBlock(user.getExLocation());
         sendHeightLevel(user, block);
       });
@@ -326,28 +316,20 @@ public class UserManager implements Listener {
   }
 
   private static void sendHeightLevel(User user, HeightBlock block) {
-    String level;
-    if (block != null) {
-      level = String.valueOf(block.level());
-    } else {
-      level = "null";
+    user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§sLevel: §v" + (block != null ? String.valueOf(block.level()) :
+        "null"));
+
+    if (block == null) {
+      return;
     }
-    user.sendPluginMessage(Plugin.MOB_DEFENCE, Component.text("Height: ", ExTextColor.PERSONAL)
-        .append(Component.text(level, ExTextColor.VALUE)));
-    if (block != null) {
-      HeightBlock next = block.next();
-      if (next != null) {
-        Location loc = next.block().getLocation();
-        user.sendPluginMessage(Plugin.MOB_DEFENCE,
-            Component.text("Next: ", ExTextColor.PERSONAL)
-                .append(Component.text(
-                    loc.getX() + " " + loc.getY() + " " + loc.getZ(),
-                    ExTextColor.VALUE)));
-      } else {
-        user.sendPluginMessage(Plugin.MOB_DEFENCE,
-            Component.text("Next:", ExTextColor.PERSONAL)
-                .append(Component.text(" null", ExTextColor.VALUE)));
-      }
+
+    HeightBlock next = block.next();
+    if (next != null) {
+      Location loc = next.block().getLocation();
+      user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§sNext: §v" + loc.getX() + " " + loc.getY() + " " + loc.getZ()
+                                                   + "§s Level: §v" + next.level() + "§s Blocks: " + block.blocksToBreakForNext().size() + " " + next.blocksToBreak().size());
+    } else {
+      user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§sNext: §vnull");
     }
   }
 
