@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Stray;
 import net.minecraft.world.entity.player.Player;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
@@ -69,31 +70,82 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
               health = 40;
             }
 
-            for (int i = 0; i < 4; i++) {
-              ExWorld world = MobDefServer.getMap().getWorld();
+            if (!MobDefServer.getMobManager().compressGroups()) {
+              for (int i = 0; i < 4; i++) {
+                ExWorld world = MobDefServer.getMap().getWorld();
 
-              Stray stray = new StrayBuilder()
+                Stray stray = new StrayBuilder()
+                    .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+                        .setBaseValue(2 + BossSkeletonStray.this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
+                    .applyOnEntity(e -> e.getBukkitCreature().setNoDamageTicks(1))
+                    .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND,
+                        new ExItemStack(Material.BOW).getHandle()))
+                    .setMaxHealthAndHealth(health)
+                    .apply(b -> b.applyOnEntity(e -> {
+                      BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.5, false,
+                          MobDefServer.BREAKABLE_MATERIALS);
+
+                      b.addPathfinderGoal(4, f -> getCorePathfinder(f, HeightMapManager.MapType.DEFAULT, 1, breakBlock,
+                          MobDefServer.BREAK_LEVEL));
+                      b.addPathfinderGoal(4, f -> breakBlock);
+                    }))
+                    .addPathfinderGoal(2, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1.1, 1.1))
+                    .addPathfinderGoal(3, e -> new RandomStrollGoal(e, 0.9D))
+                    .addPathfinderGoal(4, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
+                    .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
+                    .apply(BossSkeletonStray.this::applyDefaultTargetGoals)
+                    .build(world.getHandle());
+
+                skeletons.add(stray);
+              }
+            } else {
+              skeletons.add(new StrayBuilder()
                   .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
                       .setBaseValue(2 + BossSkeletonStray.this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
-                  .applyOnEntity(e -> e.getBukkitCreature().setNoDamageTicks(1))
-                  .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.BOW).getHandle()))
-                  .setMaxHealthAndHealth(health)
+                  .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND,
+                      new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE,
+                          BossSkeletonStray.this.currentWave / 2).getHandle()))
+                  .applyOnEntity(e -> {
+                    e.setItemSlot(EquipmentSlot.HEAD,
+                        ExItemStack.getLeatherArmor(Material.LEATHER_HELMET, Color.GREEN)
+                            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
+                                BossSkeletonStray.this.currentWave / 4).getHandle());
+                    e.setItemSlot(EquipmentSlot.CHEST,
+                        ExItemStack.getLeatherArmor(Material.LEATHER_CHESTPLATE, Color.GREEN)
+                            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
+                                BossSkeletonStray.this.currentWave / 4).getHandle());
+                    e.setItemSlot(EquipmentSlot.LEGS,
+                        ExItemStack.getLeatherArmor(Material.LEATHER_LEGGINGS, Color.GREEN)
+                            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
+                                BossSkeletonStray.this.currentWave / 4).getHandle());
+                    e.setItemSlot(EquipmentSlot.FEET,
+                        ExItemStack.getLeatherArmor(Material.LEATHER_BOOTS, Color.GREEN)
+                            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
+                                BossSkeletonStray.this.currentWave / 4).getHandle());
+                  })
+                  .setMaxHealthAndHealth(BossSkeletonStray.this.currentWave * 20)
                   .apply(b -> b.applyOnEntity(e -> {
-                    BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.5, false,
-                        MobDefServer.BREAKABLE_MATERIALS);
+                    BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.8, false, MobDefServer.BREAKABLE_MATERIALS);
 
-                    b.addPathfinderGoal(4, f -> getCorePathfinder(f, HeightMapManager.MapType.DEFAULT, 1, breakBlock,
+                    b.addPathfinderGoal(4, f -> getCorePathfinder(f, BossSkeletonStray.this.getMapType(), 1.2,
+                        breakBlock,
                         MobDefServer.BREAK_LEVEL));
                     b.addPathfinderGoal(4, f -> breakBlock);
                   }))
-                  .addPathfinderGoal(2, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1.1, 1.1))
+                  .apply(b -> {
+                    if (BossSkeletonStray.this.currentWave > 20) {
+                      b.addPathfinderGoal(1, e -> new RangedBowAttackGoal<>(e, 1.2, 5, 30.0F));
+                    } else {
+                      b.addPathfinderGoal(1, e -> new RangedBowAttackGoal<>(e, 1.2, 10, 30.0F));
+
+                    }
+                  })
+                  .addPathfinderGoal(2, e -> new AvoidEntityGoal<>(e, Player.class, 5, 1, 1))
                   .addPathfinderGoal(3, e -> new RandomStrollGoal(e, 0.9D))
                   .addPathfinderGoal(4, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
                   .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
                   .apply(BossSkeletonStray.this::applyDefaultTargetGoals)
-                  .build(world.getHandle());
-
-              skeletons.add(stray);
+                  .build(world.getHandle()));
             }
 
             return skeletons;

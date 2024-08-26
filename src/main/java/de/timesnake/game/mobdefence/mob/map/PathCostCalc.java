@@ -250,9 +250,48 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
     }
   }
 
+  public static abstract class PathWithSlabsIsEmptyOrBreakableOnY extends Breakable {
+    @Override
+    public PathCostResult apply(ShortPath path) {
+      ExBlock start = path.start();
+      ExBlock startGround = start.down();
+      ExBlock end = path.end();
+      ExBlock endGround = end.down();
+      int heightDelta = path.heightDelta();
+
+      if (heightDelta <= 0) {
+        return PathCostResult.EMPTY;
+      }
+
+      if (Tag.SLABS.isTagged(startGround.getType())) {
+        if (Tag.SLABS.isTagged(endGround.getType())) {
+          return PathCostResult.EMPTY;
+        }
+
+        Integer endGroundCosts = this.getCostsForBlock(endGround);
+        if (endGroundCosts == null) {
+          return PathCostResult.BLOCKED;
+        }
+        PathCostResult result = new PathCostResult();
+        result.addBlockToBreakToNext(endGroundCosts, endGround);
+        return result;
+      }
+      return PathCostResult.EMPTY;
+    }
+  }
+
+  public static abstract class PathWithSlabsIsEmptyOrBreakableOnXZDiagonal extends Breakable {
+    @Override
+    public PathCostResult apply(ShortPath shortPath) {
+      // TODO
+      return null;
+    }
+  }
+
   public static abstract class PathIsFencedOrWalledDiagonal extends Breakable {
     @Override
     public PathCostResult apply(ShortPath path) {
+      // TODO
       return PathCostResult.EMPTY;
     }
   }

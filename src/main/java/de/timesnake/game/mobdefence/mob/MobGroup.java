@@ -8,13 +8,10 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.stream.IntStream;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class MobGroup {
 
@@ -90,6 +87,8 @@ public class MobGroup {
       return;
     }
 
+    this.cancel();
+
     this.spawned = true;
 
     if (!MobDefServer.getMobManager().compressGroups()) {
@@ -106,9 +105,7 @@ public class MobGroup {
           if (type.isCompressable()) {
             int size = this.mobsByType.get(type).size();
             for (int i = 0; i < size; i += 5) {
-              MobDefMob<?> compressed = MobDefMob.getCompressedMob(this.wave,
-                  type.getCompressed(),
-                  this.spawn);
+              MobDefMob<?> compressed = MobDefMob.getCompressedMob(this.wave, type.getCompressed(), this.spawn);
               compressed.spawn();
             }
           } else {
@@ -119,8 +116,6 @@ public class MobGroup {
         }
       }
     }
-
-
   }
 
   public void cancel() {
