@@ -106,7 +106,6 @@ public class MobManager implements Listener {
         MobDefServer.ATTACKER_ENTITY_COUNT_CLASSES.toArray(new Class[0]));
   }
 
-  // spawn tasks
   public void cancelSpawning() {
     for (MobGroup mobGroup : this.mobGroups) {
       mobGroup.cancel();
@@ -163,7 +162,7 @@ public class MobManager implements Listener {
             groupSizes.get(0), 1));
 
     for (int i = 1; i < groupSizes.size(); i++) {
-      int groupDelay = (int) (this.nextLimitedGaussian(0.2) * delay) + delay * (i - 1);
+      int groupDelay = (int) (this.nextLimitedGaussian(MobDefServer.SPAWN_TIME_RANDOM_RANGE) * delay) + delay * (i - 1);
       this.mobGroups.addLast(new MobGroup(wave, MobDefServer.getMap().getRandomMobPath().getLocation(),
               groupSizes.get(i), groupDelay));
     }
@@ -174,7 +173,8 @@ public class MobManager implements Listener {
         bossMobs.add(new BossZombie(MobDefServer.getMap().getRandomMobPath().getLocation(), wave));
       }
 
-      delay = (int) (this.nextLimitedGaussian(0.2) * delay) + delay * (groupSizes.size() - 1);
+      delay =
+          (int) (this.nextLimitedGaussian(MobDefServer.SPAWN_TIME_RANDOM_RANGE) * delay) + delay * (groupSizes.size() - 1);
 
       MobGroup bossGroup = new MobGroup(bossMobs, delay);
       this.mobGroups.addLast(bossGroup);
@@ -193,7 +193,8 @@ public class MobManager implements Listener {
         bossMobs.add(new BossSkeletonStray(MobDefServer.getMap().getRandomMobPath().getLocation(), wave));
       }
 
-      delay = (int) (this.nextLimitedGaussian(0.2) * delay) + delay * (groupSizes.size() - 1);
+      delay =
+          (int) (this.nextLimitedGaussian(MobDefServer.SPAWN_TIME_RANDOM_RANGE) * delay) + delay * (groupSizes.size() - 1);
 
       MobGroup bossGroup = new MobGroup(bossMobs, delay);
       this.mobGroups.addLast(bossGroup);
@@ -207,10 +208,8 @@ public class MobManager implements Listener {
     }
 
     for (MobGroup mobGroup : mobGroups) {
-      //mobGroup.run();
+      mobGroup.run();
     }
-
-    new MobGroup(List.of(new MobDefZombieBreaker(MobDefServer.getMap().getRandomMobPath().getLocation(), wave)), 0).run();
 
     this.logger.info("Mobs: {} in {} groups and bosses", mobAmount, groupAmount);
 

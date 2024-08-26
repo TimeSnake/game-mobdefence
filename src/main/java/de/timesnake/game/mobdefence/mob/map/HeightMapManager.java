@@ -78,6 +78,17 @@ public class HeightMapManager implements Listener {
           public int getCostsForBreakableMaterial(Material material) {
             return MobDefServer.BREAK_LEVEL;
           }
+        },
+        new PathCostCalc.PathWithSlabsIsEmptyOrBreakableOnY() {
+          @Override
+          public boolean isBreakable(Material material) {
+            return MobDefServer.BREAKABLE_MATERIALS.contains(material);
+          }
+
+          @Override
+          public int getCostsForBreakableMaterial(Material material) {
+            return MobDefServer.BREAK_LEVEL;
+          }
         }
     )),
     BREAKER(new PathCostCalc.And(
@@ -106,6 +117,17 @@ public class HeightMapManager implements Listener {
           }
         },
         new PathCostCalc.PathIsFencedOrWalledOnY() {
+          @Override
+          public boolean isBreakable(Material material) {
+            return MobDefServer.BREAKABLE_MATERIALS_2.contains(material);
+          }
+
+          @Override
+          public int getCostsForBreakableMaterial(Material material) {
+            return (int) (material.getHardness() * MobDefServer.BREAKER_HARDNESS_MULTIPLIER);
+          }
+        },
+        new PathCostCalc.PathWithSlabsIsEmptyOrBreakableOnY() {
           @Override
           public boolean isBreakable(Material material) {
             return MobDefServer.BREAKABLE_MATERIALS_2.contains(material);

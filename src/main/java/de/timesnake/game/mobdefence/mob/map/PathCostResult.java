@@ -82,7 +82,7 @@ public final class PathCostResult implements Comparable<PathCostResult> {
   }
 
   public PathCostResult merge(PathCostResult other) {
-    return new PathCostResult(costs + other.costs,
+    return new PathCostResult(costs + other.costs, // TODO
         Stream.concat(blocksToBreakOnStart.stream(), other.blocksToBreakOnStart.stream()).distinct().toList(),
         Stream.concat(blocksToBreakToNext.stream(), other.blocksToBreakToNext.stream()).distinct().toList());
   }

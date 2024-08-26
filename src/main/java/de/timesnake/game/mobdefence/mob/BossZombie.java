@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.ZombieAttackGoal;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Material;
@@ -66,17 +67,65 @@ public class BossZombie extends MobDefMob<Zombie> {
           public List<? extends Mob> getArmy() {
             List<Zombie> zombies = new ArrayList<>();
 
-            for (int i = 0; i < 4; i++) {
-              MobDefZombie zombie = new MobDefZombie(BossZombie.this.spawn, BossZombie.this.currentWave);
+            if (!MobDefServer.getMobManager().compressGroups()) {
+              for (int i = 0; i < 4; i++) {
+                MobDefZombie zombie = new MobDefZombie(BossZombie.this.spawn, BossZombie.this.currentWave);
 
-              zombie.init();
-              zombie.equipArmor();
-              zombie.equipWeapon();
-              zombie.getEntity().getBukkitCreature().setNoDamageTicks(1);
+                zombie.init();
+                zombie.equipArmor();
+                zombie.equipWeapon();
+                zombie.getEntity().getBukkitCreature().setNoDamageTicks(1);
 
-              zombies.add(zombie.getEntity());
+                zombies.add(zombie.getEntity());
+              }
+            } else {
+              float health = 40;
+
+              if (BossZombie.this.currentWave > 11) {
+                health = BossZombie.this.currentWave * 20;
+              } else if (BossZombie.this.currentWave > 6) {
+                health = 160;
+              }
+
+              double speed;
+              if (BossZombie.this.currentWave > 13) {
+                speed = 1.3;
+              } else if (BossZombie.this.currentWave > 10) {
+                speed = 1.2;
+              } else if (BossZombie.this.currentWave > 5) {
+                speed = 1.1;
+              } else {
+                speed = 1;
+              }
+
+              zombies.add(new ZombieBuilder()
+                  .setMaxHealthAndHealth(health)
+                  .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+                      .setBaseValue(2 + BossZombie.this.currentWave / 5. * MobDefServer.MOB_DAMAGE_MULTIPLIER * 2))
+                  .applyOnEntity(e -> {
+                    e.setItemSlot(EquipmentSlot.HEAD, new ExItemStack(Material.NETHERITE_HELMET).getHandle());
+                    e.setItemSlot(EquipmentSlot.CHEST, new ExItemStack(Material.NETHERITE_CHESTPLATE).getHandle());
+                    e.setItemSlot(EquipmentSlot.LEGS, new ExItemStack(Material.NETHERITE_LEGGINGS).getHandle());
+                    e.setItemSlot(EquipmentSlot.FEET, new ExItemStack(Material.NETHERITE_BOOTS).getHandle());
+                    e.setItemSlot(EquipmentSlot.MAINHAND,
+                        new ExItemStack(Material.NETHERITE_SHOVEL).addExEnchantment(Enchantment.DAMAGE_ALL,
+                            BossZombie.this.currentWave * 2).getHandle());
+                  })
+                  .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, speed, false))
+                  .apply(b -> b.applyOnEntity(e -> {
+                    BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.8, false,
+                        MobDefServer.BREAKABLE_MATERIALS);
+
+                    b.addPathfinderGoal(4, f -> getCorePathfinder(f, BossZombie.this.getMapType(), speed, breakBlock,
+                        MobDefServer.BREAK_LEVEL));
+                    b.addPathfinderGoal(4, f -> breakBlock);
+                  }))
+                  .addPathfinderGoal(3, e -> new RandomStrollGoal(e, speed))
+                  .addPathfinderGoal(4, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
+                  .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))
+                  .apply(BossZombie.this::applyDefaultTargetGoals)
+                  .build(world.getHandle()));
             }
-
             return zombies;
           }
         })
