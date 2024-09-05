@@ -59,7 +59,7 @@ public class CompressedZombie extends MobDefMob<Zombie> {
 
     this.entity = new ZombieBuilder()
         .setMaxHealthAndHealth(health)
-        .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+        .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5. * MobDefServer.MOB_DAMAGE_MULTIPLIER * 2))
         .applyOnEntity(e -> {
           e.setItemSlot(EquipmentSlot.HEAD, new ExItemStack(Material.NETHERITE_HELMET).getHandle());

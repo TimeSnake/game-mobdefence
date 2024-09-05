@@ -126,7 +126,7 @@ public class MobDefServer extends LoungeBridgeServer {
     EMPTY_MATERIALS.add(Material.WATER);
     EMPTY_MATERIALS.add(Material.LAVA);
     EMPTY_MATERIALS.add(Material.TRIPWIRE);
-    EMPTY_MATERIALS.addAll(List.of(Material.GRASS, Material.TALL_GRASS, Material.ARMOR_STAND));
+    EMPTY_MATERIALS.addAll(List.of(Material.SHORT_GRASS, Material.TALL_GRASS, Material.ARMOR_STAND));
 
     BREAKABLE_MATERIALS_2.addAll(BREAKABLE_MATERIALS);
     BREAKABLE_MATERIALS_2.addAll(Tag.STONE_BRICKS.getValues());

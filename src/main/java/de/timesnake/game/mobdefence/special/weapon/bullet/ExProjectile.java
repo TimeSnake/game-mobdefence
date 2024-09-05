@@ -82,7 +82,7 @@ public abstract class ExProjectile implements Listener {
       }
 
       entity.damage(damage, snowball);
-      entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 1));
+      entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 5, 1));
     }
 
     if (e.getHitBlock() == null) {

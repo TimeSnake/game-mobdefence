@@ -42,7 +42,7 @@ public class MobDefPillager extends MobDefMob<Pillager> {
     }
 
     this.entity = new PillagerBuilder()
-        .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+        .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
         .setMaxHealthAndHealth(health)
         .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.CROSSBOW).getHandle()))

@@ -41,9 +41,9 @@ public class MobDefZombieBreaker extends ArmorMob<Zombie> {
 
     this.entity = new ZombieBuilder()
         .setMaxHealthAndHealth(health)
-        .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+        .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobDefServer.MOB_DAMAGE_MULTIPLIER))
-        .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS).setBaseValue(0.3))
+        .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS).setBaseValue(0.3))
         .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_PICKAXE).getHandle()))
         .apply(b -> b.applyOnEntity(e -> {
           BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.3, true, MobDefServer.BREAKABLE_MATERIALS_2);

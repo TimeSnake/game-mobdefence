@@ -26,7 +26,7 @@ public class CaveSpider extends MobDefMob<net.minecraft.world.entity.monster.Cav
 
     this.entity = new CaveSpiderBuilder()
         .setMaxHealthAndHealth(this.currentWave > 13 ? 40 : 20)
-        .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+        .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
         .addPathfinderGoal(0, e -> new FloatGoal(e))
         .addPathfinderGoal(1, e -> new LeapAtTargetGoal(e, 0.4F))

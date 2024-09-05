@@ -58,7 +58,7 @@ public class MobDefZombie extends MeleeMob<Zombie> {
 
     this.entity = new ZombieBuilder()
         .setMaxHealthAndHealth(health)
-        .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+        .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobDefServer.MOB_DAMAGE_MULTIPLIER))
         .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, speed + (isRunner ? 0.2 : 0), false))
         .apply(b -> b.applyOnEntity(e -> {
