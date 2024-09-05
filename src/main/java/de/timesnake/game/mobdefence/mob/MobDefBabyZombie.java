@@ -35,7 +35,7 @@ public class MobDefBabyZombie extends ArmorMob<Zombie> {
           if (this.currentWave > 13) {
             e.setHealth(30);
           }
-          e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+          e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
               .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobDefServer.MOB_DAMAGE_MULTIPLIER);
         })
         .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, this.currentWave < 15 ? 1.2 : 1.3, false))

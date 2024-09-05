@@ -160,13 +160,13 @@ public interface KitItems {
       .slot(22);
 
   Trade.Builder SPEED = new Trade.Builder()
-      .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.SPEED, false, false)
+      .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.SWIFTNESS, false, false)
           .setDisplayName("§6Speed"))
       .price(new Price(1, SILVER))
       .slot(7);
 
   Trade.Builder INSTANT_HEAL = new Trade.Builder()
-      .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.INSTANT_HEAL, false,
+      .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.STRONG_HEALING, false,
               true)
           .setDisplayName("§6Instant Heal"))
       .price(new Price(6, BRONZE), 1, 32)
@@ -197,7 +197,7 @@ public interface KitItems {
       .display(new ExItemStack(Material.TURTLE_HELMET))
       .baseLevel(0)
       .levelDescription("+1 Protection")
-      .levelEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL);
+      .levelEnchantment(Enchantment.PROTECTION);
 
   Function<LevelType.Builder, LevelType.Builder> PROTECTION_LEVEL = b ->
       b.addEnchantmentLvl(new Price(12, BRONZE), 1)
@@ -216,7 +216,7 @@ public interface KitItems {
       .display(new ExItemStack(Material.ARROW))
       .baseLevel(0)
       .levelDescription("+1 Projectile Protection")
-      .levelEnchantment(Enchantment.PROTECTION_PROJECTILE);
+      .levelEnchantment(Enchantment.PROJECTILE_PROTECTION);
 
   Function<LevelType.Builder, LevelType.Builder> PROJECTILE_PROTECTION_LEVEL = b ->
       b.addEnchantmentLvl(new Price(3, SILVER), 1)
@@ -448,7 +448,7 @@ public interface KitItems {
       .price(new Price(2, Currency.SILVER))
       .slot(46);
   Trade.Builder ALCHEMIST_SPEED = new Trade.Builder()
-      .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.SPEED, false,
+      .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.STRONG_SWIFTNESS, false,
           true))
       .price(new Price(4, BRONZE))
       .slot(46);
@@ -458,7 +458,7 @@ public interface KitItems {
       .price(new Price(4, BRONZE))
       .slot(46);
   Trade.Builder LUMBER_SPEED = new Trade.Builder()
-      .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.SPEED, false,
+      .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.STRONG_SWIFTNESS, false,
           true))
       .price(new Price(4, BRONZE))
       .slot(46);
@@ -474,7 +474,7 @@ public interface KitItems {
       .slot(48);
   Trade.Builder IRON_SKIN = new Trade.Builder()
       .giveItems(ExItemStack.getPotion(ExItemStack.PotionMaterial.DRINK, 1, "Iron Skin",
-          PotionEffectType.DAMAGE_RESISTANCE, 60 * 20, 3))
+          PotionEffectType.RESISTANCE, 60 * 20, 3))
       .price(new Price(8, SILVER))
       .slot(47);
   Shop.Builder KNIGHT_WEAPONS = new Shop.Builder()

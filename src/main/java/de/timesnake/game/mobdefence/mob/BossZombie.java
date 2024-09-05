@@ -47,13 +47,13 @@ public class BossZombie extends MobDefMob<Zombie> {
           e.setItemSlot(EquipmentSlot.FEET, new ExItemStack(Material.GOLDEN_BOOTS).getHandle());
         })
         .applyOnEntity(e -> {
-          e.getBukkitCreature().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
-          e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(5);
-          e.getBukkitCreature().getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(5);
-          e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(Math.sqrt(this.currentWave) * 6);
-          e.getBukkitCreature().getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS).setBaseValue(0.2);
+          e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
+          e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(5);
+          e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(5);
+          e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(Math.sqrt(this.currentWave) * 6);
+          e.getBukkitLivingEntity().getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS).setBaseValue(0.2);
         })
-        .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+        .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobDefServer.MOB_DAMAGE_MULTIPLIER))
         .apply(b -> b.applyOnEntity(e -> {
           BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.8, false,
@@ -74,7 +74,7 @@ public class BossZombie extends MobDefMob<Zombie> {
                 zombie.init();
                 zombie.equipArmor();
                 zombie.equipWeapon();
-                zombie.getEntity().getBukkitCreature().setNoDamageTicks(1);
+                zombie.getEntity().getBukkitLivingEntity().setNoDamageTicks(1);
 
                 zombies.add(zombie.getEntity());
               }
@@ -100,7 +100,7 @@ public class BossZombie extends MobDefMob<Zombie> {
 
               zombies.add(new ZombieBuilder()
                   .setMaxHealthAndHealth(health)
-                  .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+                  .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
                       .setBaseValue(2 + BossZombie.this.currentWave / 5. * MobDefServer.MOB_DAMAGE_MULTIPLIER * 2))
                   .applyOnEntity(e -> {
                     e.setItemSlot(EquipmentSlot.HEAD, new ExItemStack(Material.NETHERITE_HELMET).getHandle());
@@ -108,7 +108,7 @@ public class BossZombie extends MobDefMob<Zombie> {
                     e.setItemSlot(EquipmentSlot.LEGS, new ExItemStack(Material.NETHERITE_LEGGINGS).getHandle());
                     e.setItemSlot(EquipmentSlot.FEET, new ExItemStack(Material.NETHERITE_BOOTS).getHandle());
                     e.setItemSlot(EquipmentSlot.MAINHAND,
-                        new ExItemStack(Material.NETHERITE_SHOVEL).addExEnchantment(Enchantment.DAMAGE_ALL,
+                        new ExItemStack(Material.NETHERITE_SHOVEL).addExEnchantment(Enchantment.SHARPNESS,
                             BossZombie.this.currentWave * 2).getHandle());
                   })
                   .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, speed, false))

@@ -103,13 +103,13 @@ public class DogSpawner extends EntitySpawner {
           e.setTame(true, true);
           e.setOwnerUUID(user.getUniqueId());
           e.setOrderedToSit(false);
-          e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(8);
+          e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(8);
         })
         .setMaxHealthAndHealth(health)
         .addPathfinderGoal(1, e -> new FloatGoal(e))
         .addPathfinderGoal(4, e -> new LeapAtTargetGoal(e, 0.4F))
         .addPathfinderGoal(5, e -> new MeleeAttackGoal(e, 1.0, false))
-        .addPathfinderGoal(6, e -> new FollowOwnerGoal(e, 1.2D, 10.0F, 2.0F, true))
+        .addPathfinderGoal(6, e -> new FollowOwnerGoal(e, 1.2D, 10.0F, 2.0F))
         .addPathfinderGoal(8, e -> new RandomStrollGoal(e, 1.0D))
         .addPathfinderGoal(10, e -> new LookAtPlayerGoal(e, Player.class, 8.0F))
         .addPathfinderGoal(10, e -> new RandomLookAroundGoal(e))

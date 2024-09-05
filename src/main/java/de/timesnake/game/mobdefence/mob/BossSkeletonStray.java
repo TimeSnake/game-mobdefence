@@ -36,7 +36,7 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
     ExWorld world = MobDefServer.getMap().getWorld();
 
     this.entity = new StrayBuilder()
-        .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+        .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
         .setMaxHealthAndHealth(this.currentWave * 70)
         .applyOnEntity(e -> {
@@ -45,14 +45,14 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
           e.setItemSlot(EquipmentSlot.LEGS, new ExItemStack(Material.GOLDEN_LEGGINGS).getHandle());
           e.setItemSlot(EquipmentSlot.FEET, new ExItemStack(Material.GOLDEN_BOOTS).getHandle());
           e.setItemSlot(EquipmentSlot.MAINHAND,
-              new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_FIRE, 2)
-                  .addExEnchantment(Enchantment.ARROW_DAMAGE, 5)
-                  .addExEnchantment(Enchantment.ARROW_KNOCKBACK, 4).getHandle());
+              new ExItemStack(Material.BOW).addExEnchantment(Enchantment.FLAME, 2)
+                  .addExEnchantment(Enchantment.POWER, 5)
+                  .addExEnchantment(Enchantment.PUNCH, 4).getHandle());
         })
         .applyOnEntity(e -> {
-          e.getBukkitCreature().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
-          e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(10);
-          e.getBukkitCreature().getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(5);
+          e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(10);
+          e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(10);
+          e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(5);
         })
         .addPathfinderGoal(1, e -> new RangedBowAttackGoal<>(e, 1.2, 2, 30.0F))
         .addPathfinderGoal(2, e -> new SpawnArmyGoal(e, Stray.class, 3, 10 * 20) {
@@ -75,9 +75,9 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
                 ExWorld world = MobDefServer.getMap().getWorld();
 
                 Stray stray = new StrayBuilder()
-                    .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+                    .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
                         .setBaseValue(2 + BossSkeletonStray.this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
-                    .applyOnEntity(e -> e.getBukkitCreature().setNoDamageTicks(1))
+                    .applyOnEntity(e -> e.getBukkitLivingEntity().setNoDamageTicks(1))
                     .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND,
                         new ExItemStack(Material.BOW).getHandle()))
                     .setMaxHealthAndHealth(health)
@@ -100,27 +100,27 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
               }
             } else {
               skeletons.add(new StrayBuilder()
-                  .applyOnEntity(e -> e.getBukkitCreature().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
+                  .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
                       .setBaseValue(2 + BossSkeletonStray.this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
                   .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND,
-                      new ExItemStack(Material.BOW).addExEnchantment(Enchantment.ARROW_DAMAGE,
+                      new ExItemStack(Material.BOW).addExEnchantment(Enchantment.POWER,
                           BossSkeletonStray.this.currentWave / 2).getHandle()))
                   .applyOnEntity(e -> {
                     e.setItemSlot(EquipmentSlot.HEAD,
                         ExItemStack.getLeatherArmor(Material.LEATHER_HELMET, Color.GREEN)
-                            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
+                            .addExEnchantment(Enchantment.PROTECTION,
                                 BossSkeletonStray.this.currentWave / 4).getHandle());
                     e.setItemSlot(EquipmentSlot.CHEST,
                         ExItemStack.getLeatherArmor(Material.LEATHER_CHESTPLATE, Color.GREEN)
-                            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
+                            .addExEnchantment(Enchantment.PROTECTION,
                                 BossSkeletonStray.this.currentWave / 4).getHandle());
                     e.setItemSlot(EquipmentSlot.LEGS,
                         ExItemStack.getLeatherArmor(Material.LEATHER_LEGGINGS, Color.GREEN)
-                            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
+                            .addExEnchantment(Enchantment.PROTECTION,
                                 BossSkeletonStray.this.currentWave / 4).getHandle());
                     e.setItemSlot(EquipmentSlot.FEET,
                         ExItemStack.getLeatherArmor(Material.LEATHER_BOOTS, Color.GREEN)
-                            .addExEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,
+                            .addExEnchantment(Enchantment.PROTECTION,
                                 BossSkeletonStray.this.currentWave / 4).getHandle());
                   })
                   .setMaxHealthAndHealth(BossSkeletonStray.this.currentWave * 20)

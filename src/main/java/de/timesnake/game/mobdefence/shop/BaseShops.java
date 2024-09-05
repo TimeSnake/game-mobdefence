@@ -37,7 +37,7 @@ public class BaseShops {
           MobDefKit.DRIED_KELP,
           MobDefKit.GOLDEN_APPLE, MobDefKit.GOLDEN_CARROT, MobDefKit.MILK,
           WaterBottle.WATER,
-          MobDefKit.SPEED, MobDefKit.HEALING, MobDefKit.ENDER_PEARL)
+          MobDefKit.SPEED, MobDefKit.INSTANT_HEAL, MobDefKit.ENDER_PEARL)
       .type(Shop.Builder.Type.TEAM);
 
   public static final Shop.Builder TEAM_SHOP = new Shop.Builder()
