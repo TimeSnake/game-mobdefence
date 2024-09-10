@@ -20,8 +20,8 @@ public class PotionGenerator implements Listener {
 
 
   public static final ExItemStack HEALING = ExItemStack.getPotion(Material.SPLASH_POTION,
-      PotionType.HEALING,
-      false, false).setSlot(1).asQuantity(2);
+      PotionType.HEALING
+  ).setSlot(1).asQuantity(2);
 
   private BukkitTask task;
 

@@ -29,7 +29,7 @@ import org.bukkit.potion.PotionType;
 public class PoisonArrow extends SpecialWeapon implements UserInventoryInteractListener, Listener {
 
   public static final ExItemStack ITEM =
-      ExItemStack.getPotion(Material.TIPPED_ARROW, 8, PotionType.POISON, false, false)
+      ExItemStack.getPotion(Material.TIPPED_ARROW, 8, PotionType.POISON)
           .setDisplayName("§6Poison Arrow");
   public static final Trade.Builder TRADE = new Trade.Builder()
       .giveItems(ITEM)

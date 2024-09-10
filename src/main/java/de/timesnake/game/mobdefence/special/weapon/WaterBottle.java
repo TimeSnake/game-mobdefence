@@ -22,7 +22,7 @@ import org.bukkit.potion.PotionType;
 public class WaterBottle extends SpecialWeapon implements Listener {
 
   public static final ExItemStack ITEM =
-      ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.WATER, false, false)
+      ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.WATER)
           .setDisplayName("§6Water Bottle").setLore("§7Extinguish players").hideAll();
 
   public static final Trade.Builder WATER = new Trade.Builder()
