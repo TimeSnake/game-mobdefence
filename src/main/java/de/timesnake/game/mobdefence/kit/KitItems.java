@@ -160,14 +160,14 @@ public interface KitItems {
       .slot(22);
 
   Trade.Builder SPEED = new Trade.Builder()
-      .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.SWIFTNESS, false, false)
+      .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.SWIFTNESS)
           .setDisplayName("§6Speed"))
       .price(new Price(1, SILVER))
       .slot(7);
 
   Trade.Builder INSTANT_HEAL = new Trade.Builder()
-      .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.STRONG_HEALING, false,
-              true)
+      .giveItems(ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.STRONG_HEALING
+          )
           .setDisplayName("§6Instant Heal"))
       .price(new Price(6, BRONZE), 1, 32)
       .slot(8);
@@ -448,8 +448,8 @@ public interface KitItems {
       .price(new Price(2, Currency.SILVER))
       .slot(46);
   Trade.Builder ALCHEMIST_SPEED = new Trade.Builder()
-      .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.STRONG_SWIFTNESS, false,
-          true))
+      .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.STRONG_SWIFTNESS
+      ))
       .price(new Price(4, BRONZE))
       .slot(46);
   Trade.Builder WIZARD_REGEN = new Trade.Builder()
@@ -458,13 +458,13 @@ public interface KitItems {
       .price(new Price(4, BRONZE))
       .slot(46);
   Trade.Builder LUMBER_SPEED = new Trade.Builder()
-      .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.STRONG_SWIFTNESS, false,
-          true))
+      .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Speed", PotionType.STRONG_SWIFTNESS
+      ))
       .price(new Price(4, BRONZE))
       .slot(46);
   Trade.Builder LUMBER_STRENGTH = new Trade.Builder()
-      .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Strength", PotionType.STRENGTH,
-          false, true))
+      .giveItems(ExItemStack.getPotion(Material.POTION, 1, "§6Strength", PotionType.STRENGTH
+      ))
       .price(new Price(3, SILVER))
       .slot(47);
   Trade.Builder LUMBER_REGENERATION = new Trade.Builder()

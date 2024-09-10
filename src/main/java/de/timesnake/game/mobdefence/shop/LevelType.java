@@ -283,7 +283,7 @@ public class LevelType {
     }
 
     public Builder addMaterialLvl(Price price, String description, Material material) {
-      return this.addLvl(price, description, (ExItemStack i) -> i.setExType(material));
+      return this.addLvl(price, description, (ExItemStack i) -> i.withType(material));
     }
 
     public <N extends Number> Builder addLoreLvl(Price price, N number) {
