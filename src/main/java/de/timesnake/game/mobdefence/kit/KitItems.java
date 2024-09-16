@@ -230,14 +230,22 @@ public interface KitItems {
           .addEnchantmentLvl(new Price(16, GOLD), 9)
           .addEnchantmentLvl(new Price(64, BRONZE), 10);
 
-  ExItemStack MELEE_BASE_ARMOR_HELMET = new ExItemStack(Material.LEATHER_HELMET).setSlot(
-      EquipmentSlot.HEAD).unbreakable();
-  ExItemStack MELEE_BASE_ARMOR_CHESTPLATE = new ExItemStack(Material.LEATHER_CHESTPLATE).setSlot(
-      EquipmentSlot.CHEST).unbreakable();
-  ExItemStack MELEE_BASE_ARMOR_LEGGINGS = new ExItemStack(Material.LEATHER_LEGGINGS).setSlot(
-      EquipmentSlot.LEGS).unbreakable();
-  ExItemStack MELEE_BASE_ARMOR_BOOTS = new ExItemStack(Material.LEATHER_BOOTS).setSlot(
-      EquipmentSlot.FEET).unbreakable();
+  ExItemStack MELEE_BASE_ARMOR_HELMET = new ExItemStack(Material.LEATHER_HELMET)
+      .setSlot(EquipmentSlot.HEAD)
+      .unbreakable()
+      .immutable();
+  ExItemStack MELEE_BASE_ARMOR_CHESTPLATE = new ExItemStack(Material.LEATHER_CHESTPLATE)
+      .setSlot(EquipmentSlot.CHEST)
+      .unbreakable()
+      .immutable();
+  ExItemStack MELEE_BASE_ARMOR_LEGGINGS = new ExItemStack(Material.LEATHER_LEGGINGS)
+      .setSlot(EquipmentSlot.LEGS)
+      .unbreakable()
+      .immutable();
+  ExItemStack MELEE_BASE_ARMOR_BOOTS = new ExItemStack(Material.LEATHER_BOOTS)
+      .setSlot(EquipmentSlot.FEET)
+      .unbreakable()
+      .immutable();
 
   LevelType.Builder MELEE_ARMOR_HELMET_TYPE = new LevelType.Builder()
       .name("Type")
