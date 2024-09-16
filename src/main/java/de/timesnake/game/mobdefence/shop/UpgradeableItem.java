@@ -11,11 +11,12 @@ import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import de.timesnake.library.chat.ExTextColor;
-import java.util.LinkedList;
-import java.util.List;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class UpgradeableItem extends Upgradeable {
 
@@ -42,8 +43,6 @@ public class UpgradeableItem extends Upgradeable {
     }
 
     this.displayItem.setLore(lore);
-
-
   }
 
   @Override
