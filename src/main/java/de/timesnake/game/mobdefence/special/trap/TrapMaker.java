@@ -8,7 +8,7 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExBlock;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
-import de.timesnake.game.mobdefence.shop.Trade;
+import de.timesnake.game.mobdefence.shop.SimpleGood;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -23,7 +23,7 @@ import java.util.List;
 
 public enum TrapMaker {
 
-  EXPLOSION(new Trade.Builder()
+  EXPLOSION(new SimpleGood.Builder()
       .slot(7)
       .price(new Price(8, Currency.BRONZE), 1, 8),
       new ExItemStack(Material.CRIMSON_BUTTON, "§6Explosion Trap")
@@ -41,7 +41,7 @@ public enum TrapMaker {
     }
   },
 
-  ARROW(new Trade.Builder()
+  ARROW(new SimpleGood.Builder()
       .slot(8)
       .price(new Price(3, Currency.SILVER), 1, 8),
       new ExItemStack(Material.STONE_BUTTON, "§6Arrow Trap")
@@ -70,7 +70,7 @@ public enum TrapMaker {
     }
   },
 
-  SLOWNESS(new Trade.Builder()
+  SLOWNESS(new SimpleGood.Builder()
       .slot(16)
       .price(new Price(7, Currency.BRONZE), 1, 8),
       new ExItemStack(Material.POLISHED_BLACKSTONE_BUTTON, "§6Slowness Trap")
@@ -93,7 +93,7 @@ public enum TrapMaker {
     }
   },
 
-  POISON(new Trade.Builder()
+  POISON(new SimpleGood.Builder()
       .slot(17)
       .price(new Price(7, Currency.BRONZE), 1, 8),
       new ExItemStack(Material.WARPED_BUTTON, "§6Poison Trap")
@@ -117,8 +117,8 @@ public enum TrapMaker {
   };
 
 
-  public static List<Trade.Builder> getShopTrades() {
-    List<Trade.Builder> trades = new ArrayList<>();
+  public static List<SimpleGood.Builder> getShopTrades() {
+    List<SimpleGood.Builder> trades = new ArrayList<>();
 
     for (TrapMaker trapMaker : TrapMaker.values()) {
       trades.add(trapMaker.getTrade());
@@ -128,17 +128,17 @@ public enum TrapMaker {
 
   private final ExItemStack item;
 
-  public Trade.Builder getTrade() {
+  public SimpleGood.Builder getTrade() {
     return trade;
   }
 
-  private final Trade.Builder trade;
+  private final SimpleGood.Builder trade;
 
   public ExItemStack getItem() {
     return item;
   }
 
-  TrapMaker(Trade.Builder trade, ExItemStack item) {
+  TrapMaker(SimpleGood.Builder trade, ExItemStack item) {
     trade.giveItems(item);
     this.trade = trade;
     this.item = item;

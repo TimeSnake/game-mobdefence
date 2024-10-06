@@ -11,9 +11,9 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
-import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.LevelableProperty;
 import de.timesnake.game.mobdefence.shop.Price;
-import de.timesnake.game.mobdefence.shop.UpgradeableItem;
+import de.timesnake.game.mobdefence.shop.UpgradeableGoodItem;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,79 +31,75 @@ import java.util.Set;
 
 public class FireHoe extends CooldownWeapon implements Listener {
 
-  public static final double DAMAGE = 2.5;
-  public static final int BURNING_TIME = 3; // in seconds
-  public static final int SLOWNESS = 2;
   public static final int COOLDOWN = 7;
   public static final int FIRE_WIND_COOLDOWN = 40;
 
-  private static final ExItemStack ITEM = new ExItemStack(Material.GOLDEN_HOE,
-      "§6Frozen Fire Hoe")
+  private static final ExItemStack ITEM = new ExItemStack(Material.GOLDEN_HOE)
+      .setDisplayName("§6Frozen Fire Stick")
       .immutable();
 
-  private static final LevelType.Builder DAMAGE_LEVELS = new LevelType.Builder()
+  private static final LevelableProperty.Builder DAMAGE_LEVELS = new LevelableProperty.Builder()
       .name("Damage")
       .display(new ExItemStack(Material.RED_DYE))
-      .baseLevel(1)
+      .defaultLevel(1)
       .levelDescription("+1 ❤")
       .levelUnit("❤")
       .levelDecimalDigit(0)
       .levelLoreLine(1)
       .levelLoreName("Damage")
       .levelItem(ITEM)
-      .addLoreLvl(null, 2)
-      .addLoreLvl(new Price(5, Currency.BRONZE), 3)
-      .addLoreLvl(new Price(5, Currency.SILVER), 4)
-      .addLoreLvl(new Price(5, Currency.GOLD), 5)
-      .addLoreLvl(new Price(32, Currency.BRONZE), 6)
-      .addLoreLvl(new Price(32, Currency.SILVER), 7);
+      .addTagLevel(null, 2)
+      .addTagLevel(new Price(5, Currency.BRONZE), 3)
+      .addTagLevel(new Price(5, Currency.SILVER), 4)
+      .addTagLevel(new Price(5, Currency.GOLD), 5)
+      .addTagLevel(new Price(32, Currency.BRONZE), 6)
+      .addTagLevel(new Price(32, Currency.SILVER), 7);
 
-  private static final LevelType.Builder BURNING_TIME_LEVELS = new LevelType.Builder()
+  private static final LevelableProperty.Builder BURNING_TIME_LEVELS = new LevelableProperty.Builder()
       .name("Burning Time")
       .display(new ExItemStack(Material.BLAZE_POWDER))
-      .baseLevel(1)
+      .defaultLevel(1)
       .levelDescription("+1 Second")
       .levelUnit("s")
       .levelDecimalDigit(0)
       .levelLoreLine(2)
       .levelLoreName("Burning Time")
       .levelItem(ITEM)
-      .addLoreLvl(null, 3)
-      .addLoreLvl(new Price(5, Currency.BRONZE), 4)
-      .addLoreLvl(new Price(4, Currency.SILVER), 5)
-      .addLoreLvl(new Price(3, Currency.GOLD), 6)
-      .addLoreLvl(new Price(12, Currency.BRONZE), 7)
-      .addLoreLvl(new Price(14, Currency.SILVER), 8)
-      .addLoreLvl(new Price(10, Currency.GOLD), 9);
+      .addTagLevel(null, 3)
+      .addTagLevel(new Price(5, Currency.BRONZE), 4)
+      .addTagLevel(new Price(4, Currency.SILVER), 5)
+      .addTagLevel(new Price(3, Currency.GOLD), 6)
+      .addTagLevel(new Price(12, Currency.BRONZE), 7)
+      .addTagLevel(new Price(14, Currency.SILVER), 8)
+      .addTagLevel(new Price(10, Currency.GOLD), 9);
 
-  private static final LevelType.Builder SLOWNESS_LEVELS = new LevelType.Builder()
+  private static final LevelableProperty.Builder SLOWNESS_LEVELS = new LevelableProperty.Builder()
       .name("Slowness")
       .display(new ExItemStack(Material.FEATHER))
-      .baseLevel(1)
+      .defaultLevel(1)
       .levelDescription("+1 Second")
       .levelUnit("s")
       .levelDecimalDigit(0)
       .levelLoreLine(3)
       .levelLoreName("Slowness")
-      .addLoreLvl(null, 3)
+      .addTagLevel(null, 3)
       .levelItem(ITEM)
-      .addLoreLvl(new Price(24, Currency.BRONZE), 4)
-      .addLoreLvl(new Price(48, Currency.BRONZE), 5);
+      .addTagLevel(new Price(24, Currency.BRONZE), 4)
+      .addTagLevel(new Price(48, Currency.BRONZE), 5);
 
-  public static final UpgradeableItem.Builder FIRE_HOE = new UpgradeableItem.Builder()
+  public static final UpgradeableGoodItem.Builder FIRE_HOE = new UpgradeableGoodItem.Builder()
       .name("Frozen Fire Hoe")
-      .display(new ExItemStack(Material.GOLDEN_HOE, "§6Frozen Fire Hoe").enchant())
-      .baseItem(ITEM.cloneWithId()
-          .enchant().setUnbreakable(true))
-      .addLvlType(DAMAGE_LEVELS)
-      .addLvlType(BURNING_TIME_LEVELS)
-      .addLvlType(SLOWNESS_LEVELS);
+      .display(new ExItemStack(Material.GOLDEN_HOE).setDisplayName("§6Frozen Fire Hoe").enchant())
+      .startItem(ITEM.cloneWithId().enchant().setUnbreakable(true))
+      .addLevelableProperty(DAMAGE_LEVELS)
+      .addLevelableProperty(BURNING_TIME_LEVELS)
+      .addLevelableProperty(SLOWNESS_LEVELS);
 
 
   private final Set<User> cooldownUsers = new HashSet<>();
 
   public FireHoe() {
-    super(FIRE_HOE.getBaseItem());
+    super(FIRE_HOE.getStartItem());
     Server.registerListener(this, GameMobDefence.getPlugin());
   }
 
@@ -117,7 +113,7 @@ public class FireHoe extends CooldownWeapon implements Listener {
 
     ExItemStack hoe = ExItemStack.getItem(user.getInventory().getItemInMainHand(), false);
 
-    if (hoe == null || !hoe.equals(FIRE_HOE.getBaseItem())) {
+    if (hoe == null || !hoe.equals(FIRE_HOE.getStartItem())) {
       return;
     }
 
@@ -127,9 +123,9 @@ public class FireHoe extends CooldownWeapon implements Listener {
 
     this.cooldownUsers.add(user);
 
-    double damage = DAMAGE_LEVELS.getNumberFromLore(hoe, Double::valueOf);
-    int burningTime = BURNING_TIME_LEVELS.getNumberFromLore(hoe, Integer::valueOf);
-    int slowness = SLOWNESS_LEVELS.getNumberFromLore(hoe, Integer::valueOf);
+    int damage = DAMAGE_LEVELS.getValueFromItem(hoe);
+    int burningTime = BURNING_TIME_LEVELS.getValueFromItem(hoe);
+    int slowness = SLOWNESS_LEVELS.getValueFromItem(hoe);
 
     LivingEntity entity = (LivingEntity) event.getEntity();
 

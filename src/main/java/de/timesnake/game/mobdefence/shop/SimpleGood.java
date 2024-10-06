@@ -12,7 +12,7 @@ import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class Trade {
+public class SimpleGood {
 
   protected final int slot;
 
@@ -24,7 +24,7 @@ public class Trade {
   protected Consumer<MobDefUser> giveConsumer;
   private Price currentPrice;
 
-  protected Trade(Builder builder) {
+  protected SimpleGood(Builder builder) {
     this.slot = builder.slot;
     this.rebuyable = builder.rebuyable;
 
@@ -35,8 +35,7 @@ public class Trade {
 
     this.displayItem.setDisplayName("§6" + this.displayItem.getItemMeta().getDisplayName());
 
-    this.description = Arrays.asList(
-        builder.description != null ? builder.description : new String[0]);
+    this.description = Arrays.asList(builder.description != null ? builder.description : new String[0]);
 
     this.giveConsumer = builder.giveConsumer;
 
@@ -56,7 +55,7 @@ public class Trade {
 
     if (this.priceIt.hasNext()) {
       lore.add("");
-      lore.add("§cThe price increases per buy");
+      lore.add("§cPrice increases per buy");
     }
 
     this.displayItem.setExLore(lore);
@@ -181,9 +180,9 @@ public class Trade {
       return this;
     }
 
-    public Trade build() {
+    public SimpleGood build() {
       this.checkBuild();
-      return new Trade(this);
+      return new SimpleGood(this);
     }
 
     protected void checkBuild() {

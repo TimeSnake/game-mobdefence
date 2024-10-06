@@ -27,7 +27,7 @@ public class KitShopManager implements Listener {
         return;
       }
 
-      KitShop shop = user.getShop();
+      KitShops shop = user.getShop();
 
       if (shop != null) {
         user.openInventory(shop.getInventory());

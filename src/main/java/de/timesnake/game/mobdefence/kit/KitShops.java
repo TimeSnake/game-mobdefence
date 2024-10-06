@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class KitShop implements UserInventoryClickListener, InventoryHolder {
+public class KitShops implements UserInventoryClickListener, InventoryHolder {
 
   private final Logger logger = LogManager.getLogger("mob-def.kit.shop");
 
@@ -32,13 +32,11 @@ public class KitShop implements UserInventoryClickListener, InventoryHolder {
   private final Map<ExItemStack, Shop> shopsByItem = new HashMap<>();
   private MobDefUser user;
 
-  public KitShop(MobDefUser user, boolean loadItemBase) {
+  public KitShops(MobDefUser user, boolean loadItemBase) {
     this.user = user;
-    MobDefKit kit = ((MobDefKit) user.getKit());
-
     this.inv = new ExInventory(InventoryType.HOPPER, "§7Shop", this);
 
-    for (Supplier<Shop> shopSupplier : kit.getShopSuppliers()) {
+    for (Supplier<Shop> shopSupplier : ((MobDefKit) user.getKit()).getShopSuppliers()) {
       Shop shop;
       try {
         shop = shopSupplier.get();
@@ -53,7 +51,7 @@ public class KitShop implements UserInventoryClickListener, InventoryHolder {
       this.inv.setItemStack(shop.getSlot(), shop.getDisplayItem());
 
       if (loadItemBase) {
-        shop.getUpgradeables().forEach(u -> u.loadBaseForUser(user));
+        shop.getUpgradeableGoods().forEach(u -> u.loadBaseForUser(user));
       }
     }
 
@@ -62,7 +60,6 @@ public class KitShop implements UserInventoryClickListener, InventoryHolder {
 
   @Override
   public void onUserInventoryClick(UserInventoryClickEvent event) {
-
     event.setCancelled(true);
 
     if (!this.user.equals(event.getUser())) {

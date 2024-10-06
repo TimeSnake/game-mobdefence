@@ -16,7 +16,7 @@ import org.bukkit.Material;
 import java.util.HashMap;
 import java.util.List;
 
-public class BaseShops {
+public class Shops {
 
   public static final Shop.Builder BLOCK_SHOP = new Shop.Builder()
       .name("Blocks")
@@ -26,7 +26,7 @@ public class BaseShops {
           MobDefKit.OAK_SLAB,
           MobDefKit.IRON_BARS, MobDefKit.COBBLESTONE_WALL, MobDefKit.STONE_AXE,
           MobDefKit.IRON_PICKAXE)
-      .addTrade(TrapMaker.getShopTrades().toArray(Trade.Builder[]::new))
+      .addTrade(TrapMaker.getShopTrades().toArray(SimpleGood.Builder[]::new))
       .type(Shop.Builder.Type.TEAM);
 
   public static final Shop.Builder BASIC_SHOP = new Shop.Builder()
@@ -53,7 +53,7 @@ public class BaseShops {
 
   private final HashMap<String, Shop> shopsByName = new HashMap<>();
 
-  public BaseShops() {
+  public Shops() {
     this.resetShops();
   }
 

@@ -7,7 +7,7 @@ package de.timesnake.game.mobdefence.user;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
-import de.timesnake.game.mobdefence.kit.KitShop;
+import de.timesnake.game.mobdefence.kit.KitShops;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
@@ -28,7 +28,7 @@ public class MobDefUser extends GameUser {
   private boolean alive;
   private ItemStack[] invItems;
 
-  private KitShop shop;
+  private KitShops shop;
 
   private ReviveManager.DeadPlayer deadBody;
   private ExLocation deathLocation;
@@ -181,11 +181,11 @@ public class MobDefUser extends GameUser {
     this.alive = alive;
   }
 
-  public KitShop getShop() {
+  public KitShops getShop() {
     return shop;
   }
 
-  public void setShop(KitShop shop) {
+  public void setShop(KitShops shop) {
     this.shop = shop;
     this.shop.setUser(this);
   }

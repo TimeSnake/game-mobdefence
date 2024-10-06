@@ -14,9 +14,9 @@ import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
-import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.LevelableProperty;
 import de.timesnake.game.mobdefence.shop.Price;
-import de.timesnake.game.mobdefence.shop.Upgradeable;
+import de.timesnake.game.mobdefence.shop.UpgradeableGood;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitTask;
@@ -30,45 +30,45 @@ public class ReviveManager {
 
   private static final BiConsumer<MobDefUser, Integer> RESPAWN = (u, i) -> MobDefServer.getMobDefUserManager()
       .getReviveManager().setReviveRespawnTime(i);
-  private static final LevelType.Builder RESPAWN_TIME_LEVELS = new LevelType.Builder()
+  private static final LevelableProperty.Builder RESPAWN_TIME_LEVELS = new LevelableProperty.Builder()
       .name("Respawn Time")
       .display(new ExItemStack(Material.PLAYER_HEAD))
-      .baseLevel(1)
+      .defaultLevel(1)
       .levelDescription("-1s Revive Time")
-      .addLvl(null, (MobDefUser u) -> RESPAWN.accept(u, 7))
-      .addLvl(new Price(3, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 6))
-      .addLvl(new Price(5, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 5))
-      .addLvl(new Price(7, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 4))
-      .addLvl(new Price(9, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 3));
+      .addLevel(null, (MobDefUser u) -> RESPAWN.accept(u, 7))
+      .addLevel(new Price(3, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 6))
+      .addLevel(new Price(5, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 5))
+      .addLevel(new Price(7, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 4))
+      .addLevel(new Price(9, Currency.EMERALD), (MobDefUser u) -> RESPAWN.accept(u, 3));
 
 
   private static final BiConsumer<MobDefUser, Integer> DESPAWN = (u, i) -> MobDefServer.getMobDefUserManager()
       .getReviveManager().setReviveDespawnTime(i);
-  private static final LevelType.Builder DESPAWN_TIME_LEVELS = new LevelType.Builder()
+  private static final LevelableProperty.Builder DESPAWN_TIME_LEVELS = new LevelableProperty.Builder()
       .name("Despawn Time")
       .display(new ExItemStack(Material.SKELETON_SKULL))
-      .baseLevel(1)
+      .defaultLevel(1)
       .levelDescription("+3s Despawn Time")
-      .addLvl(null, (MobDefUser u) -> DESPAWN.accept(u, 30))
-      .addLvl(new Price(2, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 33))
-      .addLvl(new Price(4, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 36))
-      .addLvl(new Price(6, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 39))
-      .addLvl(new Price(8, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 42))
-      .addLvl(new Price(10, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 45))
-      .addLvl(new Price(12, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 48))
-      .addLvl(new Price(14, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 51))
-      .addLvl(new Price(16, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 54))
-      .addLvl(new Price(18, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 57))
-      .addLvl(new Price(20, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 60));
+      .addLevel(null, (MobDefUser u) -> DESPAWN.accept(u, 30))
+      .addLevel(new Price(2, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 33))
+      .addLevel(new Price(4, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 36))
+      .addLevel(new Price(6, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 39))
+      .addLevel(new Price(8, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 42))
+      .addLevel(new Price(10, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 45))
+      .addLevel(new Price(12, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 48))
+      .addLevel(new Price(14, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 51))
+      .addLevel(new Price(16, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 54))
+      .addLevel(new Price(18, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 57))
+      .addLevel(new Price(20, Currency.EMERALD), (MobDefUser u) -> DESPAWN.accept(u, 60));
 
-  public static final Upgradeable.Builder REVIVE = new Upgradeable.Builder() {
+  public static final UpgradeableGood.Builder REVIVE = new UpgradeableGood.Builder() {
     @Override
-    public Upgradeable build() {
+    public UpgradeableGood build() {
       this.checkBuild();
-      return new Upgradeable(this) {
+      return new UpgradeableGood(this) {
         @Override
         public void onLevelClick(MobDefUser user, ExInventory inv, ExItemStack item) {
-          LevelType levelType = this.levelType.get1(item);
+          LevelableProperty levelType = this.levelType.get1(item);
           if (levelType == null) {
             return;
           }
@@ -80,8 +80,8 @@ public class ReviveManager {
   }
       .name("Revive")
       .display(new ExItemStack(Material.TOTEM_OF_UNDYING))
-      .addLvlType(RESPAWN_TIME_LEVELS)
-      .addLvlType(DESPAWN_TIME_LEVELS);
+      .addLevelableProperty(RESPAWN_TIME_LEVELS)
+      .addLevelableProperty(DESPAWN_TIME_LEVELS);
 
   private int reviveRespawnTime = 7;
   private int reviveDespawnTime = 30;

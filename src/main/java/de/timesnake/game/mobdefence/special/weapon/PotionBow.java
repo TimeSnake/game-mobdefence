@@ -10,7 +10,7 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
-import de.timesnake.game.mobdefence.shop.UpgradeableItem;
+import de.timesnake.game.mobdefence.shop.UpgradeableGoodItem;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
@@ -25,16 +25,16 @@ import org.bukkit.inventory.meta.PotionMeta;
 public class PotionBow extends SpecialWeapon implements Listener {
 
 
-  public static final UpgradeableItem.Builder BOW = new UpgradeableItem.Builder()
+  public static final UpgradeableGoodItem.Builder BOW = new UpgradeableGoodItem.Builder()
       .name("Splash Bow")
       .price(new Price(6, Currency.GOLD))
-      .baseItem(new ExItemStack(Material.BOW).addExEnchantment(Enchantment.INFINITY, 1)
+      .startItem(new ExItemStack(Material.BOW).addExEnchantment(Enchantment.INFINITY, 1)
           .setUnbreakable(true)
           .setDisplayName("§6Potion Bow"))
       .unlockedAtWave(5);
 
   public PotionBow() {
-    super(BOW.getBaseItem());
+    super(BOW.getStartItem());
     Server.registerListener(this, GameMobDefence.getPlugin());
   }
 
@@ -51,7 +51,7 @@ public class PotionBow extends SpecialWeapon implements Listener {
     User user = Server.getUser(((Player) e.getEntity()));
     ExItemStack item = new ExItemStack(e.getBow());
 
-    if (!item.equals(BOW.getBaseItem())) {
+    if (!item.equals(BOW.getStartItem())) {
       return;
     }
 

@@ -47,6 +47,7 @@ public class MobDefKit extends Kit implements KitItems {
           () -> MobDefServer.getBaseShops().getBlockShop(),
           () -> MobDefServer.getBaseShops().getTeamShop())
       .build();
+
   public static final MobDefKit ALCHEMIST = new Builder()
       .id(3)
       .name("Alchemist")
@@ -59,6 +60,7 @@ public class MobDefKit extends Kit implements KitItems {
           () -> MobDefServer.getBaseShops().getBlockShop(),
           () -> MobDefServer.getBaseShops().getTeamShop())
       .build();
+
   public static final MobDefKit WIZARD = new Builder()
       .id(4)
       .name("Wizard")
@@ -72,16 +74,6 @@ public class MobDefKit extends Kit implements KitItems {
           () -> MobDefServer.getBaseShops().getTeamShop())
       .build();
 
-  static {
-    BLOCK_ITEM_BY_TYPE.put(Material.OAK_FENCE, OAK_FENCE_ITEM.cloneWithId().asOne());
-    BLOCK_ITEM_BY_TYPE.put(Material.OAK_FENCE_GATE, OAK_FENCE_GATE_ITEM.cloneWithId().asOne());
-    BLOCK_ITEM_BY_TYPE.put(Material.OAK_PLANKS, OAK_PLANKS_ITEM.cloneWithId().asOne());
-    BLOCK_ITEM_BY_TYPE.put(Material.OAK_SLAB, OAK_SLAB_ITEM.cloneWithId().asOne());
-    BLOCK_ITEM_BY_TYPE.put(Material.IRON_BARS, IRON_BARS_ITEM.cloneWithId().asOne());
-    BLOCK_ITEM_BY_TYPE.put(Material.COBBLESTONE_WALL,
-        COBBLESTONE_WALL_ITEM.cloneWithId().asOne());
-  }
-
   public final List<Supplier<Shop>> shopSuppliers;
 
   public MobDefKit(Builder builder) {
@@ -93,8 +85,8 @@ public class MobDefKit extends Kit implements KitItems {
     return this.shopSuppliers;
   }
 
-  public KitShop getShop(MobDefUser user, boolean loadItemBase) {
-    return new KitShop(user, loadItemBase);
+  public KitShops getShop(MobDefUser user, boolean loadItemBase) {
+    return new KitShops(user, loadItemBase);
   }
 
   public static class Builder extends Kit.Builder<Builder> {

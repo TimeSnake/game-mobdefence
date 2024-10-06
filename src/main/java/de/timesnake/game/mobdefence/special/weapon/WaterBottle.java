@@ -9,7 +9,7 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
-import de.timesnake.game.mobdefence.shop.Trade;
+import de.timesnake.game.mobdefence.shop.SimpleGood;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ public class WaterBottle extends SpecialWeapon implements Listener {
       ExItemStack.getPotion(Material.SPLASH_POTION, PotionType.WATER)
           .setDisplayName("§6Water Bottle").setLore("§7Extinguish players").hideAll();
 
-  public static final Trade.Builder WATER = new Trade.Builder()
+  public static final SimpleGood.Builder WATER = new SimpleGood.Builder()
       .slot(23)
       .giveItems(ITEM)
       .description("Extinguish players")

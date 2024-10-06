@@ -10,25 +10,24 @@ import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
-import de.timesnake.library.chat.ExTextColor;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class UpgradeableItem extends Upgradeable {
+public class UpgradeableGoodItem extends UpgradeableGood {
 
   private final Price buyPrice;
   private final boolean rebuyable;
   private final int unlockedAtWave;
-  protected ExItemStack item;
   private boolean bought = false;
 
-  protected UpgradeableItem(Builder builder) {
+  protected ExItemStack startItem;
+
+  protected UpgradeableGoodItem(Builder builder) {
     super(builder);
-    this.item = builder.baseItem.cloneWithId();
+    this.startItem = builder.startItem.cloneWithId().immutable();
     this.buyPrice = builder.buyPrice;
     this.rebuyable = builder.rebuyable;
     this.unlockedAtWave = builder.unlockedAtWave;
@@ -47,98 +46,74 @@ public class UpgradeableItem extends Upgradeable {
 
   @Override
   public void loadBaseForUser(MobDefUser user) {
-    for (LevelType levelType : this.levelType.values()) {
-      for (Level<?> level : levelType.getBaseLevels()) {
-        if (level instanceof Level.ItemLevel itemLevel) {
-          this.item = itemLevel.apply(this.item);
-        } else if (level instanceof Level.LoreNumberLevel<?> loreLevel) {
-          this.item = loreLevel.apply(this.item);
-        } else {
-          level.run(user);
-        }
-      }
-    }
-
     if (!this.isBuyable()) {
-      user.setItem(this.item);
+      user.setItem(this.startItem.cloneWithId());
+      super.loadBaseForUser(user);
     }
-  }
-
-  public ExItemStack getItem() {
-    return item;
   }
 
   @Override
   public void onLevelClick(MobDefUser user, ExInventory inv, ExItemStack item) {
-    LevelType levelType = this.levelType.get1(item);
+    LevelableProperty levelableProperty = this.levelType.get1(item);
 
     if (this.isBuyable()) {
-      if (levelType == null && this.getDisplayItem().equals(item)) {
+      if (levelableProperty == null && this.getDisplayItem().equals(item)) {
 
         if (MobDefServer.getWaveNumber() < this.unlockedAtWave) {
-          user.sendPluginMessage(Plugin.MOB_DEFENCE,
-              Component.text("This item is locked until wave ", ExTextColor.WARNING)
-                  .append(Component.text(this.unlockedAtWave,
-                      ExTextColor.VALUE)));
+          user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§wThis item is locked until wave §v" + this.unlockedAtWave);
           return;
         }
 
-        if (this.bought && this.rebuyable) {
-          user.sendPluginMessage(Plugin.MOB_DEFENCE,
-              Component.text("You already bought this item", ExTextColor.WARNING));
+        if (this.bought && !this.rebuyable) {
+          user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§wYou already bought this item");
           return;
         }
 
         if (!user.containsAtLeast(this.buyPrice.asItem())) {
-          user.sendPluginMessage(Plugin.MOB_DEFENCE,
-              Component.text("Not enough money", ExTextColor.WARNING));
+          user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§wNot enough money");
           user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
           return;
         }
 
         user.removeCertainItemStack(this.buyPrice.asItem());
-
-        user.addItem(this.item);
+        user.setItem(this.startItem.cloneWithId());
+        super.loadBaseForUser(user);
         user.playNote(Instrument.STICKS, Note.natural(1, Note.Tone.C));
         this.bought = true;
-
         return;
       }
 
       if (!this.bought) {
-        user.sendPluginMessage(Plugin.MOB_DEFENCE,
-            Component.text("You must buy this item before", ExTextColor.WARNING));
+        user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§wYou must buy this item before");
         user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
         return;
       }
     }
 
-    if (levelType == null) {
+    if (levelableProperty == null) {
       return;
     }
 
-    LevelType conflictingType = this.isConflicting(levelType);
+    LevelableProperty conflictingType = this.isConflicting(levelableProperty);
 
     if (conflictingType != null) {
-      user.sendPluginMessage(Plugin.MOB_DEFENCE,
-          Component.text("Conflicting with ", ExTextColor.WARNING)
-              .append(Component.text(conflictingType.getName(), ExTextColor.VALUE)));
+      user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§wConflicting with §v" + conflictingType.getName());
       user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
       return;
     }
 
-    levelType.tryLevelUp(user);
+    levelableProperty.tryLevelUp(user);
 
-    inv.setItemStack(levelType.getDisplayItem());
+    inv.setItemStack(levelableProperty.getDisplayItem());
   }
 
   public boolean isBuyable() {
     return this.buyPrice != null;
   }
 
-  public static class Builder extends Upgradeable.Builder {
+  public static class Builder extends UpgradeableGood.Builder {
 
-    private ExItemStack baseItem;
+    private ExItemStack startItem;
     private Price buyPrice;
     private boolean rebuyable = false;
     private int unlockedAtWave = 0;
@@ -158,32 +133,32 @@ public class UpgradeableItem extends Upgradeable {
     }
 
     @Override
-    public Builder addLvlType(LevelType.Builder levelTypeBuilder) {
-      return (Builder) super.addLvlType(levelTypeBuilder);
+    public Builder addLevelableProperty(LevelableProperty.Builder levelTypeBuilder) {
+      return (Builder) super.addLevelableProperty(levelTypeBuilder);
     }
 
     @Override
     protected void checkBuild() {
       super.checkBuild();
-      if (this.baseItem == null) {
+      if (this.startItem == null) {
         throw new BuilderNotFullyInstantiatedException("base item is null");
       }
     }
 
     @Override
-    public Builder addConflictToLvlType(LevelType.Builder levelTypeBuilder1,
-        LevelType.Builder levelTypeBuilder2) {
+    public Builder addConflictToLvlType(LevelableProperty.Builder levelTypeBuilder1,
+                                        LevelableProperty.Builder levelTypeBuilder2) {
       return (Builder) super.addConflictToLvlType(levelTypeBuilder1, levelTypeBuilder2);
     }
 
     @Override
-    public UpgradeableItem build() {
+    public UpgradeableGoodItem build() {
       this.checkBuild();
-      return new UpgradeableItem(this);
+      return new UpgradeableGoodItem(this);
     }
 
-    public Builder baseItem(ExItemStack item) {
-      this.baseItem = item;
+    public Builder startItem(ExItemStack item) {
+      this.startItem = item;
       return this;
     }
 
@@ -202,8 +177,8 @@ public class UpgradeableItem extends Upgradeable {
       return this;
     }
 
-    public ExItemStack getBaseItem() {
-      return this.baseItem;
+    public ExItemStack getStartItem() {
+      return this.startItem;
     }
   }
 

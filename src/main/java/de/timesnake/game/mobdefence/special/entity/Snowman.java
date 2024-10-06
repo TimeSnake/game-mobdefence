@@ -8,7 +8,7 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
-import de.timesnake.game.mobdefence.shop.Trade;
+import de.timesnake.game.mobdefence.shop.SimpleGood;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.SnowGolemBuilder;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -36,7 +36,7 @@ public class Snowman extends BlockSpawner implements Listener {
   public static final ExItemStack ITEM = new ExItemStack(Material.CARVED_PUMPKIN,
       "§6Snowmen", "§7Place the block to spawn a snowman").immutable();
 
-  public static final Trade.Builder SNOWMAN = new Trade.Builder()
+  public static final SimpleGood.Builder SNOWMAN = new SimpleGood.Builder()
       .price(new Price(8, Currency.GOLD))
       .giveItems(Snowman.ITEM.cloneWithId().asQuantity(4))
       .slot(47);
