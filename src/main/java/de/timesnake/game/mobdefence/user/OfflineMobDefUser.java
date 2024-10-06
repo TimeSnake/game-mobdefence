@@ -6,13 +6,13 @@ package de.timesnake.game.mobdefence.user;
 
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.basic.loungebridge.util.user.OfflineUser;
-import de.timesnake.game.mobdefence.kit.KitShop;
+import de.timesnake.game.mobdefence.kit.KitShops;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 
 public class OfflineMobDefUser extends OfflineUser {
 
   private final boolean alive;
-  private final KitShop shop;
+  private final KitShops shop;
 
   public OfflineMobDefUser(MobDefUser user) {
     super(user);

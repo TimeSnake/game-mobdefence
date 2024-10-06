@@ -4,11 +4,13 @@
 
 package de.timesnake.game.mobdefence.server;
 
+import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServer;
+import de.timesnake.game.mobdefence.kit.KitItems;
 import de.timesnake.game.mobdefence.map.MobDefMap;
 import de.timesnake.game.mobdefence.mob.MobManager;
-import de.timesnake.game.mobdefence.shop.BaseShops;
+import de.timesnake.game.mobdefence.shop.Shops;
 import de.timesnake.game.mobdefence.special.weapon.WeaponManager;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.UserManager;
@@ -106,6 +108,8 @@ public class MobDefServer extends LoungeBridgeServer {
 
   public static final List<Material> EXPLODEABLE = new ArrayList<>();
 
+  public static final Map<Material, ExItemStack> BLOCK_ITEM_BY_TYPE = new HashMap<>();
+
   static {
     ROUNDED_BLOCK_MATERIALS.addAll(Tag.SLABS.getValues());
     ROUNDED_BLOCK_MATERIALS.addAll(Tag.STAIRS.getValues());
@@ -146,6 +150,13 @@ public class MobDefServer extends LoungeBridgeServer {
     EXPLODEABLE.addAll(Tag.LOGS.getValues());
     EXPLODEABLE.addAll(Tag.PLANKS.getValues());
     EXPLODEABLE.addAll(Tag.WALLS.getValues());
+
+    BLOCK_ITEM_BY_TYPE.put(Material.OAK_FENCE, KitItems.OAK_FENCE_ITEM.cloneWithId().asOne());
+    BLOCK_ITEM_BY_TYPE.put(Material.OAK_FENCE_GATE, KitItems.OAK_FENCE_GATE_ITEM.cloneWithId().asOne());
+    BLOCK_ITEM_BY_TYPE.put(Material.OAK_PLANKS, KitItems.OAK_PLANKS_ITEM.cloneWithId().asOne());
+    BLOCK_ITEM_BY_TYPE.put(Material.OAK_SLAB, KitItems.OAK_SLAB_ITEM.cloneWithId().asOne());
+    BLOCK_ITEM_BY_TYPE.put(Material.IRON_BARS, KitItems.IRON_BARS_ITEM.cloneWithId().asOne());
+    BLOCK_ITEM_BY_TYPE.put(Material.COBBLESTONE_WALL, KitItems.COBBLESTONE_WALL_ITEM.cloneWithId().asOne());
   }
 
 
@@ -212,7 +223,7 @@ public class MobDefServer extends LoungeBridgeServer {
     return server.getWeaponManager();
   }
 
-  public static BaseShops getBaseShops() {
+  public static Shops getBaseShops() {
     return server.getBaseShops();
   }
 

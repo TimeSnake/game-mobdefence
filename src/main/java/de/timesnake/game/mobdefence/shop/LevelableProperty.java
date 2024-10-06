@@ -15,34 +15,33 @@ import org.bukkit.Instrument;
 import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.enchantments.Enchantment;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class LevelType {
+public class LevelableProperty {
 
   private final ExItemStack displayItem;
   private final String name;
   private final int baseLevel;
   private final int maxLevel;
-  private final HashMap<Integer, Level<?>> levels;
+  private final HashMap<Integer, Level> levels;
   private int level;
   private Collection<String> conflictingTypes = new LinkedList<>();
 
-  protected LevelType(Builder builder) {
+  protected LevelableProperty(Builder builder) {
     this.displayItem = builder.displayItem.cloneWithId();
     this.name = builder.name;
-    this.level = builder.baseLevel;
-    this.baseLevel = builder.baseLevel;
+    this.level = builder.defaultLevel;
+    this.baseLevel = builder.defaultLevel;
     this.maxLevel = this.baseLevel + builder.levels.size();
 
     this.displayItem.setDisplayName("§6" + name);
 
     this.levels = new HashMap<>();
 
-    for (Level<?> level : builder.levels) {
+    for (Level level : builder.levels) {
       this.levels.put(level.getLevel(), level);
     }
 
@@ -52,7 +51,7 @@ public class LevelType {
   public void updateDescription() {
     this.displayItem.setAmount(this.level == 0 ? 1 : this.level);
 
-    Level<?> nextLevel = this.levels.get(this.level + 1);
+    Level nextLevel = this.levels.get(this.level + 1);
 
     StringBuilder sb = new StringBuilder();
     if (!this.conflictingTypes.isEmpty()) {
@@ -89,31 +88,16 @@ public class LevelType {
     return name;
   }
 
-  public Collection<Level<?>> getLevels() {
+  public Collection<Level> getLevels() {
     return this.levels.values();
   }
 
-  public Level<?> getLevel(int level) {
+  public Level getLevel(int level) {
     return this.levels.get(level);
   }
 
-  @Nullable
-  public List<Level<?>> getBaseLevels() {
+  public List<Level> getBaseLevels() {
     return this.levels.values().stream().filter(l -> l.getLevel() <= this.baseLevel).toList();
-  }
-
-  public Level<?> getFirstLevel() {
-    Level<?> level = null;
-
-    for (int i = this.baseLevel; level == null && i <= this.maxLevel; i++) {
-      level = this.levels.get(i);
-    }
-
-    return level;
-  }
-
-  public Level<?> getLastLevel() {
-    return this.levels.get(this.maxLevel);
   }
 
   public boolean tryLevelUp(MobDefUser user) {
@@ -128,7 +112,7 @@ public class LevelType {
       return false;
     }
 
-    Level<?> nextLevel = this.levels.get(this.level + 1);
+    Level nextLevel = this.levels.get(this.level + 1);
 
     if (nextLevel == null) {
       user.sendPluginMessage(Plugin.MOB_DEFENCE,
@@ -175,18 +159,15 @@ public class LevelType {
     return level;
   }
 
-  public void resetLevel() {
-    this.level = this.baseLevel;
-  }
-
   public static class Builder {
 
-    private final LinkedList<Level<?>> levels = new LinkedList<>();
+    private final LinkedList<Level> levels = new LinkedList<>();
+
     String name;
     private ExItemStack displayItem;
-    private int baseLevel;
+    private int defaultLevel;
     private int levelCounter = 0;
-    private ExItemStack currentLevelItemStack;
+    private ExItemStack currentLevelItem;
     private String currentDescription = "";
     private Enchantment currentEnchantment;
     private String currentLoreName = "";
@@ -197,8 +178,8 @@ public class LevelType {
     public Builder() {
     }
 
-    public Builder baseLevel(int baseLevel) {
-      this.baseLevel = baseLevel;
+    public Builder defaultLevel(int defaultLevel) {
+      this.defaultLevel = defaultLevel;
       return this;
     }
 
@@ -243,16 +224,16 @@ public class LevelType {
     }
 
     public Builder levelItem(ExItemStack levelItem) {
-      this.currentLevelItemStack = levelItem;
+      this.currentLevelItem = levelItem;
       return this;
     }
 
-    public Builder addLvl(Price price, Consumer<MobDefUser> consumer) {
-      return this.addLvl(price, this.currentDescription, consumer);
+    public Builder addLevel(Price price, Consumer<MobDefUser> consumer) {
+      return this.addLevel(price, this.currentDescription, consumer);
     }
 
-    public Builder addLvl(Price price, String description, Consumer<MobDefUser> consumer) {
-      this.levels.addLast(new Level<>(++this.levelCounter, price, description, consumer) {
+    public Builder addLevel(Price price, String description, Consumer<MobDefUser> consumer) {
+      this.levels.addLast(new Level(++this.levelCounter, price, description) {
         @Override
         public void run(MobDefUser user) {
           consumer.accept(user);
@@ -261,59 +242,76 @@ public class LevelType {
       return this;
     }
 
-    public Builder addEnchantmentLvl(Price price, Enchantment enchantment, int level) {
-      return this.addLvl(price, (ExItemStack i) -> i.addExEnchantment(enchantment, level));
+    public Builder addEnchantLevel(Price price, Enchantment enchantment, int level) {
+      return this.addLevel(price, (ExItemStack i) -> i.addExEnchantment(enchantment, level));
     }
 
-    public Builder addLvl(Price price, Function<ExItemStack, ExItemStack> function) {
-      return this.addLvl(price, this.currentDescription, function);
+    public Builder addLevel(Price price, Function<ExItemStack, ExItemStack> function) {
+      return this.addLevel(price, this.currentDescription, function);
     }
 
-    public Builder addLvl(Price price, String description, Function<ExItemStack, ExItemStack> function) {
-      this.levels.addLast(new Level.ItemLevel(this.currentLevelItemStack, ++this.levelCounter, price, description, function));
+    public Builder addLevel(Price price, String description, Function<ExItemStack, ExItemStack> function) {
+      this.levels.addLast(new ItemLevel(this.currentLevelItem, ++this.levelCounter, price, description) {
+        @Override
+        public ExItemStack apply(ExItemStack exItemStack) {
+          return function.apply(exItemStack);
+        }
+      });
       return this;
     }
 
-    public Builder addEnchantmentLvl(Price price, int level) {
+    public Builder addEnchantLevel(Price price, int level) {
       if (this.currentEnchantment == null) {
         throw new BuilderNotFullyInstantiatedException("enchantment type is not set");
       }
-      return this.addLvl(price,
-          (ExItemStack i) -> i.addExEnchantment(this.currentEnchantment, level));
+      return this.addLevel(price, (ExItemStack i) -> i.addExEnchantment(this.currentEnchantment, level));
     }
 
-    public Builder addMaterialLvl(Price price, String description, Material material) {
-      return this.addLvl(price, description, (ExItemStack i) -> i.withType(material));
+    public Builder addMaterialLevel(Price price, String description, Material material) {
+      return this.addLevel(price, description, (ExItemStack i) -> i.withType(material));
     }
 
-    public <N extends Number> Builder addLoreLvl(Price price, N number) {
-      return this.addLoreLvl(price, this.currentDescription, this.currentLoreName,
-          this.currentLoreLine,
-          this.currentDecimalDigits, this.currentUnit, number);
+    public <N extends Number> Builder addTagLevel(Price price, N number) {
+      return this.addTagLevel(price, this.currentDescription, this.currentLoreName,
+          this.currentLoreLine, this.currentDecimalDigits, this.currentUnit, number);
     }
 
-    public <N extends Number> Builder addLoreLvl(Price price, String description,
-        String loreName,
-        int loreLine, int decimalDigits, String unit, N number) {
-      this.levels.addLast(
-          new Level.LoreNumberLevel<>(this.currentLevelItemStack, loreName, loreLine,
-              decimalDigits, unit, ++this.levelCounter, price, description, number));
+    public Builder addTagLevel(Price price, String description, String loreName, int loreLine,
+                               int decimalDigits, String unit, Number number) {
+      if (number instanceof Integer) {
+        this.levels.addLast(new ItemTagLevel.ItemIntegerTagLevel(this.currentLevelItem, loreName, loreLine,
+            decimalDigits, unit, ++this.levelCounter, price, description, (Integer) number));
+      } else {
+        this.levels.addLast(new ItemTagLevel.ItemFloatTagLevel(this.currentLevelItem, loreName, loreLine,
+            decimalDigits, unit, ++this.levelCounter, price, description, (Float) number));
+      }
+
       return this;
     }
 
-    public <N extends Number> Builder addLoreLvl(Price price, N number,
-        Consumer<MobDefUser> consumer) {
-      this.levels.addLast(
-          new Level.LoreNumberLevel<>(this.currentLevelItemStack, this.currentLoreName,
-              this.currentLoreLine, this.currentDecimalDigits, this.currentUnit,
-              ++this.levelCounter, price,
-              this.currentDescription, number) {
-            @Override
-            public void run(MobDefUser user) {
-              super.run(user);
-              consumer.accept(user);
-            }
-          });
+    public Builder addTagLevel(Price price, Number number, Consumer<MobDefUser> consumer) {
+      if (number instanceof Integer) {
+        this.levels.addLast(
+            new ItemTagLevel.ItemIntegerTagLevel(this.currentLevelItem, this.currentLoreName,
+                this.currentLoreLine, this.currentDecimalDigits, this.currentUnit, ++this.levelCounter, price,
+                this.currentDescription, (Integer) number) {
+              @Override
+              public void run(MobDefUser user) {
+                super.run(user);
+                consumer.accept(user);
+              }
+            });
+      } else {
+        this.levels.addLast(new ItemTagLevel.ItemFloatTagLevel(this.currentLevelItem, this.currentLoreName,
+            this.currentLoreLine, this.currentDecimalDigits, this.currentUnit, ++this.levelCounter, price,
+            this.currentDescription, (Float) number) {
+          @Override
+          public void run(MobDefUser user) {
+            super.run(user);
+            consumer.accept(user);
+          }
+        });
+      }
       return this;
     }
 
@@ -321,9 +319,9 @@ public class LevelType {
       return function.apply(this);
     }
 
-    public LevelType build() {
+    public LevelableProperty build() {
       this.checkBuild();
-      return new LevelType(this);
+      return new LevelableProperty(this);
     }
 
     protected void checkBuild() {
@@ -344,9 +342,9 @@ public class LevelType {
       cloned.levels.addAll(levels);
       cloned.name = name;
       cloned.displayItem = displayItem != null ? displayItem.cloneWithId() : null;
-      cloned.baseLevel = baseLevel;
+      cloned.defaultLevel = defaultLevel;
       cloned.levelCounter = levelCounter;
-      cloned.currentLevelItemStack = currentLevelItemStack != null ? currentLevelItemStack.cloneWithId() : null;
+      cloned.currentLevelItem = currentLevelItem != null ? currentLevelItem.cloneWithId() : null;
       cloned.currentDescription = currentDescription;
       cloned.currentEnchantment = currentEnchantment;
       cloned.currentLoreName = currentLoreName;
@@ -356,23 +354,18 @@ public class LevelType {
       return cloned;
     }
 
-    public <V extends Number> V getNumberFromLore(ExItemStack item,
-        Function<String, V> valueParser) {
-      return valueParser.apply(this.getNumberFromLore(item));
-    }
-
-    public <T extends Number> String getNumberFromLore(ExItemStack item) {
-      Iterator<Level<?>> it = this.levels.listIterator();
-      Level<?> level;
+    public <T extends Number> T getValueFromItem(ExItemStack item) {
+      Iterator<Level> it = this.levels.listIterator();
+      Level level;
 
       do {
         if (!it.hasNext()) {
-          return "0";
+          return null;
         }
         level = it.next();
       }
-      while (!(level instanceof Level.LoreNumberLevel<?>));
-      return ((Level.LoreNumberLevel) level).getValueFromLore(item.getLore());
+      while (!(level instanceof ItemTagLevel<?>));
+      return (T) ((ItemTagLevel) level).getValueFromItem(item);
     }
 
   }

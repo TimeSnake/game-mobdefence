@@ -12,21 +12,21 @@ import de.timesnake.library.basic.util.MultiKeyMap;
 
 import java.util.*;
 
-public abstract class Upgradeable {
+public abstract class UpgradeableGood {
 
   protected final String name;
   protected final ExItemStack displayItem;
 
-  protected final MultiKeyMap<ExItemStack, String, LevelType> levelType = new MultiKeyMap<>();
+  protected final MultiKeyMap<ExItemStack, String, LevelableProperty> levelType = new MultiKeyMap<>();
   protected final Map<String, Collection<String>> conflictingTypes;
 
-  protected Upgradeable(Builder builder) {
+  protected UpgradeableGood(Builder builder) {
     this.name = builder.name;
     this.displayItem = builder.displayItem.cloneWithId();
     this.displayItem.setDisplayName("§c" + this.name);
 
-    for (LevelType levelType : builder.levelTypeBuilders.stream().map(LevelType.Builder::build)
-        .toList()) {
+    for (LevelableProperty levelType :
+        builder.levelTypeBuilders.stream().map(LevelableProperty.Builder::build).toList()) {
       levelType.setConflictingTypes(builder.conflictingTypes.get(levelType.getName()));
       this.levelType.put(levelType.getDisplayItem(), levelType.getName(), levelType);
     }
@@ -34,28 +34,30 @@ public abstract class Upgradeable {
     this.conflictingTypes = builder.conflictingTypes;
   }
 
-  protected LevelType isConflicting(LevelType levelType) {
+  protected LevelableProperty isConflicting(LevelableProperty levelType) {
     return this.conflictingTypes.getOrDefault(levelType.getName(), List.of()).stream()
         .map(this.levelType::get2)
         .filter(conflict -> conflict != null && conflict.getLevel() > 0)
         .findFirst().orElse(null);
   }
 
-  public void fillInventoryRow(ExInventory inv, int slot) {
-    inv.setItemStack(slot, this.getDisplayItem());
-    slot += 2;
+  public void fillInventoryRow(ExInventory inv, int startSlot) {
+    inv.setItemStack(startSlot, this.getDisplayItem());
+    startSlot += 2;
 
-    for (Iterator<LevelType> iterator = this.levelType.values().iterator(); slot % 9 != 8 && iterator.hasNext(); slot++) {
-      LevelType levelType = iterator.next();
-      levelType.getDisplayItem().setSlot(slot);
-      inv.setItemStack(slot, levelType.getDisplayItem());
+    for (Iterator<LevelableProperty> iterator = this.levelType.values().iterator(); startSlot % 9 != 8 && iterator.hasNext(); startSlot++) {
+      LevelableProperty levelType = iterator.next();
+      levelType.getDisplayItem().setSlot(startSlot);
+      inv.setItemStack(startSlot, levelType.getDisplayItem());
     }
   }
 
   public void loadBaseForUser(MobDefUser user) {
-    for (LevelType levelType : this.levelType.values()) {
-      for (Level<?> level : levelType.getBaseLevels()) {
-        level.run(user);
+    for (LevelableProperty levelType : this.levelType.values()) {
+      if (levelType.getBaseLevels() != null) {
+        for (Level level : levelType.getBaseLevels()) {
+          level.run(user);
+        }
       }
     }
   }
@@ -68,7 +70,7 @@ public abstract class Upgradeable {
 
   public static abstract class Builder {
 
-    protected final LinkedList<LevelType.Builder> levelTypeBuilders = new LinkedList<>();
+    protected final LinkedList<LevelableProperty.Builder> levelTypeBuilders = new LinkedList<>();
     protected String name;
     protected ExItemStack displayItem;
     protected Map<String, Collection<String>> conflictingTypes = new HashMap<>();
@@ -87,7 +89,7 @@ public abstract class Upgradeable {
       return this;
     }
 
-    public Builder addLvlType(LevelType.Builder levelTypeBuilder) {
+    public Builder addLevelableProperty(LevelableProperty.Builder levelTypeBuilder) {
       this.levelTypeBuilders.addLast(levelTypeBuilder);
       return this;
     }
@@ -104,8 +106,8 @@ public abstract class Upgradeable {
       }
     }
 
-    public Builder addConflictToLvlType(LevelType.Builder levelTypeBuilder1,
-        LevelType.Builder levelTypeBuilder2) {
+    public Builder addConflictToLvlType(LevelableProperty.Builder levelTypeBuilder1,
+                                        LevelableProperty.Builder levelTypeBuilder2) {
       this.conflictingTypes.computeIfAbsent(levelTypeBuilder1.name, k -> new HashSet<>())
           .add(levelTypeBuilder2.name);
       this.conflictingTypes.computeIfAbsent(levelTypeBuilder2.name, k -> new HashSet<>())
@@ -113,7 +115,7 @@ public abstract class Upgradeable {
       return this;
     }
 
-    public abstract Upgradeable build();
+    public abstract UpgradeableGood build();
 
   }
 }

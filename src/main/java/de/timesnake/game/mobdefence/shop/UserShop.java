@@ -11,9 +11,8 @@ public class UserShop extends Shop {
 
   private MobDefUser user;
 
-  public UserShop(MobDefUser user, Shop.Builder builder) {
+  public UserShop(Shop.Builder builder) {
     super(builder);
-    this.user = user;
   }
 
   public void setUser(MobDefUser user) {

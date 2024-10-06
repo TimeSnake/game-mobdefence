@@ -28,8 +28,8 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
 
   protected final int slot;
   protected final ExItemStack displayItem;
-  protected final HashMap<Integer, Upgradeable> upgradeableBySlot = new HashMap<>();
-  protected final Map<ExItemStack, Trade> tradesByDisplayItem = new HashMap<>();
+  protected final HashMap<Integer, UpgradeableGood> upgradeableGoodBySlot = new HashMap<>();
+  protected final Map<ExItemStack, SimpleGood> simpleGoodByDisplayItem = new HashMap<>();
   protected String name;
   protected ExInventory inv;
 
@@ -40,26 +40,26 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
     this.displayItem.setDisplayName("§6" + this.name);
 
     builder.tradeBuilders.stream()
-        .map(Trade.Builder::build)
-        .forEach(t -> this.tradesByDisplayItem.put(t.getDisplayItem(), t));
+        .map(SimpleGood.Builder::build)
+        .forEach(t -> this.simpleGoodByDisplayItem.put(t.getDisplayItem(), t));
 
-    List<Upgradeable> upgradeables = builder.upgradeableBuilders.stream()
-        .map(Upgradeable.Builder::build).toList();
+    List<UpgradeableGood> upgradeableGoods =
+        builder.upgradeableBuilders.stream().map(UpgradeableGood.Builder::build).toList();
 
-    if (this.getTrades().isEmpty()) {
-      this.inv = new ExInventory(upgradeables.size() * 9 + 18, Component.text(this.name),
+    if (this.getSimpleGoods().isEmpty()) {
+      this.inv = new ExInventory(upgradeableGoods.size() * 9 + 18, Component.text(this.name),
           this);
 
       int itemSlot = 1;
-      for (Upgradeable levelItem : upgradeables) {
-        this.upgradeableBySlot.put(itemSlot, levelItem);
+      for (UpgradeableGood levelItem : upgradeableGoods) {
+        this.upgradeableGoodBySlot.put(itemSlot, levelItem);
         levelItem.fillInventoryRow(this.inv, itemSlot);
         itemSlot += 9;
       }
-    } else if (upgradeables.isEmpty()) {
+    } else if (upgradeableGoods.isEmpty()) {
       this.inv = new ExInventory(InventoryType.SHULKER_BOX, this.name, this);
 
-      for (Trade trade : this.getTrades()) {
+      for (SimpleGood trade : this.getSimpleGoods()) {
         this.inv.setItemStack(trade.getSlot(), trade.getDisplayItem());
       }
     } else {
@@ -67,22 +67,26 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
 
       int itemSlot = 1;
 
-      for (Upgradeable levelItem : upgradeables) {
-        this.upgradeableBySlot.put(itemSlot, levelItem);
+      for (UpgradeableGood levelItem : upgradeableGoods) {
+        this.upgradeableGoodBySlot.put(itemSlot, levelItem);
         levelItem.fillInventoryRow(this.inv, itemSlot);
         itemSlot += 9;
       }
 
-      for (Trade trade : this.getTrades()) {
-        this.inv.setItemStack(trade.getSlot(), trade.getDisplayItem());
+      for (SimpleGood simpleGood : this.getSimpleGoods()) {
+        this.inv.setItemStack(simpleGood.getSlot(), simpleGood.getDisplayItem());
       }
     }
 
     Server.getInventoryEventManager().addClickListener(this, this);
   }
 
-  public Collection<Trade> getTrades() {
-    return tradesByDisplayItem.values();
+  public Collection<SimpleGood> getSimpleGoods() {
+    return simpleGoodByDisplayItem.values();
+  }
+
+  public Collection<UpgradeableGood> getUpgradeableGoods() {
+    return upgradeableGoodBySlot.values();
   }
 
   public String getName() {
@@ -111,43 +115,39 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
 
     int baseSlot = event.getSlot() - (event.getSlot() % 9) + 1;
 
-    Upgradeable upgradeable = this.upgradeableBySlot.get(baseSlot);
+    UpgradeableGood upgradeableGood = this.upgradeableGoodBySlot.get(baseSlot);
 
-    if (upgradeable != null) {
-      upgradeable.onLevelClick(user, this.inv, clickedItem);
+    if (upgradeableGood != null) {
+      upgradeableGood.onLevelClick(user, this.inv, clickedItem);
       user.updateInventory();
       return;
     }
 
-    Trade trade = this.tradesByDisplayItem.get(clickedItem);
+    SimpleGood simpleGood = this.simpleGoodByDisplayItem.get(clickedItem);
 
     event.setCancelled(true);
 
-    if (trade == null) {
+    if (simpleGood == null) {
       return;
     }
 
-    if (!trade.isRebuyable() && trade.isBought()) {
+    if (!simpleGood.isRebuyable() && simpleGood.isBought()) {
       user.sendPluginMessage(Plugin.MOB_DEFENCE,
           Component.text("You already bought this item", ExTextColor.WARNING));
       user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
       return;
     }
 
-    if (!user.containsAtLeast(trade.getPrice().asItem())) {
+    if (!user.containsAtLeast(simpleGood.getPrice().asItem())) {
       user.sendPluginMessage(Plugin.MOB_DEFENCE,
           Component.text("Not enough money", ExTextColor.WARNING));
       user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
       return;
     }
 
-    user.removeCertainItemStack(trade.getPrice().asItem());
+    user.removeCertainItemStack(simpleGood.getPrice().asItem());
 
-    trade.sellTo(user, this.inv);
-  }
-
-  public Collection<Upgradeable> getUpgradeables() {
-    return upgradeableBySlot.values();
+    simpleGood.sellTo(user, this.inv);
   }
 
   public static class Builder implements Supplier<Shop> {
@@ -156,8 +156,8 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
     protected Integer slot;
     protected String name;
     protected ExItemStack displayItem;
-    protected List<Upgradeable.Builder> upgradeableBuilders = new LinkedList<>();
-    protected List<Trade.Builder> tradeBuilders = new LinkedList<>();
+    protected List<UpgradeableGood.Builder> upgradeableBuilders = new LinkedList<>();
+    protected List<SimpleGood.Builder> tradeBuilders = new LinkedList<>();
 
     public Builder() {
 
@@ -183,12 +183,12 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
       return this;
     }
 
-    public Builder addUpgradeable(Upgradeable.Builder... builders) {
+    public Builder addUpgradeable(UpgradeableGood.Builder... builders) {
       this.upgradeableBuilders.addAll(List.of(builders));
       return this;
     }
 
-    public Builder addTrade(Trade.Builder... builders) {
+    public Builder addTrade(SimpleGood.Builder... builders) {
       this.tradeBuilders.addAll(List.of(builders));
       return this;
     }
@@ -203,7 +203,7 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
       return switch (this.type) {
         case DEFAULT -> new Shop(this);
         case TEAM -> new TeamShop(this);
-        case USER -> new UserShop(null, this);
+        case USER -> new UserShop(this);
       };
     }
 

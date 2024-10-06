@@ -33,9 +33,9 @@ import de.timesnake.game.mobdefence.kit.MobDefKitManager;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.map.MobDefMap;
 import de.timesnake.game.mobdefence.mob.MobManager;
-import de.timesnake.game.mobdefence.shop.BaseShops;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
+import de.timesnake.game.mobdefence.shop.Shops;
 import de.timesnake.game.mobdefence.special.weapon.WeaponManager;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.game.mobdefence.user.OfflineMobDefUser;
@@ -95,7 +95,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
   private KitShopManager kitShopManager;
   private UserManager userManager;
   private WeaponManager weaponManager;
-  private BaseShops baseShops;
+  private Shops shops;
 
   public void onMobGameEnable() {
     super.onLoungeBridgeEnable();
@@ -105,7 +105,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     this.kitShopManager = new KitShopManager();
     this.userManager = new UserManager();
     this.weaponManager = new WeaponManager();
-    this.baseShops = new BaseShops();
+    this.shops = new Shops();
 
     this.coreHealthBar = Server.createBossBar("§c§lHealth", BarColor.RED, BarStyle.SOLID);
     this.coreHealthBar.setProgress(1);
@@ -387,7 +387,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
   @Override
   public void onGameReset() {
     this.coreHealthBar.setProgress(1);
-    this.baseShops.resetShops();
+    this.shops.resetShops();
   }
 
   @Override
@@ -505,8 +505,8 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     return users;
   }
 
-  public BaseShops getBaseShops() {
-    return baseShops;
+  public Shops getBaseShops() {
+    return shops;
   }
 
   @EventHandler

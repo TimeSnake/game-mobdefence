@@ -85,10 +85,6 @@ public class UserManager implements Listener {
   private final TrapManager trapManager;
 
   public UserManager() {
-
-    //this.itemGenerators.add(new ItemGenerator(MobDefKit.ARCHER, 1, Speer.SPEER.getItem().cloneWithId()
-    // .asQuantity(3), 8));
-
     this.coreRegeneration = new CoreRegeneration();
     this.resistanceAura = new ResistanceAura();
 
@@ -135,15 +131,14 @@ public class UserManager implements Listener {
     if (!(MobDefServer.BREAKABLE_MATERIALS.contains(type) || e.getBlock().isEmpty() || type.equals(Material.FIRE))) {
       e.setCancelled(true);
     } else {
-      ExItemStack item = MobDefKit.BLOCK_ITEM_BY_TYPE.get(type);
+      ExItemStack item = MobDefServer.BLOCK_ITEM_BY_TYPE.get(type);
 
       if (item == null) {
         return;
       }
 
       e.setDropItems(false);
-      e.getBlock().getWorld()
-          .dropItemNaturally(e.getBlock().getLocation().add(0.5, 0, 0.5), item);
+      e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation().add(0.5, 0, 0.5), item);
     }
   }
 

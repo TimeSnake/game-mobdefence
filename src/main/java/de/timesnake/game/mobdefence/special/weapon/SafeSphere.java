@@ -9,10 +9,10 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
-import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.LevelableProperty;
 import de.timesnake.game.mobdefence.shop.Price;
-import de.timesnake.game.mobdefence.shop.UpgradeableItem;
-import de.timesnake.game.mobdefence.shop.UpgradeableItem.Builder;
+import de.timesnake.game.mobdefence.shop.UpgradeableGoodItem;
+import de.timesnake.game.mobdefence.shop.UpgradeableGoodItem.Builder;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,48 +31,48 @@ public class SafeSphere extends ReloadableWeapon {
       .setDropable(false)
       .immutable();
 
-  private static final LevelType.Builder COOLDOWN = new LevelType.Builder()
+  private static final LevelableProperty.Builder COOLDOWN = new LevelableProperty.Builder()
       .name("Cooldown")
       .display(new ExItemStack(Material.FEATHER))
-      .baseLevel(1)
+      .defaultLevel(1)
       .levelLoreLine(3)
       .levelDecimalDigit(0)
       .levelLoreName("Cooldown")
       .levelUnit("s")
       .levelDescription("-2 s")
-      .addLoreLvl(null, 30)
-      .addLoreLvl(Price.bronze(32), 28)
-      .addLoreLvl(Price.silver(32), 26)
-      .addLoreLvl(Price.gold(24), 24)
-      .addLoreLvl(Price.bronze(46), 22)
-      .addLoreLvl(Price.bronze(64), 20)
-      .addLoreLvl(Price.silver(53), 18);
+      .addTagLevel(null, 30)
+      .addTagLevel(Price.bronze(32), 28)
+      .addTagLevel(Price.silver(32), 26)
+      .addTagLevel(Price.gold(24), 24)
+      .addTagLevel(Price.bronze(46), 22)
+      .addTagLevel(Price.bronze(64), 20)
+      .addTagLevel(Price.silver(53), 18);
 
-  private static final LevelType.Builder DURATION = new LevelType.Builder()
+  private static final LevelableProperty.Builder DURATION = new LevelableProperty.Builder()
       .name("Duration")
       .display(new ExItemStack(Material.CLOCK))
-      .baseLevel(1)
+      .defaultLevel(1)
       .levelLoreLine(4)
       .levelDecimalDigit(0)
       .levelLoreName("Duration")
       .levelUnit("s")
       .levelDescription("+1 s")
-      .addLoreLvl(null, 3)
-      .addLoreLvl(Price.bronze(35), 4)
-      .addLoreLvl(Price.silver(45), 5)
-      .addLoreLvl(Price.gold(28), 6)
-      .addLoreLvl(Price.bronze(54), 7)
-      .addLoreLvl(Price.bronze(64), 8)
-      .addLoreLvl(Price.silver(59), 9);
+      .addTagLevel(null, 3)
+      .addTagLevel(Price.bronze(35), 4)
+      .addTagLevel(Price.silver(45), 5)
+      .addTagLevel(Price.gold(28), 6)
+      .addTagLevel(Price.bronze(54), 7)
+      .addTagLevel(Price.bronze(64), 8)
+      .addTagLevel(Price.silver(59), 9);
 
-  public static final UpgradeableItem.Builder SAFE_SPHERE = new Builder()
+  public static final UpgradeableGoodItem.Builder SAFE_SPHERE = new Builder()
       .name("Save Sphere")
-      .baseItem(ITEM)
+      .startItem(ITEM)
       .price(new Price(32, Currency.SILVER))
       .unlockedAtWave(7)
       .display(ITEM)
-      .addLvlType(COOLDOWN)
-      .addLvlType(DURATION);
+      .addLevelableProperty(COOLDOWN)
+      .addLevelableProperty(DURATION);
 
 
   private final HashMap<MobDefUser, BukkitTask> taskByUser = new HashMap<>();
@@ -88,14 +88,14 @@ public class SafeSphere extends ReloadableWeapon {
 
   @Override
   public int getCooldown(ExItemStack item) {
-    return COOLDOWN.getNumberFromLore(item, Integer::valueOf);
+    return COOLDOWN.getValueFromItem(item);
   }
 
   @Override
   public void onInteract(ExItemStack item, MobDefUser user) {
     super.onInteract(item, user);
 
-    this.createSphere(user, DURATION.getNumberFromLore(item, Integer::valueOf));
+    this.createSphere(user, DURATION.getValueFromItem(item));
   }
 
   private void createSphere(MobDefUser user, int duration) {

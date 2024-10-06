@@ -8,9 +8,9 @@ import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
-import de.timesnake.game.mobdefence.shop.LevelType;
+import de.timesnake.game.mobdefence.shop.LevelableProperty;
 import de.timesnake.game.mobdefence.shop.Price;
-import de.timesnake.game.mobdefence.shop.UpgradeableItem;
+import de.timesnake.game.mobdefence.shop.UpgradeableGoodItem;
 import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.entities.entity.WolfBuilder;
 import net.kyori.adventure.text.Component;
@@ -30,43 +30,43 @@ import java.util.List;
 
 public class DogSpawner extends EntitySpawner {
 
-  public static final LevelType.Builder AMOUNT_LEVELS = new LevelType.Builder()
+  public static final LevelableProperty.Builder AMOUNT_LEVELS = new LevelableProperty.Builder()
       .name("Amount")
       .display(new ExItemStack(Material.WOLF_SPAWN_EGG))
-      .baseLevel(1)
+      .defaultLevel(1)
       .levelDescription("+1 Dog")
       .levelLoreLine(1)
       .levelLoreName("Dogs")
-      .addLoreLvl(null, 4)
-      .addLoreLvl(new Price(12, Currency.BRONZE), 5)
-      .addLoreLvl(new Price(14, Currency.SILVER), 6)
-      .addLoreLvl(new Price(24, Currency.BRONZE), 7)
-      .addLoreLvl(new Price(16, Currency.GOLD), 8);
+      .addTagLevel(null, 4)
+      .addTagLevel(new Price(12, Currency.BRONZE), 5)
+      .addTagLevel(new Price(14, Currency.SILVER), 6)
+      .addTagLevel(new Price(24, Currency.BRONZE), 7)
+      .addTagLevel(new Price(16, Currency.GOLD), 8);
 
-  public static final LevelType.Builder HEALTH_LEVELS = new LevelType.Builder()
+  public static final LevelableProperty.Builder HEALTH_LEVELS = new LevelableProperty.Builder()
       .name("Health")
       .display(new ExItemStack(Material.RED_DYE))
-      .baseLevel(1)
+      .defaultLevel(1)
       .levelDescription("+2.5 ❤")
       .levelLoreLine(2)
       .levelLoreName("Health")
-      .addLoreLvl(null, 15)
-      .addLoreLvl(new Price(16, Currency.BRONZE), 20)
-      .addLoreLvl(new Price(32, Currency.BRONZE), 25)
-      .addLoreLvl(new Price(11, Currency.GOLD), 30)
-      .addLoreLvl(new Price(22, Currency.SILVER), 35);
+      .addTagLevel(null, 15)
+      .addTagLevel(new Price(16, Currency.BRONZE), 20)
+      .addTagLevel(new Price(32, Currency.BRONZE), 25)
+      .addTagLevel(new Price(11, Currency.GOLD), 30)
+      .addTagLevel(new Price(22, Currency.SILVER), 35);
 
-  public static final UpgradeableItem.Builder LEVEL_ITEM = new UpgradeableItem.Builder()
+  public static final UpgradeableGoodItem.Builder LEVEL_ITEM = new UpgradeableGoodItem.Builder()
       .name("Call Dogs")
-      .display(new ExItemStack(Material.BONE, "§6Dogs"))
-      .baseItem(new ExItemStack(Material.BONE, "§6Call Dogs"))
-      .addLvlType(AMOUNT_LEVELS)
-      .addLvlType(HEALTH_LEVELS);
+      .display(new ExItemStack(Material.BONE).setDisplayName("§6Dogs"))
+      .startItem(new ExItemStack(Material.BONE).setDisplayName("§6Call Dogs"))
+      .addLevelableProperty(AMOUNT_LEVELS)
+      .addLevelableProperty(HEALTH_LEVELS);
 
   private static final int MAX = 4;
 
   public DogSpawner() {
-    super(LEVEL_ITEM.getBaseItem(), 20 * 60);
+    super(LEVEL_ITEM.getStartItem(), 20 * 60);
   }
 
   @Override
@@ -86,8 +86,8 @@ public class DogSpawner extends EntitySpawner {
       return new ArrayList<>();
     }
 
-    int amount = AMOUNT_LEVELS.getNumberFromLore(item, Integer::valueOf);
-    float health = 2 * HEALTH_LEVELS.getNumberFromLore(item, Integer::valueOf);
+    int amount = AMOUNT_LEVELS.getValueFromItem(item);
+    float health = 2 * HEALTH_LEVELS.<Integer>getValueFromItem(item);
 
     List<Entity> entities = new ArrayList<>();
     for (int i = 0; i < amount; i++) {
