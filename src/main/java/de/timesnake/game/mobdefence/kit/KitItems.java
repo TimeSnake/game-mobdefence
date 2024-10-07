@@ -207,7 +207,7 @@ public interface KitItems {
 
   LevelableProperty.Builder PROJECTILE_PROTECTION = new LevelableProperty.Builder()
       .name("Projectile Protection")
-      .display(new ExItemStack(Material.ARROW))
+      .display(new ExItemStack(Material.SPECTRAL_ARROW))
       .defaultLevel(0)
       .levelDescription("+1 Projectile Protection")
       .levelEnchantment(Enchantment.PROJECTILE_PROTECTION);
@@ -243,7 +243,7 @@ public interface KitItems {
 
   LevelableProperty.Builder MELEE_ARMOR_HELMET_TYPE = new LevelableProperty.Builder()
       .name("Type")
-      .display(new ExItemStack(Material.ANVIL))
+      .display(new ExItemStack(Material.NETHERITE_SCRAP))
       .defaultLevel(1)
       .levelItem(MELEE_BASE_ARMOR_HELMET)
       .addMaterialLevel(null, null, Material.LEATHER_HELMET)
@@ -264,7 +264,7 @@ public interface KitItems {
           .apply(PROJECTILE_PROTECTION_LEVEL));
   LevelableProperty.Builder MELEE_ARMOR_CHESTPLATE_TYPE = new LevelableProperty.Builder()
       .name("Type")
-      .display(new ExItemStack(Material.ANVIL))
+      .display(new ExItemStack(Material.NETHERITE_SCRAP))
       .defaultLevel(1)
       .levelItem(MELEE_BASE_ARMOR_CHESTPLATE)
       .addMaterialLevel(null, null, Material.LEATHER_CHESTPLATE)
@@ -288,7 +288,7 @@ public interface KitItems {
       .addConflictToLvlType(PROTECTION, PROJECTILE_PROTECTION);
   LevelableProperty.Builder MELEE_ARMOR_LEGGINGS_TYPE = new LevelableProperty.Builder()
       .name("Type")
-      .display(new ExItemStack(Material.ANVIL))
+      .display(new ExItemStack(Material.NETHERITE_SCRAP))
       .defaultLevel(1)
       .levelItem(MELEE_BASE_ARMOR_LEGGINGS)
       .addMaterialLevel(null, null, Material.LEATHER_LEGGINGS)
@@ -310,7 +310,7 @@ public interface KitItems {
       .addConflictToLvlType(PROTECTION, PROJECTILE_PROTECTION);
   LevelableProperty.Builder MELEE_ARMOR_BOOTS_TYPE = new LevelableProperty.Builder()
       .name("Type")
-      .display(new ExItemStack(Material.ANVIL))
+      .display(new ExItemStack(Material.NETHERITE_SCRAP))
       .defaultLevel(1)
       .levelItem(MELEE_BASE_ARMOR_BOOTS)
       .addMaterialLevel(null, null, Material.LEATHER_BOOTS)
@@ -347,7 +347,7 @@ public interface KitItems {
       EquipmentSlot.FEET).unbreakable();
   LevelableProperty.Builder RANGED_ARMOR_HELMET_TYPE = new LevelableProperty.Builder()
       .name("Type")
-      .display(new ExItemStack(Material.ANVIL))
+      .display(new ExItemStack(Material.NETHERITE_SCRAP))
       .defaultLevel(1)
       .levelItem(RANGED_BASE_ARMOR_HELMET)
       .addMaterialLevel(null, null, Material.LEATHER_HELMET)
@@ -368,7 +368,7 @@ public interface KitItems {
           .apply(PROJECTILE_PROTECTION_LEVEL));
   LevelableProperty.Builder RANGED_ARMOR_CHESTPLATE_TYPE = new LevelableProperty.Builder()
       .name("Type")
-      .display(new ExItemStack(Material.ANVIL))
+      .display(new ExItemStack(Material.NETHERITE_SCRAP))
       .defaultLevel(1)
       .levelItem(RANGED_BASE_ARMOR_CHESTPLATE)
       .addMaterialLevel(null, null, Material.LEATHER_CHESTPLATE)
@@ -392,7 +392,7 @@ public interface KitItems {
       .addConflictToLvlType(PROTECTION, PROJECTILE_PROTECTION);
   LevelableProperty.Builder RANGED_ARMOR_LEGGINGS_TYPE = new LevelableProperty.Builder()
       .name("Type")
-      .display(new ExItemStack(Material.ANVIL))
+      .display(new ExItemStack(Material.NETHERITE_SCRAP))
       .defaultLevel(1)
       .levelItem(RANGED_BASE_ARMOR_LEGGINGS)
       .addMaterialLevel(null, null, Material.LEATHER_LEGGINGS)
@@ -415,7 +415,7 @@ public interface KitItems {
       .addConflictToLvlType(PROTECTION, PROJECTILE_PROTECTION);
   LevelableProperty.Builder RANGED_ARMOR_BOOTS_TYPE = new LevelableProperty.Builder()
       .name("Type")
-      .display(new ExItemStack(Material.ANVIL))
+      .display(new ExItemStack(Material.NETHERITE_SCRAP))
       .defaultLevel(1)
       .levelItem(RANGED_BASE_ARMOR_BOOTS)
       .addMaterialLevel(null, null, Material.LEATHER_BOOTS)

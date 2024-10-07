@@ -32,7 +32,7 @@ public class ReviveManager {
       .getReviveManager().setReviveRespawnTime(i);
   private static final LevelableProperty.Builder RESPAWN_TIME_LEVELS = new LevelableProperty.Builder()
       .name("Respawn Time")
-      .display(new ExItemStack(Material.PLAYER_HEAD))
+      .display(new ExItemStack(Material.WHITE_CANDLE))
       .defaultLevel(1)
       .levelDescription("-1s Revive Time")
       .addLevel(null, (MobDefUser u) -> RESPAWN.accept(u, 7))
@@ -46,7 +46,7 @@ public class ReviveManager {
       .getReviveManager().setReviveDespawnTime(i);
   private static final LevelableProperty.Builder DESPAWN_TIME_LEVELS = new LevelableProperty.Builder()
       .name("Despawn Time")
-      .display(new ExItemStack(Material.SKELETON_SKULL))
+      .display(new ExItemStack(Material.BLACK_CANDLE))
       .defaultLevel(1)
       .levelDescription("+3s Despawn Time")
       .addLevel(null, (MobDefUser u) -> DESPAWN.accept(u, 30))
