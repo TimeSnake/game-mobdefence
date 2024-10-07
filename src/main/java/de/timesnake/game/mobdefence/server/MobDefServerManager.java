@@ -269,7 +269,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     if (user.getStatus().equals(Status.User.OUT_GAME)) {
       user.joinSpectator();
     } else {
-      user.joinGame();
+      user.onGameJoin();
       ((MobDefUser) user).startGame();
       GameServer.getGameTablist().reloadEntry(user, true);
     }
