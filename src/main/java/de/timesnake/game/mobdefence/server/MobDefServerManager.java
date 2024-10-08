@@ -523,7 +523,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
   public void saveGameUserStats(GameUser user) {
     super.saveGameUserStats(user);
 
-    user.getStat(MobDefServer.MOB_KILLS).increaseAll(user.getStatistic(Statistic.MOB_KILLS));
+    user.getStat(MobDefServer.MOB_KILLS).increaseAllBy(user.getStatistic(Statistic.MOB_KILLS));
   }
 
   @Override
