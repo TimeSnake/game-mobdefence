@@ -23,10 +23,9 @@ public abstract class ItemTagLevel<T extends Number> extends ItemLevel {
   protected final PersistentDataType<T, T> dataType;
   protected final DecimalFormat decimalFormat;
 
-  public ItemTagLevel(ExItemStack targetItem, String name, int loreLine, int decimal, String unit, int level,
-                      Price price,
-                      String description, T value) {
-    super(targetItem, level, price, description);
+  public ItemTagLevel(String name, int loreLine, int decimal, String unit, int level,
+                      Price price, String description, T value) {
+    super(level, price, description);
     this.name = name;
     this.unit = unit;
     this.loreName = "§7" + this.name + ": §9";
@@ -55,9 +54,9 @@ public abstract class ItemTagLevel<T extends Number> extends ItemLevel {
 
   public static class ItemIntegerTagLevel extends ItemTagLevel<Integer> {
 
-    public ItemIntegerTagLevel(ExItemStack targetItem, String name, int loreLine, int decimal, String unit, int level,
+    public ItemIntegerTagLevel(String name, int loreLine, int decimal, String unit, int level,
                                Price price, String description, Integer value) {
-      super(targetItem, name, loreLine, decimal, unit, level, price, description, value);
+      super(name, loreLine, decimal, unit, level, price, description, value);
     }
 
     @Override
@@ -73,9 +72,9 @@ public abstract class ItemTagLevel<T extends Number> extends ItemLevel {
 
   public static class ItemFloatTagLevel extends ItemTagLevel<Float> {
 
-    public ItemFloatTagLevel(ExItemStack item, String name, int loreLine, int decimal, String unit, int level,
+    public ItemFloatTagLevel(String name, int loreLine, int decimal, String unit, int level,
                              Price price, String description, Float value) {
-      super(item, name, loreLine, decimal, unit, level, price, description, value);
+      super(name, loreLine, decimal, unit, level, price, description, value);
     }
 
     @Override

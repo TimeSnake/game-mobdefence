@@ -11,16 +11,14 @@ import java.util.function.Function;
 
 public abstract class ItemLevel extends Level implements Function<ExItemStack, ExItemStack> {
 
-  private final ExItemStack targetItem;
+  protected ExItemStack targetItem;
 
-  protected ItemLevel(ExItemStack targetItem, int level, Price price, String description) {
+  protected ItemLevel(int level, Price price, String description) {
     super(level, price, description);
-    this.targetItem = targetItem;
   }
 
-  protected ItemLevel(ExItemStack targetItem, int level, int unlockWave, Price price, String description) {
+  protected ItemLevel(int level, int unlockWave, Price price, String description) {
     super(level, unlockWave, price, description);
-    this.targetItem = targetItem;
   }
 
   @Override

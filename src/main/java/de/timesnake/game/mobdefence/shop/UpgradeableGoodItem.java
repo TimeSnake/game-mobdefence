@@ -42,6 +42,16 @@ public class UpgradeableGoodItem extends UpgradeableGood {
     }
 
     this.displayItem.setLore(lore);
+
+    if (this.startItem != null) {
+      for (LevelableProperty property : this.levelType) {
+        for (Level level : property.getLevels()) {
+          if (level instanceof ItemLevel itemLevel) {
+            itemLevel.targetItem = this.startItem;
+          }
+        }
+      }
+    }
   }
 
   @Override

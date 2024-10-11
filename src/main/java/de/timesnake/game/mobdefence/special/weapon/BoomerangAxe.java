@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class BoomerangAxe extends CooldownWeapon implements UserInventoryInteractListener {
 
-  public static final ExItemStack AXE = new ExItemStack(Material.WOODEN_AXE, "§6Boomerang Axe")
+  public static final ExItemStack ITEM = new ExItemStack(Material.WOODEN_AXE).setDisplayName("§6Boomerang Axe")
       .unbreakable().immutable();
 
   private static final LevelableProperty.Builder SPEED_LEVELS = new LevelableProperty.Builder()
@@ -40,7 +40,6 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
       .levelDescription("+0.2 Speed")
       .levelLoreLine(1)
       .levelDecimalDigit(1)
-      .levelItem(AXE)
       .levelLoreName("Speed")
       .addTagLevel(null, 1f)
       .addTagLevel(new Price(6, Currency.BRONZE), 1.2f)
@@ -60,7 +59,6 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
       .levelLoreLine(2)
       .levelDecimalDigit(1)
       .levelUnit("❤")
-      .levelItem(AXE)
       .levelLoreName("Damage")
       .addTagLevel(null, 4f)
       .addTagLevel(new Price(5, Currency.BRONZE), 4.5f)
@@ -81,7 +79,6 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
       .levelDescription("+1 Block")
       .levelLoreLine(3)
       .levelDecimalDigit(0)
-      .levelItem(AXE)
       .levelLoreName("Distance")
       .addTagLevel(null, 10)
       .addTagLevel(new Price(16, Currency.BRONZE), 11)
@@ -91,9 +88,9 @@ public class BoomerangAxe extends CooldownWeapon implements UserInventoryInterac
 
   public static final UpgradeableGoodItem.Builder BOOMERANG_AXE = new UpgradeableGoodItem.Builder()
       .name("Boomerang Axe")
-      .display(AXE.cloneWithId())
+      .display(ITEM.cloneWithId())
       .price(new Price(4, Currency.GOLD))
-      .startItem(AXE.cloneWithId())
+      .startItem(ITEM.cloneWithId())
       .addLevelableProperty(SPEED_LEVELS)
       .addLevelableProperty(DAMAGE_LEVELS)
       .addLevelableProperty(DISTANCE_LEVELS);

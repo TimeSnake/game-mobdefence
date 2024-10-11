@@ -77,8 +77,7 @@ public class TeamHealth {
           .addLevel(new Price(9, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 17))
           .addLevel(new Price(10, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 18))
           .addLevel(new Price(11, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 19))
-          .addLevel(new Price(12, Currency.EMERALD),
-              (MobDefUser u) -> updateHealth(u, 20)));
+          .addLevel(new Price(12, Currency.EMERALD), (MobDefUser u) -> updateHealth(u, 20)));
 
 
 }

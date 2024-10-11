@@ -30,6 +30,8 @@ import java.util.List;
 
 public class DogSpawner extends EntitySpawner {
 
+  public static final ExItemStack ITEM = new ExItemStack(Material.BONE).setDisplayName("§6Call Dogs");
+
   public static final LevelableProperty.Builder AMOUNT_LEVELS = new LevelableProperty.Builder()
       .name("Amount")
       .display(new ExItemStack(Material.WOLF_SPAWN_EGG))
@@ -59,7 +61,7 @@ public class DogSpawner extends EntitySpawner {
   public static final UpgradeableGoodItem.Builder LEVEL_ITEM = new UpgradeableGoodItem.Builder()
       .name("Call Dogs")
       .display(new ExItemStack(Material.BONE).setDisplayName("§6Dogs"))
-      .startItem(new ExItemStack(Material.BONE).setDisplayName("§6Call Dogs"))
+      .startItem(ITEM)
       .addLevelableProperty(AMOUNT_LEVELS)
       .addLevelableProperty(HEALTH_LEVELS);
 
@@ -70,8 +72,7 @@ public class DogSpawner extends EntitySpawner {
   }
 
   @Override
-  public List<Entity> getEntities(User user,
-                                  ExItemStack item) {
+  public List<Entity> getEntities(User user, ExItemStack item) {
 
     int dogs = 0;
     for (org.bukkit.entity.Entity wolf : user.getWorld().getEntitiesByClasses(org.bukkit.entity.Wolf.class)) {
