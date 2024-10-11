@@ -47,7 +47,6 @@ public class FireHoe extends CooldownWeapon implements Listener {
       .levelDecimalDigit(0)
       .levelLoreLine(1)
       .levelLoreName("Damage")
-      .levelItem(ITEM)
       .addTagLevel(null, 2)
       .addTagLevel(new Price(5, Currency.BRONZE), 3)
       .addTagLevel(new Price(5, Currency.SILVER), 4)
@@ -64,7 +63,6 @@ public class FireHoe extends CooldownWeapon implements Listener {
       .levelDecimalDigit(0)
       .levelLoreLine(2)
       .levelLoreName("Burning Time")
-      .levelItem(ITEM)
       .addTagLevel(null, 3)
       .addTagLevel(new Price(5, Currency.BRONZE), 4)
       .addTagLevel(new Price(4, Currency.SILVER), 5)
@@ -83,7 +81,6 @@ public class FireHoe extends CooldownWeapon implements Listener {
       .levelLoreLine(3)
       .levelLoreName("Slowness")
       .addTagLevel(null, 3)
-      .levelItem(ITEM)
       .addTagLevel(new Price(24, Currency.BRONZE), 4)
       .addTagLevel(new Price(48, Currency.BRONZE), 5);
 

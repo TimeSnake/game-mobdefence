@@ -11,6 +11,8 @@ import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import de.timesnake.library.chat.ExTextColor;
 import net.kyori.adventure.text.Component;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
 import org.bukkit.Note;
@@ -21,6 +23,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class LevelableProperty {
+
+  private static final Logger logger = LogManager.getLogger("mob-def.shop.property");
 
   private final ExItemStack displayItem;
   private final String name;
@@ -167,7 +171,6 @@ public class LevelableProperty {
     private ExItemStack displayItem;
     private int defaultLevel;
     private int levelCounter = 0;
-    private ExItemStack currentLevelItem;
     private String currentDescription = "";
     private Enchantment currentEnchantment;
     private String currentLoreName = "";
@@ -223,11 +226,6 @@ public class LevelableProperty {
       return this;
     }
 
-    public Builder levelItem(ExItemStack levelItem) {
-      this.currentLevelItem = levelItem;
-      return this;
-    }
-
     public Builder addLevel(Price price, Consumer<MobDefUser> consumer) {
       return this.addLevel(price, this.currentDescription, consumer);
     }
@@ -251,7 +249,7 @@ public class LevelableProperty {
     }
 
     public Builder addLevel(Price price, String description, Function<ExItemStack, ExItemStack> function) {
-      this.levels.addLast(new ItemLevel(this.currentLevelItem, ++this.levelCounter, price, description) {
+      this.levels.addLast(new ItemLevel(++this.levelCounter, price, description) {
         @Override
         public ExItemStack apply(ExItemStack exItemStack) {
           return function.apply(exItemStack);
@@ -279,10 +277,10 @@ public class LevelableProperty {
     public Builder addTagLevel(Price price, String description, String loreName, int loreLine,
                                int decimalDigits, String unit, Number number) {
       if (number instanceof Integer) {
-        this.levels.addLast(new ItemTagLevel.ItemIntegerTagLevel(this.currentLevelItem, loreName, loreLine,
+        this.levels.addLast(new ItemTagLevel.ItemIntegerTagLevel(loreName, loreLine,
             decimalDigits, unit, ++this.levelCounter, price, description, (Integer) number));
       } else {
-        this.levels.addLast(new ItemTagLevel.ItemFloatTagLevel(this.currentLevelItem, loreName, loreLine,
+        this.levels.addLast(new ItemTagLevel.ItemFloatTagLevel(loreName, loreLine,
             decimalDigits, unit, ++this.levelCounter, price, description, (Float) number));
       }
 
@@ -292,7 +290,7 @@ public class LevelableProperty {
     public Builder addTagLevel(Price price, Number number, Consumer<MobDefUser> consumer) {
       if (number instanceof Integer) {
         this.levels.addLast(
-            new ItemTagLevel.ItemIntegerTagLevel(this.currentLevelItem, this.currentLoreName,
+            new ItemTagLevel.ItemIntegerTagLevel(this.currentLoreName,
                 this.currentLoreLine, this.currentDecimalDigits, this.currentUnit, ++this.levelCounter, price,
                 this.currentDescription, (Integer) number) {
               @Override
@@ -302,7 +300,7 @@ public class LevelableProperty {
               }
             });
       } else {
-        this.levels.addLast(new ItemTagLevel.ItemFloatTagLevel(this.currentLevelItem, this.currentLoreName,
+        this.levels.addLast(new ItemTagLevel.ItemFloatTagLevel(this.currentLoreName,
             this.currentLoreLine, this.currentDecimalDigits, this.currentUnit, ++this.levelCounter, price,
             this.currentDescription, (Float) number) {
           @Override
@@ -344,7 +342,6 @@ public class LevelableProperty {
       cloned.displayItem = displayItem != null ? displayItem.cloneWithId() : null;
       cloned.defaultLevel = defaultLevel;
       cloned.levelCounter = levelCounter;
-      cloned.currentLevelItem = currentLevelItem != null ? currentLevelItem.cloneWithId() : null;
       cloned.currentDescription = currentDescription;
       cloned.currentEnchantment = currentEnchantment;
       cloned.currentLoreName = currentLoreName;

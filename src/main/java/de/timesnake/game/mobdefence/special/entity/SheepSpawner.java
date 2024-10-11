@@ -28,6 +28,8 @@ import java.util.List;
 
 public class SheepSpawner extends EntitySpawner {
 
+  public static final ExItemStack ITEM = new ExItemStack(Material.WHEAT, "§6Herd Sheeps");
+
   public static final LevelableProperty.Builder AMOUNT_LEVELS = new LevelableProperty.Builder()
       .name("Amount")
       .display(new ExItemStack(Material.SHEEP_SPAWN_EGG))
@@ -44,7 +46,7 @@ public class SheepSpawner extends EntitySpawner {
   public static final UpgradeableGoodItem.Builder LEVEL_ITEM = new UpgradeableGoodItem.Builder()
       .name("§6Herd Sheep")
       .display(new ExItemStack(Material.WHEAT, "§6Sheeps"))
-      .startItem(new ExItemStack(Material.WHEAT, "§6Herd Sheeps"))
+      .startItem(ITEM)
       .addLevelableProperty(AMOUNT_LEVELS);
 
   private static final int MAX = 4;
