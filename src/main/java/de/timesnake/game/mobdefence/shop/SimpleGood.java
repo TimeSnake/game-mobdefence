@@ -33,8 +33,6 @@ public class SimpleGood {
 
     this.displayItem = builder.displayItem.cloneWithId();
 
-    this.displayItem.setDisplayName("§6" + this.displayItem.getItemMeta().getDisplayName());
-
     this.description = Arrays.asList(builder.description != null ? builder.description : new String[0]);
 
     this.giveConsumer = builder.giveConsumer;

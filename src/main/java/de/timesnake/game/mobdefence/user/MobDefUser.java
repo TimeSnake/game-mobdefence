@@ -34,6 +34,8 @@ public class MobDefUser extends GameUser {
   private ExLocation deathLocation;
   private MobDefUser reviveUser;
 
+  private int revives;
+
   public MobDefUser(Player player) {
     super(player);
   }
@@ -48,6 +50,7 @@ public class MobDefUser extends GameUser {
     this.setGameMode(GameMode.SURVIVAL);
 
     this.alive = true;
+    this.revives = 0;
 
     MobDefServer.updateSideboardPlayers();
 
@@ -204,5 +207,13 @@ public class MobDefUser extends GameUser {
 
   public ReviveManager.DeadPlayer getDeadBody() {
     return deadBody;
+  }
+
+  public void addRevive() {
+    this.revives++;
+  }
+
+  public int getRevives() {
+    return revives;
   }
 }

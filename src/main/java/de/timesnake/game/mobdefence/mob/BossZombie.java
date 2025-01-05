@@ -55,6 +55,7 @@ public class BossZombie extends MobDefMob<Zombie> {
         })
         .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
             .setBaseValue(2 + (this.currentWave - this.wave) / 5. * MobDefServer.MOB_DAMAGE_MULTIPLIER))
+        .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, 1, false))
         .apply(b -> b.applyOnEntity(e -> {
           BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.8, false,
               MobDefServer.BREAKABLE_MATERIALS);
@@ -110,6 +111,7 @@ public class BossZombie extends MobDefMob<Zombie> {
                     e.setItemSlot(EquipmentSlot.MAINHAND,
                         new ExItemStack(Material.NETHERITE_SHOVEL).addExEnchantment(Enchantment.SHARPNESS,
                             BossZombie.this.currentWave * 2).getHandle());
+                    e.invulnerableDuration = 1;
                   })
                   .addPathfinderGoal(1, e -> new ZombieAttackGoal(e, speed, false))
                   .apply(b -> b.applyOnEntity(e -> {

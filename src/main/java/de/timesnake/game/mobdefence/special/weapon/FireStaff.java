@@ -30,9 +30,9 @@ import java.util.Set;
 public class FireStaff extends InteractWeapon implements Listener, UserInventoryInteractListener {
 
   private static final String NAME = "firestaff";
-  private static final NamespacedKey NAME_KEY = NamespacedKey.fromString("name");
-  private static final NamespacedKey FIRE_RADIUS = NamespacedKey.fromString("fire_radius");
-  private static final NamespacedKey BURNING_TIME = NamespacedKey.fromString("burning_time");
+  private static final NamespacedKey NAME_KEY = NamespacedKey.fromString("firestaff:name");
+  private static final NamespacedKey FIRE_RADIUS = NamespacedKey.fromString("firestaff:fire_radius");
+  private static final NamespacedKey BURNING_TIME = NamespacedKey.fromString("firestaff:burning_time");
 
   private static final ExItemStack ITEM = new ExItemStack(Material.BLAZE_ROD)
       .setDisplayName("§6Fire Staff")
@@ -136,7 +136,7 @@ public class FireStaff extends InteractWeapon implements Listener, UserInventory
     if (!this.fireStaffCooldownUser.contains(user)) {
       this.fireStaffCooldownUser.add(user);
 
-      float speed = SPEED_LEVELS.getValueFromItem(item);
+      int speed = SPEED_LEVELS.getValueFromItem(item);
       float radius = FIRE_RADIUS_LEVELS.getValueFromItem(item);
       int burningTime = BURNING_TIME_LEVELS.getValueFromItem(item);
       int fireRate = FIRE_RATE_LEVELS.getValueFromItem(item);

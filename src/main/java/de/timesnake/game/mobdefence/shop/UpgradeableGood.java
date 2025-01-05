@@ -8,7 +8,7 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExInventory;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
-import de.timesnake.library.basic.util.MultiKeyMap;
+import de.timesnake.library.basic.util.LinkedMultiKeyMap;
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ public abstract class UpgradeableGood {
   protected final String name;
   protected final ExItemStack displayItem;
 
-  protected final MultiKeyMap<ExItemStack, String, LevelableProperty> levelType = new MultiKeyMap<>();
+  protected final LinkedMultiKeyMap<ExItemStack, String, LevelableProperty> levelType = new LinkedMultiKeyMap<>();
   protected final Map<String, Collection<String>> conflictingTypes;
 
   protected UpgradeableGood(Builder builder) {

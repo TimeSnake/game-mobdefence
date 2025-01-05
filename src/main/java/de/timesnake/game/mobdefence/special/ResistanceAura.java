@@ -17,7 +17,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class ResistanceAura implements Listener {
 
-  private static final double RADIUS = 5;
+  private static final double RADIUS = 7;
 
 
   private BukkitTask task;
@@ -28,10 +28,10 @@ public class ResistanceAura implements Listener {
         if (((MobDefUser) user).isAlive() && ((MobDefUser) user).getKit()
             .equals(MobDefKit.KNIGHT)) {
           for (Player player : user.getWorld().getNearbyPlayers(user.getLocation(), RADIUS)) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 4 * 20, 1));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 4 * 20, 2));
           }
           user.getPlayer()
-              .addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 4 * 20, 1));
+              .addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 4 * 20, 2));
         }
       }
     }, 0, 20 * 3, GameMobDefence.getPlugin());

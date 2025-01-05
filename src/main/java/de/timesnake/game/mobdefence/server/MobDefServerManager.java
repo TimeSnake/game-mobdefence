@@ -359,15 +359,9 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
   @Override
   public void onGameStop() {
-    if (!this.running) {
-      return;
-    }
-
     if (this.delayTask != null) {
       this.delayTask.cancel();
     }
-
-    this.running = false;
 
     this.getMap().getHeightMapManager().stopUpdater();
     this.mobManager.cancelSpawning();
@@ -379,8 +373,13 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
       }
     }
 
+    int mobKills = Server.getUsers().stream().mapToInt(u -> u.getStatistic(Statistic.MOB_KILLS)).sum();
+
     new EndMessage().winner("Game Over")
         .addExtra("§hWave: §v" + this.waveNumber)
+        .addStat("§pMob Kills: §h" + mobKills)
+        .addStat("Revives", Server.getGameUsers(), 3, u -> ((MobDefUser) u).getRevives() > 0,
+            u -> ((MobDefUser) u).getRevives())
         .send();
   }
 

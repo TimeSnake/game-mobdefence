@@ -23,11 +23,11 @@ import java.util.List;
 public class MobDefMap extends Map implements ResetableMap {
 
   public static final Integer MOB_SPAWN_START_INDEX = 10;
-  public static final Integer STAGE_LOC_SIZE = 100;
-  public static final Integer HEIGHT_MAP_UPDATE_DELAY = 20 * 8;
-  private static final Integer DEFAULT_MAP_RADIUS = 100;
   private static final Integer CORE_LOCATION_INDEX = 0;
   private static final Integer USER_SPAWN_INDEX = 1;
+
+  public static final Integer STAGE_LOC_SIZE = 100;
+  private static final Integer DEFAULT_MAP_RADIUS = 100;
 
   private final Logger logger = LogManager.getLogger("mob-def.map");
 
@@ -56,8 +56,7 @@ public class MobDefMap extends Map implements ResetableMap {
     this.getWorld().restrict(Restriction.OPEN_INVENTORIES, List.of(Material.AIR));
     this.getWorld().restrict(Restriction.CRAFTING, true);
 
-    for (int stageNumber = 0; stageNumber <= map.getLastLocationNumber();
-        stageNumber += STAGE_LOC_SIZE) {
+    for (int stageNumber = 0; stageNumber <= map.getLastLocationNumber(); stageNumber += STAGE_LOC_SIZE) {
       this.logger.info("Loading stage {}...", stageNumber);
       MobDefStage stage = new MobDefStage(stageNumber, this.getCoreLocation(),
           super.getLocationsById());

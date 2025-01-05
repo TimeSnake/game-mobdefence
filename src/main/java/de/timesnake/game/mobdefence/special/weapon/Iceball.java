@@ -40,8 +40,8 @@ public class Iceball extends SpecialWeapon implements Listener {
       .immutable();
   private static final String NAME = "iceball";
 
-  private static final NamespacedKey NAME_KEY = NamespacedKey.fromString("name");
-  private static final NamespacedKey DAMAGE_KEY = NamespacedKey.fromString("damage");
+  private static final NamespacedKey NAME_KEY = NamespacedKey.fromString("iceball:name");
+  private static final NamespacedKey DAMAGE_KEY = NamespacedKey.fromString("iceball:damage");
 
   private static final LevelableProperty.Builder SPEED_LEVELS = new LevelableProperty.Builder()
       .name("Speed")
@@ -71,16 +71,16 @@ public class Iceball extends SpecialWeapon implements Listener {
       .levelLoreName("Damage")
       .addTagLevel(null, 2f)
       .addTagLevel(new Price(2, Currency.GOLD), 2.5f)
-      .addTagLevel(new Price(15, Currency.BRONZE), 3f)
-      .addTagLevel(new Price(14, Currency.SILVER), 3.5f)
-      .addTagLevel(new Price(28, Currency.BRONZE), 4f)
-      .addTagLevel(new Price(15, Currency.GOLD), 4.5f)
-      .addTagLevel(new Price(35, Currency.BRONZE), 5f)
-      .addTagLevel(new Price(36, Currency.SILVER), 5.5f)
+      .addTagLevel(new Price(12, Currency.BRONZE), 3f)
+      .addTagLevel(new Price(11, Currency.SILVER), 3.5f)
+      .addTagLevel(new Price(22, Currency.BRONZE), 4f)
+      .addTagLevel(new Price(9, Currency.GOLD), 4.5f)
+      .addTagLevel(new Price(32, Currency.BRONZE), 5f)
+      .addTagLevel(new Price(32, Currency.SILVER), 5.5f)
       .addTagLevel(new Price(44, Currency.BRONZE), 6f)
-      .addTagLevel(new Price(23, Currency.GOLD), 6.5f)
+      .addTagLevel(new Price(14, Currency.GOLD), 6.5f)
       .addTagLevel(new Price(42, Currency.SILVER), 7f)
-      .addTagLevel(new Price(34, Currency.GOLD), 7.5f);
+      .addTagLevel(new Price(64, Currency.BRONZE), 7.5f);
 
   public static final UpgradeableGoodItem.Builder ICEBALL = new UpgradeableGoodItem.Builder()
       .name("Iceball")
@@ -135,11 +135,11 @@ public class Iceball extends SpecialWeapon implements Listener {
       return;
     }
 
-    if (NAME.equals(snowball.getPersistentDataContainer().get(NAME_KEY, PersistentDataType.STRING))) {
+    if (!NAME.equals(snowball.getPersistentDataContainer().get(NAME_KEY, PersistentDataType.STRING))) {
       return;
     }
 
-    float damage = snowball.getPersistentDataContainer().get(DAMAGE_KEY, PersistentDataType.FLOAT) * 2;
+    float damage = snowball.getPersistentDataContainer().get(DAMAGE_KEY, PersistentDataType.FLOAT);
 
     if (e.getHitEntity() != null && e.getHitEntity() instanceof LivingEntity entity) {
       e.setCancelled(true);
@@ -148,7 +148,7 @@ public class Iceball extends SpecialWeapon implements Listener {
         return;
       }
 
-      entity.damage(damage, snowball);
+      entity.damage(damage * 2, snowball);
       entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 5, 1));
     }
 
@@ -203,7 +203,6 @@ public class Iceball extends SpecialWeapon implements Listener {
       newSnowball.getPersistentDataContainer().set(DAMAGE_KEY, PersistentDataType.FLOAT, damage);
 
       snowball.remove();
-
     }
   }
 
