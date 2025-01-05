@@ -32,7 +32,7 @@ public abstract class MeleeMob<M extends Mob> extends ArmorMob<M> {
       switch (random) {
         case 0 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.STONE_SWORD).getHandle());
         case 1 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.IRON_SWORD).getHandle());
-        case 2 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.GOLDEN_SWORD).getHandle());
+        case 2 -> this.entity.setItemSlot(EquipmentSlot.MAINHAND, new ExItemStack(Material.GOLDEN_AXE).getHandle());
       }
     } else if (this.currentWave <= 7) {
       int random = this.random.nextInt(6);

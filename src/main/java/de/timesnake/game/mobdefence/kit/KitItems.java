@@ -404,9 +404,9 @@ public interface KitItems {
           RANGED_ARMOR_BOOTS)
       .type(Shop.Builder.Type.USER);
   SimpleGood.Builder FIRE_GOLD_SWORD = new SimpleGood.Builder()
-      .giveItems(new ExItemStack(Material.GOLDEN_SWORD)
+      .giveItems(new ExItemStack(Material.STONE_SWORD)
           .setDisplayName("§6Fire Sword")
-          .addExEnchantment(Enchantment.FIRE_ASPECT, 2))
+          .addExEnchantment(Enchantment.FIRE_ASPECT, 5))
       .price(new Price(2, Currency.SILVER))
       .slot(46);
   SimpleGood.Builder ALCHEMIST_SPEED = new SimpleGood.Builder()

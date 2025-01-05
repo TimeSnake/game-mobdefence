@@ -105,7 +105,7 @@ public class SwingSword extends CooldownWeapon implements UserInventoryInteractL
 
   @Override
   public void onInteract(ExItemStack item, MobDefUser user) {
-    float damage = DAMAGE_LEVELS.getValueFromItem(item);
+    int damage = DAMAGE_LEVELS.getValueFromItem(item);
     float radius = RADIUS_LEVELS.getValueFromItem(item);
 
     Location loc = user.getLocation().clone().add(0, -0.35, 0);

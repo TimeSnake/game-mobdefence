@@ -78,8 +78,11 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
                     .applyOnEntity(e -> e.getBukkitLivingEntity().getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)
                         .setBaseValue(2 + BossSkeletonStray.this.currentWave / 5D * MobDefServer.MOB_DAMAGE_MULTIPLIER))
                     .applyOnEntity(e -> e.getBukkitLivingEntity().setNoDamageTicks(1))
-                    .applyOnEntity(e -> e.setItemSlot(EquipmentSlot.MAINHAND,
-                        new ExItemStack(Material.BOW).getHandle()))
+                    .applyOnEntity(e -> {
+                      e.setItemSlot(EquipmentSlot.MAINHAND,
+                          new ExItemStack(Material.BOW).getHandle());
+                      e.invulnerableDuration = 1;
+                    })
                     .setMaxHealthAndHealth(health)
                     .apply(b -> b.applyOnEntity(e -> {
                       BreakBlockGoal breakBlock = getBreakPathfinder(e, 0.5, false,
@@ -122,6 +125,7 @@ public class BossSkeletonStray extends MobDefMob<Stray> {
                         ExItemStack.getLeatherArmor(Material.LEATHER_BOOTS, Color.GREEN)
                             .addExEnchantment(Enchantment.PROTECTION,
                                 BossSkeletonStray.this.currentWave / 4).getHandle());
+                    e.invulnerableDuration = 1;
                   })
                   .setMaxHealthAndHealth(BossSkeletonStray.this.currentWave * 20)
                   .apply(b -> b.applyOnEntity(e -> {

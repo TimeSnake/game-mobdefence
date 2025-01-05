@@ -54,7 +54,7 @@ public class Snowman extends BlockSpawner implements Listener {
           e.setPersistenceRequired(true);
         })
         .setMaxHealthAndHealth(40)
-        .addPathfinderGoal(1, e -> new RangedAttackGoal(e, 0D, 2, 10.0F))
+        .addPathfinderGoal(1, e -> new RangedAttackGoal(e, 0D, 4, 10.0F))
         .addPathfinderGoal(3, e -> new LookAtPlayerGoal(e, Player.class, 6.0F))
         .addPathfinderGoal(4, e -> new RandomStrollGoal(e, 0))
         .addPathfinderGoal(4, e -> new RandomLookAroundGoal(e))

@@ -26,7 +26,8 @@ import java.util.function.BiConsumer;
 
 public class ReviveManager {
 
-  private static final double RADIUS = 3;
+  private static final double HORIZONTAL_RADIUS = 3;
+  private static final double VERTICAL_RADIUS = 2;
 
   private static final BiConsumer<MobDefUser, Integer> RESPAWN = (u, i) -> MobDefServer.getMobDefUserManager()
       .getReviveManager().setReviveRespawnTime(i);
@@ -147,7 +148,8 @@ public class ReviveManager {
 
         for (MobDefUser user : MobDefServer.getAliveUsers()) {
           if (!((MobDefUser) DeadPlayer.this.getUser()).isBeingRevived()) {
-            if (DeadPlayer.this.getLocation().distanceSquared(user.getLocation()) <= RADIUS) {
+            if (DeadPlayer.this.getLocation().distanceHorizontalSquared(user.getLocation()) <= HORIZONTAL_RADIUS
+                && Math.abs(DeadPlayer.this.getLocation().getY() - user.getLocation().getY()) <= VERTICAL_RADIUS) {
               ((MobDefUser) DeadPlayer.this.getUser()).setReviveUser(user);
               break;
             }
@@ -158,6 +160,7 @@ public class ReviveManager {
           if (reviveTime == ReviveManager.this.reviveRespawnTime) {
             MobDefServer.broadcastGameTDMessage(user.getTDChatName() + "§w was revived by "
                 + user.getReviveUser().getTDChatName());
+            user.getReviveUser().addRevive();
 
             DeadPlayer.this.remove();
             Server.getEntityManager().unregisterEntity(DeadPlayer.this.displayEntity);

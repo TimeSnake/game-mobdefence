@@ -38,8 +38,8 @@ public class MobDefServer extends LoungeBridgeServer {
   public static final double SPAWN_AMOUNT_MULTIPLIER = 5;
   public static final double SPAWN_AMOUNT_INCREASE = 1.6;
 
-  public static final double SPAWN_TIME_MULTIPLIER = 14;
-  public static final double SPAWN_TIME_RANDOM_RANGE = 0.4;
+  public static final double SPAWN_TIME_MULTIPLIER = 10;
+  public static final double SPAWN_TIME_RANDOM_RANGE = 0.3;
 
   public static final int MIN_GROUP_SIZE = 5;
   public static final int MAX_GROUP_SIZE = 7;
