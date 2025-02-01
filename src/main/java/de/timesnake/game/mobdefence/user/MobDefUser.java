@@ -157,7 +157,7 @@ public class MobDefUser extends GameUser {
     this.heal();
 
     this.setInvulnerable(true);
-    Server.runTaskLaterSynchrony(() -> this.getPlayer().setInvulnerable(false), 2 * 20,
+    Server.runTaskLaterSynchrony(() -> this.getPlayer().setInvulnerable(false), 20,
         GameMobDefence.getPlugin());
   }
 

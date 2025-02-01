@@ -385,6 +385,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
 
   @Override
   public void onGameReset() {
+    this.waveNumber = 0;
     this.coreHealthBar.setProgress(1);
     this.shops.resetShops();
   }
