@@ -5,11 +5,11 @@
 package de.timesnake.game.mobdefence.shop;
 
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
-import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import de.timesnake.library.chat.ExTextColor;
+import de.timesnake.library.chat.Plugin;
 import net.kyori.adventure.text.Component;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -110,7 +110,7 @@ public class LevelableProperty {
     }
 
     if (this.level == this.maxLevel) {
-      user.sendPluginMessage(Plugin.MOB_DEFENCE,
+      user.sendPluginMessage(Plugin.GAME,
           Component.text("Max level reached", ExTextColor.WARNING));
       user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
       return false;
@@ -119,14 +119,14 @@ public class LevelableProperty {
     Level nextLevel = this.levels.get(this.level + 1);
 
     if (nextLevel == null) {
-      user.sendPluginMessage(Plugin.MOB_DEFENCE,
+      user.sendPluginMessage(Plugin.GAME,
           Component.text("Nothing to level up", ExTextColor.WARNING));
       user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
       return false;
     }
 
     if (MobDefServer.getWaveNumber() < nextLevel.getUnlockWave()) {
-      user.sendPluginMessage(Plugin.MOB_DEFENCE,
+      user.sendPluginMessage(Plugin.GAME,
           Component.text("This level is locked until wave ", ExTextColor.WARNING)
               .append(Component.text(nextLevel.getUnlockWave(), ExTextColor.VALUE)));
       user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
@@ -134,7 +134,7 @@ public class LevelableProperty {
     }
 
     if (!user.containsAtLeast(nextLevel.getPrice().asItem())) {
-      user.sendPluginMessage(Plugin.MOB_DEFENCE,
+      user.sendPluginMessage(Plugin.GAME,
           Component.text("Not enough money", ExTextColor.WARNING));
       user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
       return false;

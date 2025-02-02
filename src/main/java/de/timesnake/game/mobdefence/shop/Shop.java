@@ -9,10 +9,10 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExInventory;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryClickEvent;
 import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryClickListener;
-import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
 import de.timesnake.library.chat.ExTextColor;
+import de.timesnake.library.chat.Plugin;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
@@ -132,14 +132,14 @@ public class Shop implements UserInventoryClickListener, InventoryHolder {
     }
 
     if (!simpleGood.isRebuyable() && simpleGood.isBought()) {
-      user.sendPluginMessage(Plugin.MOB_DEFENCE,
+      user.sendPluginMessage(Plugin.GAME,
           Component.text("You already bought this item", ExTextColor.WARNING));
       user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
       return;
     }
 
     if (!user.containsAtLeast(simpleGood.getPrice().asItem())) {
-      user.sendPluginMessage(Plugin.MOB_DEFENCE,
+      user.sendPluginMessage(Plugin.GAME,
           Component.text("Not enough money", ExTextColor.WARNING));
       user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
       return;

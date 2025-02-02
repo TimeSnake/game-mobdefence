@@ -9,13 +9,13 @@ import de.timesnake.basic.bukkit.util.chat.cmd.CommandListener;
 import de.timesnake.basic.bukkit.util.chat.cmd.Completion;
 import de.timesnake.basic.bukkit.util.chat.cmd.Sender;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.mob.map.HeightMapManager;
 import de.timesnake.game.mobdefence.mob.map.HeightMapVisualizer;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.library.chat.Code;
+import de.timesnake.library.chat.Plugin;
 import de.timesnake.library.commands.PluginCommand;
 import de.timesnake.library.commands.simple.Arguments;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
 
 public class DebugCmd implements CommandListener {
 
-  private final Code perm = Plugin.MOB_DEFENCE.createPermssionCode("game.mobdef.debug");
+  private final Code perm = Plugin.GAME.createPermssionCode("game.mobdef.debug");
 
   private final HeightMapVisualizer visualizer = new HeightMapVisualizer();
 
