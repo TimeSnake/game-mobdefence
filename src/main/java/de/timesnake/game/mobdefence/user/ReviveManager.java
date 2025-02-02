@@ -10,13 +10,13 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExInventory;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.entity.HoloDisplay;
-import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.shop.Currency;
 import de.timesnake.game.mobdefence.shop.LevelableProperty;
 import de.timesnake.game.mobdefence.shop.Price;
 import de.timesnake.game.mobdefence.shop.UpgradeableGood;
+import de.timesnake.library.chat.Plugin;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitTask;
@@ -171,8 +171,8 @@ public class ReviveManager {
           }
 
           user.getReviveUser().playSound(Sound.ENTITY_PLAYER_LEVELUP, 2);
-          user.getReviveUser().sendPluginTDMessage(Plugin.MOB_DEFENCE, "§sReviving " + user.getTDChatName()
-              + "§s, §v" + (reviveRespawnTime - reviveTime) + "s");
+          user.getReviveUser().sendPluginTDMessage(Plugin.GAME, "§sReviving " + user.getTDChatName()
+                                                                + "§s, §v" + (reviveRespawnTime - reviveTime) + "s");
 
           DeadPlayer.this.displayEntity.setText(List.of("§2Revived in " + (reviveRespawnTime - reviveTime) + "s"));
 

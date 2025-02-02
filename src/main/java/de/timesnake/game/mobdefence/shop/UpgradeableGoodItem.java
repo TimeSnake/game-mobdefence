@@ -6,10 +6,10 @@ package de.timesnake.game.mobdefence.shop;
 
 import de.timesnake.basic.bukkit.util.user.inventory.ExInventory;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
-import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.server.MobDefServer;
 import de.timesnake.game.mobdefence.user.MobDefUser;
 import de.timesnake.library.basic.util.BuilderNotFullyInstantiatedException;
+import de.timesnake.library.chat.Plugin;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
 
@@ -70,17 +70,17 @@ public class UpgradeableGoodItem extends UpgradeableGood {
       if (levelableProperty == null && this.getDisplayItem().equals(item)) {
 
         if (MobDefServer.getWaveNumber() < this.unlockedAtWave) {
-          user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§wThis item is locked until wave §v" + this.unlockedAtWave);
+          user.sendPluginTDMessage(Plugin.GAME, "§wThis item is locked until wave §v" + this.unlockedAtWave);
           return;
         }
 
         if (this.bought && !this.rebuyable) {
-          user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§wYou already bought this item");
+          user.sendPluginTDMessage(Plugin.GAME, "§wYou already bought this item");
           return;
         }
 
         if (!user.containsAtLeast(this.buyPrice.asItem())) {
-          user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§wNot enough money");
+          user.sendPluginTDMessage(Plugin.GAME, "§wNot enough money");
           user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
           return;
         }
@@ -94,7 +94,7 @@ public class UpgradeableGoodItem extends UpgradeableGood {
       }
 
       if (!this.bought) {
-        user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§wYou must buy this item before");
+        user.sendPluginTDMessage(Plugin.GAME, "§wYou must buy this item before");
         user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
         return;
       }
@@ -107,7 +107,7 @@ public class UpgradeableGoodItem extends UpgradeableGood {
     LevelableProperty conflictingType = this.isConflicting(levelableProperty);
 
     if (conflictingType != null) {
-      user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§wConflicting with §v" + conflictingType.getName());
+      user.sendPluginTDMessage(Plugin.GAME, "§wConflicting with §v" + conflictingType.getName());
       user.playNote(Instrument.STICKS, Note.natural(0, Note.Tone.C));
       return;
     }

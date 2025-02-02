@@ -11,7 +11,6 @@ import de.timesnake.basic.bukkit.util.user.event.UserBlockPlaceEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserDamageByUserEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserDropItemEvent;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
-import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.MobDefKit;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
 import de.timesnake.game.mobdefence.mob.map.HeightBlock;
@@ -24,6 +23,7 @@ import de.timesnake.game.mobdefence.special.PotionGenerator;
 import de.timesnake.game.mobdefence.special.ResistanceAura;
 import de.timesnake.game.mobdefence.special.trap.TrapManager;
 import de.timesnake.library.chat.ExTextColor;
+import de.timesnake.library.chat.Plugin;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -161,7 +161,7 @@ public class UserManager implements Listener {
     if (MobDefServer.getMap().getCoreLocation().distanceSquared(blockPlaced.getLocation())
         < BLOCK_VILLAGER_DISTANCE * BLOCK_VILLAGER_DISTANCE) {
       e.setCancelled(true);
-      e.getUser().sendPluginMessage(Plugin.MOB_DEFENCE,
+      e.getUser().sendPluginMessage(Plugin.GAME,
           Component.text("You can not place a block here", ExTextColor.WARNING));
       return;
     }
@@ -309,7 +309,7 @@ public class UserManager implements Listener {
   }
 
   private static void sendHeightLevel(User user, HeightBlock block) {
-    user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§sLevel: §v" + (block != null ? String.valueOf(block.level()) :
+    user.sendPluginTDMessage(Plugin.GAME, "§sLevel: §v" + (block != null ? String.valueOf(block.level()) :
         "null"));
 
     if (block == null) {
@@ -319,10 +319,10 @@ public class UserManager implements Listener {
     HeightBlock next = block.next();
     if (next != null) {
       Location loc = next.block().getLocation();
-      user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§sNext: §v" + loc.getX() + " " + loc.getY() + " " + loc.getZ()
+      user.sendPluginTDMessage(Plugin.GAME, "§sNext: §v" + loc.getX() + " " + loc.getY() + " " + loc.getZ()
                                                    + "§s Level: §v" + next.level() + "§s Blocks: " + block.blocksToBreakForNext().size() + " " + next.blocksToBreak().size());
     } else {
-      user.sendPluginTDMessage(Plugin.MOB_DEFENCE, "§sNext: §vnull");
+      user.sendPluginTDMessage(Plugin.GAME, "§sNext: §vnull");
     }
   }
 

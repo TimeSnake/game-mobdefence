@@ -27,7 +27,6 @@ import de.timesnake.basic.loungebridge.util.user.OfflineUser;
 import de.timesnake.database.util.game.DbGame;
 import de.timesnake.database.util.game.DbMap;
 import de.timesnake.database.util.game.DbTmpGame;
-import de.timesnake.game.mobdefence.chat.Plugin;
 import de.timesnake.game.mobdefence.kit.KitShopManager;
 import de.timesnake.game.mobdefence.kit.MobDefKitManager;
 import de.timesnake.game.mobdefence.main.GameMobDefence;
@@ -184,11 +183,6 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
         return GameMode.SURVIVAL;
       }
     };
-  }
-
-  @Override
-  public Plugin getGamePlugin() {
-    return Plugin.MOB_DEFENCE;
   }
 
   @Override
