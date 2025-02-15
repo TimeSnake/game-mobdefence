@@ -6,9 +6,9 @@ package de.timesnake.game.mobdefence.server;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboard;
-import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboard.LineId;
-import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboardBuilder;
+import de.timesnake.basic.bukkit.util.user.scoreboard.KeyedSideboard;
+import de.timesnake.basic.bukkit.util.user.scoreboard.KeyedSideboard.LineId;
+import de.timesnake.basic.bukkit.util.user.scoreboard.KeyedSideboardBuilder;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Tablist;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
@@ -85,7 +85,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
   private net.minecraft.world.entity.LivingEntity coreEntity;
   private BossBar coreHealthBar;
   private double coreHealth;
-  private ExSideboard sideboard;
+  private KeyedSideboard sideboard;
   private Integer delay;
   private boolean delayIsRunning = false;
   private BukkitTask delayTask;
@@ -109,7 +109,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     this.coreHealthBar = Server.createBossBar("§c§lHealth", BarColor.RED, BarStyle.SOLID);
     this.coreHealthBar.setProgress(1);
 
-    this.sideboard = Server.getScoreboardManager().registerExSideboard(new ExSideboardBuilder()
+    this.sideboard = Server.getScoreboardManager().registerExSideboard(new KeyedSideboardBuilder()
         .name("mobdef")
         .title("§6§l" + this.getGame().getDisplayName())
         .lineSpacer()
@@ -461,7 +461,7 @@ public class MobDefServerManager extends LoungeBridgeServerManager<TmpGame> impl
     return waveNumber;
   }
 
-  public ExSideboard getSideboard() {
+  public KeyedSideboard getSideboard() {
     return sideboard;
   }
 
