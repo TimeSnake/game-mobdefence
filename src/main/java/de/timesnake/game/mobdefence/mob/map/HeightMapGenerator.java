@@ -99,7 +99,7 @@ public class HeightMapGenerator {
     List<HeightBlock> blocks = new ArrayList<>();
 
     for (Vector vector : blockArea.getVectors()) {
-      ExBlock startBlock = end.block().getRelative(vector);
+      ExBlock startBlock = end.block().getExRelative(vector);
 
       if (this.seenBlocks.contains(startBlock)) {
         continue;

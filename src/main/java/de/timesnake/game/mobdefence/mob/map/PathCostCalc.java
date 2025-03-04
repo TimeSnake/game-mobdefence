@@ -73,7 +73,7 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
 
       // go down -> all blocks up to start top must be breakable on end
       while (heightDelta < 0) {
-        ExBlock block = end.getRelative(0, -heightDelta + 1, 0);
+        ExBlock block = end.getExRelative(0, -heightDelta + 1, 0);
         Integer costs = this.getCostsForBlock(block);
         if (costs == null) {
           return PathCostResult.BLOCKED;
@@ -117,12 +117,12 @@ public abstract class PathCostCalc implements Function<ShortPath, PathCostResult
         return PathCostResult.BLOCKED;
       }
 
-      ExBlock x = start.getRelative(deltaX, 0, 0);
+      ExBlock x = start.getExRelative(deltaX, 0, 0);
       ExBlock xTop = x.up();
       ExBlock xTop2 = xTop.up();
       ExBlock xBottom = x.down();
 
-      ExBlock z = start.getRelative(0, 0, deltaZ);
+      ExBlock z = start.getExRelative(0, 0, deltaZ);
       ExBlock zTop = z.up();
       ExBlock zTop2 = zTop.up();
       ExBlock zBottom = z.down();
